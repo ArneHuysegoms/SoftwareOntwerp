@@ -3,5 +3,5 @@
  *
  * delete if other classes are present in folder
  */
-public class Dummy {
+public class Dummy2 {
 }
