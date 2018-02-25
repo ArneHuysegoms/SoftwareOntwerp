@@ -11,5 +11,13 @@
 
     <artifactId>UI</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>Interactr</groupId>
+            <artifactId>Domain</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
