@@ -1,10 +1,11 @@
-package handler;
+package handler.useCaseHandlers;
 
 import canvascomponents.CanvasComponent;
+import handler.Handler;
 
-public class SetPartyTypeHandler extends Handler{
+public class EditLabelHandler extends Handler {
 
-    public SetPartyTypeHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
+    public EditLabelHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
         super(canvasComponent, uiEvent);
     }
 
@@ -12,6 +13,4 @@ public class SetPartyTypeHandler extends Handler{
     public boolean HandleEvent(CanvasComponent component, UIEvent uiEvent) {
         return false;
     }
-
-
 }

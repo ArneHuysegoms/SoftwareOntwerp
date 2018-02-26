@@ -1,10 +1,11 @@
-package handler;
+package handler.useCaseHandlers;
 
 import canvascomponents.CanvasComponent;
+import handler.Handler;
 
-public class AddPartyHandler extends Handler {
+public class SetPartyTypeHandler extends Handler {
 
-    public AddPartyHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
+    public SetPartyTypeHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
         super(canvasComponent, uiEvent);
     }
 
@@ -12,4 +13,6 @@ public class AddPartyHandler extends Handler {
     public boolean HandleEvent(CanvasComponent component, UIEvent uiEvent) {
         return false;
     }
+
+
 }

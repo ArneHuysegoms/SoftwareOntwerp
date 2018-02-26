@@ -1,6 +1,7 @@
-package handler;
+package handler.useCaseHandlers;
 
 import canvascomponents.CanvasComponent;
+import handler.Handler;
 
 public class SwitchDigramHandler extends Handler {
 

@@ -1,10 +1,11 @@
-package handler;
+package handler.useCaseHandlers;
 
 import canvascomponents.CanvasComponent;
+import handler.Handler;
 
-public class MovePartyHandler extends Handler {
+public class AddPartyHandler extends Handler {
 
-    public MovePartyHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
+    public AddPartyHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
         super(canvasComponent, uiEvent);
     }
 
