@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Domain/Domain.iml" filepath="$PROJECT_DIR$/Domain/Domain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SO-Interactr.iml" filepath="$PROJECT_DIR$/SO-Interactr.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Domain/src/main/main.iml" filepath="$PROJECT_DIR$/Domain/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UI/src/main/main1.iml" filepath="$PROJECT_DIR$/UI/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Domain/src/test/test.iml" filepath="$PROJECT_DIR$/Domain/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UI/src/test/test1.iml" filepath="$PROJECT_DIR$/UI/src/test/test1.iml" />
     </modules>
   </component>
 </project>
