@@ -2,9 +2,9 @@ package handler;
 
 import canvascomponents.CanvasComponent;
 
-public class SetPartyTypeHandler extends Handler{
+public class MovePartyHandler extends Handler {
 
-    public SetPartyTypeHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
+    public MovePartyHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
         super(canvasComponent, uiEvent);
     }
 
@@ -12,6 +12,4 @@ public class SetPartyTypeHandler extends Handler{
     public boolean HandleEvent(CanvasComponent component, UIEvent uiEvent) {
         return false;
     }
-
-
 }
