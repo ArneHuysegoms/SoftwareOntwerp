@@ -2,7 +2,7 @@ package canvascomponents;
 
 import java.awt.geom.Point2D;
 
-public class CanvasComponent {
+public abstract class CanvasComponent {
 
     private Point2D coordinate;
 
@@ -22,4 +22,6 @@ public class CanvasComponent {
     private void setCoordinate(Point2D coordinate) {
         this.coordinate = coordinate;
     }
+
+    public abstract Clickable findClickedElement(Point2D point2D);
 }
