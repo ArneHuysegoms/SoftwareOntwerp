@@ -1,23 +1,28 @@
 package canvascomponents.diagram;
 
-import excpetions.DomainException;
+import canvascomponents.Coordinable;
+import exceptions.DomainException;
 
-public class Message {
+import java.awt.geom.Point2D;
+
+public class Message implements Coordinable{
 
     private Message nextMessage;
     private String label;
     private Actor receiver;
     private Actor sender;
+    private Point2D coordinate;
 
     public Message(){
 
     }
 
-    public Message(Message nextMessage, String label, Actor reciever, Actor sender) throws DomainException{
+    public Message(Message nextMessage, String label, Actor receiver, Actor sender, Point2D coordinate) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
-        this.setReceiver(reciever);
+        this.setReceiver(receiver);
         this.setSender(sender);
+        this.setCoordinate(coordinate);
     }
 
     public Message getNextMessage() {
@@ -53,5 +58,15 @@ public class Message {
             throw new DomainException("Sender of message can't be null");
         }
         this.sender = sender;
+    }
+
+    private void setCoordinate(Point2D coordinate){
+        this.coordinate = coordinate;
+    }
+
+
+    @Override
+    public Point2D getCoordinate() {
+        return this.coordinate;
     }
 }

@@ -1,6 +1,8 @@
 package canvascomponents.diagram;
 
-import excpetions.DomainException;
+import exceptions.DomainException;
+
+import java.awt.geom.Point2D;
 
 public class ResultMessage extends Message {
 
@@ -8,7 +10,7 @@ public class ResultMessage extends Message {
 
      }
 
-     public ResultMessage(Message message, String label, Actor receiver, Actor sender) throws DomainException {
-         super(message, label, receiver, sender);
+     public ResultMessage(Message message, String label, Actor receiver, Actor sender, Point2D coordinate) throws DomainException {
+         super(message, label, receiver, sender, coordinate);
      }
 }

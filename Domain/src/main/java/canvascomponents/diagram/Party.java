@@ -1,25 +1,26 @@
 package canvascomponents.diagram;
 
-import excpetions.DomainException;
+import canvascomponents.Coordinable;
+import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Party {
+public class Party implements Coordinable{
 
     private String instanceName;
     private String className;
     private int positionInSequenceDiagram;
-    private Point2D positionInCommunicationDiagram;
+    private Point2D coordinate;
 
     public Party(){
 
     }
 
-    public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D positionInCommunicationDiagram) throws DomainException{
+    public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate) throws DomainException{
         this.setInstanceName(instanceName);
         this.setClassName(className);
         this.setPositionInSequenceDiagram(positionInSequenceDiagram);
-        this.setPositionInCommunicationDiagram(positionInCommunicationDiagram);
+        this.setCoordinate(coordinate);
     }
 
     public String getInstanceName() {
@@ -49,15 +50,16 @@ public class Party {
         this.positionInSequenceDiagram = positionInSequenceDiagram;
     }
 
-    public Point2D getPositionInCommunicationDiagram() {
-        return positionInCommunicationDiagram;
-    }
-
-    private void setPositionInCommunicationDiagram(Point2D positionInCommunicationDiagram) {
-        this.positionInCommunicationDiagram = positionInCommunicationDiagram;
+    public void setCoordinate(Point2D coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getFullLabel(){
         return this.getInstanceName() + ": " + this.getClassName();
+    }
+
+    @Override
+    public Point2D getCoordinate() {
+        return this.coordinate;
     }
 }
