@@ -1,6 +1,6 @@
 package canvascomponents.diagram;
 
-import excpetions.DomainException;
+import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 

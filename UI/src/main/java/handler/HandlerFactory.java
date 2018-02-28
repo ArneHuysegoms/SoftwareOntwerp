@@ -1,6 +1,7 @@
 package handler;
 
 import canvascomponents.CanvasComponent;
+import canvascomponents.diagram.Diagram;
 
 public class HandlerFactory {
 
@@ -11,4 +12,10 @@ public class HandlerFactory {
     public static IHandler CreateHandler(CanvasComponent canvasComponent, UIEvent uiEvent){
         return null;
     }
+
+    private static boolean isDiagram(CanvasComponent component){
+        return component instanceof Diagram;
+    }
+
+
 }
