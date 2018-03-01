@@ -1,12 +1,11 @@
 package canvascomponents.diagram;
 
 import canvascomponents.Clickable;
-import canvascomponents.Coordinable;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Party implements Coordinable, Clickable{
+public class Party implements Clickable{
 
     private String instanceName;
     private String className;
@@ -57,11 +56,6 @@ public class Party implements Coordinable, Clickable{
 
     public String getFullLabel(){
         return this.getInstanceName() + ": " + this.getClassName();
-    }
-
-    @Override
-    public Point2D getCoordinate() {
-        return this.coordinate;
     }
 
     @Override

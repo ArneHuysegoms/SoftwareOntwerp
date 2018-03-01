@@ -1,12 +1,11 @@
 package canvascomponents.diagram;
 
 import canvascomponents.Clickable;
-import canvascomponents.Coordinable;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 
-public class Lifeline implements Clickable, Coordinable {
+public class Lifeline implements Clickable{
 
     private Point2D coordinate;
     private List<Message> messages;
@@ -14,11 +13,6 @@ public class Lifeline implements Clickable, Coordinable {
     public Lifeline(List<Message> messages, Point2D coordinate) {
         this.setMessages(messages);
         this.setCoordinate(coordinate);
-    }
-
-    @Override
-    public Point2D getCoordinate() {
-        return coordinate;
     }
 
     private void setCoordinate(Point2D coordinate) {

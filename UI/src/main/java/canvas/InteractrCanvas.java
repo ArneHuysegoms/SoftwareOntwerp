@@ -16,7 +16,7 @@ public class InteractrCanvas extends CanvasWindow{
     private KeyEventFactory keyFactory;
     private MouseEventFactory mouseFactory;
 
-    protected InteractrCanvas(String title) {
+    public InteractrCanvas(String title) {
         super(title);
         keyFactory = new KeyEventFactory();
         mouseFactory = new MouseEventFactory();
