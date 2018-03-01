@@ -58,6 +58,10 @@ public class Party implements Clickable{
         return this.getInstanceName() + ": " + this.getClassName();
     }
 
+    public void editLabel(String newLabel){
+
+    }
+
     @Override
     public boolean isClicked(Point2D point2D) {
         return false;
