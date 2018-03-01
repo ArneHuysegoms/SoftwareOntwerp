@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Domain" target="1.8" />
-      <module name="SO-Interactr" target="1.8" />
+      <module name="Parent" target="1.8" />
       <module name="UI" target="1.8" />
     </bytecodeTargetLevel>
   </component>

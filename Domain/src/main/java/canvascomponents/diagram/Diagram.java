@@ -1,8 +1,10 @@
 package canvascomponents.diagram;
 
 import canvascomponents.CanvasComponent;
-import excpetions.DomainException;
+import canvascomponents.Clickable;
+import exceptions.DomainException;
 
+import java.awt.geom.Point2D;
 import java.util.List;
 
 public class Diagram extends CanvasComponent{
@@ -10,10 +12,21 @@ public class Diagram extends CanvasComponent{
     private List<Party> parties;
 
     public Diagram(){
+        super();
+    }
 
+    @Override
+    public Clickable findClickedElement(Point2D point2D) {
+        return null;
     }
 
     public Diagram(List<Party> parties){
+        super();
+        this.setParties(parties);
+    }
+
+    public Diagram(List<Party> parties, Point2D point2D){
+        super(point2D);
         this.setParties(parties);
     }
 
