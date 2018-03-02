@@ -12,6 +12,28 @@ public class Message implements Clickable{
     private Actor receiver;
     private Actor sender;
     private Point2D coordinate;
+    private int width;
+    private int height;
+
+    public Point2D getCoordinate() {
+        return coordinate;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public Message(){
 
@@ -66,6 +88,14 @@ public class Message implements Clickable{
 
     @Override
     public boolean isClicked(Point2D point2D) {
+        double clickX = point2D.getX();
+        double clickY = point2D.getY();
+        double startX = this.getCoordinate().getX();
+        double startY = this.getCoordinate().getY();
+        double endX = startX + this.getWidth();
+        double endY = startY + this.getHeight();
+        if ((clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY))
+            return true;
         return false;
     }
 }
