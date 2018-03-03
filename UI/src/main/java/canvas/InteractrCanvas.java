@@ -36,6 +36,7 @@ public class InteractrCanvas extends CanvasWindow{
         Point2D point = new Point2D.Double(x,y);
         mouseFactory.createMouseEvent(id, clickCount, point);
     }
+
     @Override
     public void handleKeyEvent(int id, int keyCode, char keyChar){
         keyFactory.createKeyEvent(id, keyCode, keyChar);
