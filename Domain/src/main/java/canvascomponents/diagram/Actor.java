@@ -5,11 +5,11 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Actor extends Party implements Clickable {
+public class Actor extends Party{
 
     private Lifeline lifeline;
-    public static final int width = 160;
-    public static final int height = 160;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
 
 
     public Actor(){
@@ -48,10 +48,10 @@ public class Actor extends Party implements Clickable {
     public boolean isClicked(Point2D point2D) {
         double clickX = point2D.getX();
         double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX();
+        double startX = this.getCoordinate().getX() - WIDTH/2;
         double startY = this.getCoordinate().getY();
-        double endX = startX + width;
-        double endY = startY + height;
+        double endX = startX + WIDTH/2;
+        double endY = startY + HEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

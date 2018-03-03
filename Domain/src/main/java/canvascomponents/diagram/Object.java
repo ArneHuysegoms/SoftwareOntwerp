@@ -1,14 +1,13 @@
 package canvascomponents.diagram;
 
-import canvascomponents.Clickable;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Object extends Party implements Clickable {
+public class Object extends Party{
 
-    public static final int width = 200;
-    public static final int height = 140;
+    public static final int WIDTH = 80;
+    public static final int HEIGHT = 50;
 
     public Object(){
         super();
@@ -23,8 +22,8 @@ public class Object extends Party implements Clickable {
         double clickY = point2D.getY();
         double startX = this.getCoordinate().getX();
         double startY = this.getCoordinate().getY();
-        double endX = startX + width;
-        double endY = startY + height;
+        double endX = startX + WIDTH;
+        double endY = startY + HEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

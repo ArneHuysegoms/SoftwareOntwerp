@@ -11,33 +11,19 @@ public class Message implements Clickable{
     private MessageLabel label;
     private Actor receiver;
     private Actor sender;
-    private Point2D coordinate;
-    private int width;
-    public static final int height = 50;
 
-    public Point2D getCoordinate() {
-        return coordinate;
-    }
+    public static final int HEIGHT = 16;
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
 
     public Message(){
 
     }
 
-    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender, Point2D coordinate, int width) throws DomainException{
+    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
         this.setSender(sender);
-        this.setCoordinate(coordinate);
-        this.setWidth(width);
     }
 
     public Message getNextMessage() {
@@ -75,18 +61,19 @@ public class Message implements Clickable{
         this.sender = sender;
     }
 
-    private void setCoordinate(Point2D coordinate){
-        this.coordinate = coordinate;
-    }
-
     @Override
     public boolean isClicked(Point2D point2D) {
+        Point2D senderLocation = Diagram.getActorLocation(sender);
+        Point2D receiverLocation = Diagram.getReceiverLocation(receiver);
+        Point2D messageLocation = Diagram.getMessageLocation(this);
+
+
         double clickX = point2D.getX();
         double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX();
-        double startY = this.getCoordinate().getY();
-        double endX = startX + this.getWidth();
-        double endY = startY + height;
+        double startX = senderLocation.getX();
+        double startY = messageLocation.getY() - HEIGHT/2;
+        double endX = receiverLocation.getX();
+        double endY = messageLocation.getY() + HEIGHT/2;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

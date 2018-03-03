@@ -5,7 +5,7 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Party{
+public abstract class Party implements Clickable{
 
     private String instanceName;
     private String className;
@@ -146,4 +146,7 @@ public class Party{
     public void setLabel(PartyLabel label) {
         this.label = label;
     }
+
+    @Override
+    public abstract boolean isClicked(Point2D point2D);
 }
