@@ -35,10 +35,8 @@ public class Actor extends Party implements Clickable {
         double clickY = point2D.getY();
         double startX = this.getCoordinate().getX();
         double startY = this.getCoordinate().getY();
-        double endX = startX + this.width;
-        double endY = startY + this.height;
-        if ((clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY))
-            return true;
-        return false;
+        double endX = startX + width;
+        double endY = startY + height;
+        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

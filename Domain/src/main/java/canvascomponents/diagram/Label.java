@@ -46,8 +46,6 @@ public class Label implements Clickable {
         double startY = this.getCoordinate().getY();
         double endX = startX + width;
         double endY = startY + height;
-        if ((clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY))
-            return true;
-        return false;
+        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

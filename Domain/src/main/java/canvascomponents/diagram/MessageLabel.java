@@ -13,7 +13,6 @@ public class MessageLabel extends Label {
     }
 
     public static boolean isValidMessageLabel(String label){
-        return false;
-        //to be implemented
+        return Character.isUpperCase(label.charAt(0));
     }
 }

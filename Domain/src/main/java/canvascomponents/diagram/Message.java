@@ -13,7 +13,7 @@ public class Message implements Clickable{
     private Actor sender;
     private Point2D coordinate;
     private int width;
-    private int height;
+    public static final int height = 50;
 
     public Point2D getCoordinate() {
         return coordinate;
@@ -25,14 +25,6 @@ public class Message implements Clickable{
 
     public void setWidth(int width) {
         this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public Message(){
@@ -93,9 +85,7 @@ public class Message implements Clickable{
         double startX = this.getCoordinate().getX();
         double startY = this.getCoordinate().getY();
         double endX = startX + this.getWidth();
-        double endY = startY + this.getHeight();
-        if ((clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY))
-            return true;
-        return false;
+        double endY = startY + height;
+        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }
