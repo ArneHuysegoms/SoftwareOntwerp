@@ -3,8 +3,10 @@ package canvascomponents.diagram;
 import canvascomponents.Clickable;
 
 import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class Diagram{
 
@@ -12,8 +14,7 @@ public abstract class Diagram{
     private boolean validLabel;
     private boolean messageMode;
 
-    private Map<Party, Point2D> partiesWithCoordinates;
-    private Map<Message, Point2D> messagesWithCoordinates;
+    private List<Party> parties;
 
     private String labelContainer = "";
 
@@ -21,32 +22,24 @@ public abstract class Diagram{
 
     private Message firstMessage;
 
-    public Diagram(){
-        this(new HashMap<>(), new HashMap<>());
+    public Diagram() {
+        this(null, null);
     }
 
-    public Diagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates){
-        this.setPartiesWithCoordinates(partiesWithCoordinates);
-        this.setMessagesWithCoordinates(messagesWithCoordinates);
-        this.setFirstMessage(this.getFirstMessageFromStack(messagesWithCoordinates));
+    public Diagram(List<Party> parties, Message firstMessage){
+        this(parties, firstMessage, null);
     }
 
-    public Diagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, null);
+    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
+        this(parties, firstMessage, selectedElement, "");
     }
 
-    public Diagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, selectedElement, "");
+    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
+        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
     }
 
-    public Diagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, selectedElement, labelContainer, false, false, false);
-    }
-
-    public Diagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement,
-                   String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
-        this.setMessagesWithCoordinates(messagesWithCoordinates);
-        this.setPartiesWithCoordinates(partiesWithCoordinates);
+    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
+        this.setParties(parties);
         this.labelContainer = labelContainer;
         this.setSelectedElement(selectedElement);
         this.setFirstMessage(firstMessage);
@@ -77,20 +70,25 @@ public abstract class Diagram{
         return firstMessage;
     }
 
-    private void setPartiesWithCoordinates(Map<Party, Point2D> partiesWithCoordinates){
-        this.partiesWithCoordinates = partiesWithCoordinates;
+    public List<Party> getParties() {
+        return parties;
     }
 
-    public Map<Party, Point2D> getPartiesWithCoordinates(){
-        return this.partiesWithCoordinates;
+    private void setParties(List<Party> parties) {
+        if(parties != null ) {
+            this.parties = parties;
+        }
+        else{
+            this.parties = new ArrayList<>();
+        }
     }
 
-    private void setMessagesWithCoordinates(Map<Message, Point2D> messagesWithCoordinates){
-        this.messagesWithCoordinates = messagesWithCoordinates;
+    public void addParty(Party party){
+        this.getParties().add(party);
     }
 
-    public Map<Message, Point2D> getMessagesWithCoordinates(){
-        return this.messagesWithCoordinates;
+    public void removeParty(Party party){
+        this.getParties().remove(party);
     }
 
     private void setLabelMode(boolean labelMode){
@@ -137,17 +135,6 @@ public abstract class Diagram{
     //  utlities
     ////////////////////////////////////
 
-    private Message getFirstMessageFromStack(Map<Message, Point2D> messagesWithCoordinates){
-        Message first = null;
-        double yLocation = -999999999;
-        for(Map.Entry<Message, Point2D> entry : messagesWithCoordinates.entrySet()){
-            if(entry.getValue().getY() < yLocation){
-                first = entry.getKey();
-                yLocation = entry.getValue().getY();
-            }
-        }
-        return first;
-    }
 
     private void appendCharToLabel(char newChar){
         if(this.labelContainer.isEmpty()){
@@ -157,6 +144,32 @@ public abstract class Diagram{
     }
 
     private void selectClickableElement(Point2D point2D){
+        List<Clickable> possibleElements = new ArrayList<>();
+        for(Party party : this.getParties()){
+            if(party.isClicked(point2D)){
+                possibleElements.add(party);
+            }
+            if(party.getLabel().isClicked(point2D)){
+                possibleElements.add(party.getLabel());
+            }
+        }
+        Message message = this.getFirstMessage();
+        while(message != null) {
+            if (message.isClicked(point2D)) {
+                possibleElements.add(message);
+                message = message.getNextMessage();
+            }
+        }
+        if(possibleElements.size() == 1){
+            this.setSelectedElement(possibleElements.get(0));
+        }
+        else{
+            findMostLikelyElement(possibleElements, point2D);
+        }
+    }
+
+    private void findMostLikelyElement(List<Clickable> possibleElements, Point2D point2D){
+        double distance = 99999999;
 
     }
 
