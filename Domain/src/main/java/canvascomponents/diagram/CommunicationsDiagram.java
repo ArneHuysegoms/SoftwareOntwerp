@@ -4,33 +4,30 @@ import canvascomponents.Clickable;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommunicationsDiagram extends Diagram {
 
     public CommunicationsDiagram(){
-        this(new HashMap<>(), new HashMap<>());
+        this(null, null);
     }
 
-    public CommunicationsDiagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates){
-        super(partiesWithCoordinates, messagesWithCoordinates);
+    public CommunicationsDiagram(List<Party> parties, Message firstMessage){
+        this(parties, firstMessage, null);
     }
 
-    public CommunicationsDiagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, null);
+    public CommunicationsDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
+        this(parties, firstMessage, selectedElement, "");
     }
 
-    public CommunicationsDiagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, selectedElement, "");
+    public CommunicationsDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
+        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
     }
 
-    public CommunicationsDiagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(partiesWithCoordinates, messagesWithCoordinates, firstMessage, selectedElement, labelContainer, false, false, false);
-    }
-
-    public CommunicationsDiagram(Map<Party, Point2D> partiesWithCoordinates, Map<Message, Point2D> messagesWithCoordinates, Message firstMessage, Clickable selectedElement,
+    public CommunicationsDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement,
                            String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
-        super(partiesWithCoordinates, messagesWithCoordinates, firstMessage, selectedElement, labelContainer, labelMode, validLabel, messageMode);
+        super(parties, firstMessage, selectedElement, labelContainer, labelMode, validLabel, messageMode);
     }
 
     @Override

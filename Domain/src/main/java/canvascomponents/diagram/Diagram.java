@@ -10,17 +10,30 @@ import java.util.Set;
 
 public abstract class Diagram{
 
-    private boolean labelMode;
-    private boolean validLabel;
+    /**********************************************************************************************************/
+
+    ////////////////////////////////////
+    //  variables
+    ////////////////////////////////////
+
     private boolean messageMode;
 
     private List<Party> parties;
 
-    private String labelContainer = "";
-
     private Clickable selectedElement;
 
     private Message firstMessage;
+
+    private boolean labelMode;
+    private boolean validLabel;
+    private String labelContainer = "";
+    private Label editableLable;
+
+    /**********************************************************************************************************/
+
+    ////////////////////////////////////
+    //  constructors
+    ////////////////////////////////////
 
     public Diagram() {
         this(null, null);
@@ -122,11 +135,58 @@ public abstract class Diagram{
     ////////////////////////////////////
 
     public void addNewParty(Point2D point2D){
-
+        int posSeq = findNextPositionInSequenceDiagram(this.getParties());
+        Point2D finalPosition = null;
+        Label label;
+        if(isValidPartyLocation(point2D)){
+            finalPosition = getValidLocation(point2D);
+            try {
+                label = new PartyLabel("I", new Point2D.Double(point2D.getX() -80, point2D.getY() + 51));
+                Object object = new Object(posSeq, finalPosition, label);
+                startEditingLable(label);
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public void changePartyType(Point2D point2D){
-        
+        this.setSelectedElement(selectClickableElement(point2D));
+        if(this.getSelectedElement() instanceof Party){
+            if(this.getSelectedElement() instanceof Object){
+                Object o = (Object) this.getSelectedElement();
+                Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(),o.getLabel());
+                this.updateMessagesForChangedParty(newActor);
+                this.removeParty(o);
+                this.addParty(newActor);
+            }
+            else{
+                Actor a = (Actor) this.getSelectedElement();
+                Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(),a.getCoordinate(), a.getLabel());
+                this.updateMessagesForChangedParty(newObject);
+                this.removeParty(a);
+                this.addParty(newObject);
+            }
+        }
+    }
+
+    public void changePartyPosition(Point2D newPosition){
+        if(this.getSelectedElement() instanceof Actor){
+            Actor a = (Actor) this.getSelectedElement();
+            a.setCoordinate(newPosition);
+        }
+    }
+
+    public Clickable findSelectedElement(Point2D point2D){
+        if(selectedElement instanceof Label){
+            this.setLabelMode(false);
+            labelContainer = "";
+            editableLable = null;
+        }
+        Clickable selected = selectClickableElement(point2D);
+        this.setSelectedElement(selected);
+        return selected;
     }
 
     /**********************************************************************************************************/
@@ -135,15 +195,28 @@ public abstract class Diagram{
     //  utlities
     ////////////////////////////////////
 
+    private void startEditingLable(Label label){
+        this.setSelectedElement(label);
+        this.setLabelMode(true);
+        this.setValidLabel(false);
+        this.editableLable = label;
+    }
+
 
     private void appendCharToLabel(char newChar){
         if(this.labelContainer.isEmpty()){
             this.labelContainer = "";
         }
         this.labelContainer += newChar;
+        String label = labelContainer + "|";
+        boolean valid = editableLable.setLabel(label);
+        if(valid){
+            this.setValidLabel(true);
+            this.setLabelMode(false);
+        }
     }
 
-    private void selectClickableElement(Point2D point2D){
+    private Clickable selectClickableElement(Point2D point2D){
         List<Clickable> possibleElements = new ArrayList<>();
         for(Party party : this.getParties()){
             if(party.isClicked(point2D)){
@@ -161,16 +234,46 @@ public abstract class Diagram{
             }
         }
         if(possibleElements.size() == 1){
-            this.setSelectedElement(possibleElements.get(0));
+           return possibleElements.get(0);
         }
         else{
-            findMostLikelyElement(possibleElements, point2D);
+            return findMostLikelyElement(possibleElements, point2D);
         }
     }
 
-    private void findMostLikelyElement(List<Clickable> possibleElements, Point2D point2D){
-        double distance = 99999999;
+    private Clickable findMostLikelyElement(List<Clickable> possibleElements, Point2D point2D){
+        Clickable selected = possibleElements.get(0);
+        double dist = possibleElements.get(0).getDistance(point2D);
+        for(Clickable c : possibleElements){
+            if(c.getDistance(point2D) < dist){
+                dist = c.getDistance(point2D);
+                selected = c;
+            }
+        }
+        return selected;
+    }
 
+    private int findNextPositionInSequenceDiagram(List<Party> parties){
+        int pos = 0;
+        for(Party party : parties){
+            if(party.getPositionInSequenceDiagram() > pos){
+                pos = party.getPositionInSequenceDiagram();
+            }
+        }
+        return pos++;
+    }
+
+    private void updateMessagesForChangedParty(Party party){
+        Message message = firstMessage;
+        while(message != null){
+            if(message.getReceiver().equals(party)){
+                message.setReceiver(party);
+            }
+            if(message.getSender().equals(party)){
+                message.setSender(party);
+            }
+            message = message.getNextMessage();
+        }
     }
 
     /**********************************************************************************************************/
