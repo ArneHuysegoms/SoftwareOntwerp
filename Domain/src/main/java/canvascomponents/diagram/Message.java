@@ -88,4 +88,9 @@ public class Message implements Clickable{
         double endY = messageLocation + HEIGHT/2;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
+
+    @Override
+    public double getDistance(Point2D point2D) {
+        return Math.abs(point2D.getY() - yLocation);
+    }
 }

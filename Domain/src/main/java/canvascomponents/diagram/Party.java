@@ -147,4 +147,6 @@ public abstract class Party implements Clickable{
 
     @Override
     public abstract boolean isClicked(Point2D point2D);
+
+
 }
