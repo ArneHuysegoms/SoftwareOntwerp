@@ -12,6 +12,8 @@ public class Message implements Clickable{
     private Actor receiver;
     private Actor sender;
 
+    private int yLocation;
+
     public static final int HEIGHT = 16;
 
 
@@ -19,11 +21,21 @@ public class Message implements Clickable{
 
     }
 
-    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender) throws DomainException{
+    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender, int yLocation) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
         this.setSender(sender);
+        this.setyLocation(yLocation);
+    }
+
+
+    public int getyLocation() {
+        return yLocation;
+    }
+
+    private void setyLocation(int yLocation) {
+        this.yLocation = yLocation;
     }
 
     public Message getNextMessage() {
@@ -63,17 +75,17 @@ public class Message implements Clickable{
 
     @Override
     public boolean isClicked(Point2D point2D) {
-        Point2D senderLocation = Diagram.getActorLocation(sender);
-        Point2D receiverLocation = Diagram.getReceiverLocation(receiver);
-        Point2D messageLocation = Diagram.getMessageLocation(this);
+        Point2D senderLocation = getSender().getCoordinate();
+        Point2D receiverLocation = getReceiver().getCoordinate();
+        int messageLocation = getyLocation();
 
 
         double clickX = point2D.getX();
         double clickY = point2D.getY();
         double startX = senderLocation.getX();
-        double startY = messageLocation.getY() - HEIGHT/2;
+        double startY = messageLocation - HEIGHT/2;
         double endX = receiverLocation.getX();
-        double endY = messageLocation.getY() + HEIGHT/2;
+        double endY = messageLocation + HEIGHT/2;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }

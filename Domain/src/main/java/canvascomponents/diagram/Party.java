@@ -66,10 +66,8 @@ public abstract class Party implements Clickable{
      */
     public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
         this.setLabel(label);
-        //this.setInstanceName(instanceName);
-        //this.setClassName(className);
-        this.setInstanceName(label);
-        this.setClassName(label);
+        this.setInstanceName(instanceName);
+        this.setClassName(className);
         this.setPositionInSequenceDiagram(positionInSequenceDiagram);
         this.setCoordinate(coordinate);
     }

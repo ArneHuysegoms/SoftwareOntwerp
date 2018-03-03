@@ -5,20 +5,20 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Label implements Clickable {
+public abstract class Label implements Clickable {
 
     private Point2D coordinate;
-    public static final int width = 240;
-    public static final int height = 50;
+
+    public static final int width = 45;
+    public static final int height = 14;
 
     public Label(){
 
     }
 
-    public Label(Point2D coordinate) {
-        this.setCoordinate(coordinate);
+    public Label(Point2D coordinate){
+       this.setCoordinate(coordinate);
     }
-
 
     public Point2D getCoordinate() {
         return coordinate;
