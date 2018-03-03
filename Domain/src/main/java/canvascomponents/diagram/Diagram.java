@@ -136,7 +136,7 @@ public abstract class Diagram{
     public void addNewParty(Point2D point2D){
         int posSeq = findNextPositionInSequenceDiagram(this.getParties());
         Point2D finalPosition = null;
-        Label label;
+        PartyLabel label;
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidLocation(point2D);
             try {
@@ -181,7 +181,7 @@ public abstract class Diagram{
             Point2D startLocation = startLifeline.getStartloction();
             if(checkCallStack(sender)) {
                 try {
-                    Message previous = findPreviousMessage(startLocation.getY());
+                    Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
                     Message next;
                     if(previous == null) {
                         next = this.getFirstMessage();
@@ -341,7 +341,7 @@ public abstract class Diagram{
                 possibleElements.add(party.getLabel());
             }
             if(isLifeLine(point2D, party)){
-                return new Lifeline(party);
+                return new Lifeline(party, point2D);
             }
         }
         Message message = this.getFirstMessage();
