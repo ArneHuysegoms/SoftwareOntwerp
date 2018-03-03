@@ -13,6 +13,10 @@ public class Object extends Party{
         super();
     }
 
+    public Object( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
+        this("", "", positionInSequenceDiagram, point2D, label);
+    }
+
     public Object(String instanceName, String className, int positionInSequenceDiagram, Point2D positionInCommunicationsDiagram, PartyLabel label) throws DomainException {
         super(instanceName, className, positionInSequenceDiagram, positionInCommunicationsDiagram, label);
     }

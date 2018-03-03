@@ -16,6 +16,10 @@ public class Actor extends Party{
         super();
     }
 
+    public Actor( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
+        this("", "", positionInSequenceDiagram, point2D, null,label);
+    }
+
 
     /**
      * @param instanceName
@@ -35,6 +39,8 @@ public class Actor extends Party{
         super(instanceName, className, positionInSequenceDiagram, coordinate, label);
         this.setLifeline(lifeline);
     }
+
+
 
     public Lifeline getLifeline() {
         return lifeline;
