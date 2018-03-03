@@ -5,10 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Domain/Domain.iml" filepath="$PROJECT_DIR$/Domain/Domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/Parent.iml" filepath="$PROJECT_DIR$/Parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Domain/src/main/main.iml" filepath="$PROJECT_DIR$/Domain/src/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UI/src/main/main1.iml" filepath="$PROJECT_DIR$/UI/src/main/main1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Domain/src/test/test.iml" filepath="$PROJECT_DIR$/Domain/src/test/test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UI/src/test/test1.iml" filepath="$PROJECT_DIR$/UI/src/test/test1.iml" />
     </modules>
   </component>
 </project>

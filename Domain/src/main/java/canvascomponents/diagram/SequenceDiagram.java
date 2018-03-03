@@ -1,19 +1,50 @@
 package canvascomponents.diagram;
 
+import canvascomponents.Clickable;
+
 import java.awt.geom.Point2D;
 import java.util.List;
 
 public class SequenceDiagram extends Diagram {
 
+    private static final int MINY = 50;
+    private static final int MAXY = 100;
+
     public SequenceDiagram(){
-        super();
+        this(null, null);
     }
 
-    public SequenceDiagram(List<Party> parties){
-        super(parties);
+    public SequenceDiagram(List<Party> parties, Message firstMessage){
+        this(parties, firstMessage, null);
     }
 
-    public SequenceDiagram(List<Party> parties, Point2D point2D){
-        super(parties, point2D);
+    public SequenceDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
+        this(parties, firstMessage, selectedElement, "");
     }
+
+    public SequenceDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
+        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
+    }
+
+    public SequenceDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement,
+                                 String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
+        super(parties, firstMessage, selectedElement, labelContainer, labelMode, validLabel, messageMode);
+    }
+
+    @Override
+    public boolean isValidPartyLocation(Point2D point2D) {
+        return point2D.getY() >= MINY && point2D.getY() <= MAXY;
+    }
+
+    @Override
+    public Point2D getValidLocation(Point2D point2D) {
+        return new Point2D.Double(point2D.getX(), MINY);
+    }
+
+    @Override
+    boolean isLifeLine(Point2D location, Party party) {
+        return (location.getY() > MAXY) && (location.getX() >= party.getCoordinate().getX() - 10 && location.getX() <= party.getCoordinate().getX() + 10);
+    }
+
+
 }
