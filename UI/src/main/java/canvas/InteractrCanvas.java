@@ -13,6 +13,8 @@ public class InteractrCanvas extends CanvasWindow{
      * @param title Window title
      */
 
+    //private CanvasMakeUp canvasMakeUp;
+    //private FigureConverter figureConverter;
     private KeyEventFactory keyFactory;
     private MouseEventFactory mouseFactory;
 
@@ -20,10 +22,13 @@ public class InteractrCanvas extends CanvasWindow{
         super(title);
         keyFactory = new KeyEventFactory();
         mouseFactory = new MouseEventFactory();
+        //canvasMakeUp = new CanvasMakeUp();
+        //figureConverter = new FigureConverter();
     }
 
     public void paint(Graphics g){
-
+        //Diagram d = canvasMakeUp.getActiveDiagram();
+        //figureConverter.draw(g,d);
     }
 
     @Override
