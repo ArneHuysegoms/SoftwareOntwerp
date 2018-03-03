@@ -3,7 +3,7 @@ package uievents;
 import java.awt.geom.Point2D;
 
 public class MouseEvent {
-    MouseEventType mouseEventType;
+    private MouseEventType mouseEventType;
     private Point2D point;
 
     public MouseEvent(MouseEventType mouseEventType, Point2D point){

@@ -25,4 +25,11 @@ public class KeyEvent {
     private void setKeyChar(char keyChar){
         this.keyChar = keyChar;
     }
+
+    public boolean equals(KeyEvent k) {
+        if (this.getKeyEventType().equals(k.getKeyEventType()) && this.getKeyChar() == k.getKeyChar()) {
+            return true;
+        }
+            return false;
+    }
 }
