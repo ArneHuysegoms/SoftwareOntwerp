@@ -13,4 +13,9 @@ public class ResultMessage extends Message {
      public ResultMessage(Message message, MessageLabel label, Actor receiver, Actor sender, int yLocation) throws DomainException {
          super(message, label, receiver, sender, yLocation);
      }
+
+    @Override
+    public boolean isClicked(Point2D point2D) {
+        return false;
+    }
 }

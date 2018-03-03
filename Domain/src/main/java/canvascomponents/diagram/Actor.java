@@ -6,8 +6,6 @@ import exceptions.DomainException;
 import java.awt.geom.Point2D;
 
 public class Actor extends Party{
-
-    private Lifeline lifeline;
     public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
 
@@ -17,7 +15,7 @@ public class Actor extends Party{
     }
 
     public Actor( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
-        this("", "", positionInSequenceDiagram, point2D, null,label);
+        this("", "", positionInSequenceDiagram, point2D, label);
     }
 
 
@@ -35,19 +33,8 @@ public class Actor extends Party{
      * @post  The new instanceName of this instance is equal to the given instanceName
      *        | new.getInstceName = instanceName
      */
-    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Lifeline lifeline, PartyLabel label) throws DomainException{
+    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
         super(instanceName, className, positionInSequenceDiagram, coordinate, label);
-        this.setLifeline(lifeline);
-    }
-
-
-
-    public Lifeline getLifeline() {
-        return lifeline;
-    }
-
-    private void setLifeline(Lifeline lifeline) {
-        this.lifeline = lifeline;
     }
 
     @Override
