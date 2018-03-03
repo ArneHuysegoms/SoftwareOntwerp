@@ -83,7 +83,6 @@ public abstract class Party implements Clickable{
         return coordinate;
     }
 
-
     /**
      * Return the instance name of this party
      */
@@ -105,22 +104,50 @@ public abstract class Party implements Clickable{
         this.instanceName = label.getLabel().split("//:")[0];
     }
 
+    /**
+     * @return returns the classname of this Party
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * @param className
+     *        The className to set the party to
+     * @post  The new className of this party is equal to the given className
+     *        | new.getClassName == className
+     */
     private void setClassName(String className) {
         this.className = className;
     }
 
+
+    /**
+     * @param label
+     *        The full label that belongs tot the party
+     * @post  The new className of this party is equal to the given className
+     *        | new.getClassName == className
+     */
     private void setClassName(PartyLabel label) {
         this.className = label.getLabel().split("//:")[1];
     }
 
+    /**
+     * @return Returns the postion of the party in the sequence diagram
+     */
     public int getPositionInSequenceDiagram() {
         return positionInSequenceDiagram;
     }
 
+
+    /**
+     * @param positionInSequenceDiagram
+     *        the position in the sequence diagram
+     * @throws DomainException
+     *       the postion of the party in sequenceDiagram must 0 or greater
+     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
+     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
+     */
     private void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException{
         if(positionInSequenceDiagram < 0){
             throw new DomainException("Position of actor in sequenceDiagram must 0 or greater");
@@ -128,27 +155,57 @@ public abstract class Party implements Clickable{
         this.positionInSequenceDiagram = positionInSequenceDiagram;
     }
 
+
+    /**
+     * @param coordinate
+     *        The coordinates of the left upmost point of this actor
+     * @post  The new coordinate of this party is equal to the given coordinate
+     *        | new.getCoordinate == coordinate
+     */
     public void setCoordinate(Point2D coordinate) {
         this.coordinate = coordinate;
     }
 
+
+    /**
+     * @return  returns the full label
+     */
     public String getFullLabel(){
         return this.getInstanceName() + ": " + this.getClassName();
     }
 
+
+    /**
+     * @param newLabel the label to edit to
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     */
     public void editLabel(PartyLabel newLabel){
         this.label = newLabel;
     }
 
-
+    /**
+     * @return returns het label of this party
+     */
     public Label getLabel() {
         return label;
     }
 
+    /**
+     * @param label the label to edit to
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     */
     public void setLabel(PartyLabel label) {
         this.label = label;
     }
 
+    /**
+     * @param point2D
+     *        The coordinates of the mouse where the user clicked
+     * @return
+     *        True if the clicked coordinates are within the coordinates of the image of this actor
+     */
     @Override
     public abstract boolean isClicked(Point2D point2D);
 
