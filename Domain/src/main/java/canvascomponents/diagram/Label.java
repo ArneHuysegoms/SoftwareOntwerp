@@ -2,7 +2,8 @@ package canvascomponents.diagram;
 
 import java.awt.geom.Point2D;
 
-public class Label {
+public class Label
+
     private String label;
     private Point2D coordinate;
 
