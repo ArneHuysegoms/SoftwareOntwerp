@@ -37,6 +37,10 @@ public abstract class Party implements Clickable{
 
     }
 
+    public Party( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
+        this("", "", positionInSequenceDiagram, point2D, label);
+    }
+
     /**
      * /**
      * @param instanceName
