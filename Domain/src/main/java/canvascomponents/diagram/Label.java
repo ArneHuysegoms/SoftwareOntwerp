@@ -1,41 +1,31 @@
 package canvascomponents.diagram;
 
 import canvascomponents.Clickable;
+import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Label implements Clickable {
-    private String label;
+public abstract class Label implements Clickable {
+
     private Point2D coordinate;
-    public static final int width = 240;
-    public static final int height = 50;
+
+    public static final int width = 45;
+    public static final int height = 14;
 
     public Label(){
 
     }
 
-    public Label(String label, Point2D coordinate){
-        this.setLabel(label);
-        this.setCoordinate(coordinate);
-    }
-    public String getLabel() {
-        return label;
+    public Label(Point2D coordinate){
+       this.setCoordinate(coordinate);
     }
 
     public Point2D getCoordinate() {
         return coordinate;
     }
 
-    private void setLabel(String label) {
-        this.label = label;
-    }
-
     private void setCoordinate(Point2D coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public void editLabel(String label){
-        this.setLabel(label);
     }
 
     @Override

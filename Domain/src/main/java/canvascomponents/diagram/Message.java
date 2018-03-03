@@ -8,35 +8,34 @@ import java.awt.geom.Point2D;
 public class Message implements Clickable{
 
     private Message nextMessage;
-    private String label;
+    private MessageLabel label;
     private Actor receiver;
     private Actor sender;
-    private Point2D coordinate;
-    private int width;
-    public static final int height = 50;
 
-    public Point2D getCoordinate() {
-        return coordinate;
-    }
+    private int yLocation;
 
-    public int getWidth() {
-        return width;
-    }
+    public static final int HEIGHT = 16;
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
 
     public Message(){
 
     }
 
-    public Message(Message nextMessage, String label, Actor receiver, Actor sender, Point2D coordinate) throws DomainException{
+    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender, int yLocation) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
         this.setSender(sender);
-        this.setCoordinate(coordinate);
+        this.setyLocation(yLocation);
+    }
+
+
+    public int getyLocation() {
+        return yLocation;
+    }
+
+    private void setyLocation(int yLocation) {
+        this.yLocation = yLocation;
     }
 
     public Message getNextMessage() {
@@ -47,11 +46,11 @@ public class Message implements Clickable{
         this.nextMessage = nextMessage;
     }
 
-    public String getLabel() {
+    public MessageLabel getLabel() {
         return label;
     }
 
-    private void setLabel(String label) {
+    private void setLabel(MessageLabel label) {
         this.label = label;
     }
 
@@ -74,18 +73,19 @@ public class Message implements Clickable{
         this.sender = sender;
     }
 
-    private void setCoordinate(Point2D coordinate){
-        this.coordinate = coordinate;
-    }
-
     @Override
     public boolean isClicked(Point2D point2D) {
+        Point2D senderLocation = getSender().getCoordinate();
+        Point2D receiverLocation = getReceiver().getCoordinate();
+        int messageLocation = getyLocation();
+
+
         double clickX = point2D.getX();
         double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX();
-        double startY = this.getCoordinate().getY();
-        double endX = startX + this.getWidth();
-        double endY = startY + height;
+        double startX = senderLocation.getX();
+        double startY = messageLocation - HEIGHT/2;
+        double endX = receiverLocation.getX();
+        double endY = messageLocation + HEIGHT/2;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }
