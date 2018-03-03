@@ -180,6 +180,7 @@ public abstract class Diagram{
 
     public Clickable findSelectedElement(Point2D point2D){
         if(selectedElement instanceof Label){
+            stopEditingLabel();
             this.setLabelMode(false);
             labelContainer = "";
             editableLable = null;
@@ -189,11 +190,79 @@ public abstract class Diagram{
         return selected;
     }
 
+    public void addCharToLabel(char newChar){
+        appendCharToLabel(newChar);
+    }
+
+    public void editLable(){
+        startEditingLable((Label) this.getSelectedElement());
+    }
+
+    public void stopEditingLabel(){
+        this.editableLable.setLabel(labelContainer);
+    }
+
+    public void deleteElement(){
+        if(this.selectedElement instanceof Party){
+            deleteParty((Party) this.selectedElement);
+        }
+        else if(this.selectedElement instanceof Message){
+            deleteMessage((Message) this.selectedElement);
+        }
+    }
+
     /**********************************************************************************************************/
 
     ////////////////////////////////////
     //  utlities
     ////////////////////////////////////
+
+    private void deleteParty(Party party){
+        rearrangeMessageTreeByParty(party);
+        this.removeParty(party);
+    }
+
+    private void deleteMessage(Message message){
+        Message iter = this.getFirstMessage();
+        Message previous;
+        while(! iter.getNextMessage().equals(message)){
+            iter = iter.getNextMessage();
+        }
+        previous = iter;
+        Message next = skipOverDependentMessages(previous, -1);
+        previous.setNextMessage(next);
+    }
+
+    private void rearrangeMessageTreeByParty(Party party){
+        Message message = getFirstMessage();
+        Message nextMessage;
+        while(message != null){
+            if(message.getSender().equals(party) || message.getReceiver().equals(party)){
+                nextMessage = skipOverDependentMessages(message, -1);
+                message.setNextMessage(nextMessage);
+                message = nextMessage;
+            }
+        }
+    }
+
+    private Message skipOverDependentMessages(Message message, int stack){
+        if(stack < 0 ){
+            message = message.getNextMessage();
+            if(message != null) {
+                if (message instanceof InvocationMessage) {
+                    skipOverDependentMessages(message, stack--);
+                } else if (message instanceof ResultMessage) {
+                    skipOverDependentMessages(message, stack++);
+                }
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return message;
+        }
+    }
 
     private void startEditingLable(Label label){
         this.setSelectedElement(label);
