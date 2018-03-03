@@ -1,12 +1,11 @@
 package canvascomponents.diagram;
 
 import canvascomponents.Clickable;
+import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class Diagram{
 
@@ -171,6 +170,38 @@ public abstract class Diagram{
         }
     }
 
+    public void addNewMessage(Point2D endlocation) throws IllegalStateException{
+        Party receiver = findReceiver(endlocation);
+        if(receiver == null){
+            throw new IllegalStateException("Other lifeline not found");
+        }
+        else {
+            Lifeline startLifeline = (Lifeline) this.getSelectedElement();
+            Party sender = startLifeline.getParty();
+            Point2D startLocation = startLifeline.getStartloction();
+            if(checkCallStack(sender)) {
+                try {
+                    Message previous = findPreviousMessage(startLocation.getY());
+                    Message next;
+                    if(previous == null) {
+                        next = this.getFirstMessage();
+                    }
+                    else {
+                        next = previous.getNextMessage();
+                    }
+                    Message resultMessage = new ResultMessage(next, new MessageLabel(), receiver, sender,  new Double(startLocation.getY() - 7).intValue() );
+                    MessageLabel messageLabel = new MessageLabel();
+                    Message invocation = new InvocationMessage(resultMessage, messageLabel, sender, receiver, new Double(startLocation.getY() + 7).intValue());
+                    previous.setNextMessage(invocation);
+                    startEditingLable(messageLabel);
+                }
+                catch (DomainException exc){
+                    System.out.println(exc.getMessage());
+                }
+            }
+        }
+    }
+
     public void changePartyPosition(Point2D newPosition){
         if(this.getSelectedElement() instanceof Actor){
             Actor a = (Actor) this.getSelectedElement();
@@ -214,8 +245,17 @@ public abstract class Diagram{
     /**********************************************************************************************************/
 
     ////////////////////////////////////
-    //  utlities
+    //  utilities
     ////////////////////////////////////
+
+    private Party findReceiver(Point2D endlocation){
+        for(Party party : parties){
+            if(isLifeLine(endlocation, party)){
+                return party;
+            }
+        }
+        return null;
+    }
 
     private void deleteParty(Party party){
         rearrangeMessageTreeByParty(party);
@@ -262,6 +302,12 @@ public abstract class Diagram{
         else{
             return message;
         }
+        return null;
+    }
+
+    private boolean checkCallStack(Party party){
+        Message message = getFirstMessage();
+        return party.equals(message.getSender());
     }
 
     private void startEditingLable(Label label){
@@ -293,6 +339,9 @@ public abstract class Diagram{
             }
             if(party.getLabel().isClicked(point2D)){
                 possibleElements.add(party.getLabel());
+            }
+            if(isLifeLine(point2D, party)){
+                return new Lifeline(party);
             }
         }
         Message message = this.getFirstMessage();
@@ -345,6 +394,23 @@ public abstract class Diagram{
         }
     }
 
+    private Message findPreviousMessage(int yLocation){
+        Message message = this.getFirstMessage();
+        if(message.getyLocation() > yLocation){
+            return null;
+        }
+        Message next;
+        while(message.getyLocation() < yLocation){
+            next = message.getNextMessage();
+            if(next != null){
+                if(next.getyLocation() > yLocation){
+                    return next;
+                }
+            }
+        }
+        return null;
+    }
+
     /**********************************************************************************************************/
 
     ////////////////////////////////////
@@ -354,4 +420,42 @@ public abstract class Diagram{
     public abstract boolean isValidPartyLocation(Point2D point2D);
 
     public abstract Point2D getValidLocation(Point2D point2D);
+
+    abstract boolean isLifeLine(Point2D location, Party party);
+
+    /**********************************************************************************************************/
+
+    ////////////////////////////////////
+    //  anonymous class
+    ////////////////////////////////////
+
+    class Lifeline implements Clickable{
+
+        Party party;
+        Point2D startloction;
+
+        private Lifeline(Party party, Point2D startLocation){
+            this.party = party;
+            this.startloction = startLocation;
+        }
+
+        private Party getParty(){
+            return this.party;
+        }
+
+        private Point2D getStartloction(){
+            return this.startloction;
+        }
+
+        @Override
+        public boolean isClicked(Point2D point2D) {
+            return false;
+        }
+
+        @Override
+        public double getDistance(Point2D point2D) {
+            return 0;
+        }
+    }
+
 }

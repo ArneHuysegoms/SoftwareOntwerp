@@ -3,9 +3,7 @@ package canvascomponents.diagram;
 import canvascomponents.Clickable;
 
 import java.awt.geom.Point2D;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SequenceDiagram extends Diagram {
 
@@ -42,4 +40,11 @@ public class SequenceDiagram extends Diagram {
     public Point2D getValidLocation(Point2D point2D) {
         return new Point2D.Double(point2D.getX(), MINY);
     }
+
+    @Override
+    boolean isLifeLine(Point2D location, Party party) {
+        return (location.getY() > MAXY) && (location.getX() >= party.getCoordinate().getX() - 10 && location.getX() <= party.getCoordinate().getX() + 10);
+    }
+
+
 }

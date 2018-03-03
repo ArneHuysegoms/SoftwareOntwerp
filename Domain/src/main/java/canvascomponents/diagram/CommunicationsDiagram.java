@@ -39,4 +39,9 @@ public class CommunicationsDiagram extends Diagram {
     public Point2D getValidLocation(Point2D point2D) {
         return point2D;
     }
+
+    @Override
+    boolean isLifeLine(Point2D location, Party party) {
+        return false;
+    }
 }
