@@ -37,19 +37,54 @@ public class Party{
 
     }
 
+    /**
+     * /**
+     * @param instanceName
+     *        The instance name for this actor
+     * @param className
+     *        The class name for this actor
+     * @param positionInSequenceDiagram
+     *        The position where this actor is located within the sequence diagram
+     * @param coordinate
+     *        The coordinates of the left upmost point of this actor
+     * @param label
+     *        The label belonging with this actor
+     * @throws DomainException
+     *         This Actor cannot have the given instanceName, className, positionInSequenceDiagram, coordinate or label
+     * @post  The new instanceName of this instance is equal to the given instanceName
+     *        | new.getInstanceName == instanceName;
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     * @post  The new className of this party is equal to the given className
+     *        | new.getClassName == className
+     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
+     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
+     * @post  The new coordinate of this party is equal to the given coordinate
+     *        | new.getCoordinate == coordinate
+     *
+     *
+     */
     public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
         this.setLabel(label);
-        this.setInstanceName(instanceName);
-        this.setClassName(className);
+        //this.setInstanceName(instanceName);
+        //this.setClassName(className);
+        this.setInstanceName(label);
+        this.setClassName(label);
         this.setPositionInSequenceDiagram(positionInSequenceDiagram);
         this.setCoordinate(coordinate);
     }
 
+    /**
+     * Return the left upmost coordinate of this party
+     */
     public Point2D getCoordinate() {
         return coordinate;
     }
 
 
+    /**
+     * Return the instance name of this party
+     */
     public String getInstanceName() {
         return instanceName;
     }
@@ -58,12 +93,26 @@ public class Party{
         this.instanceName = instanceName;
     }
 
+    /**
+     * @param label
+     *        The label belonging with this actor
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     */
+    private void setInstanceName(PartyLabel label){
+        this.instanceName = label.getLabel().split("//:")[0];
+    }
+
     public String getClassName() {
         return className;
     }
 
     private void setClassName(String className) {
         this.className = className;
+    }
+
+    private void setClassName(PartyLabel label) {
+        this.className = label.getLabel().split("//:")[1];
     }
 
     public int getPositionInSequenceDiagram() {

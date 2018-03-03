@@ -10,7 +10,7 @@ public class ResultMessage extends Message {
 
      }
 
-     public ResultMessage(Message message, String label, Actor receiver, Actor sender, Point2D coordinate) throws DomainException {
-         super(message, label, receiver, sender, coordinate);
+     public ResultMessage(Message message, MessageLabel label, Actor receiver, Actor sender, Point2D coordinate, int width) throws DomainException {
+         super(message, label, receiver, sender, coordinate, width);
      }
 }

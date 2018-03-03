@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 public class Message implements Clickable{
 
     private Message nextMessage;
-    private String label;
+    private MessageLabel label;
     private Actor receiver;
     private Actor sender;
     private Point2D coordinate;
@@ -31,12 +31,13 @@ public class Message implements Clickable{
 
     }
 
-    public Message(Message nextMessage, String label, Actor receiver, Actor sender, Point2D coordinate) throws DomainException{
+    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender, Point2D coordinate, int width) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
         this.setSender(sender);
         this.setCoordinate(coordinate);
+        this.setWidth(width);
     }
 
     public Message getNextMessage() {
@@ -47,11 +48,11 @@ public class Message implements Clickable{
         this.nextMessage = nextMessage;
     }
 
-    public String getLabel() {
+    public MessageLabel getLabel() {
         return label;
     }
 
-    private void setLabel(String label) {
+    private void setLabel(MessageLabel label) {
         this.label = label;
     }
 
