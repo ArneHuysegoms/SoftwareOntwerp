@@ -12,7 +12,7 @@ public class ResultMessage extends Message {
 
     /**
      * @param message
-     *        The next message on the callstack
+     *        The invcation message where this message belongs to
      * @param label
      *        The label belonging to this message
      * @param receiver

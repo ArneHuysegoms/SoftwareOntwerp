@@ -55,6 +55,12 @@ public class Actor extends Party{
      *        | new.getInstanceName = instanceName
      * @post  The new className of this instance is equal to the given instanceName
      *        | new.getInstanceName = instanceName
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
+     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
+     * @post  The new coordinate of this party is equal to the given coordinate
+     *        | new.getCoordinate == coordinate
      */
     public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
         super(instanceName, className, positionInSequenceDiagram, coordinate, label);

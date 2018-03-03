@@ -12,37 +12,41 @@ public abstract class Party implements Clickable{
     private int positionInSequenceDiagram;
     private Point2D coordinate;
     private PartyLabel label;
-    /*private int width;
-    private int height;
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-*/
 
 
     public Party(){
 
     }
 
+    /**
+     * @param positionInSequenceDiagram
+     *        The position where this actor is located within the sequence diagram
+     * @param point2D
+     *        The coordinates of the left upmost point of this actor
+     * @param label
+     *        The label belonging with this actor
+     * @throws DomainException
+     *         This Actor cannot have the given instanceName, className, positionInSequenceDiagram, coordinate or label
+     * @post  The new instanceName of this instance is equal to the given instanceName
+     *        | new.getInstanceName == instanceName;
+     * @post  The new label of this party is equal to the given label
+     *        | new.getLabel == label
+     * @post  The new className of this party is equal to the given className
+     *        | new.getClassName == className
+     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
+     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
+     * @post  The new coordinate of this party is equal to the given coordinate
+     *        | new.getCoordinate == coordinate
+     *
+     *
+     */
+
     public Party( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
         this("", "", positionInSequenceDiagram, point2D, label);
     }
 
     /**
-     * /**
+     *
      * @param instanceName
      *        The instance name for this actor
      * @param className
