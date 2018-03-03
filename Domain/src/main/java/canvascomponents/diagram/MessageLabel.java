@@ -31,4 +31,9 @@ public class MessageLabel extends Label {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    @Override
+    public double getDistance(Point2D point2D) {
+        return this.getCoordinate().distance(point2D);
+    }
 }

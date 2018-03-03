@@ -29,4 +29,9 @@ public class PartyLabel extends Label{
     public boolean isValidPartyLabel(String label){
         return label.contains(":.*[A-Z].*");
     }
+
+    @Override
+    public double getDistance(Point2D point2D) {
+        return this.getCoordinate().distance(point2D);
+    }
 }

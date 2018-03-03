@@ -26,4 +26,9 @@ public class Object extends Party{
         double endY = startY + HEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
+
+    @Override
+    public double getDistance(Point2D point2D) {
+        return this.getCoordinate().distance(point2D);
+    }
 }
