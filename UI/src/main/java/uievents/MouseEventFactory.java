@@ -4,6 +4,17 @@ import java.awt.geom.Point2D;
 
 public class MouseEventFactory {
 
+    /**
+     *
+     * @param id of MouseEvent
+     * @param clickCount of MouseEvent
+     * @param point of MouseEvent
+     * @return new MouseEvent with MouseEventType
+     *            | LEFTDOUBLECLICK if MOUSE_CLICKED and clickCount == 2
+     *            | LEFTCLICK if MOUSE_CLICKED and clickCount == 1
+     *            | DRAG if MOUSE_DRAGGED
+     *            | RELEASE if MOUSE_RELEASED
+     */
     public MouseEvent createMouseEvent(int id, int clickCount, Point2D point) {
         if (id == java.awt.event.MouseEvent.MOUSE_CLICKED && clickCount == 2) {
             return new MouseEvent(MouseEventType.LEFTDOUBLECLICK, point);

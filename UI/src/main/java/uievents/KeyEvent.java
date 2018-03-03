@@ -1,5 +1,8 @@
 package uievents;
 
+/**
+ * @author Arne
+ */
 public class KeyEvent {
     private KeyEventType keyEventType;
     private char keyChar;
@@ -8,26 +11,57 @@ public class KeyEvent {
         this.setKeyEventType(keyEventType);
     }
 
+    /**
+     *
+     * @param keyEventType
+     * @param keyChar
+     */
     public KeyEvent(KeyEventType keyEventType, char keyChar){
         this.setKeyEventType(keyEventType);
         this.setKeyChar(keyChar);
     }
 
+    /**
+     *
+     * @return keyEventType of KeyEvent
+     */
     public KeyEventType getKeyEventType() {
         return keyEventType;
     }
+
+    /**
+     *
+     * @return character of KeyEvent
+     */
     public char getKeyChar() {
         return keyChar;
     }
+
+    /**
+     *
+     * @param keyEventType
+     */
     private void setKeyEventType(KeyEventType keyEventType){
         this.keyEventType = keyEventType;
     }
+
+    /**
+     *
+     * @param keyChar
+     */
     private void setKeyChar(char keyChar){
         this.keyChar = keyChar;
     }
 
-    public boolean equals(KeyEvent k) {
-        if (this.getKeyEventType().equals(k.getKeyEventType()) && this.getKeyChar() == k.getKeyChar()) {
+    /**
+     *
+     * @param keyEvent
+     * @return boolean
+     *          | True if this == keyEvent
+     *          | False if this =/= keyEvent
+     */
+    public boolean equals(KeyEvent keyEvent) {
+        if (this.getKeyEventType().equals(keyEvent.getKeyEventType()) && this.getKeyChar() == keyEvent.getKeyChar()) {
             return true;
         }
             return false;
