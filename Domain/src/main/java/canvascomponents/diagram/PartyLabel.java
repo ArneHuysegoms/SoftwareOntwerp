@@ -25,9 +25,6 @@ public class PartyLabel extends Label{
      */
     public PartyLabel(String label, Point2D coordinate) throws DomainException {
         super(coordinate);
-        if (!isValidLabel(label)) {
-            throw new DomainException("a party label consists of instanceName:classname");
-        }
         this.setLabel(label);
     }
 
