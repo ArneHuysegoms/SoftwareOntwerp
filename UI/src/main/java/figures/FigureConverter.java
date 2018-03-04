@@ -1,14 +1,15 @@
 package figures;
 
 import canvascomponents.diagram.*;
-import figures.Drawer.ActorDrawer;
-import figures.Drawer.MessageDrawer;
+import figures.Drawer.*;
 import figures.diagramFigures.Figure;
 
 import java.awt.*;
 
 public class FigureConverter {
     private static FigureConverter instance = null;
+    //TODO stategy pattern?
+    //private Drawer drawingStrategy;
 
     private FigureConverter(){
 
@@ -32,8 +33,12 @@ public class FigureConverter {
     private void drawParties(Graphics graphics, Diagram diagram){
         for(Party p : diagram.getParties()){
             if(p instanceof Actor) {
-                ActorDrawer.getInstance().draw(graphics, p.getCoordinate(), null);
+                ActorDrawer.getInstance().draw(graphics, p.getCoordinate(), null, "");
             }
+            else{
+                BoxDrawer.getInstance().draw(graphics,p.getCoordinate(),null, "");
+            }
+            LabelDrawer.getInstance().draw(graphics,p.getLabel().getCoordinate(), null, "");
         }
     }
 
