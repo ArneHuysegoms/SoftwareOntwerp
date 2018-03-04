@@ -19,6 +19,10 @@ public class StickMan extends Figure {
     private Line legL;
     private Line legR;
 
+    public StickMan(Point2D point){
+        this((int)point.getX(), (int)point.getY());
+    }
+
     public StickMan(int x, int y){
         double bodyLen = 20;
         stickManCenter = new Point2D.Double(x, y);

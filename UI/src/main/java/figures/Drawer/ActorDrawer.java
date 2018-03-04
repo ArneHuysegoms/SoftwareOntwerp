@@ -1,6 +1,7 @@
 package figures.Drawer;
 
 import canvascomponents.diagram.Diagram;
+import figures.diagramFigures.StickMan;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -20,6 +21,7 @@ public class ActorDrawer implements Drawer{
 
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
-
+        StickMan s = new StickMan(start);
+        s.draw(graphics);
     }
 }
