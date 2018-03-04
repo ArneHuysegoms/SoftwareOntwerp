@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 public class Message implements Clickable{
 
     private Message nextMessage;
-    private MessageLabel label;
+    private Label label;
     private Party receiver;
     private Party sender;
 
@@ -45,7 +45,7 @@ public class Message implements Clickable{
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public Message(Message nextMessage, MessageLabel label, Party receiver, Party sender, int yLocation) throws DomainException{
+    public Message(Message nextMessage, Label label, Party receiver, Party sender, int yLocation) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
@@ -93,7 +93,7 @@ public class Message implements Clickable{
     /**
      * @return returns the MessageLabel belonging to this message
      */
-    public MessageLabel getLabel() {
+    public Label getLabel() {
         return label;
     }
 
@@ -103,7 +103,7 @@ public class Message implements Clickable{
      * @post  The new label of this message is equal to the given label
      *        | new.getLabel == label
      */
-    private void setLabel(MessageLabel label) {
+    private void setLabel(Label label) {
         this.label = label;
     }
 

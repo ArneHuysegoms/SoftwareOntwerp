@@ -34,7 +34,7 @@ public class InvocationMessage extends Message implements Clickable {
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public InvocationMessage(Message message, MessageLabel label, Party receiver, Party sender, int yLocation) throws DomainException{
+    public InvocationMessage(Message message, Label label, Party receiver, Party sender, int yLocation) throws DomainException{
         super(message, label, receiver, sender, yLocation);
     }
 }

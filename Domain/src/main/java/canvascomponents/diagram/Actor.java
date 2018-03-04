@@ -62,7 +62,7 @@ public class Actor extends Party{
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      */
-    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
+    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Label label) throws DomainException{
         super(instanceName, className, positionInSequenceDiagram, coordinate, label);
     }
 
