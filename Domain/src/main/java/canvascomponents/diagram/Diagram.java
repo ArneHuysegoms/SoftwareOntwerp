@@ -138,7 +138,7 @@ public abstract class Diagram{
         Point2D finalPosition = null;
         PartyLabel label;
         if(isValidPartyLocation(point2D)){
-            finalPosition = getValidLocation(point2D);
+            finalPosition = getValidPartyLocation(point2D);
             try {
                 label = new PartyLabel("I", new Point2D.Double(point2D.getX() -80, point2D.getY() + 51));
                 Object object = new Object(posSeq, finalPosition, label);
@@ -272,11 +272,35 @@ public abstract class Diagram{
         return null;
     }
 
+    /**
+     * Deletes a party from the diagram.
+     *
+     * @param party
+     */
     private void deleteParty(Party party){
         rearrangeMessageTreeByParty(party);
+        changeSequenceNumbers(party.getPositionInSequenceDiagram());
         this.removeParty(party);
     }
 
+    /**
+     * changes the position of the parties in the sequence diagram based on the provided removed position
+     *
+     * @param deletedPosition the position in the sequence diagram that was deleted
+     */
+    private void changeSequenceNumbers(int deletedPosition){
+        for(Party p : this.getParties()){
+            if(p.getPositionInSequenceDiagram() > deletedPosition){
+                //TODO //p.setPositionInSequenceDiagram(p.getPositionInSequenceDiagram() - 1);
+            }
+        }
+    }
+
+    /**
+     * deletes a message by adding the next independent message to the message preceding it, cutting out the dependent part of the message stack
+     *
+     * @param message the message to be deleted
+     */
     private void deleteMessage(Message message){
         Message iter = this.getFirstMessage();
         Message previous;
@@ -284,10 +308,14 @@ public abstract class Diagram{
             iter = iter.getNextMessage();
         }
         previous = iter;
-        Message next = skipOverDependentMessages(previous, -1);
+        Message next = skipOverDependentMessages(message, -1);
         previous.setNextMessage(next);
     }
 
+    /**
+     * Rearranges the message tree upon deletion of the provided party
+     * @param party the party that will be deleted
+     */
     private void rearrangeMessageTreeByParty(Party party){
         Message message = getFirstMessage();
         Message nextMessage;
@@ -300,6 +328,15 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * Finds the first message that doesn't directly or indirectly depend on the provided Message
+     *
+     * works recursively
+     *
+     * @param message the message of which the next not depending descendant message must be found
+     * @param stack integer counting the stack of the messages
+     * @return the first message that doesn't depend on the provided message
+     */
     private Message skipOverDependentMessages(Message message, int stack){
         if(stack < 0 ){
             message = message.getNextMessage();
@@ -315,16 +352,27 @@ public abstract class Diagram{
             }
         }
         else{
-            return message;
+            return message.getNextMessage();
         }
         return null;
     }
 
+    /**
+     * Determines if the call stack is still in order
+     *
+     * @param party the party to check the call stack of
+     * @return true if the party is on top of the call stack, false otherwise
+     */
     private boolean checkCallStack(Party party){
         Message message = getFirstMessage();
         return party.equals(message.getSender());
     }
 
+    /**
+     * Starts the proces of editing the label, sets the label as the selected element and initiates appropriate flags and variables
+     *
+     * @param label the label to edit
+     */
     private void startEditingLable(Label label){
         this.setSelectedElement(label);
         this.setLabelMode(true);
@@ -333,6 +381,11 @@ public abstract class Diagram{
     }
 
 
+    /**
+     * Appends the char of a keyStroke to the label that's being edited
+     *
+     * @param newChar the newChar to append
+     */
     private void appendCharToLabel(char newChar){
         if(this.labelContainer.isEmpty()){
             this.labelContainer = "";
@@ -352,6 +405,12 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * Finds the element that has been clicked by the location of the MouseEvent
+     *
+     * @param point2D the location of the MouseEvent
+     * @return the element which has been clicked on
+     */
     private Clickable selectClickableElement(Point2D point2D){
         List<Clickable> possibleElements = new ArrayList<>();
         for(Party party : this.getParties()){
@@ -380,6 +439,14 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * if multiple elements overlap on the location of a mouseEvent, this function will determine which element was clicked
+     *
+     * @param possibleElements all overlapping elements
+     *
+     * @param point2D the location of the MouseClick
+     * @return the element that has been clicked on, based on distance to the MouseEvent
+     */
     private Clickable findMostLikelyElement(List<Clickable> possibleElements, Point2D point2D){
         Clickable selected = possibleElements.get(0);
         double dist = possibleElements.get(0).getDistance(point2D);
@@ -392,6 +459,13 @@ public abstract class Diagram{
         return selected;
     }
 
+    /**
+     * Finds the next position in the sequenceDiagram
+     *
+     * @param parties the list of parties currently in the diagram
+     *
+     * @return an integer denoting the next position
+     */
     private int findNextPositionInSequenceDiagram(List<Party> parties){
         int pos = 0;
         for(Party party : parties){
@@ -402,6 +476,10 @@ public abstract class Diagram{
         return pos++;
     }
 
+    /**
+     *
+     * @param party
+     */
     private void updateMessagesForChangedParty(Party party){
         Message message = firstMessage;
         while(message != null){
@@ -420,6 +498,14 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * Finds the message proceeding the message on the provided yLocation
+     *
+     * @param yLocation
+     * @return
+     */
+
+    //TODO
     private Message findPreviousMessage(int yLocation){
         Message message = this.getFirstMessage();
         if(message.getyLocation() > yLocation){
@@ -443,10 +529,33 @@ public abstract class Diagram{
     //  abstract methods
     ////////////////////////////////////
 
+    /**
+     * Checks whether the location of the UIEvent is a valid location to trigger a new Party instantiation
+     *
+     * Has to be implemented in subclass
+     *
+     * @param point2D the position of the UIEvent
+     * @return true if the location will trigger the addition of a new party to the diagram, false otherwise
+     */
     public abstract boolean isValidPartyLocation(Point2D point2D);
 
-    public abstract Point2D getValidLocation(Point2D point2D);
+    /**
+     * Returns a valid location for the position of a party based on the provided location of the UIEvent
+     *
+     * Has to implemented in subclasses
+     *
+     * @param point2D the original position of the UIEvent
+     * @return Point2D, the appropriate location for a new Party
+     */
+    public abstract Point2D getValidPartyLocation(Point2D point2D);
 
+    /**
+     * Determines if the location belongs to the lifeline of the given Party
+     *
+     * @param location the location of the ClickEvent
+     * @param party a party of the diagram
+     * @return true if the location belongs to the lifeline of the party, false otherwise
+     */
     abstract boolean isLifeLine(Point2D location, Party party);
 
     /**********************************************************************************************************/
@@ -455,6 +564,9 @@ public abstract class Diagram{
     //  anonymous class
     ////////////////////////////////////
 
+    /**
+     * Anonymous class to help adding messages, stocks the Startlocation and Sender of a new message
+     */
     class Lifeline implements Clickable{
 
         Party party;
