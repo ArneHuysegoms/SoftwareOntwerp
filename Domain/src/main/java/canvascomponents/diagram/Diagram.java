@@ -7,6 +7,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Superclass of diagrams, contains most of the business logic in changing the diagram
+ */
 public abstract class Diagram{
 
     /**********************************************************************************************************/
@@ -34,22 +37,58 @@ public abstract class Diagram{
     //  constructors
     ////////////////////////////////////
 
+    /**
+     * creates an empty diagram
+     */
     public Diagram() {
         this(null, null);
     }
 
+    /**
+     * creates a new diagram with the given parties and the first message of the call stack
+     *
+     * @param parties
+     * @param firstMessage
+     */
     public Diagram(List<Party> parties, Message firstMessage){
         this(parties, firstMessage, null);
     }
 
+    /**
+     * creates a new diagram with the given parties, the first message of the call stack and the currently selected element
+     *
+     * @param parties
+     * @param firstMessage
+     * @param selectedElement
+     */
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
         this(parties, firstMessage, selectedElement, "");
     }
 
+    /**
+     * creates a new diagram with the given parties, the first message of the call stack, the currently selected element and the text for the label in edit
+     *
+     * @param parties
+     * @param firstMessage
+     * @param selectedElement
+     * @param labelContainer
+     */
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
         this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
     }
 
+    /**
+     * creates a new diagram with the given parties, the first message of the call stack, the currently selected element, the text for the label in edit and the
+     * state for the flags
+     *
+     * @param parties
+     * @param firstMessage
+     * @param selectedElement
+     * @param labelContainer
+     * @param labelMode
+     * @param validLabel
+     * @param messageMode
+     */
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
         this.setParties(parties);
         this.labelContainer = labelContainer;
@@ -66,26 +105,52 @@ public abstract class Diagram{
     //  setters and getters
     ////////////////////////////////////
 
+    /**
+     * sets the selected element of the diagram
+     * @param selectedElement
+     */
     private void setSelectedElement(Clickable selectedElement){
         this.selectedElement = selectedElement;
     }
 
+    /**
+     *
+     * @return the currently selected element
+     */
     public Clickable getSelectedElement() {
         return selectedElement;
     }
 
+    /**
+     * sets the first message of the message stack
+     *
+     * @param message the new firstMessage
+     */
     private void setFirstMessage(Message message){
         this.firstMessage = message;
     }
 
+    /**
+     *
+     * @return the first message of the message stack
+     */
     public Message getFirstMessage() {
         return firstMessage;
     }
 
+    /**
+     *
+     * @return all the parties in this diagram
+     */
     public List<Party> getParties() {
         return parties;
     }
 
+    /**
+     * sets the parties for this diagram
+     *
+     * @param parties the parties for this diagram
+     */
     private void setParties(List<Party> parties) {
         if(parties != null ) {
             this.parties = parties;
@@ -95,34 +160,71 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * adds a new party to the diagram
+     *
+     * @param party the party to be added
+     */
     public void addParty(Party party){
         this.getParties().add(party);
     }
 
+    /**
+     * removes a party from the diagram
+     *
+     * @param party the party to be removed
+     */
     public void removeParty(Party party){
         this.getParties().remove(party);
     }
 
+    /**
+     * sets the new state for the labelMode flag
+     * @param labelMode
+     */
     private void setLabelMode(boolean labelMode){
         this.labelMode = labelMode;
     }
 
+    /**
+     *
+     * @return the flag for labelMode
+     */
     public boolean isLabelMode(){
         return this.labelMode;
     }
 
+    /**
+     * set the state of the validlabel flag
+     *
+     * @param validLabel the new state for the flag
+     */
     private void setValidLabel(boolean validLabel){
         this.validLabel = validLabel;
     }
 
+    /**
+     *
+     * @return whether the label is valid
+     */
     public boolean isValidLabel(){
         return this.validLabel;
     }
 
+    /**
+     * sets messageMode to the provided state
+     *
+     * @param messageMode
+     */
     private void setMessageMode(boolean messageMode){
         this.messageMode = messageMode;
     }
 
+    /**
+     * inspector for messageMode
+     *
+     * @return true if the diagram is in messageMode, false otherwise
+     */
     public boolean isMessageMode(){
         return this.isMessageMode();
     }
@@ -133,6 +235,11 @@ public abstract class Diagram{
     //  main part of business logic
     ////////////////////////////////////
 
+    /**
+     * Adds a new party on the given location, per use case will be in the form of an object
+     *
+     * @param point2D the location on which to add a new party
+     */
     public void addNewParty(Point2D point2D){
         int posSeq = findNextPositionInSequenceDiagram(this.getParties());
         Point2D finalPosition = null;
@@ -150,6 +257,11 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * changes the party type of the Party on the provided location
+     *
+     * @param point2D the location of the party to change the type of
+     */
     public void changePartyType(Point2D point2D){
         this.setSelectedElement(selectClickableElement(point2D));
         if(this.getSelectedElement() instanceof Party){
@@ -180,6 +292,12 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * Adds a new message to the messagestack, with the receiver being the owner of the lifeline containing the provided location
+     *
+     * @param endlocation location on which the dragging was stopped
+     * @throws IllegalStateException if the location doesn't respond to a receiving party
+     */
     public void addNewMessage(Point2D endlocation) throws IllegalStateException{
         Party receiver = findReceiver(endlocation);
         if(receiver == null){
@@ -212,6 +330,11 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * changes the position of the selected element
+     *
+     * @param newPosition the new position for the selected element
+     */
     public void changePartyPosition(Point2D newPosition){
         if(this.getSelectedElement() instanceof Actor){
             Actor a = (Actor) this.getSelectedElement();
@@ -219,6 +342,12 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * finds the element that is selected based on the click on the provided location
+     *
+     * @param point2D the location that was clicked on
+     * @return the element that was clicked on
+     */
     public Clickable findSelectedElement(Point2D point2D){
         if(selectedElement instanceof Label){
             stopEditingLabel();
@@ -235,10 +364,18 @@ public abstract class Diagram{
         appendCharToLabel(newChar);
     }
 
-    public void editLable(){
+    /**
+     * Start editing the currently selected element, that is a label
+     */
+    public void editLabel(){
         startEditingLable((Label) this.getSelectedElement());
     }
 
+    /**
+     * Stop editing the label that was selected
+     *
+     * @throws DomainException if the final label isn't valid
+     */
     public void stopEditingLabel(){
         try {
             this.editableLable.setLabel(labelContainer);
@@ -248,6 +385,9 @@ public abstract class Diagram{
         }
     }
 
+    /**
+     * deletes the element that is currently selected
+     */
     public void deleteElement(){
         if(this.selectedElement instanceof Party){
             deleteParty((Party) this.selectedElement);
@@ -263,6 +403,12 @@ public abstract class Diagram{
     //  utilities
     ////////////////////////////////////
 
+    /**
+     * Finds the receiver of a message based on the endlocation of the messageDrag
+     *
+     * @param endlocation the location where the dragging for the message stopped
+     * @return the party that corresponds to the location
+     */
     private Party findReceiver(Point2D endlocation){
         for(Party party : parties){
             if(isLifeLine(endlocation, party)){
@@ -275,7 +421,7 @@ public abstract class Diagram{
     /**
      * Deletes a party from the diagram.
      *
-     * @param party
+     * @param party the party that will be deleted
      */
     private void deleteParty(Party party){
         rearrangeMessageTreeByParty(party);
@@ -287,11 +433,18 @@ public abstract class Diagram{
      * changes the position of the parties in the sequence diagram based on the provided removed position
      *
      * @param deletedPosition the position in the sequence diagram that was deleted
+     *
+     * @throws DomainException if no valid new location can be given to the remaining parties
      */
     private void changeSequenceNumbers(int deletedPosition){
         for(Party p : this.getParties()){
             if(p.getPositionInSequenceDiagram() > deletedPosition){
-                //TODO //p.setPositionInSequenceDiagram(p.getPositionInSequenceDiagram() - 1);
+                try {
+                    p.setPositionInSequenceDiagram(p.getPositionInSequenceDiagram() - 1);
+                }
+                catch (DomainException exception){
+                    System.out.println(exception.getMessage());
+                }
             }
         }
     }
