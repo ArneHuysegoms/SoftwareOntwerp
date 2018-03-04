@@ -52,10 +52,10 @@ public class PartyLabel extends Label{
      * @param label
      *        The text this label should be set to
      * @return
-     *        True if label is of the form instanceName:classname (instanceName optional)
+     *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
     public static boolean isValidPartyLabel(String label){
-        return label.matches("[a-z]*:[A-Z][a-z]*");
+        return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*");
     }
 
 

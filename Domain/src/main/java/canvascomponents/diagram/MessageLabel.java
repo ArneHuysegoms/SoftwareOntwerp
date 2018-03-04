@@ -37,11 +37,11 @@ public class MessageLabel extends Label {
      * @param label
      *        The text this label should be set to
      * @return
-     *        True if label starts with a lowercase character
+     *        True if label starts with a lowercase character, or is completely empty
      */
 
     public static boolean isValidMessageLabel(String label){
-        return Character.isUpperCase(label.charAt(0));
+        return label.equals("") || Character.isLowerCase(label.charAt(0));
     }
 
 

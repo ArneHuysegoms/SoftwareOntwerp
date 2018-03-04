@@ -34,7 +34,7 @@ public class ResultMessage extends Message {
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-     public ResultMessage(Message message, MessageLabel label, Actor receiver, Actor sender, int yLocation) throws DomainException {
+     public ResultMessage(Message message, MessageLabel label, Party receiver, Party sender, int yLocation) throws DomainException {
          super(message, label, receiver, sender, yLocation);
      }
 

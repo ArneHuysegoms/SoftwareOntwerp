@@ -9,8 +9,8 @@ public class Message implements Clickable{
 
     private Message nextMessage;
     private MessageLabel label;
-    private Actor receiver;
-    private Actor sender;
+    private Party receiver;
+    private Party sender;
 
     private int yLocation;
 
@@ -45,7 +45,7 @@ public class Message implements Clickable{
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public Message(Message nextMessage, MessageLabel label, Actor receiver, Actor sender, int yLocation) throws DomainException{
+    public Message(Message nextMessage, MessageLabel label, Party receiver, Party sender, int yLocation) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
@@ -86,7 +86,7 @@ public class Message implements Clickable{
      *        | new.getnextMessage == nextMessage;
      *
      */
-    private void setNextMessage(Message nextMessage) {
+    public void setNextMessage(Message nextMessage) {
         this.nextMessage = nextMessage;
     }
 
@@ -110,7 +110,7 @@ public class Message implements Clickable{
     /**
      * @return returns the receiving party
      */
-    public Actor getReceiver() {
+    public Party getReceiver() {
         return receiver;
     }
 
@@ -121,7 +121,7 @@ public class Message implements Clickable{
      *        | new.getReceiver == receiver
      *
      */
-    private void setReceiver(Actor receiver) {
+    public void setReceiver(Party receiver) {
         this.receiver = receiver;
     }
 
@@ -129,7 +129,7 @@ public class Message implements Clickable{
      * @return returns the sender of this party
      *
      */
-    public Actor getSender() {
+    public Party getSender() {
         return sender;
     }
 
@@ -141,7 +141,7 @@ public class Message implements Clickable{
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
      */
-    private void setSender(Actor sender) throws DomainException{
+    public void setSender(Party sender) throws DomainException{
         if(sender == null){
             throw new DomainException("Sender of message can't be null");
         }
