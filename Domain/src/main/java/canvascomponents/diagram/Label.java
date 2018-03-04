@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 public abstract class Label implements Clickable {
 
     private Point2D coordinate;
+    private String label;
 
     public static final int width = 45;
     public static final int height = 14;
@@ -41,6 +42,29 @@ public abstract class Label implements Clickable {
      */
     private void setCoordinate(Point2D coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public abstract boolean isValidLabel(String label);
+
+
+    /**
+     * @return  returns the label of this MessageLabel
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * @param label
+     *        The text to set the label to
+     * @throws DomainException
+     *         The label has to start with a lowercase character
+     */
+    public void setLabel(String label) throws DomainException {
+        if (!isValidLabel(label)) {
+            throw new DomainException("a message label has to start with a lowercase character");
+        }
+        this.label = label;
     }
 
 

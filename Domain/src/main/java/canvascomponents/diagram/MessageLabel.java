@@ -40,7 +40,7 @@ public class MessageLabel extends Label {
      *        True if label starts with a lowercase character, or is completely empty
      */
 
-    public static boolean isValidMessageLabel(String label){
+    public boolean isValidLabel(String label){
         return label.equals("") || Character.isLowerCase(label.charAt(0));
     }
 
@@ -59,7 +59,7 @@ public class MessageLabel extends Label {
      *         The label has to start with a lowercase character
      */
     public void setLabel(String label) throws DomainException {
-        if (!isValidMessageLabel(label)) {
+        if (!isValidLabel(label)) {
             throw new DomainException("a message label has to start with a lowercase character");
         }
         this.label = label;
