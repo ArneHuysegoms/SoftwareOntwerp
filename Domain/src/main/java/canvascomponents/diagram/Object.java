@@ -33,7 +33,7 @@ public class Object extends Party{
      *
      */
 
-    public Object( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
+    public Object( int positionInSequenceDiagram, Point2D point2D, Label label) throws DomainException{
         this("", "", positionInSequenceDiagram, point2D, label);
     }
 
@@ -66,7 +66,7 @@ public class Object extends Party{
      *
      */
 
-    public Object(String instanceName, String className, int positionInSequenceDiagram, Point2D positionInCommunicationsDiagram, PartyLabel label) throws DomainException {
+    public Object(String instanceName, String className, int positionInSequenceDiagram, Point2D positionInCommunicationsDiagram, Label label) throws DomainException {
         super(instanceName, className, positionInSequenceDiagram, positionInCommunicationsDiagram, label);
     }
 

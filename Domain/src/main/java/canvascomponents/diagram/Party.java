@@ -11,7 +11,7 @@ public abstract class Party implements Clickable{
     private String className;
     private int positionInSequenceDiagram;
     private Point2D coordinate;
-    private PartyLabel label;
+    private Label label;
 
 
     public Party(){
@@ -41,7 +41,7 @@ public abstract class Party implements Clickable{
      *
      */
 
-    public Party( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
+    public Party( int positionInSequenceDiagram, Point2D point2D, Label label) throws DomainException{
         this("", "", positionInSequenceDiagram, point2D, label);
     }
 
@@ -72,7 +72,7 @@ public abstract class Party implements Clickable{
      *
      *
      */
-    public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, PartyLabel label) throws DomainException{
+    public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Label label) throws DomainException{
         this.setLabel(label);
         this.setInstanceName(instanceName);
         this.setClassName(className);
@@ -104,7 +104,7 @@ public abstract class Party implements Clickable{
      * @post  The new label of this party is equal to the given label
      *        | new.getLabel == label
      */
-    private void setInstanceName(PartyLabel label){
+    private void setInstanceName(Label label){
         this.instanceName = label.getLabel().split("//:")[0];
     }
 
@@ -132,7 +132,7 @@ public abstract class Party implements Clickable{
      * @post  The new className of this party is equal to the given className
      *        | new.getClassName == className
      */
-    private void setClassName(PartyLabel label) {
+    private void setClassName(Label label) {
         this.className = label.getLabel().split("//:")[1];
     }
 
@@ -184,7 +184,7 @@ public abstract class Party implements Clickable{
      * @post  The new label of this party is equal to the given label
      *        | new.getLabel == label
      */
-    public void editLabel(PartyLabel newLabel){
+    public void editLabel(Label newLabel){
         this.label = newLabel;
     }
 
@@ -200,7 +200,7 @@ public abstract class Party implements Clickable{
      * @post  The new label of this party is equal to the given label
      *        | new.getLabel == label
      */
-    public void setLabel(PartyLabel label) {
+    public void setLabel(Label label) {
         this.label = label;
     }
 
