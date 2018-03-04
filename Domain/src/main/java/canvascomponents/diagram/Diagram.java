@@ -155,17 +155,27 @@ public abstract class Diagram{
         if(this.getSelectedElement() instanceof Party){
             if(this.getSelectedElement() instanceof Object){
                 Object o = (Object) this.getSelectedElement();
-                Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(),o.getLabel());
-                this.updateMessagesForChangedParty(newActor);
-                this.removeParty(o);
-                this.addParty(newActor);
+                try {
+                    Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
+                    this.updateMessagesForChangedParty(newActor);
+                    this.removeParty(o);
+                    this.addParty(newActor);
+                }
+                catch (DomainException exception){
+                    System.out.println(exception.getMessage());
+                }
             }
             else{
                 Actor a = (Actor) this.getSelectedElement();
-                Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(),a.getCoordinate(), a.getLabel());
-                this.updateMessagesForChangedParty(newObject);
-                this.removeParty(a);
-                this.addParty(newObject);
+                try {
+                    Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
+                    this.updateMessagesForChangedParty(newObject);
+                    this.removeParty(a);
+                    this.addParty(newObject);
+                }
+                catch (DomainException exception){
+                    System.out.println(exception.getMessage());
+                }
             }
         }
     }
@@ -230,7 +240,12 @@ public abstract class Diagram{
     }
 
     public void stopEditingLabel(){
-        this.editableLable.setLabel(labelContainer);
+        try {
+            this.editableLable.setLabel(labelContainer);
+        }
+        catch (DomainException exc){
+            System.out.println(exc.getMessage());
+        }
     }
 
     public void deleteElement(){
@@ -324,10 +339,16 @@ public abstract class Diagram{
         }
         this.labelContainer += newChar;
         String label = labelContainer + "|";
-        boolean valid = editableLable.setLabel(label);
-        if(valid){
-            this.setValidLabel(true);
-            this.setLabelMode(false);
+        try {
+            boolean valid = editableLable.isValidLabel(label);
+            editableLable.setLabel(label);
+            if (valid) {
+                this.setValidLabel(true);
+                this.setLabelMode(false);
+            }
+        }
+        catch (DomainException exc){
+            System.out.println(exc.getMessage());
         }
     }
 
@@ -388,7 +409,12 @@ public abstract class Diagram{
                 message.setReceiver(party);
             }
             if(message.getSender().equals(party)){
-                message.setSender(party);
+                try {
+                    message.setSender(party);
+                }
+                catch (DomainException exc){
+                    System.out.println(exc.getMessage());
+                }
             }
             message = message.getNextMessage();
         }
