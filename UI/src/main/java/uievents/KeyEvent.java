@@ -57,8 +57,10 @@ public class KeyEvent {
      *
      * @param keyEvent
      * @return boolean
-     *          | True if this == keyEvent
-     *          | False if this =/= keyEvent
+     *          | if (this.getKeyEventType().equals(keyEvent.getKeyEventType()) && this.getKeyChar() == keyEvent.getKeyChar())
+     *          |   return true
+     *          | else
+     *          |   return false
      */
     public boolean equals(KeyEvent keyEvent) {
         if (this.getKeyEventType().equals(keyEvent.getKeyEventType()) && this.getKeyChar() == keyEvent.getKeyChar()) {
