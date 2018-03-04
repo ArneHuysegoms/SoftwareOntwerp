@@ -25,7 +25,7 @@ public class PartyLabel extends Label{
      */
     public PartyLabel(String label, Point2D coordinate) throws DomainException {
         super(coordinate);
-        if (!isValidPartyLabel(label)) {
+        if (!isValidLabel(label)) {
             throw new DomainException("a party label consists of instanceName:classname");
         }
         this.setLabel(label);
@@ -54,7 +54,7 @@ public class PartyLabel extends Label{
      * @return
      *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
-    public static boolean isValidPartyLabel(String label){
+    public boolean isValidLabel(String label){
         return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*");
     }
 
