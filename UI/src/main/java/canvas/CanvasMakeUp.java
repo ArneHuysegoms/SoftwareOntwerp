@@ -79,6 +79,14 @@ public class CanvasMakeUp {
                 case DEL:
                     this.getActiveDiagram().deleteElement();
                     break;
+                case CHAR:
+                case COLON:
+                    if(getActiveDiagram().getSelectedElement() instanceof Label){
+                        getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
+                    }
+                    break;
+                case BACKSPACE:
+                    this.getActiveDiagram().removeLastCharFromLabel();
                 default:
                     break;
             }
@@ -91,6 +99,8 @@ public class CanvasMakeUp {
                       getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
                   }
                   break;
+              case BACKSPACE:
+                  this.getActiveDiagram().removeLastCharFromLabel();
               default:
                   break;
           }

@@ -368,8 +368,20 @@ public abstract class Diagram{
         return selected;
     }
 
+    /**
+     * adds the given char to the Label in edit
+     *
+     * @param newChar
+     */
     public void addCharToLabel(char newChar){
         appendCharToLabel(newChar);
+    }
+
+    /**
+     * removes the last Char from the Label in edit
+     */
+    public void removeLastCharFromLabel(){
+        removeCharFromContainer();
     }
 
     /**
@@ -553,6 +565,26 @@ public abstract class Diagram{
         }
         this.labelContainer += newChar;
         String label = labelContainer + "|";
+        this.setNewLabel(label);
+    }
+
+    /**
+     * removes the last char from the label that is being edited
+     */
+    private void removeCharFromContainer(){
+        if(this.labelContainer.length() > 0){
+            String label = this.labelContainer.substring(0, labelContainer.length() - 2);
+            labelContainer = label;
+            this.setNewLabel(labelContainer + "|");
+        }
+    }
+
+    /**
+     * sets the label of the Label in edit to the given label
+     *
+     * @param label
+     */
+    private void setNewLabel(String label){
         try {
             boolean valid = editableLable.isValidLabel(label);
             editableLable.setLabel(label);
@@ -589,8 +621,8 @@ public abstract class Diagram{
         while(message != null) {
             if (message.isClicked(point2D)) {
                 possibleElements.add(message);
-                message = message.getNextMessage();
             }
+            message = message.getNextMessage();
         }
         if(possibleElements.size() == 1){
            return possibleElements.get(0);
