@@ -86,7 +86,6 @@ public class CommunicationsDiagram extends Diagram {
         return point2D;
     }
 
-    //TODO
     @Override
     boolean isLifeLine(Point2D location, Party party) {
         return false;

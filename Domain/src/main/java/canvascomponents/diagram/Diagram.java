@@ -97,7 +97,7 @@ public abstract class Diagram{
         this.setLabelMode(labelMode);
         this.setMessageMode(messageMode);
         this.setValidLabel(validLabel);
-    }
+        }
 
     /**********************************************************************************************************/
 
@@ -119,6 +119,14 @@ public abstract class Diagram{
      */
     public Clickable getSelectedElement() {
         return selectedElement;
+    }
+
+    /**
+     *
+     * @return the labelcontainer of this diagram
+     */
+    public String getLabelContainer(){
+        return this.labelContainer;
     }
 
     /**
@@ -304,9 +312,9 @@ public abstract class Diagram{
             throw new IllegalStateException("Other lifeline not found");
         }
         else {
-            Lifeline startLifeline = (Lifeline) this.getSelectedElement();
-            Party sender = startLifeline.getParty();
-            Point2D startLocation = startLifeline.getStartloction();
+            MessageStart MessageStart = (MessageStart) this.getSelectedElement();
+            Party sender = MessageStart.getParty();
+            Point2D startLocation = MessageStart.getStartloction();
             if(checkCallStack(sender)) {
                 try {
                     Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
@@ -574,7 +582,7 @@ public abstract class Diagram{
                 possibleElements.add(party.getLabel());
             }
             if(isLifeLine(point2D, party)){
-                return new Lifeline(party, point2D);
+                return new MessageStart(party, point2D);
             }
         }
         Message message = this.getFirstMessage();
@@ -586,6 +594,9 @@ public abstract class Diagram{
         }
         if(possibleElements.size() == 1){
            return possibleElements.get(0);
+        }
+        else if(possibleElements.size() == 0){
+            return null;
         }
         else{
             return findMostLikelyElement(possibleElements, point2D);
@@ -658,7 +669,6 @@ public abstract class Diagram{
      * @return
      */
 
-    //TODO
     private Message findPreviousMessage(int yLocation){
         Message message = this.getFirstMessage();
         if(message.getyLocation() > yLocation){
@@ -674,6 +684,30 @@ public abstract class Diagram{
             }
         }
         return null;
+    }
+
+    /**
+     * resets the position of the parties to the old positions
+     *
+     * @param oldParties a list of the old parties
+     */
+    public void resetPartyPositions(List<Party> oldParties){
+        for(Party old : oldParties){
+            for(Party np : this.getParties()){
+                if(old.equals(np)){
+                    np.setCoordinate(old.getCoordinate());
+                }
+            }
+        }
+    }
+
+    /**
+     * resets the positions of the parties in this diagram to positions valid for this diagram
+     */
+    public void resetToSequencePositions(){
+        for(Party p : this.getParties()){
+            p.setCoordinate(this.getValidPartyLocation(p.getCoordinate()));
+        }
     }
 
     /**********************************************************************************************************/
@@ -714,18 +748,18 @@ public abstract class Diagram{
     /**********************************************************************************************************/
 
     ////////////////////////////////////
-    //  anonymous class
+    //  Helper class
     ////////////////////////////////////
 
     /**
-     * Anonymous class to help adding messages, stocks the Startlocation and Sender of a new message
+     * Class to help adding messages, stocks the Startlocation and Sender of a new message
      */
-    class Lifeline implements Clickable{
+    public class MessageStart implements Clickable{
 
         Party party;
         Point2D startloction;
 
-        private Lifeline(Party party, Point2D startLocation){
+        private MessageStart(Party party, Point2D startLocation){
             this.party = party;
             this.startloction = startLocation;
         }
