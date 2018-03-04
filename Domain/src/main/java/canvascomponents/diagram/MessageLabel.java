@@ -59,9 +59,6 @@ public class MessageLabel extends Label {
      *         The label has to start with a lowercase character
      */
     public void setLabel(String label) throws DomainException {
-        if (!isValidLabel(label)) {
-            throw new DomainException("a message label has to start with a lowercase character");
-        }
         this.label = label;
     }
 
