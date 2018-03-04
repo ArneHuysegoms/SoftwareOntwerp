@@ -106,6 +106,15 @@ public abstract class Diagram{
     ////////////////////////////////////
 
     /**
+     * sets the editable label to the given label
+     *
+     * @param label
+     */
+    private void setEditableLable(Label label){
+        this.editableLable = label;
+    }
+
+    /**
      * sets the selected element of the diagram
      * @param selectedElement
      */
@@ -257,6 +266,7 @@ public abstract class Diagram{
             try {
                 label = new PartyLabel("I", new Point2D.Double(point2D.getX() + 10, point2D.getY() + 20));
                 Object object = new Object(posSeq, finalPosition, label);
+                this.addParty(object);
                 startEditingLable(label);
             }
             catch (Exception e){
@@ -328,7 +338,12 @@ public abstract class Diagram{
                     Message resultMessage = new ResultMessage(next, new MessageLabel(), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
                     MessageLabel messageLabel = new MessageLabel();
                     Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
-                    previous.setNextMessage(invocation);
+                    if(previous != null) {
+                        previous.setNextMessage(invocation);
+                    }
+                    else{
+                        this.setFirstMessage(invocation);
+                    }
                     startEditingLable(messageLabel);
                 }
                 catch (DomainException exc){
@@ -357,7 +372,7 @@ public abstract class Diagram{
      * @return the element that was clicked on
      */
     public Clickable findSelectedElement(Point2D point2D){
-        if(selectedElement instanceof Label){
+        if(! (selectClickableElement(point2D) instanceof Label)){
             stopEditingLabel();
             this.setLabelMode(false);
             labelContainer = "";
@@ -365,6 +380,9 @@ public abstract class Diagram{
         }
         Clickable selected = selectClickableElement(point2D);
         this.setSelectedElement(selected);
+        if(selected instanceof Label){
+            this.setEditableLable((Label) selected);
+        }
         return selected;
     }
 
@@ -533,9 +551,9 @@ public abstract class Diagram{
             message = message.getNextMessage();
             if(message != null) {
                 if (message instanceof InvocationMessage) {
-                    skipOverDependentMessages(message, stack--);
+                    return skipOverDependentMessages(message, --stack);
                 } else if (message instanceof ResultMessage) {
-                    skipOverDependentMessages(message, stack++);
+                    return skipOverDependentMessages(message, ++stack);
                 }
             }
             else{
@@ -558,10 +576,15 @@ public abstract class Diagram{
         Message message = getFirstMessage();
         Message firstPartyMessage = null;
         boolean found = false;
-        while(! found && message.getNextMessage() != null){
-            if (message.getSender().equals(party)){
-                found = true;
-                firstPartyMessage = message;
+        if(firstMessage.getSender().equals(party)){
+            firstPartyMessage = getFirstMessage();
+        }
+        else {
+            while (!found && message.getNextMessage() != null) {
+                if (message.getSender().equals(party)) {
+                    found = true;
+                    firstPartyMessage = message;
+                }
             }
         }
         return checkStack(firstPartyMessage, -1);
@@ -575,9 +598,9 @@ public abstract class Diagram{
             message = message.getNextMessage();
             if(message != null) {
                 if (message instanceof InvocationMessage) {
-                    skipOverDependentMessages(message, stack--);
+                    return checkStack(message, --stack);
                 } else if (message instanceof ResultMessage) {
-                    skipOverDependentMessages(message, stack++);
+                    return checkStack(message, ++stack);
                 }
             }
             else{
@@ -622,7 +645,7 @@ public abstract class Diagram{
      */
     private void removeCharFromContainer(){
         if(this.labelContainer.length() > 0){
-            String label = this.labelContainer.substring(0, labelContainer.length() - 2);
+            String label = this.labelContainer.substring(0, labelContainer.length() - 1);
             labelContainer = label;
             this.setNewLabel(labelContainer + "|");
         }
@@ -758,7 +781,7 @@ public abstract class Diagram{
             next = message.getNextMessage();
             if(next != null){
                 if(next.getyLocation() > yLocation){
-                    return next;
+                    return message;
                 }
             }
         }

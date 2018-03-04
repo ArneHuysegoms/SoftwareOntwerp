@@ -32,8 +32,8 @@ public class DiagramTest {
        parties.add(actor1);
        parties.add(object1);
 
-       secondMessage = new ResultMessage(null, new MessageLabel(), object1, actor1, 140);
-       firstMessage = new InvocationMessage(secondMessage, new MessageLabel(), actor1, object1, 120);
+       secondMessage = new ResultMessage(null, new MessageLabel(), actor1, object1, 140);
+       firstMessage = new InvocationMessage(secondMessage, new MessageLabel(), object1, actor1, 120);
     }
 
     @Test
@@ -101,6 +101,11 @@ public class DiagramTest {
         Diagram seq = new SequenceDiagram(parties, firstMessage, actor1);
         seq.changePartyType(new Point2D.Double(25, 50));
         assertTrue(seq.getParties().get(1).getCoordinate().equals(new Point2D.Double(25, 50)));
+        assertTrue(seq.getParties().get(1) instanceof Object);
+
+        seq.changePartyType(new Point2D.Double(125, 50));
+        assertTrue(seq.getParties().get(1).getCoordinate().equals(new Point2D.Double(125, 50)));
+        assertTrue(seq.getParties().get(1) instanceof Actor);
     }
 
     @Test
@@ -143,5 +148,36 @@ public class DiagramTest {
 
     }
 
+    @Test
+    public void Test_addNewParty(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+        seq.addNewParty(new Point2D.Double(335, 75));
+        assertEquals(3, seq.getParties().size());
+    }
 
+    @Test
+    public void Test_addNewMessage(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+        seq.findSelectedElement(new Point2D.Double(25,130));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+
+        seq.addNewMessage(new Point2D.Double(125, 130));
+        assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
+        assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
+    }
+
+    @Test
+    public void Test_editingLabel(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
+        seq.findSelectedElement(new Point2D.Double(10, 110));
+        seq.addCharToLabel('a');
+        assertEquals("a|",labelActor1.getLabel());
+        assertEquals(false, seq.isLabelMode());
+        assertEquals(false, seq.isValidLabel());
+
+        seq.removeLastCharFromLabel();
+        assertEquals("|",labelActor1.getLabel());
+        assertEquals(false, seq.isLabelMode());
+        assertEquals(false, seq.isValidLabel());
+    }
 }
