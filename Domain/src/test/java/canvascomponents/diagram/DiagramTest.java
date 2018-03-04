@@ -18,10 +18,12 @@ public class DiagramTest {
     List<Party> parties;
     Message firstMessage;
     Message secondMessage;
+    Label labelActor1;
 
     @Before
     public void setUp() throws DomainException{
-        actor1 = new Actor("","",1, new Point2D.Double(25, 50), new PartyLabel("", new Point2D.Double(10, 110)));
+        labelActor1 = new PartyLabel("", new Point2D.Double(10, 110));
+        actor1 = new Actor("","",1, new Point2D.Double(25, 50), labelActor1);
         object1 = new Object("","",2, new Point2D.Double(125, 50), new PartyLabel("", new Point2D.Double(135, 75)));
         actor2 = new Actor("","",3, new Point2D.Double(225, 50), new PartyLabel("", new Point2D.Double(210, 110)));
         object2 = new Object("","",4, new Point2D.Double(325, 50), new PartyLabel("", new Point2D.Double(335, 75)));
@@ -30,8 +32,8 @@ public class DiagramTest {
        parties.add(actor1);
        parties.add(object1);
 
-       firstMessage = new InvocationMessage(null, new MessageLabel(), actor1, object1, 120);
-       secondMessage = new ResultMessage(firstMessage, new MessageLabel(), object1, actor1, 140);
+       secondMessage = new ResultMessage(null, new MessageLabel(), object1, actor1, 140);
+       firstMessage = new InvocationMessage(secondMessage, new MessageLabel(), actor1, object1, 120);
     }
 
     @Test
@@ -103,10 +105,42 @@ public class DiagramTest {
 
     @Test
     public void Test_findClickableElement() throws DomainException{
-        Diagram seq = new SequenceDiagram(parties, firstMessage);
+        Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
+
         Party actor3 = new Actor("","",1, new Point2D.Double(30, 55), new PartyLabel("", new Point2D.Double(15, 115)));
         seq.addParty(actor3);
         assertEquals(actor3, seq.findSelectedElement(new Point2D.Double(35, 60)));
+        assertEquals(null, seq.findSelectedElement(new Point2D.Double(590, 590)));
+    }
+
+    @Test
+    public void Test_ChangePartyPosition(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, actor1);
+        seq.changePartyPosition(new Point2D.Double(500, 500));
+        assertEquals(new Point2D.Double(500, 500), actor1.getCoordinate());
+    }
+
+    @Test
+    public void Test_deleteElement_simplestack_ByParty(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, actor1);
+        seq.deleteElement();
+        assertFalse(seq.getParties().contains(actor1));
+        assertTrue(seq.getParties().contains(object1));
+        assertEquals(null, seq.getFirstMessage());
+    }
+
+    @Test
+    public void test_deleteElement_simpleStack_ByMessage(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, firstMessage);
+        seq.deleteElement();
+        assertTrue(seq.getParties().contains(actor1));
+        assertTrue(seq.getParties().contains(object1));
+        assertEquals(null, seq.getFirstMessage());
+    }
+
+    @Test
+    public void Test_deleteElement_complexStack(){
+
     }
 
 

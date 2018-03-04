@@ -249,7 +249,7 @@ public abstract class Diagram{
      * @param point2D the location on which to add a new party
      */
     public void addNewParty(Point2D point2D){
-        int posSeq = findNextPositionInSequenceDiagram(this.getParties());
+        int posSeq = findNextPositionInSequenceDiagram();
         Point2D finalPosition = null;
         PartyLabel label;
         if(isValidPartyLocation(point2D)){
@@ -325,9 +325,9 @@ public abstract class Diagram{
                     else {
                         next = previous.getNextMessage();
                     }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel(), receiver, sender,  new Double(startLocation.getY() - 7).intValue() );
+                    Message resultMessage = new ResultMessage(next, new MessageLabel(), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
                     MessageLabel messageLabel = new MessageLabel();
-                    Message invocation = new InvocationMessage(resultMessage, messageLabel, sender, receiver, new Double(startLocation.getY() + 7).intValue());
+                    Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
                     previous.setNextMessage(invocation);
                     startEditingLable(messageLabel);
                 }
@@ -398,7 +398,9 @@ public abstract class Diagram{
      */
     public void stopEditingLabel(){
         try {
-            this.editableLable.setLabel(labelContainer);
+            if(editableLable != null ) {
+                this.editableLable.setLabel(labelContainer);
+            }
         }
         catch (DomainException exc){
             System.out.println(exc.getMessage());
@@ -475,14 +477,20 @@ public abstract class Diagram{
      * @param message the message to be deleted
      */
     private void deleteMessage(Message message){
-        Message iter = this.getFirstMessage();
-        Message previous;
-        while(! iter.getNextMessage().equals(message)){
-            iter = iter.getNextMessage();
+        if( ! message.equals(this.getFirstMessage())){
+            Message iter = this.getFirstMessage();
+            Message previous;
+            while(iter.getNextMessage() != null && ! iter.getNextMessage().equals(message)){
+                iter = iter.getNextMessage();
+            }
+            previous = iter;
+            Message next = skipOverDependentMessages(message, -1);
+            previous.setNextMessage(next);
         }
-        previous = iter;
-        Message next = skipOverDependentMessages(message, -1);
-        previous.setNextMessage(next);
+        else{
+            this.firstMessage = null;
+        }
+
     }
 
     /**
@@ -490,13 +498,20 @@ public abstract class Diagram{
      * @param party the party that will be deleted
      */
     private void rearrangeMessageTreeByParty(Party party){
-        Message message = getFirstMessage();
-        Message nextMessage;
-        while(message != null){
-            if(message.getSender().equals(party) || message.getReceiver().equals(party)){
-                nextMessage = skipOverDependentMessages(message, -1);
-                message.setNextMessage(nextMessage);
-                message = nextMessage;
+        Message previous = getFirstMessage();
+        if(getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)){
+            firstMessage = null;
+        }
+        else{
+            Message message = previous.getNextMessage();
+            while (message != null) {
+                if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
+                    message = skipOverDependentMessages(message, -1);
+                    if(previous != null) {
+                        previous.setNextMessage(message);
+                        previous = message;
+                    }
+                }
             }
         }
     }
@@ -511,6 +526,9 @@ public abstract class Diagram{
      * @return the first message that doesn't depend on the provided message
      */
     private Message skipOverDependentMessages(Message message, int stack){
+        if(message == null){
+            return null;
+        }
         if(stack < 0 ){
             message = message.getNextMessage();
             if(message != null) {
@@ -538,7 +556,38 @@ public abstract class Diagram{
      */
     private boolean checkCallStack(Party party){
         Message message = getFirstMessage();
-        return party.equals(message.getSender());
+        Message firstPartyMessage = null;
+        boolean found = false;
+        while(! found && message.getNextMessage() != null){
+            if (message.getSender().equals(party)){
+                found = true;
+                firstPartyMessage = message;
+            }
+        }
+        return checkStack(firstPartyMessage, -1);
+    }
+
+    private boolean checkStack(Message message, int stack){
+        if(message == null){
+            return false;
+        }
+        if(stack < 0 ){
+            message = message.getNextMessage();
+            if(message != null) {
+                if (message instanceof InvocationMessage) {
+                    skipOverDependentMessages(message, stack--);
+                } else if (message instanceof ResultMessage) {
+                    skipOverDependentMessages(message, stack++);
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -658,13 +707,11 @@ public abstract class Diagram{
     /**
      * Finds the next position in the sequenceDiagram
      *
-     * @param parties the list of parties currently in the diagram
-     *
      * @return an integer denoting the next position
      */
-    private int findNextPositionInSequenceDiagram(List<Party> parties){
+    private int findNextPositionInSequenceDiagram(){
         int pos = 0;
-        for(Party party : parties){
+        for(Party party : this.getParties()){
             if(party.getPositionInSequenceDiagram() > pos){
                 pos = party.getPositionInSequenceDiagram();
             }
