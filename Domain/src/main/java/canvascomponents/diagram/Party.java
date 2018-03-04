@@ -152,7 +152,7 @@ public abstract class Party implements Clickable{
      * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
      *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
      */
-    private void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException{
+    public void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException{
         if(positionInSequenceDiagram < 0){
             throw new DomainException("Position of actor in sequenceDiagram must 0 or greater");
         }
