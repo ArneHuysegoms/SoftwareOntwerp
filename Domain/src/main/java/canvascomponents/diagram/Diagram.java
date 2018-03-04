@@ -234,7 +234,7 @@ public abstract class Diagram{
      * @return true if the diagram is in messageMode, false otherwise
      */
     public boolean isMessageMode(){
-        return this.isMessageMode();
+        return this.messageMode;
     }
 
     /**********************************************************************************************************/
@@ -255,7 +255,7 @@ public abstract class Diagram{
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidPartyLocation(point2D);
             try {
-                label = new PartyLabel("I", new Point2D.Double(point2D.getX() -80, point2D.getY() + 51));
+                label = new PartyLabel("I", new Point2D.Double(point2D.getX() + 10, point2D.getY() + 20));
                 Object object = new Object(posSeq, finalPosition, label);
                 startEditingLable(label);
             }
