@@ -79,8 +79,8 @@ public class Actor extends Party{
         double startX = this.getCoordinate().getX() - WIDTH/2;
         double startY = this.getCoordinate().getY();
         double endX = startX + WIDTH;
-        double endY = startY - HEIGHT;
-        return (clickX >= startX && clickX <= endX) && (clickY <= startY && clickY >= endY);
+        double endY = startY + HEIGHT;
+        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 
     /**
