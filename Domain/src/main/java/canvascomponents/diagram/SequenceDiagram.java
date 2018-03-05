@@ -50,7 +50,7 @@ public class SequenceDiagram extends Diagram {
      * @param labelContainer
      */
     public SequenceDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
+        this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
     }
 
     /**
