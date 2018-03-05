@@ -11,21 +11,49 @@ public class Rectangle extends Shape {
     protected Point2D cornerBL;
 
     public Rectangle(int x, int y, int width, int length) {
-        this.positionTL = new Point2D.Double(x, y);
-        this.cornerTR = new Point2D.Double(x+width, y);
-        this.cornerBR = new Point2D.Double(x+width, y+length);
-        this.cornerBL = new Point2D.Double(x, y+length);
+        setPositionTL(new Point2D.Double(x, y));
+        setCornerTR(new Point2D.Double(x+width, y));
+        setCornerBR(new Point2D.Double(x+width, y+length));
+        setCornerBL(new Point2D.Double(x, y+length));
     }
 
     public Rectangle(Point2D tl, Point2D br){
-        this.positionTL = tl;
-        this.cornerBR = br;
-        this.cornerBL = new Point2D.Double(tl.getX(), br.getY());
-        this.cornerTR = new Point2D.Double(br.getX(), tl.getY());
+        setPositionTL(tl);
+        setCornerBR(br);
+        setCornerBL(new Point2D.Double(tl.getX(), br.getY()));
+        setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
-    public Point2D getPosition() {
+    public Point2D getPositionTL() {
         return positionTL;
+    }
+
+    public void setPositionTL(Point2D positionTL) {
+        this.positionTL = positionTL;
+    }
+
+    public Point2D getCornerTR() {
+        return cornerTR;
+    }
+
+    public void setCornerTR(Point2D cornerTR) {
+        this.cornerTR = cornerTR;
+    }
+
+    public Point2D getCornerBR() {
+        return cornerBR;
+    }
+
+    public void setCornerBR(Point2D cornerBR) {
+        this.cornerBR = cornerBR;
+    }
+
+    public Point2D getCornerBL() {
+        return cornerBL;
+    }
+
+    public void setCornerBL(Point2D cornerBL) {
+        this.cornerBL = cornerBL;
     }
 
     @Override
