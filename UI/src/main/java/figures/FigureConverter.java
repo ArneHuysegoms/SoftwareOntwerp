@@ -180,7 +180,6 @@ public class FigureConverter {
         start = new Point2D.Double(pair.getA().getCoordinate().getX()+15, 78);
         end = new Point2D.Double(pair.getA().getCoordinate().getX()+35, 78+(messageHeight*pair.getB()*2));
         boxDrawingStrategy.draw(graphics,start,end,"");
-
     }
 
 
