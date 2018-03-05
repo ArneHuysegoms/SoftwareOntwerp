@@ -1,11 +1,11 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
-import figures.Drawer.ActorDrawer;
+import figures.Drawer.PartyDrawer;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class CommunicationActorDrawer extends ActorDrawer{
+public class CommunicationActorDrawer extends PartyDrawer {
 
     private static CommunicationActorDrawer instance = null;
 
