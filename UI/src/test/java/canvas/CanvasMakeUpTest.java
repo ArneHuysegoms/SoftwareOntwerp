@@ -1,4 +1,5 @@
 package canvas;
+import canvascomponents.Clickable;
 import canvascomponents.diagram.CommunicationsDiagram;
 import canvascomponents.diagram.Diagram;
 import canvascomponents.diagram.SequenceDiagram;
@@ -8,6 +9,7 @@ import uievents.KeyEvent;
 import uievents.KeyEventType;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 import static org.junit.Assert.*;
 public class CanvasMakeUpTest {
@@ -43,8 +45,14 @@ public class CanvasMakeUpTest {
     }
 
     @Test
-    public void test_handleMouseEvent(){
-
+    public void test_handleKeyEvent_deleteParty(){
+        //lijst van parties does not contain selectedelement
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.handleKeyEvent(new KeyEvent(KeyEventType.DEL));
+        assertFalse(canvasMakeUp.getActiveDiagram().getParties().contains(c));
     }
 
 }
