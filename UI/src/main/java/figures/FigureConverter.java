@@ -1,6 +1,7 @@
 package figures;
 
 import canvascomponents.diagram.*;
+import canvascomponents.diagram.Label;
 import canvascomponents.diagram.Object;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
@@ -52,7 +53,7 @@ public class FigureConverter {
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
-        LabelDrawer.getInstance().draw(graphics, point, null, label);
+        LabelDrawer.getInstance().draw(graphics, point, new Point2D.Double(point.getX()+ Label.width, Label.height), label);
     }
 
     private void drawParties(Graphics graphics, Diagram diagram) {
@@ -64,7 +65,8 @@ public class FigureConverter {
                 boxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT), "");
             }
 
-            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().toString());
+            //TODO fix nullpointer exception
+            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
         }
     }
 
@@ -91,7 +93,7 @@ public class FigureConverter {
 
             this.messageDrawingStrategy.draw(graphics,start,end,m.getLabel().getLabel());
 
-            this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().toString());
+            this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
 
             m = m.getNextMessage();
         }
@@ -183,6 +185,5 @@ public class FigureConverter {
         end = new Point2D.Double(pair.getA().getCoordinate().getX()+35, 78+(messageHeight*pair.getB()*2));
         boxDrawingStrategy.draw(graphics,start,end,"");
     }
-
 
 }
