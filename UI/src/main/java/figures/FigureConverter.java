@@ -46,10 +46,9 @@ public class FigureConverter {
             actorDrawingStrategy = CommunicationActorDrawer.getInstance();
             messageDrawingStrategy = CommunicationMessageDrawer.getInstance();
         }
+
         drawParties(graphics, diagram);
-
         drawMessages(graphics, diagram);
-
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
@@ -75,15 +74,24 @@ public class FigureConverter {
 
     private void drawMessages(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
-        //true = invoke, false = response
-        List<Boolean> dissectionMessages = dissectMessages(m);
-        List<Pair<Party, Integer>> activationBarCount2 = calculateActivationBars2(dissectionMessages, m);
-        Map<Integer, Integer> activationBarCount = calculateActivationBars(dissectionMessages);
+        List<Pair<Party, Integer>> activationBarCount2 = calculateActivationBars2(m);
 
-        Point2D tl, br;
-        int x, y;
-        for (int i = 1; i <= activationBarCount.size(); i++) {
+        //Map<Integer, Integer> activationBarCount = calculateActivationBars(dissectionMessages);
 
+        //drawActivationBars(#######);
+
+        drawFirstActivationBar(graphics,activationBarCount2.get(0));
+
+        Point2D start, end;
+        while(m != null){
+            start = new Point2D.Double(m.getSender().getCoordinate().getX(),m.getyLocation());
+            end = new Point2D.Double(m.getReceiver().getCoordinate().getX(),m.getyLocation());
+
+            this.messageDrawingStrategy.draw(graphics,start,end,m.getLabel().getLabel());
+
+            this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().toString());
+
+            m = m.getNextMessage();
         }
     }
 
@@ -128,7 +136,7 @@ public class FigureConverter {
         return activationBarCount;
     }
 
-    private ArrayList<Pair<Party, Integer>> calculateActivationBars2(List<Boolean> dissectionMessages, Message m) {
+    private ArrayList<Pair<Party, Integer>> calculateActivationBars2(Message m) {
         ArrayList<Pair<Party, Integer>> activationBarCount = new ArrayList<Pair<Party, Integer>>();
 
         int invokeCounter = 0, responseCounter = 0, activationBarsCalculated = 0;
@@ -161,9 +169,17 @@ public class FigureConverter {
         //to calculate y
         int passedMessages = 0;
 
-
         for(Pair<Party, Integer> p:list){
         }
+
+    }
+
+    private void drawFirstActivationBar(Graphics graphics, Pair<Party, Integer> pair){
+        Point2D start, end;
+        int messageHeight = 16;
+        start = new Point2D.Double(pair.getA().getCoordinate().getX()+15, 78);
+        end = new Point2D.Double(pair.getA().getCoordinate().getX()+35, 78+(messageHeight*pair.getB()*2));
+        boxDrawingStrategy.draw(graphics,start,end,"");
 
     }
 
