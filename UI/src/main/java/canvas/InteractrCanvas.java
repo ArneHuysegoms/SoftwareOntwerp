@@ -3,6 +3,7 @@ package canvas;
 import canvascomponents.diagram.Diagram;
 import figures.FigureConverter;
 import figures.basicShapes.DashedLine;
+import uievents.KeyEvent;
 import uievents.KeyEventFactory;
 import uievents.MouseEvent;
 import uievents.MouseEventFactory;
@@ -47,7 +48,8 @@ public class InteractrCanvas extends CanvasWindow{
 
     @Override
     public void handleKeyEvent(int id, int keyCode, char keyChar){
-        keyFactory.createKeyEvent(id, keyCode, keyChar);
+        KeyEvent e = keyFactory.createKeyEvent(id, keyCode, keyChar);
+        canvasMakeUp.handleKeyEvent(e);
         this.repaint();
     }
 }
