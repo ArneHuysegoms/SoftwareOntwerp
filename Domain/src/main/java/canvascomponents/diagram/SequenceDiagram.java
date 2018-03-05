@@ -99,7 +99,7 @@ public class SequenceDiagram extends Diagram {
      */
     @Override
     boolean isLifeLine(Point2D location, Party party) {
-        return (location.getY() > MAXY) && (location.getX() >= party.getCoordinate().getX() - 10 && location.getX() <= party.getCoordinate().getX() + 10);
+        return (location.getY() > MAXY) && (location.getX() >= party.getCoordinate().getX() - 20 && location.getX() <= party.getCoordinate().getX() + 20);
     }
 
 
