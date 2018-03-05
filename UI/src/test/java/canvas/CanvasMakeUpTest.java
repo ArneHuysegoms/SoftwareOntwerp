@@ -31,7 +31,7 @@ public class CanvasMakeUpTest {
     }
 
     @Test
-    public void test_handleKeyEvent(){
+    public void test_handleKeyEvent_tab(){
         Diagram d = canvasMakeUp.getActiveDiagram();
         KeyEventType type = KeyEventType.TAB;
         KeyEvent keyEvent = new KeyEvent(type);
@@ -40,6 +40,11 @@ public class CanvasMakeUpTest {
         System.out.print(d.getClass());
         System.out.print(d2.getClass());
         assertNotEquals(d.getClass(), d2.getClass());
+    }
+
+    @Test
+    public void test_handleMouseEvent(){
+
     }
 
 }
