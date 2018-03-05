@@ -64,8 +64,7 @@ public class CanvasMakeUpTest {
         canvasMakeUp.getActiveDiagram().addCharToLabel('S');
         Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.DRAG, new Point2D.Double(25,51)));
-        System.out.println(c.getDistance(new Point2D.Double(0,0)));
-        System.out.println(c.getClass());
-        assertEquals(5,5);
+        Clickable c1 = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,51));
+        assertTrue(c.equals(c1));
     }
 }
