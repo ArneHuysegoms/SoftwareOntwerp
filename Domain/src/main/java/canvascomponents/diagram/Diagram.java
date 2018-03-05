@@ -106,6 +106,15 @@ public abstract class Diagram{
     ////////////////////////////////////
 
     /**
+     * sets the editable label to the given label
+     *
+     * @param label
+     */
+    private void setEditableLable(Label label){
+        this.editableLable = label;
+    }
+
+    /**
      * sets the selected element of the diagram
      * @param selectedElement
      */
@@ -234,7 +243,7 @@ public abstract class Diagram{
      * @return true if the diagram is in messageMode, false otherwise
      */
     public boolean isMessageMode(){
-        return this.isMessageMode();
+        return this.messageMode;
     }
 
     /**********************************************************************************************************/
@@ -249,14 +258,15 @@ public abstract class Diagram{
      * @param point2D the location on which to add a new party
      */
     public void addNewParty(Point2D point2D){
-        int posSeq = findNextPositionInSequenceDiagram(this.getParties());
+        int posSeq = findNextPositionInSequenceDiagram();
         Point2D finalPosition = null;
         PartyLabel label;
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidPartyLocation(point2D);
             try {
-                label = new PartyLabel("I", new Point2D.Double(point2D.getX() -80, point2D.getY() + 51));
+                label = new PartyLabel("I", new Point2D.Double(point2D.getX() + 10, point2D.getY() + 20));
                 Object object = new Object(posSeq, finalPosition, label);
+                this.addParty(object);
                 startEditingLable(label);
             }
             catch (Exception e){
@@ -325,10 +335,15 @@ public abstract class Diagram{
                     else {
                         next = previous.getNextMessage();
                     }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel(), receiver, sender,  new Double(startLocation.getY() - 7).intValue() );
+                    Message resultMessage = new ResultMessage(next, new MessageLabel(), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
                     MessageLabel messageLabel = new MessageLabel();
-                    Message invocation = new InvocationMessage(resultMessage, messageLabel, sender, receiver, new Double(startLocation.getY() + 7).intValue());
-                    previous.setNextMessage(invocation);
+                    Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
+                    if(previous != null) {
+                        previous.setNextMessage(invocation);
+                    }
+                    else{
+                        this.setFirstMessage(invocation);
+                    }
                     startEditingLable(messageLabel);
                 }
                 catch (DomainException exc){
@@ -357,7 +372,7 @@ public abstract class Diagram{
      * @return the element that was clicked on
      */
     public Clickable findSelectedElement(Point2D point2D){
-        if(selectedElement instanceof Label){
+        if(! (selectClickableElement(point2D) instanceof Label)){
             stopEditingLabel();
             this.setLabelMode(false);
             labelContainer = "";
@@ -365,11 +380,26 @@ public abstract class Diagram{
         }
         Clickable selected = selectClickableElement(point2D);
         this.setSelectedElement(selected);
+        if(selected instanceof Label){
+            this.setEditableLable((Label) selected);
+        }
         return selected;
     }
 
+    /**
+     * adds the given char to the Label in edit
+     *
+     * @param newChar
+     */
     public void addCharToLabel(char newChar){
         appendCharToLabel(newChar);
+    }
+
+    /**
+     * removes the last Char from the Label in edit
+     */
+    public void removeLastCharFromLabel(){
+        removeCharFromContainer();
     }
 
     /**
@@ -386,7 +416,9 @@ public abstract class Diagram{
      */
     public void stopEditingLabel(){
         try {
-            this.editableLable.setLabel(labelContainer);
+            if(editableLable != null ) {
+                this.editableLable.setLabel(labelContainer);
+            }
         }
         catch (DomainException exc){
             System.out.println(exc.getMessage());
@@ -463,14 +495,20 @@ public abstract class Diagram{
      * @param message the message to be deleted
      */
     private void deleteMessage(Message message){
-        Message iter = this.getFirstMessage();
-        Message previous;
-        while(! iter.getNextMessage().equals(message)){
-            iter = iter.getNextMessage();
+        if( ! message.equals(this.getFirstMessage())){
+            Message iter = this.getFirstMessage();
+            Message previous;
+            while(iter.getNextMessage() != null && ! iter.getNextMessage().equals(message)){
+                iter = iter.getNextMessage();
+            }
+            previous = iter;
+            Message next = skipOverDependentMessages(message, -1);
+            previous.setNextMessage(next);
         }
-        previous = iter;
-        Message next = skipOverDependentMessages(message, -1);
-        previous.setNextMessage(next);
+        else{
+            this.firstMessage = null;
+        }
+
     }
 
     /**
@@ -478,13 +516,20 @@ public abstract class Diagram{
      * @param party the party that will be deleted
      */
     private void rearrangeMessageTreeByParty(Party party){
-        Message message = getFirstMessage();
-        Message nextMessage;
-        while(message != null){
-            if(message.getSender().equals(party) || message.getReceiver().equals(party)){
-                nextMessage = skipOverDependentMessages(message, -1);
-                message.setNextMessage(nextMessage);
-                message = nextMessage;
+        Message previous = getFirstMessage();
+        if(getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)){
+            firstMessage = null;
+        }
+        else{
+            Message message = previous.getNextMessage();
+            while (message != null) {
+                if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
+                    message = skipOverDependentMessages(message, -1);
+                    if(previous != null) {
+                        previous.setNextMessage(message);
+                        previous = message;
+                    }
+                }
             }
         }
     }
@@ -499,13 +544,16 @@ public abstract class Diagram{
      * @return the first message that doesn't depend on the provided message
      */
     private Message skipOverDependentMessages(Message message, int stack){
+        if(message == null){
+            return null;
+        }
         if(stack < 0 ){
             message = message.getNextMessage();
             if(message != null) {
                 if (message instanceof InvocationMessage) {
-                    skipOverDependentMessages(message, stack--);
+                    return skipOverDependentMessages(message, --stack);
                 } else if (message instanceof ResultMessage) {
-                    skipOverDependentMessages(message, stack++);
+                    return skipOverDependentMessages(message, ++stack);
                 }
             }
             else{
@@ -526,7 +574,43 @@ public abstract class Diagram{
      */
     private boolean checkCallStack(Party party){
         Message message = getFirstMessage();
-        return party.equals(message.getSender());
+        Message firstPartyMessage = null;
+        boolean found = false;
+        if(firstMessage.getSender().equals(party)){
+            firstPartyMessage = getFirstMessage();
+        }
+        else {
+            while (!found && message.getNextMessage() != null) {
+                if (message.getSender().equals(party)) {
+                    found = true;
+                    firstPartyMessage = message;
+                }
+            }
+        }
+        return checkStack(firstPartyMessage, -1);
+    }
+
+    private boolean checkStack(Message message, int stack){
+        if(message == null){
+            return false;
+        }
+        if(stack < 0 ){
+            message = message.getNextMessage();
+            if(message != null) {
+                if (message instanceof InvocationMessage) {
+                    return checkStack(message, --stack);
+                } else if (message instanceof ResultMessage) {
+                    return checkStack(message, ++stack);
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -553,6 +637,26 @@ public abstract class Diagram{
         }
         this.labelContainer += newChar;
         String label = labelContainer + "|";
+        this.setNewLabel(label);
+    }
+
+    /**
+     * removes the last char from the label that is being edited
+     */
+    private void removeCharFromContainer(){
+        if(this.labelContainer.length() > 0){
+            String label = this.labelContainer.substring(0, labelContainer.length() - 1);
+            labelContainer = label;
+            this.setNewLabel(labelContainer + "|");
+        }
+    }
+
+    /**
+     * sets the label of the Label in edit to the given label
+     *
+     * @param label
+     */
+    private void setNewLabel(String label){
         try {
             boolean valid = editableLable.isValidLabel(label);
             editableLable.setLabel(label);
@@ -589,8 +693,8 @@ public abstract class Diagram{
         while(message != null) {
             if (message.isClicked(point2D)) {
                 possibleElements.add(message);
-                message = message.getNextMessage();
             }
+            message = message.getNextMessage();
         }
         if(possibleElements.size() == 1){
            return possibleElements.get(0);
@@ -626,13 +730,11 @@ public abstract class Diagram{
     /**
      * Finds the next position in the sequenceDiagram
      *
-     * @param parties the list of parties currently in the diagram
-     *
      * @return an integer denoting the next position
      */
-    private int findNextPositionInSequenceDiagram(List<Party> parties){
+    private int findNextPositionInSequenceDiagram(){
         int pos = 0;
-        for(Party party : parties){
+        for(Party party : this.getParties()){
             if(party.getPositionInSequenceDiagram() > pos){
                 pos = party.getPositionInSequenceDiagram();
             }
@@ -679,7 +781,7 @@ public abstract class Diagram{
             next = message.getNextMessage();
             if(next != null){
                 if(next.getyLocation() > yLocation){
-                    return next;
+                    return message;
                 }
             }
         }

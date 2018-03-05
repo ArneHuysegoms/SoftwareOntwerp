@@ -18,8 +18,8 @@ public class KeyEventTest {
 
     @Test
     public void test_keyChar(){
-        assertEquals(keyEvent2.getKeyChar(), 'a');
         assertEquals(keyEvent.getKeyChar(), '\0');
+        assertEquals(keyEvent2.getKeyChar(), 'a');
     }
 
     @Test
@@ -35,7 +35,7 @@ public class KeyEventTest {
     }
 
     @Test
-    public void test_different_keyevents(){
+    public void test_different_keyEvents(){
         KeyEvent keyEvent3 = new KeyEvent(KeyEventType.COLON);
         assertFalse(keyEvent.equals(keyEvent3));
     }
