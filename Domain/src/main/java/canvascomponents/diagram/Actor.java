@@ -84,6 +84,16 @@ public class Actor extends Party{
     }
 
     /**
+     * method to find the correct location for the label of a Party
+     *
+     * @return a Point2D indicating the location
+     */
+    @Override
+    public Point2D getCorrectLabelPosition() {
+        return new Point2D.Double(this.getCoordinate().getX() - 10, this.getCoordinate().getY() + 50);
+    }
+
+    /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked
      * @return

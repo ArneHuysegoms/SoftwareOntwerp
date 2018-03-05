@@ -250,6 +250,33 @@ public abstract class Diagram{
         return this.messageMode;
     }
 
+    /**
+     * checks if the currently selected element is a label
+     *
+     * @return true if the the currently selected element is a label, false otherwise
+     */
+    public boolean selectedElementIsLabel(){
+        return this.getSelectedElement() instanceof Label;
+    }
+
+    /**
+     * checks if the currently selected element is a Party
+     *
+     * @return true if the the currently selected element is a Party, false otherwise
+     */
+    public boolean selectedElementIsParty(){
+        return this.getSelectedElement() instanceof Party;
+    }
+
+    /**
+     * checks if the currently selected element is a MessageStart
+     *
+     * @return true if the the currently selected element is a MessageStart, false otherwise
+     */
+    public boolean selectedElementIsMessageStart(){
+        return this.getSelectedElement() instanceof MessageStart;
+    }
+
     /**********************************************************************************************************/
 
     ////////////////////////////////////
@@ -291,10 +318,11 @@ public abstract class Diagram{
                 Object o = (Object) this.getSelectedElement();
                 try {
                     Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
-                    newActor.getLabel().setCoordinate(new Point2D.Double(newActor.getCoordinate().getX() - 10, newActor.getCoordinate().getY() + 50));
+                    newActor.getLabel().setCoordinate(newActor.getCorrectLabelPosition());
                     this.updateMessagesForChangedParty(newActor);
                     this.removeParty(o);
                     this.addParty(newActor);
+                    selectedElement = newActor;
                 }
                 catch (DomainException exception){
                     System.out.println(exception.getMessage());
@@ -304,10 +332,11 @@ public abstract class Diagram{
                 Actor a = (Actor) this.getSelectedElement();
                 try {
                     Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
-                    newObject.getLabel().setCoordinate(new Point2D.Double(newObject.getCoordinate().getX() + 5, newObject.getCoordinate().getY() + 25));
+                    newObject.getLabel().setCoordinate(newObject.getCorrectLabelPosition());
                     this.updateMessagesForChangedParty(newObject);
                     this.removeParty(a);
                     this.addParty(newObject);
+                    selectedElement = newObject;
                 }
                 catch (DomainException exception){
                     System.out.println(exception.getMessage());
@@ -379,6 +408,7 @@ public abstract class Diagram{
                 newPosition = getValidPartyLocation(newPosition);
             }
             p.setCoordinate(newPosition);
+            p.getLabel().setCoordinate(p.getCorrectLabelPosition());
         }
     }
 

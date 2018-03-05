@@ -1,6 +1,5 @@
-package basicShapes;
+package figures.basicShapes;
 
-import figures.basicShapes.Line;
 import org.junit.Before;
 import org.junit.Test;
 

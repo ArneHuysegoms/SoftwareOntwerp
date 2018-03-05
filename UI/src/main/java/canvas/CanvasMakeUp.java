@@ -81,7 +81,7 @@ public class CanvasMakeUp {
                     break;
                 case CHAR:
                 case COLON:
-                    if(getActiveDiagram().getSelectedElement() instanceof Label){
+                    if(getActiveDiagram().selectedElementIsLabel()){
                         getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
@@ -96,7 +96,7 @@ public class CanvasMakeUp {
           switch (keyEvent.getKeyEventType()){
               case CHAR:
               case COLON:
-                  if(getActiveDiagram().getSelectedElement() instanceof Label){
+                  if(getActiveDiagram().selectedElementIsLabel()){
                       getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
                   }
                   break;
@@ -119,12 +119,12 @@ public class CanvasMakeUp {
             this.getActiveDiagram().stopEditingLabel();
             switch (mouseEvent.getMouseEventType()){
                 case DRAG:
-                    if(this.getActiveDiagram().getSelectedElement() instanceof Party){
+                    if(this.getActiveDiagram().selectedElementIsParty()){
                         this.getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
                     }
                     break;
                 case RELEASE:
-                    if(this.getActiveDiagram().getSelectedElement() instanceof Diagram.MessageStart){
+                    if(this.getActiveDiagram().selectedElementIsMessageStart()){
                         this.getActiveDiagram().addNewMessage(mouseEvent.getPoint());
                     }
                     break;
@@ -132,7 +132,7 @@ public class CanvasMakeUp {
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    if(getActiveDiagram().getSelectedElement() instanceof Actor){
+                    if(this.getActiveDiagram().selectedElementIsParty()){
                         getActiveDiagram().changePartyType(mouseEvent.getPoint());
                     }
                     if(getActiveDiagram().getSelectedElement() == null){

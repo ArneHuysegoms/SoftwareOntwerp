@@ -213,5 +213,12 @@ public abstract class Party implements Clickable{
     @Override
     public abstract boolean isClicked(Point2D point2D);
 
+    /**
+     * method to find the correct location for the label of a Party
+     *
+     * @return a Point2D indicating the location
+     */
+    public abstract Point2D getCorrectLabelPosition();
+
 
 }
