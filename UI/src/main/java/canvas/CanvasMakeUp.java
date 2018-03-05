@@ -132,7 +132,12 @@ public class CanvasMakeUp {
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    this.getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
+                    if(getActiveDiagram().getSelectedElement() instanceof Actor){
+                        getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
+                    }
+                    if(getActiveDiagram().getSelectedElement() == null){
+                        getActiveDiagram().addNewParty(mouseEvent.getPoint());
+                    }
                     break;
                 default:
                     break;
@@ -165,8 +170,10 @@ public class CanvasMakeUp {
     private void handleLeftClick(MouseEvent mouseEvent){
         Clickable selected = activeDiagram.getSelectedElement();
         Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
-        if(selected.equals(newSelected) && selected instanceof Label){
-            this.getActiveDiagram().editLabel();
+        if(selected != null) {
+            if (selected.equals(newSelected) && selected instanceof Label) {
+                this.getActiveDiagram().editLabel();
+            }
         }
     }
 }

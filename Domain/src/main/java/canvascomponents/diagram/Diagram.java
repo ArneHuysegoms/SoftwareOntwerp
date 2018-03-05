@@ -40,6 +40,7 @@ public abstract class Diagram{
     /**
      * creates an empty diagram
      */
+
     public Diagram() {
         this(null, null);
     }
@@ -50,6 +51,7 @@ public abstract class Diagram{
      * @param parties
      * @param firstMessage
      */
+
     public Diagram(List<Party> parties, Message firstMessage){
         this(parties, firstMessage, null);
     }
@@ -61,6 +63,7 @@ public abstract class Diagram{
      * @param firstMessage
      * @param selectedElement
      */
+
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
         this(parties, firstMessage, selectedElement, "");
     }
@@ -73,6 +76,7 @@ public abstract class Diagram{
      * @param selectedElement
      * @param labelContainer
      */
+
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
         this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
     }
@@ -358,12 +362,20 @@ public abstract class Diagram{
     /**
      * changes the position of the selected element
      *
+     * if the party is dragged outside of the canvas the party is stuck on (0,0).
+     *
      * @param newPosition the new position for the selected element
      */
     public void changePartyPosition(Point2D newPosition){
-        if(this.getSelectedElement() instanceof Actor){
-            Actor a = (Actor) this.getSelectedElement();
-            a.setCoordinate(newPosition);
+        if(newPosition.getY() < 0){
+            newPosition.setLocation(newPosition.getX(), 0);
+        }
+        if(newPosition.getX() < 0){
+            newPosition.setLocation(0, newPosition.getY());
+        }
+        if(this.getSelectedElement() instanceof Party){
+            Party p = (Party) this.getSelectedElement();
+            p.setCoordinate(newPosition);
         }
     }
 
