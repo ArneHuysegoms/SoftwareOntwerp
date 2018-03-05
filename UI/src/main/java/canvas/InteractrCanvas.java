@@ -2,6 +2,7 @@ package canvas;
 
 import canvascomponents.diagram.Diagram;
 import figures.FigureConverter;
+import figures.basicShapes.DashedLine;
 import uievents.KeyEventFactory;
 import uievents.MouseEvent;
 import uievents.MouseEventFactory;
@@ -31,7 +32,9 @@ public class InteractrCanvas extends CanvasWindow{
 
     public void paint(Graphics g){
         g.drawLine(0,0, (int)((Math.random()*100)+1),50);
-        //FigureConverter.getInstance().draw(g,canvasMakeUp.getActiveDiagram());
+        new DashedLine(0,50,600,50).draw(g);
+        new DashedLine(0,100,600,100).draw(g);
+        FigureConverter.getInstance().draw(g,canvasMakeUp.getActiveDiagram());
     }
 
     @Override
