@@ -55,8 +55,6 @@ public class FigureConverter {
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
-        System.out.println("x: " + point.getX() + " y: " + point.getY());
-
         LabelDrawer.getInstance().draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
     }
 
