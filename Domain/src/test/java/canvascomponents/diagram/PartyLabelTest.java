@@ -1,6 +1,7 @@
 package canvascomponents.diagram;
 
 import exceptions.DomainException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.geom.Point2D;
@@ -9,6 +10,12 @@ import static org.junit.Assert.*;
 
 public class PartyLabelTest {
 
+    PartyLabel partyLabel;
+
+    @Before
+    public void setUp(){
+        partyLabel = new PartyLabel();
+    }
     @Test
     public void getLabel() throws DomainException {
         Point2D lblPoint = new Point2D.Double(25, 350);
@@ -26,10 +33,10 @@ public class PartyLabelTest {
 
     @Test
     public void isValidPartyLabel() {
-        assertTrue(PartyLabel.isValidPartyLabel("test:Actor"));
-        assertTrue(PartyLabel.isValidPartyLabel(":Actor"));
-        assertFalse(PartyLabel.isValidPartyLabel("Actor"));
-        assertFalse(PartyLabel.isValidPartyLabel("actor"));
+        assertTrue(partyLabel.isValidLabel("test:Actor"));
+        assertTrue(partyLabel.isValidLabel(":Actor"));
+        assertFalse(partyLabel.isValidLabel("Actor"));
+        assertFalse(partyLabel.isValidLabel("actor"));
     }
 
     @Test

@@ -15,7 +15,7 @@ public class ActorTest {
         Point2D lblPoint = new Point2D.Double(25, 350);
         PartyLabel actorLabel = new PartyLabel("test:Actor", lblPoint);
         Actor a = new Actor(10, point2D, actorLabel);
-        Point2D clickPoint = new Point2D.Double(50, 390);
+        Point2D clickPoint = new Point2D.Double(50, 410);
         assertTrue(a.isClicked(clickPoint));
     }
 

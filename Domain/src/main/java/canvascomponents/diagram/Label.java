@@ -82,6 +82,6 @@ public abstract class Label implements Clickable {
         double startY = this.getCoordinate().getY();
         double endX = startX + width;
         double endY = startY + height;
-        return (clickX >= startX && clickX <= endX) && (clickY <= startY && clickY >= endY);
+        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 }
