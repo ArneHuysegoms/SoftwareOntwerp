@@ -3,11 +3,14 @@ package figures.helperClasses;
 import canvas.CanvasWindow;
 import figures.basicShapes.DashedLine;
 import figures.basicShapes.DashedRectangle;
+import figures.basicShapes.Line;
 import figures.basicShapes.Rectangle;
 import figures.diagramFigures.Arrow;
+import figures.diagramFigures.Box;
 import figures.diagramFigures.StickMan;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 //TODO : this is a test-class, delete at will
 public class MainTemp extends CanvasWindow {
@@ -41,6 +44,9 @@ public class MainTemp extends CanvasWindow {
         a.draw(graphics);
         az.draw(graphics);
         graphics.drawString("Mis je", 20,20);
+
+        new Box(new Point2D.Double(10,10), new Point2D.Double(600,24)).draw(graphics);
+        new Line(0,0,199,99).draw(graphics);
     }
 
     @Override
