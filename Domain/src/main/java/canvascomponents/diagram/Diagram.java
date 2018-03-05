@@ -40,6 +40,7 @@ public abstract class Diagram{
     /**
      * creates an empty diagram
      */
+
     public Diagram() {
         this(null, null);
     }
@@ -50,6 +51,7 @@ public abstract class Diagram{
      * @param parties
      * @param firstMessage
      */
+
     public Diagram(List<Party> parties, Message firstMessage){
         this(parties, firstMessage, null);
     }
@@ -61,6 +63,7 @@ public abstract class Diagram{
      * @param firstMessage
      * @param selectedElement
      */
+
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
         this(parties, firstMessage, selectedElement, "");
     }
@@ -73,6 +76,7 @@ public abstract class Diagram{
      * @param selectedElement
      * @param labelContainer
      */
+
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
         this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
     }
