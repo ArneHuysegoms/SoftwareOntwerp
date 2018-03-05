@@ -122,6 +122,10 @@ public class DiagramTest {
     public void Test_ChangePartyPosition(){
         Diagram seq = new SequenceDiagram(parties, firstMessage, actor1);
         seq.changePartyPosition(new Point2D.Double(500, 500));
+        assertEquals(new Point2D.Double(500, 50), actor1.getCoordinate());
+
+        Diagram com = new CommunicationsDiagram(parties, firstMessage, actor1);
+        com.changePartyPosition(new Point2D.Double(500, 500));
         assertEquals(new Point2D.Double(500, 500), actor1.getCoordinate());
     }
 

@@ -71,6 +71,7 @@ public class CanvasMakeUp {
      */
     public void handleKeyEvent(KeyEvent keyEvent){
         if(checkIfValidLable()){
+            this.getActiveDiagram().stopEditingLabel();
             switch (keyEvent.getKeyEventType()){
                 case TAB:
                     this.changeActiveDiagram();
@@ -86,6 +87,7 @@ public class CanvasMakeUp {
                     break;
                 case BACKSPACE:
                     this.getActiveDiagram().removeLastCharFromLabel();
+                    break;
                 default:
                     break;
             }
@@ -100,6 +102,7 @@ public class CanvasMakeUp {
                   break;
               case BACKSPACE:
                   this.getActiveDiagram().removeLastCharFromLabel();
+                  break;
               default:
                   break;
           }
@@ -121,10 +124,7 @@ public class CanvasMakeUp {
                     }
                     break;
                 case RELEASE:
-                    if(this.getActiveDiagram().getSelectedElement() instanceof Party){
-                        this.getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
-                    }
-                    else if(this.getActiveDiagram().getSelectedElement() instanceof Diagram.MessageStart){
+                    if(this.getActiveDiagram().getSelectedElement() instanceof Diagram.MessageStart){
                         this.getActiveDiagram().addNewMessage(mouseEvent.getPoint());
                     }
                     break;
@@ -133,7 +133,7 @@ public class CanvasMakeUp {
                     break;
                 case LEFTDOUBLECLICK:
                     if(getActiveDiagram().getSelectedElement() instanceof Actor){
-                        getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
+                        getActiveDiagram().changePartyType(mouseEvent.getPoint());
                     }
                     if(getActiveDiagram().getSelectedElement() == null){
                         getActiveDiagram().addNewParty(mouseEvent.getPoint());

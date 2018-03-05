@@ -268,7 +268,7 @@ public abstract class Diagram{
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidPartyLocation(point2D);
             try {
-                label = new PartyLabel("I", new Point2D.Double(point2D.getX() + 10, point2D.getY() + 20));
+                label = new PartyLabel("|", new Point2D.Double(finalPosition.getX() + 10, finalPosition.getY() + 20));
                 Object object = new Object(posSeq, finalPosition, label);
                 this.addParty(object);
                 startEditingLable(label);
@@ -325,7 +325,7 @@ public abstract class Diagram{
     public void addNewMessage(Point2D endlocation) throws IllegalStateException{
         Party receiver = findReceiver(endlocation);
         if(receiver == null){
-            throw new IllegalStateException("Other lifeline not found");
+            System.out.println("Other lifeline not found");
         }
         else {
             MessageStart MessageStart = (MessageStart) this.getSelectedElement();
@@ -341,8 +341,8 @@ public abstract class Diagram{
                     else {
                         next = previous.getNextMessage();
                     }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel(), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
-                    MessageLabel messageLabel = new MessageLabel();
+                    Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() - 6)), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
+                    MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender),startLocation.getY() + 6));
                     Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
                     if(previous != null) {
                         previous.setNextMessage(invocation);
@@ -375,6 +375,9 @@ public abstract class Diagram{
         }
         if(this.getSelectedElement() instanceof Party){
             Party p = (Party) this.getSelectedElement();
+            if(! isValidPartyLocation( newPosition)){
+                newPosition = getValidPartyLocation(newPosition);
+            }
             p.setCoordinate(newPosition);
         }
     }
@@ -456,6 +459,18 @@ public abstract class Diagram{
     ////////////////////////////////////
     //  utilities
     ////////////////////////////////////
+
+    /**
+     * returns a x-position for a new label, based on the location of the sender and receiver
+     *
+     * @param p1 the first party
+     * @param p2 the second party
+     *
+     * @return a new Point2D containing the location for the new message
+     */
+    private Double getNewLabelXPosition(Party p1, Party p2){
+        return Math.abs(p1.getCoordinate().getX() - p2.getCoordinate().getX());
+    }
 
     /**
      * Finds the receiver of a message based on the endlocation of the messageDrag
@@ -591,6 +606,9 @@ public abstract class Diagram{
         Message message = getFirstMessage();
         Message firstPartyMessage = null;
         boolean found = false;
+        if(firstMessage == null){
+            return true;
+        }
         if(firstMessage.getSender().equals(party)){
             firstPartyMessage = getFirstMessage();
         }
@@ -698,7 +716,9 @@ public abstract class Diagram{
                 possibleElements.add(party.getLabel());
             }
             if(isLifeLine(point2D, party)){
-                return new MessageStart(party, point2D);
+                if(possibleElements.size() == 0 ) {
+                    return new MessageStart(party, point2D);
+                }
             }
         }
         Message message = this.getFirstMessage();
@@ -785,6 +805,9 @@ public abstract class Diagram{
 
     private Message findPreviousMessage(int yLocation){
         Message message = this.getFirstMessage();
+        if(message == null){
+            return null;
+        }
         if(message.getyLocation() > yLocation){
             return null;
         }
