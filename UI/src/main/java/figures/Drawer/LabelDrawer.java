@@ -22,7 +22,8 @@ public class LabelDrawer implements Drawer{
 
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
+        System.out.println("x: "+start.getX()+" y: "+start.getY()+" a: "+end.getX()+" b: "+end.getY());
         new Box(start, end).draw(graphics);
-        graphics.drawString(label, (int)start.getX()+5, (int)start.getY()+3);
+        graphics.drawString(label, (int)start.getX()+3, (int)start.getY()+10);
     }
 }
