@@ -1,20 +1,47 @@
 package figures.diagramFigures;
 
-import figures.PointXY;
 import figures.basicShapes.Line;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Arrow extends Figure {
     private Line line;
     private Line arrowTop;
     private Line arrowBottom;
 
-    public Arrow(int x, int y, int length){
-        line = new Line(x,y,x+length,y);
-        arrowTop = new Line(x+length,y, x+length-15,y-10);
-        arrowBottom = new Line(x+length,y, x+length-15,y+10);
+    public Arrow(Point2D start, Point2D end) {
+        line = new Line(start, end);
+        calculateArrowHead((int)start.getX(),(int)start.getY(),(int)end.getX(),(int)end.getY());
     }
+
+    public Arrow(int x, int y, int x2, int y2) {
+        line = new Line(x, y, x2, y2);
+        calculateArrowHead(x,y,x2,y2);
+    }
+
+    private void calculateArrowHead(int x, int y, int x2, int y2){
+        if (x < x2) {
+            if (y == y2) {
+                arrowTop = new Line(x2, y, x2 - 15, y - 10);
+                arrowBottom = new Line(x2, y, x2 - 15, y + 10);
+            } else if (y < y2) {
+                //TODO
+            } else if (y > y2) {
+                //TODO
+            }
+        } else if (x > x2) {
+            if (y == y2) {
+                arrowTop = new Line(x2, y2, x2 + 15, y2 - 10);
+                arrowBottom = new Line(x2, y2, x2 + 15, y2 + 10);
+            } else if (y < y2) {
+                //TODO
+            } else if (y > y2) {
+                //TODO
+            }
+        }
+    }
+
     @Override
     public void draw(Graphics graphics) {
         line.draw(graphics);

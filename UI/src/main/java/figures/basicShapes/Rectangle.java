@@ -1,35 +1,38 @@
 package figures.basicShapes;
 
-import figures.PointXY;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-public class Rectangle extends Shape{
+public class Rectangle extends Shape {
 
-    private PointXY position;
-    private int width;
-    private int length;
+    protected Point2D positionTL;
+    protected Point2D cornerTR;
+    protected Point2D cornerBR;
+    protected Point2D cornerBL;
 
-    public Rectangle(int x, int y, int width, int length){
-        this.position = new PointXY(x, y);
-        this.width = width;
-        this.length = length;
+    public Rectangle(int x, int y, int width, int length) {
+        this.positionTL = new Point2D.Double(x, y);
+        this.cornerTR = new Point2D.Double(x+width, y);
+        this.cornerBR = new Point2D.Double(x+width, y+length);
+        this.cornerBL = new Point2D.Double(x, y+length);
     }
 
-    public PointXY getPosition() {
-        return position;
+    public Rectangle(Point2D tl, Point2D br){
+        this.positionTL = tl;
+        this.cornerBR = br;
+        this.cornerBL = new Point2D.Double(tl.getX(), br.getY());
+        this.cornerTR = new Point2D.Double(br.getX(), tl.getY());
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getLength(){
-        return length;
+    public Point2D getPosition() {
+        return positionTL;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        graphics.drawRect(position.getX(), position.getY(), width, length);
+        new Line(positionTL, cornerTR).draw(graphics);
+        new Line(cornerTR, cornerBR).draw(graphics);
+        new Line(cornerBR, cornerBL).draw(graphics);
+        new Line(cornerBL, positionTL).draw(graphics);
     }
 }
