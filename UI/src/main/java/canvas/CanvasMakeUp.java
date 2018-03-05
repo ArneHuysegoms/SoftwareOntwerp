@@ -87,6 +87,7 @@ public class CanvasMakeUp {
                     break;
                 case BACKSPACE:
                     this.getActiveDiagram().removeLastCharFromLabel();
+                    break;
                 default:
                     break;
             }
@@ -101,6 +102,7 @@ public class CanvasMakeUp {
                   break;
               case BACKSPACE:
                   this.getActiveDiagram().removeLastCharFromLabel();
+                  break;
               default:
                   break;
           }
