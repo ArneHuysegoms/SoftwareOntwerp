@@ -4,5 +4,6 @@ public enum MouseEventType {
     LEFTDOUBLECLICK,
     LEFTCLICK,
     DRAG,
-    RELEASE;
+    RELEASE,
+    IRRELEVANT;
 }
