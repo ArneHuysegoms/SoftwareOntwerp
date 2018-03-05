@@ -182,4 +182,11 @@ public class DiagramTest {
         assertEquals("|",labelActor1.getLabel());
         assertEquals(false, seq.isValidLabel());
     }
+
+    @Test
+    public void Test_DeleteByLabel(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
+        seq.deleteElement();
+        assertFalse(seq.getParties().contains(actor1));
+    }
 }
