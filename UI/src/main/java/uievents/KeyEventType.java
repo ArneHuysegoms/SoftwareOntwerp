@@ -5,5 +5,6 @@ public enum KeyEventType {
     CHAR,
     COLON,
     DEL,
-    BACKSPACE;
+    BACKSPACE,
+    IRRELEVANT;
 }

@@ -15,10 +15,12 @@ public class KeyEventFactory {
      *          | BACKSPACE if KEY_PRESSED and keyCode == 8
      */
     public KeyEvent createKeyEvent(int id, int keyCode, char keyChar){
-        if(id == java.awt.event.KeyEvent.KEY_PRESSED && keyCode == 9){
+        if(keyCode == 0){
+            return new KeyEvent(KeyEventType.IRRELEVANT);
+        } else if(id == java.awt.event.KeyEvent.KEY_PRESSED && keyCode == 9){
             return new KeyEvent(KeyEventType.TAB);
             //* 9 is keycode for tab
-        } else if(id == java.awt.event.KeyEvent.KEY_PRESSED && keyCode == 46){
+        } else if(id == java.awt.event.KeyEvent.KEY_PRESSED && (keyCode == 46 || keyCode == 127)){
             return new KeyEvent(KeyEventType.DEL);
             //* 46 is keycode for delete
         } else if(id == java.awt.event.KeyEvent.KEY_TYPED && keyCode == 186){
@@ -30,6 +32,6 @@ public class KeyEventFactory {
             return new KeyEvent(KeyEventType.BACKSPACE);
             //* 8 is keycode for delete
         }
-        return null;
+        return new KeyEvent(KeyEventType.IRRELEVANT);
     }
 }
