@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
 import uievents.KeyEventType;
+import uievents.MouseEvent;
+import uievents.MouseEventType;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -55,4 +57,15 @@ public class CanvasMakeUpTest {
         assertFalse(canvasMakeUp.getActiveDiagram().getParties().contains(c));
     }
 
+    @Test
+    public void test_handleMouseEvent_drag(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.DRAG, new Point2D.Double(25,51)));
+        System.out.println(c.getDistance(new Point2D.Double(0,0)));
+        System.out.println(c.getClass());
+        assertEquals(5,5);
+    }
 }
