@@ -25,7 +25,7 @@ public class MouseEventFactory {
         } else if (id == java.awt.event.MouseEvent.MOUSE_RELEASED) {
             return new MouseEvent(MouseEventType.RELEASE, point);
         }
-        return null;
+        return new MouseEvent(MouseEventType.IRRELEVANT, point);
     }
 
 
