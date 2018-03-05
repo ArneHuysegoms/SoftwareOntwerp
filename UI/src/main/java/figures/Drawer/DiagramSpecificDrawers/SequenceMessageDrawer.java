@@ -7,16 +7,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class SequenceMessageDrawer extends MessageDrawer{
-    private static SequenceMessageDrawer instance = null;
 
-    private SequenceMessageDrawer(){
+    public SequenceMessageDrawer(){
 
-    }
-
-    public static SequenceMessageDrawer getInstance(){
-        if(instance == null)
-            instance = new SequenceMessageDrawer();
-        return instance;
     }
 
     @Override

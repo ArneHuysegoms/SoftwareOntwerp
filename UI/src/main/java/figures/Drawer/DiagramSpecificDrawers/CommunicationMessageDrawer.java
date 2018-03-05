@@ -7,16 +7,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class CommunicationMessageDrawer extends MessageDrawer {
-    private static CommunicationMessageDrawer instance = null;
+    public CommunicationMessageDrawer() {
 
-    private CommunicationMessageDrawer(){
-
-    }
-
-    public static CommunicationMessageDrawer getInstance(){
-        if(instance == null)
-            instance = new CommunicationMessageDrawer();
-        return instance;
     }
 
     @Override

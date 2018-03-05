@@ -9,16 +9,8 @@ import java.awt.geom.Point2D;
 
 public class SequenceActorDrawer extends PartyDrawer {
 
-    private static SequenceActorDrawer instance = null;
+    public SequenceActorDrawer(){
 
-    private SequenceActorDrawer(){
-
-    }
-
-    public static SequenceActorDrawer getInstance(){
-        if(instance == null)
-            instance = new SequenceActorDrawer();
-        return instance;
     }
 
     @Override

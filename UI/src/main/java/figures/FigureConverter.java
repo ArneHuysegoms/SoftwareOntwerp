@@ -18,10 +18,11 @@ import java.util.Map;
 public class FigureConverter {
     private static FigureConverter instance = null;
 
-    private Drawer actorDrawingStrategy;
-    private Drawer objectDrawingStrategy;
-    private Drawer boxDrawingStrategy;
-    private Drawer messageDrawingStrategy;
+    private Drawer actorDrawingStrategy,
+            objectDrawingStrategy,
+            boxDrawingStrategy,
+            messageDrawingStrategy,
+            labelDrawingStrategy;
 
     private FigureConverter() {
 
@@ -35,18 +36,19 @@ public class FigureConverter {
 
 
     public void draw(Graphics graphics, Diagram diagram) {
-        boxDrawingStrategy = BoxDrawer.getInstance();
+        boxDrawingStrategy = new BoxDrawer();
+        labelDrawingStrategy = new LabelDrawer();
 
 
         if (diagram instanceof SequenceDiagram) {
-            actorDrawingStrategy = SequenceActorDrawer.getInstance();
-            messageDrawingStrategy = SequenceMessageDrawer.getInstance();
+            actorDrawingStrategy = new SequenceActorDrawer();
+            messageDrawingStrategy = new SequenceMessageDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
         }
         if (diagram instanceof CommunicationsDiagram) {
-            actorDrawingStrategy = CommunicationActorDrawer.getInstance();
-            messageDrawingStrategy = CommunicationMessageDrawer.getInstance();
-            objectDrawingStrategy = BoxDrawer.getInstance();
+            actorDrawingStrategy = new CommunicationActorDrawer();
+            messageDrawingStrategy = new CommunicationMessageDrawer();
+            objectDrawingStrategy = new BoxDrawer();
         }
 
         drawParties(graphics, diagram);
@@ -56,7 +58,7 @@ public class FigureConverter {
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
-        LabelDrawer.getInstance().draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
+        labelDrawingStrategy.draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
     }
 
     private void drawParties(Graphics graphics, Diagram diagram) {

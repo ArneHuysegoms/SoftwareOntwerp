@@ -7,16 +7,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class BoxDrawer implements Drawer{
-    private static BoxDrawer instance = null;
 
-    private BoxDrawer(){
-
-    }
-
-    public static BoxDrawer getInstance(){
-        if(instance == null)
-            instance = new BoxDrawer();
-        return instance;
+    public BoxDrawer(){
     }
 
     @Override
