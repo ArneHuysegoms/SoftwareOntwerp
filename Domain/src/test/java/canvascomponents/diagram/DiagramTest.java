@@ -45,7 +45,7 @@ public class DiagramTest {
         assertEquals("", sequenceDiagram.getLabelContainer());
         assertFalse(sequenceDiagram.isMessageMode());
         assertFalse(sequenceDiagram.isLabelMode());
-        assertFalse(sequenceDiagram.isValidLabel());
+        assertTrue(sequenceDiagram.isValidLabel());
 
         Diagram commDiagram = new CommunicationsDiagram();
         assertEquals(0, commDiagram.getParties().size());
@@ -54,7 +54,7 @@ public class DiagramTest {
         assertEquals("", commDiagram.getLabelContainer());
         assertFalse(commDiagram.isMessageMode());
         assertFalse(commDiagram.isLabelMode());
-        assertFalse(commDiagram.isValidLabel());
+        assertTrue(commDiagram.isValidLabel());
     }
 
     @Test
@@ -172,12 +172,10 @@ public class DiagramTest {
         seq.findSelectedElement(new Point2D.Double(10, 110));
         seq.addCharToLabel('a');
         assertEquals("a|",labelActor1.getLabel());
-        assertEquals(false, seq.isLabelMode());
         assertEquals(false, seq.isValidLabel());
 
         seq.removeLastCharFromLabel();
         assertEquals("|",labelActor1.getLabel());
-        assertEquals(false, seq.isLabelMode());
         assertEquals(false, seq.isValidLabel());
     }
 }

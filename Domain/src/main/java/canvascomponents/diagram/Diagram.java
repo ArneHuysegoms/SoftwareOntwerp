@@ -74,7 +74,7 @@ public abstract class Diagram{
      * @param labelContainer
      */
     public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
+        this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
     }
 
     /**
@@ -287,6 +287,7 @@ public abstract class Diagram{
                 Object o = (Object) this.getSelectedElement();
                 try {
                     Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
+                    newActor.getLabel().setCoordinate(new Point2D.Double(newActor.getCoordinate().getX() - 10, newActor.getCoordinate().getY() + 50));
                     this.updateMessagesForChangedParty(newActor);
                     this.removeParty(o);
                     this.addParty(newActor);
@@ -299,6 +300,7 @@ public abstract class Diagram{
                 Actor a = (Actor) this.getSelectedElement();
                 try {
                     Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
+                    newObject.getLabel().setCoordinate(new Point2D.Double(newObject.getCoordinate().getX() + 5, newObject.getCoordinate().getY() + 25));
                     this.updateMessagesForChangedParty(newObject);
                     this.removeParty(a);
                     this.addParty(newObject);
@@ -516,18 +518,19 @@ public abstract class Diagram{
      * @param party the party that will be deleted
      */
     private void rearrangeMessageTreeByParty(Party party){
-        Message previous = getFirstMessage();
-        if(getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)){
-            firstMessage = null;
-        }
-        else{
-            Message message = previous.getNextMessage();
-            while (message != null) {
-                if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
-                    message = skipOverDependentMessages(message, -1);
-                    if(previous != null) {
-                        previous.setNextMessage(message);
-                        previous = message;
+        if(this.getFirstMessage() != null) {
+            Message previous = getFirstMessage();
+            if (getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)) {
+                firstMessage = null;
+            } else {
+                Message message = previous.getNextMessage();
+                while (message != null) {
+                    if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
+                        message = skipOverDependentMessages(message, -1);
+                        if (previous != null) {
+                            previous.setNextMessage(message);
+                            previous = message;
+                        }
                     }
                 }
             }
@@ -660,10 +663,7 @@ public abstract class Diagram{
         try {
             boolean valid = editableLable.isValidLabel(label);
             editableLable.setLabel(label);
-            if (valid) {
-                this.setValidLabel(true);
-                this.setLabelMode(false);
-            }
+           this.setValidLabel(valid);
         }
         catch (DomainException exc){
             System.out.println(exc.getMessage());

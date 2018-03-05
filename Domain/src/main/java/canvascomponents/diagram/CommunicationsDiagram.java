@@ -47,7 +47,7 @@ public class CommunicationsDiagram extends Diagram {
      * @param labelContainer
      */
     public CommunicationsDiagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(parties, firstMessage, selectedElement, labelContainer, false, false, false);
+        this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
     }
 
     /**

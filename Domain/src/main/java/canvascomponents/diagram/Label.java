@@ -40,7 +40,7 @@ public abstract class Label implements Clickable {
      * @post the coordinate of the new label equals the given coordinate
      *       new.getCoordinate == coordinate;
      */
-    private void setCoordinate(Point2D coordinate) {
+    public void setCoordinate(Point2D coordinate) {
         this.coordinate = coordinate;
     }
 

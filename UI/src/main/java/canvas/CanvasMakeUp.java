@@ -23,7 +23,6 @@ public class CanvasMakeUp {
      */
     public CanvasMakeUp(){
         activeDiagram = new SequenceDiagram();
-        activeDiagram.addNewParty(new Point2D.Double(25, 51));
     }
 
     /**
