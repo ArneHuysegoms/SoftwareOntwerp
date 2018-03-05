@@ -358,12 +358,20 @@ public abstract class Diagram{
     /**
      * changes the position of the selected element
      *
+     * if the party is dragged outside of the canvas the party is stuck on (0,0).
+     *
      * @param newPosition the new position for the selected element
      */
     public void changePartyPosition(Point2D newPosition){
-        if(this.getSelectedElement() instanceof Actor){
-            Actor a = (Actor) this.getSelectedElement();
-            a.setCoordinate(newPosition);
+        if(newPosition.getY() < 0){
+            newPosition.setLocation(newPosition.getX(), 0);
+        }
+        if(newPosition.getX() < 0){
+            newPosition.setLocation(0, newPosition.getY());
+        }
+        if(this.getSelectedElement() instanceof Party){
+            Party p = (Party) this.getSelectedElement();
+            p.setCoordinate(newPosition);
         }
     }
 
