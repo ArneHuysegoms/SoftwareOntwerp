@@ -132,7 +132,7 @@ public class CanvasMakeUp {
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    if(getActiveDiagram().getSelectedElement() instanceof Actor){
+                    if(getActiveDiagram().getSelectedElement() instanceof Party){
                         getActiveDiagram().changePartyType(mouseEvent.getPoint());
                     }
                     if(getActiveDiagram().getSelectedElement() == null){
