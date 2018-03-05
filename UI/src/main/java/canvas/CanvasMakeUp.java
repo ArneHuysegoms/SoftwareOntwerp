@@ -71,6 +71,7 @@ public class CanvasMakeUp {
      */
     public void handleKeyEvent(KeyEvent keyEvent){
         if(checkIfValidLable()){
+            this.getActiveDiagram().stopEditingLabel();
             switch (keyEvent.getKeyEventType()){
                 case TAB:
                     this.changeActiveDiagram();

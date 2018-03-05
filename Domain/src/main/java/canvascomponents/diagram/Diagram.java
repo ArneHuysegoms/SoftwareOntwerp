@@ -268,7 +268,7 @@ public abstract class Diagram{
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidPartyLocation(point2D);
             try {
-                label = new PartyLabel("I", new Point2D.Double(point2D.getX() + 10, point2D.getY() + 20));
+                label = new PartyLabel("I", new Point2D.Double(finalPosition.getX() + 10, finalPosition.getY() + 20));
                 Object object = new Object(posSeq, finalPosition, label);
                 this.addParty(object);
                 startEditingLable(label);
