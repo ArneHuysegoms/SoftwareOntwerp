@@ -42,7 +42,7 @@ public class FigureConverter {
             actorDrawingStrategy = SequenceActorDrawer.getInstance();
             messageDrawingStrategy = SequenceMessageDrawer.getInstance();
         }
-        if (diagram instanceof SequenceDiagram) {
+        if (diagram instanceof CommunicationsDiagram) {
             actorDrawingStrategy = CommunicationActorDrawer.getInstance();
             messageDrawingStrategy = CommunicationMessageDrawer.getInstance();
         }
@@ -80,7 +80,9 @@ public class FigureConverter {
 
         //drawActivationBars(#######);
 
-        drawFirstActivationBar(graphics,activationBarCount2.get(0));
+        if(m!=null) {
+            drawFirstActivationBar(graphics, activationBarCount2.get(0));
+        }
 
         Point2D start, end;
         while(m != null){
