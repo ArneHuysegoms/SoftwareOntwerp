@@ -17,6 +17,13 @@ public class Rectangle extends Shape {
         this.cornerBL = new Point2D.Double(x, y+length);
     }
 
+    public Rectangle(Point2D tl, Point2D br){
+        this.positionTL = tl;
+        this.cornerBR = br;
+        this.cornerBL = new Point2D.Double(tl.getX(), br.getY());
+        this.cornerTR = new Point2D.Double(br.getX(), tl.getY());
+    }
+
     public Point2D getPosition() {
         return positionTL;
     }
