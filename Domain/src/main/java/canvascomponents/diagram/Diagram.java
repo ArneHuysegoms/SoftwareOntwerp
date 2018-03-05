@@ -735,9 +735,11 @@ public abstract class Diagram{
         if(this.labelContainer.isEmpty()){
             this.labelContainer = "";
         }
-        this.labelContainer += newChar;
-        String label = labelContainer + "|";
-        this.setNewLabel(label);
+        if(Label.isCorrectCharForLabel(newChar)) {
+            this.labelContainer += newChar;
+            String label = labelContainer + "|";
+            this.setNewLabel(label);
+        }
     }
 
     /**
@@ -878,14 +880,18 @@ public abstract class Diagram{
         if(message.getyLocation() > yLocation){
             return null;
         }
+        Message previous = message;
         Message next;
-        while(message.getyLocation() < yLocation){
-            next = message.getNextMessage();
-            if(next != null){
-                if(next.getyLocation() > yLocation){
-                    return message;
-                }
+        boolean found = false;
+        while(! found){
+            next = previous.getNextMessage();
+            if(next == null){
+                return previous;
             }
+            if(next.getyLocation() > yLocation){
+                return previous;
+            }
+            previous = next;
         }
         return null;
     }
