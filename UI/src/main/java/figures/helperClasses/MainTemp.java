@@ -28,7 +28,7 @@ public class MainTemp extends CanvasWindow {
     protected void paint(Graphics graphics){
 
         StickMan s = new StickMan(10,10);
-        Arrow a = new Arrow(50, 50, 100, 50);
+        Arrow a = new Arrow(50, 25, 100, 25);
         Arrow az = new Arrow(100, 100, 50, 100);
         Rectangle r = new Rectangle(300,400,150, 50);
         DashedLine d = new DashedLine(0,300,600,300);
@@ -48,6 +48,13 @@ public class MainTemp extends CanvasWindow {
         new Box(new Point2D.Double(10,10), new Point2D.Double(600,24)).draw(graphics);
         new Line(0,0,10,10).draw(graphics);
         new Line(0,500,600,500).draw(graphics);
+        new Arrow(100, 100, 150, 150).draw(graphics);
+        new Arrow(100, 100, 150, 50).draw(graphics);
+        new Arrow(100, 100, 50, 50).draw(graphics);
+        new Arrow(100, 100, 50, 150).draw(graphics);
+        new Arrow(100, 100, 100, 150).draw(graphics);
+        new Arrow(100, 100, 100, 50).draw(graphics);
+
     }
 
     @Override
