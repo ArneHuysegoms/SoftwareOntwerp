@@ -99,8 +99,8 @@ public class FigureConverter {
         }
         Point2D start, end;
         while (m != null) {
-            start = new Point2D.Double(m.getSender().getCoordinate().getX(), m.getyLocation());
-            end = new Point2D.Double(m.getReceiver().getCoordinate().getX(), m.getyLocation());
+            start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
+            end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
 
             if (m instanceof InvocationMessage)
                 this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
