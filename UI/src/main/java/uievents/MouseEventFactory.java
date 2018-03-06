@@ -24,6 +24,8 @@ public class MouseEventFactory {
             return new MouseEvent(MouseEventType.DRAG, point);
         } else if (id == java.awt.event.MouseEvent.MOUSE_RELEASED) {
             return new MouseEvent(MouseEventType.RELEASE, point);
+        } else if (id == java.awt.event.MouseEvent.MOUSE_PRESSED) {
+            return new MouseEvent(MouseEventType.PRESSED, point);
         }
         return new MouseEvent(MouseEventType.IRRELEVANT, point);
     }
