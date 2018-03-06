@@ -12,7 +12,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class FigureConverter {
@@ -21,7 +20,8 @@ public class FigureConverter {
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             boxDrawingStrategy,
-            messageDrawingStrategy,
+            invokeMessageDrawingStrategy,
+            responseMessageDrawingStrategy,
             labelDrawingStrategy;
 
     private FigureConverter() {
@@ -42,13 +42,15 @@ public class FigureConverter {
 
         if (diagram instanceof SequenceDiagram) {
             actorDrawingStrategy = new SequenceActorDrawer();
-            messageDrawingStrategy = new SequenceMessageDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
+            invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
         }
         if (diagram instanceof CommunicationsDiagram) {
             actorDrawingStrategy = new CommunicationActorDrawer();
-            messageDrawingStrategy = new CommunicationMessageDrawer();
-            objectDrawingStrategy = new BoxDrawer();
+            objectDrawingStrategy = new CommunicationObjectDrawer();
+            invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
         }
 
         drawParties(graphics, diagram);
@@ -62,12 +64,16 @@ public class FigureConverter {
     }
 
     private void drawParties(Graphics graphics, Diagram diagram) {
+        Point2D start, end;
+
         for (Party p : diagram.getParties()) {
+            start = p.getCoordinate();
+            end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
             if (p instanceof Actor) {
-                actorDrawingStrategy.draw(graphics, p.getCoordinate(), null, "");
+                actorDrawingStrategy.draw(graphics, start, end, "");
             } else {
-                Point2D start = p.getCoordinate();
-                objectDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT), "");
+
+                objectDrawingStrategy.draw(graphics, start, end, "");
             }
 
             drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
@@ -88,6 +94,7 @@ public class FigureConverter {
         //drawActivationBars(#######);
 
         if (m != null) {
+            //TODO enkel sequence (wrs ergens samen met lifeline duhh)
             drawFirstActivationBar(graphics, activationBarCount2.get(0));
         }
         Point2D start, end;
@@ -95,7 +102,10 @@ public class FigureConverter {
             start = new Point2D.Double(m.getSender().getCoordinate().getX(), m.getyLocation());
             end = new Point2D.Double(m.getReceiver().getCoordinate().getX(), m.getyLocation());
 
-            this.messageDrawingStrategy.draw(graphics, start, end, m.getLabel().getLabel());
+            if (m instanceof InvocationMessage)
+                this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
+            if (m instanceof ResultMessage)
+                this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
 
             this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
 
