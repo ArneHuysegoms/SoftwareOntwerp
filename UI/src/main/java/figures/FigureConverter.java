@@ -52,9 +52,9 @@ public class FigureConverter {
         }
 
         drawParties(graphics, diagram);
-        if (diagram.getFirstMessage() != null) {
-            drawMessages(graphics, diagram);
-        }
+
+        drawMessages(graphics, diagram);
+
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
@@ -87,8 +87,9 @@ public class FigureConverter {
 
         //drawActivationBars(#######);
 
-        drawFirstActivationBar(graphics, activationBarCount2.get(0));
-
+        if (m != null) {
+            drawFirstActivationBar(graphics, activationBarCount2.get(0));
+        }
         Point2D start, end;
         while (m != null) {
             start = new Point2D.Double(m.getSender().getCoordinate().getX(), m.getyLocation());
