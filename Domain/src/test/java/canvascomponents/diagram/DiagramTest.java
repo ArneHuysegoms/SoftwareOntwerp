@@ -165,7 +165,7 @@ public class DiagramTest {
         seq.findSelectedElement(new Point2D.Double(25,130));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
 
-        seq.addNewMessage(new Point2D.Double(125, 130));
+        seq.addNewMessage(new Point2D.Double(150, 130));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
         assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
     }
@@ -176,10 +176,29 @@ public class DiagramTest {
         seq.findSelectedElement(new Point2D.Double(25,200));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
 
-        seq.addNewMessage(new Point2D.Double(125, 200));
+        seq.addNewMessage(new Point2D.Double(150, 200));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
+    }
+
+    @Test
+    public void Test_addNewMessage_between_2_messages(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+
+        seq.findSelectedElement(new Point2D.Double(25,200));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+        seq.addNewMessage(new Point2D.Double(150, 200));
+
+        seq.findSelectedElement(new Point2D.Double(25, 160));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+        seq.addNewMessage(new Point2D.Double(150, 160));
+        assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
+
     }
 
     @Test

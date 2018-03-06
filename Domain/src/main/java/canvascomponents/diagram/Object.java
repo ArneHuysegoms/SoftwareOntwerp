@@ -97,6 +97,11 @@ public class Object extends Party{
         return new Point2D.Double(this.getCoordinate().getX() + 5, this.getCoordinate().getY() + 25);
     }
 
+    @Override
+    public double getXLocationOfLifeline() {
+        return this.getCoordinate().getX() + WIDTH/2;
+    }
+
     /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked

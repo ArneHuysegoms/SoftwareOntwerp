@@ -327,7 +327,7 @@ public abstract class Diagram{
                 Object o = (Object) this.getSelectedElement();
                 try {
                     Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
-                    newActor.getLabel().setCoordinate(newActor.getCorrectLabelPosition());
+                    newActor.updateLabelCoordinate(newActor.getCorrectLabelPosition());
                     this.updateMessagesForChangedParty(newActor);
                     this.removeParty(o);
                     this.addParty(newActor);
@@ -341,7 +341,7 @@ public abstract class Diagram{
                 Actor a = (Actor) this.getSelectedElement();
                 try {
                     Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
-                    newObject.getLabel().setCoordinate(newObject.getCorrectLabelPosition());
+                    newObject.updateLabelCoordinate(newObject.getCorrectLabelPosition());
                     this.updateMessagesForChangedParty(newObject);
                     this.removeParty(a);
                     this.addParty(newObject);
@@ -368,30 +368,29 @@ public abstract class Diagram{
         else {
             MessageStart MessageStart = (MessageStart) this.getSelectedElement();
             Party sender = MessageStart.getParty();
-            Point2D startLocation = MessageStart.getStartloction();
-            if(checkCallStack(sender)) {
-                try {
-                    Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
-                    Message next;
-                    if(previous == null) {
-                        next = this.getFirstMessage();
+            if(! receiver.equals(sender)) {
+                Point2D startLocation = MessageStart.getStartloction();
+                if (checkCallStack(sender)) {
+                    try {
+                        Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
+                        Message next;
+                        if (previous == null) {
+                            next = this.getFirstMessage();
+                        } else {
+                            next = previous.getNextMessage();
+                        }
+                        Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() + 12)), sender, receiver, new Double(startLocation.getY() + 12).intValue());
+                        MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender), startLocation.getY() - 12));
+                        Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() - 12).intValue());
+                        if (previous != null) {
+                            previous.setNextMessage(invocation);
+                        } else {
+                            this.setFirstMessage(invocation);
+                        }
+                        startEditingLable(messageLabel);
+                    } catch (DomainException exc) {
+                        System.out.println(exc.getMessage());
                     }
-                    else {
-                        next = previous.getNextMessage();
-                    }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() - 6)), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
-                    MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender),startLocation.getY() + 6));
-                    Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
-                    if(previous != null) {
-                        previous.setNextMessage(invocation);
-                    }
-                    else{
-                        this.setFirstMessage(invocation);
-                    }
-                    startEditingLable(messageLabel);
-                }
-                catch (DomainException exc){
-                    System.out.println(exc.getMessage());
                 }
             }
         }
@@ -417,8 +416,10 @@ public abstract class Diagram{
                 newPosition = getValidPartyLocation(newPosition);
             }
             p.setCoordinate(newPosition);
-            p.getLabel().setCoordinate(p.getCorrectLabelPosition());
+            p.updateLabelCoordinate(p.getCorrectLabelPosition());
         }
+
+
     }
 
     /**
@@ -511,7 +512,7 @@ public abstract class Diagram{
      * @return a new Point2D containing the location for the new message
      */
     private Double getNewLabelXPosition(Party p1, Party p2){
-        return Math.abs(p1.getCoordinate().getX() - p2.getCoordinate().getX());
+        return (p1.getCoordinate().getX() + p2.getCoordinate().getX())/2;
     }
 
     /**
@@ -676,18 +677,35 @@ public abstract class Diagram{
         if(firstMessage == null){
             return true;
         }
-        if(firstMessage.getSender().equals(party)){
-            firstPartyMessage = getFirstMessage();
-        }
-        else {
-            while (!found && message.getNextMessage() != null) {
-                if (message.getSender().equals(party)) {
-                    found = true;
-                    firstPartyMessage = message;
+       firstPartyMessage = findFirstMessageSendByParty(party);
+        return checkStack(firstPartyMessage, -1);
+    }
+
+    /**
+     * Finds the first message send by the provided party
+     *
+     * @param party the party to find the first send message of
+     * @return the first message send by the party, null if the party has never send a message
+     */
+    private Message findFirstMessageSendByParty(Party party){
+        if(this.getFirstMessage() != null){
+            if(this.getFirstMessage().getSender().equals(party)){
+                return this.getFirstMessage();
+            }
+            else {
+                Message looper = this.getFirstMessage();
+                boolean found = false;
+                while (!found && looper != null) {
+                    if (looper.getSender().equals(party)) {
+                        found = true;
+                        return looper;
+                    } else {
+                        looper = looper.getNextMessage();
+                    }
                 }
             }
         }
-        return checkStack(firstPartyMessage, -1);
+         return null;
     }
 
     private boolean checkStack(Message message, int stack){

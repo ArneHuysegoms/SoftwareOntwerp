@@ -93,6 +93,11 @@ public class Actor extends Party{
         return new Point2D.Double(this.getCoordinate().getX() - 10, this.getCoordinate().getY() + 50);
     }
 
+    @Override
+    public double getXLocationOfLifeline() {
+        return this.getCoordinate().getX();
+    }
+
     /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked
