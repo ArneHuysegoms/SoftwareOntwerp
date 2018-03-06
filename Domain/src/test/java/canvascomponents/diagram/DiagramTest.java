@@ -32,8 +32,8 @@ public class DiagramTest {
        parties.add(actor1);
        parties.add(object1);
 
-       secondMessage = new ResultMessage(null, new MessageLabel(), actor1, object1, 140);
-       firstMessage = new InvocationMessage(secondMessage, new MessageLabel(), object1, actor1, 120);
+       secondMessage = new ResultMessage(null, new MessageLabel("", new Point2D.Double((actor1.getXLocationOfLifeline() + object1.getXLocationOfLifeline())/2, (140 - 12))), actor1, object1, 140);
+       firstMessage = new InvocationMessage(secondMessage, new MessageLabel("", new Point2D.Double((actor1.getXLocationOfLifeline() + object1.getXLocationOfLifeline())/2, (120 - 12))), object1, actor1, 120);
     }
 
     @Test
