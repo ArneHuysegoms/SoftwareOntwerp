@@ -12,6 +12,7 @@ public class MouseEventFactoryTest {
     private MouseEvent mouseEvent2;
     private MouseEvent mouseEvent3;
     private MouseEvent mouseEvent4;
+    private MouseEvent mouseEvent5;
     private Point2D point;
     private MouseEventFactory mouseEventFactory;
 
@@ -23,6 +24,7 @@ public class MouseEventFactoryTest {
         mouseEvent2 = new MouseEvent(MouseEventType.LEFTCLICK, point);
         mouseEvent3 = new MouseEvent(MouseEventType.DRAG, point);
         mouseEvent4 = new MouseEvent(MouseEventType.RELEASE, point);
+        mouseEvent5 = new MouseEvent(MouseEventType.PRESSED, point);
     }
     @Test
     public void test_create_leftDoubleClick(){
@@ -43,5 +45,10 @@ public class MouseEventFactoryTest {
     public void test_create_release(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_RELEASED, 1, point);
         assertTrue(test.equals(mouseEvent4));
+    }
+    @Test
+    public void test_create_pressed(){
+        MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_PRESSED, 1, point);
+        assertTrue(test.equals(mouseEvent5));
     }
 }
