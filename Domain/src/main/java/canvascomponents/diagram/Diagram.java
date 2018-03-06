@@ -368,30 +368,29 @@ public abstract class Diagram{
         else {
             MessageStart MessageStart = (MessageStart) this.getSelectedElement();
             Party sender = MessageStart.getParty();
-            Point2D startLocation = MessageStart.getStartloction();
-            if(checkCallStack(sender)) {
-                try {
-                    Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
-                    Message next;
-                    if(previous == null) {
-                        next = this.getFirstMessage();
+            if(! receiver.equals(sender)) {
+                Point2D startLocation = MessageStart.getStartloction();
+                if (checkCallStack(sender)) {
+                    try {
+                        Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
+                        Message next;
+                        if (previous == null) {
+                            next = this.getFirstMessage();
+                        } else {
+                            next = previous.getNextMessage();
+                        }
+                        Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() + 12)), sender, receiver, new Double(startLocation.getY() + 12).intValue());
+                        MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender), startLocation.getY() - 12));
+                        Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() - 12).intValue());
+                        if (previous != null) {
+                            previous.setNextMessage(invocation);
+                        } else {
+                            this.setFirstMessage(invocation);
+                        }
+                        startEditingLable(messageLabel);
+                    } catch (DomainException exc) {
+                        System.out.println(exc.getMessage());
                     }
-                    else {
-                        next = previous.getNextMessage();
-                    }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() - 6)), sender, receiver,  new Double(startLocation.getY() - 6).intValue() );
-                    MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender),startLocation.getY() + 6));
-                    Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() + 6).intValue());
-                    if(previous != null) {
-                        previous.setNextMessage(invocation);
-                    }
-                    else{
-                        this.setFirstMessage(invocation);
-                    }
-                    startEditingLable(messageLabel);
-                }
-                catch (DomainException exc){
-                    System.out.println(exc.getMessage());
                 }
             }
         }

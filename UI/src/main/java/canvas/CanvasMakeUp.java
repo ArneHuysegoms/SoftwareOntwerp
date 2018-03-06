@@ -123,6 +123,9 @@ public class CanvasMakeUp {
                         this.getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
                     }
                     break;
+                case PRESSED:
+                    handleLeftClick(mouseEvent);
+                    break;
                 case RELEASE:
                     if(this.getActiveDiagram().selectedElementIsMessageStart()){
                         this.getActiveDiagram().addNewMessage(mouseEvent.getPoint());
