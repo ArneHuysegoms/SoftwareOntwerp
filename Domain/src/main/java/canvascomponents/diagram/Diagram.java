@@ -122,7 +122,7 @@ public abstract class Diagram{
      * sets the selected element of the diagram
      * @param selectedElement
      */
-    private void setSelectedElement(Clickable selectedElement){
+    public void setSelectedElement(Clickable selectedElement){
         this.selectedElement = selectedElement;
     }
 
@@ -394,6 +394,7 @@ public abstract class Diagram{
                 }
             }
         }
+        setProperMessagePositions();
     }
 
     /**
@@ -502,6 +503,21 @@ public abstract class Diagram{
     ////////////////////////////////////
     //  utilities
     ////////////////////////////////////
+
+    /**
+     * sets the yLocation of all messages in the tree to an appropriate number
+     */
+    private void setProperMessagePositions(){
+        Message message = this.getFirstMessage();
+        int yLocation = 120;
+        while(message != null){
+            message.setyLocation(yLocation);
+            yLocation += 35;
+            Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver()), message.getyLocation() - 15);
+            message.getLabel().setCoordinate(labelCoordinate);
+            message = message.getNextMessage();
+        }
+    }
 
     /**
      * returns a x-position for a new label, based on the location of the sender and receiver

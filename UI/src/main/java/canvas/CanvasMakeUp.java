@@ -124,7 +124,7 @@ public class CanvasMakeUp {
                     }
                     break;
                 case PRESSED:
-                    handleLeftClick(mouseEvent);
+                    handleMousePressed(mouseEvent);
                     break;
                 case RELEASE:
                     if(this.getActiveDiagram().selectedElementIsMessageStart()){
@@ -177,6 +177,14 @@ public class CanvasMakeUp {
             if (selected.equals(newSelected) && selected instanceof Label) {
                 this.getActiveDiagram().editLabel();
             }
+        }
+    }
+
+    private void handleMousePressed(MouseEvent mouseEvent){
+        Clickable selected = activeDiagram.getSelectedElement();
+        activeDiagram.findSelectedElement(mouseEvent.getPoint());
+        if(this.getActiveDiagram().selectedElementIsLabel()){
+            this.getActiveDiagram().setSelectedElement(selected);
         }
     }
 }
