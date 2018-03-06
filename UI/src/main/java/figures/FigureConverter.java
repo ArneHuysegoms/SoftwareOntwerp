@@ -1,5 +1,6 @@
 package figures;
 
+import canvascomponents.Clickable;
 import canvascomponents.diagram.*;
 import canvascomponents.diagram.Label;
 import canvascomponents.diagram.Object;
@@ -57,6 +58,8 @@ public class FigureConverter {
 
         drawMessages(graphics, diagram);
 
+        drawSelectionBox(graphics, diagram);
+
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
@@ -77,6 +80,24 @@ public class FigureConverter {
             }
 
             drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
+        }
+    }
+
+    private void drawSelectionBox(Graphics graphics, Diagram diagram) {
+        //TODO try refactor instanceof
+
+        Clickable c = diagram.getSelectedElement();
+
+        if(c instanceof Actor){
+            Actor a = (Actor)c;
+            Point2D start = new Point2D.Double(a.getCoordinate().getX()-(Actor.WIDTH/2),a.getCoordinate().getY()),
+                    end = new Point2D.Double(a.getCoordinate().getX()+(Actor.WIDTH/2),a.getCoordinate().getY()+Actor.WIDTH);
+            boxDrawingStrategy.draw(graphics,start, end,"");
+
+        } else if(c instanceof Label){
+            Label l = (Label)c;
+            Point2D start = l.getCoordinate();
+            boxDrawingStrategy.draw(graphics,start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height),"");
         }
     }
 
