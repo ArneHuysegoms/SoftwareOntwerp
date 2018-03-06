@@ -9,7 +9,7 @@ public class KeyEventFactory {
      * @param keyChar of the KeyEvent
      * @return new KeyEvent with KeyEventType
      *          | TAB if KEY_PRESSED and keyCode == 9
-     *          | DEL if KEY_PRESSED and keyCode == 46
+     *          | DEL if KEY_PRESSED and keyCode == 46 or 127
      *          | COLON if KEY_TYPED and keyCode == 186
      *          | CHAR if KEY_TYPED
      *          | BACKSPACE if KEY_PRESSED and keyCode == 8
