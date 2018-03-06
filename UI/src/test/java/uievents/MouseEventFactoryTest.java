@@ -29,26 +29,31 @@ public class MouseEventFactoryTest {
     @Test
     public void test_create_leftDoubleClick(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_CLICKED, 2, point);
-        assertTrue(test.equals(mouseEvent1));
+        assertTrue(test.getMouseEventType().equals(mouseEvent1.getMouseEventType()));
+        assertTrue(test.getPoint().equals(mouseEvent1.getPoint()));
     }
     @Test
     public void test_create_leftClick(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_CLICKED, 1, point);
-        assertTrue(test.equals(mouseEvent2));
+        assertTrue(test.getMouseEventType().equals(mouseEvent2.getMouseEventType()));
+        assertTrue(test.getPoint().equals(mouseEvent2.getPoint()));
     }
     @Test
     public void test_create_drag(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_DRAGGED, 1, point);
-        assertTrue(test.equals(mouseEvent3));
+        assertTrue(test.getMouseEventType().equals(mouseEvent3.getMouseEventType()));
+        assertTrue(test.getPoint().equals(mouseEvent3.getPoint()));
     }
     @Test
     public void test_create_release(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_RELEASED, 1, point);
-        assertTrue(test.equals(mouseEvent4));
+        assertTrue(test.getMouseEventType().equals(mouseEvent4.getMouseEventType()));
+        assertTrue(test.getPoint().equals(mouseEvent4.getPoint()));
     }
     @Test
     public void test_create_pressed(){
         MouseEvent test = mouseEventFactory.createMouseEvent(java.awt.event.MouseEvent.MOUSE_PRESSED, 1, point);
-        assertTrue(test.equals(mouseEvent5));
+        assertTrue(test.getMouseEventType().equals(mouseEvent5.getMouseEventType()));
+        assertTrue(test.getPoint().equals(mouseEvent5.getPoint()));
     }
 }
