@@ -419,8 +419,6 @@ public abstract class Diagram{
             p.setCoordinate(newPosition);
             p.updateLabelCoordinate(p.getCorrectLabelPosition());
         }
-
-
     }
 
     /**
@@ -811,6 +809,16 @@ public abstract class Diagram{
      */
     private Clickable selectClickableElement(Point2D point2D){
         List<Clickable> possibleElements = new ArrayList<>();
+        Message message = this.getFirstMessage();
+        while(message != null) {
+            if (message.isClicked(point2D)) {
+                possibleElements.add(message);
+            }
+            if(message.getLabel().isClicked(point2D)){
+                possibleElements.add(message.getLabel());
+            }
+            message = message.getNextMessage();
+        }
         for(Party party : this.getParties()){
             if(party.isClicked(point2D)){
                 possibleElements.add(party);
@@ -823,13 +831,6 @@ public abstract class Diagram{
                     return new MessageStart(party, point2D);
                 }
             }
-        }
-        Message message = this.getFirstMessage();
-        while(message != null) {
-            if (message.isClicked(point2D)) {
-                possibleElements.add(message);
-            }
-            message = message.getNextMessage();
         }
         if(possibleElements.size() == 1){
            return possibleElements.get(0);
