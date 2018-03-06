@@ -32,8 +32,8 @@ public class DiagramTest {
        parties.add(actor1);
        parties.add(object1);
 
-       secondMessage = new ResultMessage(null, new MessageLabel(), actor1, object1, 140);
-       firstMessage = new InvocationMessage(secondMessage, new MessageLabel(), object1, actor1, 120);
+       secondMessage = new ResultMessage(null, new MessageLabel("", new Point2D.Double((actor1.getXLocationOfLifeline() + object1.getXLocationOfLifeline())/2, (140 - 12))), actor1, object1, 140);
+       firstMessage = new InvocationMessage(secondMessage, new MessageLabel("", new Point2D.Double((actor1.getXLocationOfLifeline() + object1.getXLocationOfLifeline())/2, (120 - 12))), object1, actor1, 120);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class DiagramTest {
         seq.findSelectedElement(new Point2D.Double(25,130));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
 
-        seq.addNewMessage(new Point2D.Double(125, 130));
+        seq.addNewMessage(new Point2D.Double(150, 130));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
         assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
     }
@@ -176,7 +176,7 @@ public class DiagramTest {
         seq.findSelectedElement(new Point2D.Double(25,200));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
 
-        seq.addNewMessage(new Point2D.Double(125, 200));
+        seq.addNewMessage(new Point2D.Double(150, 200));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
@@ -188,11 +188,11 @@ public class DiagramTest {
 
         seq.findSelectedElement(new Point2D.Double(25,200));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
-        seq.addNewMessage(new Point2D.Double(125, 200));
+        seq.addNewMessage(new Point2D.Double(150, 200));
 
         seq.findSelectedElement(new Point2D.Double(25, 160));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
-        seq.addNewMessage(new Point2D.Double(125, 160));
+        seq.addNewMessage(new Point2D.Double(150, 160));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
         assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
