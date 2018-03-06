@@ -4,10 +4,7 @@ import canvascomponents.diagram.*;
 import canvascomponents.diagram.Label;
 import canvascomponents.diagram.Object;
 import figures.Drawer.*;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationMessageDrawer;
-import figures.Drawer.DiagramSpecificDrawers.SequenceActorDrawer;
-import figures.Drawer.DiagramSpecificDrawers.SequenceMessageDrawer;
+import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.helperClasses.Pair;
 
 import java.awt.*;
@@ -21,9 +18,11 @@ import java.util.Map;
 public class FigureConverter {
     private static FigureConverter instance = null;
 
-    private Drawer actorDrawingStrategy;
-    private Drawer boxDrawingStrategy;
-    private Drawer messageDrawingStrategy;
+    private Drawer actorDrawingStrategy,
+            objectDrawingStrategy,
+            boxDrawingStrategy,
+            messageDrawingStrategy,
+            labelDrawingStrategy;
 
     private FigureConverter() {
 
@@ -37,15 +36,19 @@ public class FigureConverter {
 
 
     public void draw(Graphics graphics, Diagram diagram) {
-        boxDrawingStrategy = BoxDrawer.getInstance();
+        boxDrawingStrategy = new BoxDrawer();
+        labelDrawingStrategy = new LabelDrawer();
+
 
         if (diagram instanceof SequenceDiagram) {
-            actorDrawingStrategy = SequenceActorDrawer.getInstance();
-            messageDrawingStrategy = SequenceMessageDrawer.getInstance();
+            actorDrawingStrategy = new SequenceActorDrawer();
+            messageDrawingStrategy = new SequenceMessageDrawer();
+            objectDrawingStrategy = new SequenceObjectDrawer();
         }
         if (diagram instanceof CommunicationsDiagram) {
-            actorDrawingStrategy = CommunicationActorDrawer.getInstance();
-            messageDrawingStrategy = CommunicationMessageDrawer.getInstance();
+            actorDrawingStrategy = new CommunicationActorDrawer();
+            messageDrawingStrategy = new CommunicationMessageDrawer();
+            objectDrawingStrategy = new BoxDrawer();
         }
 
         drawParties(graphics, diagram);
@@ -55,7 +58,7 @@ public class FigureConverter {
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
-        LabelDrawer.getInstance().draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
+        labelDrawingStrategy.draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
     }
 
     private void drawParties(Graphics graphics, Diagram diagram) {
@@ -64,10 +67,9 @@ public class FigureConverter {
                 actorDrawingStrategy.draw(graphics, p.getCoordinate(), null, "");
             } else {
                 Point2D start = p.getCoordinate();
-                boxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT), "");
+                objectDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT), "");
             }
 
-            //TODO fix nullpointer exception
             drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
         }
     }
@@ -78,6 +80,7 @@ public class FigureConverter {
 
     private void drawMessages(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
+        //TODO replace this calculation to draw-method where instanceof is checked for sequencediagram
         List<Pair<Party, Integer>> activationBarCount2 = calculateActivationBars2(m);
 
         //Map<Integer, Integer> activationBarCount = calculateActivationBars(dissectionMessages);

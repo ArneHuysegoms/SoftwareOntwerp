@@ -160,7 +160,7 @@ public class DiagramTest {
     }
 
     @Test
-    public void Test_addNewMessage(){
+    public void Test_addNewMessage_between_FirstMessage_and_its_result(){
         Diagram seq = new SequenceDiagram(parties, firstMessage);
         seq.findSelectedElement(new Point2D.Double(25,130));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
@@ -168,6 +168,18 @@ public class DiagramTest {
         seq.addNewMessage(new Point2D.Double(125, 130));
         assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
         assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
+    }
+
+    @Test
+    public void Test_addNewMessage_after_last_message(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+        seq.findSelectedElement(new Point2D.Double(25,200));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+
+        seq.addNewMessage(new Point2D.Double(125, 200));
+        assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
     }
 
     @Test
@@ -181,5 +193,12 @@ public class DiagramTest {
         seq.removeLastCharFromLabel();
         assertEquals("|",labelActor1.getLabel());
         assertEquals(false, seq.isValidLabel());
+    }
+
+    @Test
+    public void Test_DeleteByLabel(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
+        seq.deleteElement();
+        assertFalse(seq.getParties().contains(actor1));
     }
 }

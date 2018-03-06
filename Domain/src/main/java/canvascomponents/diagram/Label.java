@@ -84,4 +84,8 @@ public abstract class Label implements Clickable {
         double endY = startY + height;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
+
+    public static boolean isCorrectCharForLabel(char charToAdd){
+        return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':';
+    }
 }

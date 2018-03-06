@@ -1,22 +1,14 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
-import figures.Drawer.ActorDrawer;
+import figures.Drawer.PartyDrawer;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class CommunicationActorDrawer extends ActorDrawer{
+public class CommunicationActorDrawer extends PartyDrawer {
 
-    private static CommunicationActorDrawer instance = null;
+    public CommunicationActorDrawer(){
 
-    private CommunicationActorDrawer(){
-
-    }
-
-    public static CommunicationActorDrawer getInstance(){
-        if(instance == null)
-            instance = new CommunicationActorDrawer();
-        return instance;
     }
 
     @Override
