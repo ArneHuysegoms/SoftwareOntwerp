@@ -183,6 +183,25 @@ public class DiagramTest {
     }
 
     @Test
+    public void Test_addNewMessage_between_2_messages(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+
+        seq.findSelectedElement(new Point2D.Double(25,200));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+        seq.addNewMessage(new Point2D.Double(125, 200));
+
+        seq.findSelectedElement(new Point2D.Double(25, 160));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+        seq.addNewMessage(new Point2D.Double(125, 160));
+        assertTrue(seq.getFirstMessage().getNextMessage() instanceof ResultMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage() instanceof InvocationMessage);
+        assertTrue(seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage() instanceof ResultMessage);
+
+    }
+
+    @Test
     public void Test_editingLabel(){
         Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
         seq.findSelectedElement(new Point2D.Double(10, 110));
