@@ -1,4 +1,4 @@
-package canvascomponents.diagram;
+package diagram.party;
 
 import diagram.label.Label;
 import diagram.label.PartyLabel;
@@ -6,7 +6,7 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Actor extends Party{
+public class Actor extends Party {
     public static final int WIDTH = 50;
     public static final int HEIGHT = 50;
 

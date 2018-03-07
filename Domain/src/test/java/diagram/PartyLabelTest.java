@@ -1,4 +1,4 @@
-package canvascomponents.diagram;
+package diagram;
 
 import diagram.label.PartyLabel;
 import exceptions.DomainException;

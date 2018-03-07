@@ -1,6 +1,6 @@
-package canvascomponents.diagram;
+package diagram.party;
 
-import canvascomponents.Clickable;
+import diagram.Clickable;
 import diagram.label.Label;
 import exceptions.DomainException;
 

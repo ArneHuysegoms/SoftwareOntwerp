@@ -1,8 +1,8 @@
-package canvascomponents.diagram;
+package diagram.message;
 
-import canvascomponents.Clickable;
+import diagram.Clickable;
+import diagram.party.Party;
 import diagram.label.Label;
-import diagram.message.Message;
 import exceptions.DomainException;
 
 public class InvocationMessage extends Message implements Clickable {
