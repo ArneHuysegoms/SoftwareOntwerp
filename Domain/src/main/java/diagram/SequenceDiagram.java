@@ -1,6 +1,7 @@
-package canvascomponents.diagram;
+package diagram;
 
-import canvascomponents.Clickable;
+import diagram.message.Message;
+import diagram.party.Party;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -98,7 +99,7 @@ public class SequenceDiagram extends Diagram {
      * @return true if the location belongs to the lifeline of the given party, false otherwise
      */
     @Override
-    boolean isLifeLine(Point2D location, Party party) {
+    public boolean isLifeLine(Point2D location, Party party) {
         return (location.getY() > MAXY) && (location.getX() >= party.getXLocationOfLifeline() - 20 && location.getX() <= party.getXLocationOfLifeline() + 20);
     }
 

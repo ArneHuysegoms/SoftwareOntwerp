@@ -1,6 +1,5 @@
 package canvas;
 
-import canvascomponents.diagram.Diagram;
 import figures.FigureConverter;
 import figures.basicShapes.DashedLine;
 import uievents.KeyEvent;

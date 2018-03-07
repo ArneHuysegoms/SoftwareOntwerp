@@ -1,6 +1,7 @@
-package canvascomponents.diagram;
+package diagram;
 
-import canvascomponents.Clickable;
+import diagram.message.Message;
+import diagram.party.Party;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -87,7 +88,7 @@ public class CommunicationsDiagram extends Diagram {
     }
 
     @Override
-    boolean isLifeLine(Point2D location, Party party) {
+    public boolean isLifeLine(Point2D location, Party party) {
         return false;
     }
 }

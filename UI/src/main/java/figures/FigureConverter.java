@@ -1,9 +1,16 @@
 package figures;
 
-import canvascomponents.Clickable;
-import canvascomponents.diagram.*;
-import canvascomponents.diagram.Label;
-import canvascomponents.diagram.Object;
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
+import diagram.label.Label;
+import diagram.party.Actor;
+import diagram.party.Object;
+import diagram.message.ResultMessage;
+import diagram.message.InvocationMessage;
+import diagram.message.Message;
+import diagram.party.Party;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.helperClasses.Pair;

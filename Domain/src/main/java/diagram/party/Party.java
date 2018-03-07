@@ -1,6 +1,7 @@
 package canvascomponents.diagram;
 
 import canvascomponents.Clickable;
+import diagram.label.Label;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;

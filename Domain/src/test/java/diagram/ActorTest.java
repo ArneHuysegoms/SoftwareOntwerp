@@ -1,5 +1,7 @@
 package canvascomponents.diagram;
 
+import diagram.label.PartyLabel;
+import diagram.party.Actor;
 import exceptions.DomainException;
 import org.junit.Test;
 

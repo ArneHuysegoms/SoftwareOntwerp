@@ -1,7 +1,7 @@
 package figures.helperClasses;
 
-import canvascomponents.diagram.Message;
-import canvascomponents.diagram.Party;
+import diagram.message.Message;
+import diagram.party.Party;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

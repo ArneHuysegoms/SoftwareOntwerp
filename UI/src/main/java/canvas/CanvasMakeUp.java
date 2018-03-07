@@ -1,11 +1,12 @@
 package canvas;
 
-import canvascomponents.Clickable;
-import canvascomponents.diagram.*;
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
+import diagram.label.Label;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-
-import java.awt.geom.Point2D;
 
 /**
  * Main layer between pure UI and the domain

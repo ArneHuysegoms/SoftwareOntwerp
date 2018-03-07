@@ -1,5 +1,6 @@
 package canvascomponents.diagram;
 
+import diagram.label.PartyLabel;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
