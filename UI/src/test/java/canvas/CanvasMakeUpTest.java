@@ -34,6 +34,13 @@ public class CanvasMakeUpTest {
     }
 
     @Test
+    public void test_changeActiveDiagram_twice(){
+        canvasMakeUp.changeActiveDiagram();
+        canvasMakeUp.changeActiveDiagram();
+        assertTrue(canvasMakeUp.getActiveDiagram() instanceof SequenceDiagram);
+    }
+
+    @Test
     public void test_handleKeyEvent_tab(){
         Diagram d = canvasMakeUp.getActiveDiagram();
         KeyEventType type = KeyEventType.TAB;
