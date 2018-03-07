@@ -380,9 +380,9 @@ public abstract class Diagram{
             Party sender = MessageStart.getParty();
             if(! receiver.equals(sender)) {
                 Point2D startLocation = MessageStart.getStartloction();
-                if (checkCallStack(sender)) {
+                Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
+                if (checkCallStack(previous, sender)) {
                     try {
-                        Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
                         Message next;
                         if (previous == null) {
                             next = this.getFirstMessage();
@@ -572,8 +572,10 @@ public abstract class Diagram{
                     active = true;
                 }
                 else {
+                    N--;
                     m.setMessageNumber("" + N + "." + e);
                     e++;
+                    N++;
                 }
             }
             else {
@@ -681,9 +683,8 @@ public abstract class Diagram{
             previous.setNextMessage(next);
         }
         else{
-            this.firstMessage = null;
+            this.setFirstMessage(skipOverDependentMessages(message, -1));
         }
-
     }
 
     /**
@@ -713,6 +714,7 @@ public abstract class Diagram{
 
     /**
      * Rearranges the message tree upon deletion of the provided party
+     *
      * @param party the party that will be deleted
      */
     private void rearrangeMessageTreeByParty(Party party){
@@ -720,16 +722,18 @@ public abstract class Diagram{
             Message previous = getFirstMessage();
             if (getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)) {
                 firstMessage = null;
-            } else {
+            }
+            else {
                 Message message = previous.getNextMessage();
                 while (message != null) {
                     if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
                         message = skipOverDependentMessages(message, -1);
                         if (previous != null) {
                             previous.setNextMessage(message);
-                            previous = message;
+                            previous = message.getNextMessage();
                         }
                     }
+                    message = message.getNextMessage();
                 }
             }
         }
@@ -749,101 +753,98 @@ public abstract class Diagram{
         if(message == null){
             return null;
         }
-        if(stack < 0 ){
+        while(stack < 0 ){
             message = message.getNextMessage();
             if(message != null) {
                 if (message instanceof InvocationMessage) {
-                    return skipOverDependentMessages(message, --stack);
-                } else if (message instanceof ResultMessage) {
-                    return skipOverDependentMessages(message, ++stack);
+                    stack--;
+                }
+                else {
+                    stack++;
                 }
             }
             else{
                 return null;
             }
         }
-        else{
-            return message.getNextMessage();
-        }
-        return null;
+        return message.getNextMessage();
     }
 
     /**
      * Determines if the call stack is still in order
      *
-     * @param party the party to check the call stack of
+     * @param sender the party to check the call stack of
      * @return true if the party is on top of the call stack, false otherwise
      */
-    private boolean checkCallStack(Party party){
-        Message message = getFirstMessage();
-        Message firstPartyMessage = null;
-        boolean found = false;
-        if(firstMessage == null){
+    private boolean checkCallStack(Message previous, Party sender){
+        if(previous == null || (previous.getNextMessage() instanceof ResultMessage && previous.getReceiver().equals(sender)) || previous.getNextMessage() == null){
             return true;
         }
-       firstPartyMessage = findFirstMessageSendByParty(party);
-        return checkStack(firstPartyMessage, -1);
-    }
-
-    /**
-     * Finds the first message send by the provided party
-     *
-     * @param party the party to find the first send message of
-     * @return the first message send by the party, null if the party has never send a message
-     */
-    private Message findFirstMessageSendByParty(Party party){
-        if(this.getFirstMessage() != null){
-            if(this.getFirstMessage().getSender().equals(party)){
-                return this.getFirstMessage();
-            }
-            else {
-                Message looper = this.getFirstMessage();
-                boolean found = false;
-                while (!found && looper != null) {
-                    if (looper.getSender().equals(party)) {
-                        found = true;
-                        return looper;
-                    } else {
-                        looper = looper.getNextMessage();
-                    }
-                }
-            }
-        }
-         return null;
-    }
-
-    //TODO
-
-    /**
-     * checks the stack to see if message can be at the stack
-     *
-     * @param message the message to add to the stack
-     * @param stack an int value to keep track of the depth of the call tree by the parties
-     *
-     * @return if the message can be added to the message tree
-     */
-    private boolean checkStack(Message message, int stack){
-        if(message == null){
-            return false;
-        }
-        if(stack < 0 ){
-            message = message.getNextMessage();
-            if(message != null) {
-                if (message instanceof InvocationMessage) {
-                    return checkStack(message, --stack);
-                } else if (message instanceof ResultMessage) {
-                    return checkStack(message, ++stack);
-                }
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return true;
+        else if(this.getFirstMessage() != null){
+            return this.getFirstMessage().getSender().equals(sender);
         }
         return false;
     }
+
+//    /**
+//     * Finds the first message send by the provided party
+//     *
+//     * @param party the party to find the first send message of
+//     * @return the first message send by the party, null if the party has never send a message
+//     */
+//    private Message findFirstMessageSendByParty(Party party){
+//        if(this.getFirstMessage() != null){
+//            if(this.getFirstMessage().getSender().equals(party)){
+//                return this.getFirstMessage();
+//            }
+//            else {
+//                Message looper = this.getFirstMessage();
+//                boolean found = false;
+//                while (!found && looper != null) {
+//                    if (looper.getSender().equals(party)) {
+//                        found = true;
+//                        return looper;
+//                    } else {
+//                        looper = looper.getNextMessage();
+//                    }
+//                }
+//            }
+//        }
+//         return null;
+//    }
+
+//    //TODO
+//
+//    /**
+//     * checks the stack to see if message can be at the stack
+//     *
+//     * @param message the message to add to the stack
+//     * @param stack an int value to keep track of the depth of the call tree by the parties
+//     *
+//     * @return if the message can be added to the message tree
+//     */
+//    private boolean checkStack(Message message, int stack){
+//        if(message == null){
+//            return false;
+//        }
+//        if(stack < 0 ){
+//            message = message.getNextMessage();
+//            if(message != null) {
+//                if (message instanceof InvocationMessage) {
+//                    return checkStack(message, --stack);
+//                } else if (message instanceof ResultMessage) {
+//                    return checkStack(message, ++stack);
+//                }
+//            }
+//            else{
+//                return false;
+//            }
+//        }
+//        else{
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Starts the proces of editing the label, sets the label as the selected element and initiates appropriate flags and variables
@@ -989,8 +990,9 @@ public abstract class Diagram{
     /**
      * Finds the message proceeding the message on the provided yLocation
      *
-     * @param yLocation
-     * @return
+     * @param yLocation the ylocation of the next event to add
+     *
+     * @return the message that will preceed the one the given yLocation, null if none was found or didn't exist
      */
 
     private Message findPreviousMessage(int yLocation){
