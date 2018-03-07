@@ -1,5 +1,17 @@
-package canvascomponents.diagram;
+package diagram;
 
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
+import diagram.label.Label;
+import diagram.label.MessageLabel;
+import diagram.label.PartyLabel;
+import diagram.message.ResultMessage;
+import diagram.message.InvocationMessage;
+import diagram.message.Message;
+import diagram.party.Actor;
+import diagram.party.Object;
+import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.*;
 

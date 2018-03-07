@@ -1,8 +1,16 @@
 package figures;
 
-import canvascomponents.diagram.*;
-import canvascomponents.diagram.Label;
-import canvascomponents.diagram.Object;
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
+import diagram.label.Label;
+import diagram.party.Actor;
+import diagram.party.Object;
+import diagram.message.ResultMessage;
+import diagram.message.InvocationMessage;
+import diagram.message.Message;
+import diagram.party.Party;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.helperClasses.Pair;
@@ -12,7 +20,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class FigureConverter {
@@ -21,8 +28,11 @@ public class FigureConverter {
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             boxDrawingStrategy,
-            messageDrawingStrategy,
-            labelDrawingStrategy;
+            invokeMessageDrawingStrategy,
+            responseMessageDrawingStrategy,
+            labelDrawingStrategy,
+            //TODO LayoutDrawer maken
+            layoutStrategy;
 
     private FigureConverter() {
 
@@ -42,19 +52,23 @@ public class FigureConverter {
 
         if (diagram instanceof SequenceDiagram) {
             actorDrawingStrategy = new SequenceActorDrawer();
-            messageDrawingStrategy = new SequenceMessageDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
+            invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
         }
         if (diagram instanceof CommunicationsDiagram) {
             actorDrawingStrategy = new CommunicationActorDrawer();
-            messageDrawingStrategy = new CommunicationMessageDrawer();
-            objectDrawingStrategy = new BoxDrawer();
+            objectDrawingStrategy = new CommunicationObjectDrawer();
+            invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
         }
 
         drawParties(graphics, diagram);
-        if (diagram.getFirstMessage() != null) {
-            drawMessages(graphics, diagram);
-        }
+
+        drawMessages(graphics, diagram);
+
+        drawSelectionBox(graphics, diagram);
+
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
@@ -62,15 +76,37 @@ public class FigureConverter {
     }
 
     private void drawParties(Graphics graphics, Diagram diagram) {
+        Point2D start, end;
+
         for (Party p : diagram.getParties()) {
+            start = p.getCoordinate();
+            end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
             if (p instanceof Actor) {
-                actorDrawingStrategy.draw(graphics, p.getCoordinate(), null, "");
+                actorDrawingStrategy.draw(graphics, start, end, "");
             } else {
-                Point2D start = p.getCoordinate();
-                objectDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT), "");
+
+                objectDrawingStrategy.draw(graphics, start, end, "");
             }
 
             drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
+        }
+    }
+
+    private void drawSelectionBox(Graphics graphics, Diagram diagram) {
+        //TODO try refactor instanceof
+
+        Clickable c = diagram.getSelectedElement();
+
+        if(c instanceof Actor){
+            Actor a = (Actor)c;
+            Point2D start = new Point2D.Double(a.getCoordinate().getX()-(Actor.WIDTH/2),a.getCoordinate().getY()),
+                    end = new Point2D.Double(a.getCoordinate().getX()+(Actor.WIDTH/2),a.getCoordinate().getY()+Actor.WIDTH);
+            boxDrawingStrategy.draw(graphics,start, end,"");
+
+        } else if(c instanceof Label){
+            Label l = (Label)c;
+            Point2D start = l.getCoordinate();
+            boxDrawingStrategy.draw(graphics,start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height),"");
         }
     }
 
@@ -87,14 +123,19 @@ public class FigureConverter {
 
         //drawActivationBars(#######);
 
-        drawFirstActivationBar(graphics, activationBarCount2.get(0));
-
+        if (m != null) {
+            //TODO enkel sequence (wrs ergens samen met lifeline duhh)
+            //drawFirstActivationBar(graphics, activationBarCount2.get(0));
+        }
         Point2D start, end;
         while (m != null) {
-            start = new Point2D.Double(m.getSender().getCoordinate().getX(), m.getyLocation());
-            end = new Point2D.Double(m.getReceiver().getCoordinate().getX(), m.getyLocation());
+            start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
+            end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
 
-            this.messageDrawingStrategy.draw(graphics, start, end, m.getLabel().getLabel());
+            if (m instanceof InvocationMessage)
+                this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
+            if (m instanceof ResultMessage)
+                this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
 
             this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
 

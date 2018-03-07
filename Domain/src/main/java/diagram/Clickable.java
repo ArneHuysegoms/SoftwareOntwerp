@@ -1,4 +1,4 @@
-package canvascomponents;
+package diagram;
 
 import java.awt.geom.Point2D;
 

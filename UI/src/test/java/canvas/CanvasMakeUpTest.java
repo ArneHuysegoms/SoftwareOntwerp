@@ -1,9 +1,8 @@
 package canvas;
-import canvascomponents.Clickable;
-import canvascomponents.diagram.CommunicationsDiagram;
-import canvascomponents.diagram.Diagram;
-import canvascomponents.diagram.Party;
-import canvascomponents.diagram.SequenceDiagram;
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -11,7 +10,6 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.*;
