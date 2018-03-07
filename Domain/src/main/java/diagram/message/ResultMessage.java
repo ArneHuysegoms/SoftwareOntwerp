@@ -49,4 +49,12 @@ public class ResultMessage extends Message {
     public boolean isClicked(Point2D point2D) {
         return false;
     }
+
+    /**
+     * @return the content of this messages' label
+     */
+    @Override
+    public String toString() {
+        return this.getLabel().getLabel();
+    }
 }
