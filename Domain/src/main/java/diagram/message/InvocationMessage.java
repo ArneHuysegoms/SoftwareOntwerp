@@ -1,9 +1,9 @@
-package canvascomponents.diagram;
+package diagram.message;
 
-import canvascomponents.Clickable;
+import diagram.Clickable;
+import diagram.party.Party;
+import diagram.label.Label;
 import exceptions.DomainException;
-
-import java.awt.geom.Point2D;
 
 public class InvocationMessage extends Message implements Clickable {
 
