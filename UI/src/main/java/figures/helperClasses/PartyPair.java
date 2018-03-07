@@ -1,5 +1,6 @@
 package figures.helperClasses;
 
+import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -20,7 +21,7 @@ public class PartyPair extends Pair {
         messages.add(m);
     }
 
-    public boolean equalPair(Party sender, Party receiver){
+    public boolean equalPair(Party sender, Party receiver) {
         return sender == this.getA() && receiver == this.getB();
     }
 
@@ -28,37 +29,42 @@ public class PartyPair extends Pair {
         messages.add(message);
     }
 
-    public Party getSender(){
+    public Party getSender() {
         return (Party) this.getA();
     }
 
-    public Party getReceiver(){
+    public Party getReceiver() {
         return (Party) this.getB();
     }
 
-    public Point2D calculateStart(){
-        return new Point2D.Double(getSender().getCoordinate().getX()+Object.WIDTH,getSender().getCoordinate().getY());
+    public Point2D calculateStart(int spaceBetweenArrows) {
+        return new Point2D.Double(getSender().getCoordinate().getX() + Object.WIDTH, getSender().getCoordinate().getY() + spaceBetweenArrows);
     }
 
-    public Point2D calculateEnd(int spaceBetweenArrows){
-        return new Point2D.Double(getReceiver().getCoordinate().getX(),getReceiver().getCoordinate().getY()+spaceBetweenArrows);
+    public Point2D calculateEnd(int spaceBetweenArrows) {
+        return new Point2D.Double(getReceiver().getCoordinate().getX(), getReceiver().getCoordinate().getY() + spaceBetweenArrows);
     }
 
     public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
-        List<Pair<Point2D,Point2D>> coordinates = new ArrayList<Pair<Point2D,Point2D>>();
-        int spread = Object.HEIGHT/messages.size();
+        int spread = Object.HEIGHT / messages.size();
+        InvocationMessage message;
+        Point2D start, end;
 
-        for(int i = 0; i<messages.size();i++){
-            messageDrawer.draw(graphics, calculateStart(), calculateEnd(i*spread),"");
+        for (int i = 0; i < messages.size(); i++) {
+            message = (InvocationMessage) messages.get(i);
+            start = calculateStart(i * spread);
+            end = calculateEnd(i * spread);
+            messageDrawer.draw(graphics, start, end, "");
             //TODO labels tekenen:
-            labelDrawer.draw(graphics,calculateLabelStartPosition(),null,message.get);
+            String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
+            labelDrawer.draw(graphics, calculateLabelStartPosition(start, end), null, label);
         }
     }
 
-    private Point2D calculateLabelStartPosition(){
-        double x = Math.round((getSender().getCoordinate().getX()+getReceiver().getCoordinate().getX())/2);
-        double y = Math.round((getSender().getCoordinate().getY()+getReceiver().getCoordinate().getY())/2);
+    private Point2D calculateLabelStartPosition(Point2D start, Point2D end) {
+        double x = Math.round((start.getX() + end.getX()) / 2);
+        double y = Math.round((start.getY() + end.getY()) / 2);
 
-        return new Point2D.Double(x,y);
+        return new Point2D.Double(x, y);
     }
 }
