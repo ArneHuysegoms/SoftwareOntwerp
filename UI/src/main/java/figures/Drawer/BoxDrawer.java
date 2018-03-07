@@ -1,6 +1,5 @@
 package figures.Drawer;
 
-import canvascomponents.diagram.Diagram;
 import figures.diagramFigures.Box;
 
 import java.awt.*;

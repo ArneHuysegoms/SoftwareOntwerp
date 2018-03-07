@@ -1,6 +1,14 @@
-package canvascomponents.diagram;
+package diagram;
 
-import canvascomponents.Clickable;
+import diagram.label.Label;
+import diagram.label.MessageLabel;
+import diagram.label.PartyLabel;
+import diagram.message.ResultMessage;
+import diagram.message.InvocationMessage;
+import diagram.message.Message;
+import diagram.party.Actor;
+import diagram.party.Object;
+import diagram.party.Party;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
@@ -988,7 +996,7 @@ public abstract class Diagram{
      * @param party a party of the diagram
      * @return true if the location belongs to the lifeline of the party, false otherwise
      */
-    abstract boolean isLifeLine(Point2D location, Party party);
+    public abstract boolean isLifeLine(Point2D location, Party party);
 
     /**********************************************************************************************************/
 

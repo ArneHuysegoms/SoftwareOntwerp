@@ -1,6 +1,6 @@
 package figures.helperClasses;
 
-import canvascomponents.diagram.Party;
+import diagram.party.Party;
 
 import java.awt.*;
 import java.util.List;

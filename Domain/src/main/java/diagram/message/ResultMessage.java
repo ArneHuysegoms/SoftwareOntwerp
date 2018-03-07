@@ -1,5 +1,7 @@
-package canvascomponents.diagram;
+package diagram.message;
 
+import diagram.party.Party;
+import diagram.label.Label;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;

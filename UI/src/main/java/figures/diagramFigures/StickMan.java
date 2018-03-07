@@ -48,6 +48,78 @@ public class StickMan extends Figure {
         legR = new Line ((int)connectionLegs.getX(), (int)connectionLegs.getY(), (int)connectionLegs.getX()+(legSpread/2), (int)connectionLegs.getY()+legLen);
     }
 
+    public Point2D getTopOfHead() {
+        return topOfHead;
+    }
+
+    public void setTopOfHead(Point2D topOfHead) {
+        this.topOfHead = topOfHead;
+    }
+
+    public Point2D getConnectionHead() {
+        return connectionHead;
+    }
+
+    public void setConnectionHead(Point2D connectionHead) {
+        this.connectionHead = connectionHead;
+    }
+
+    public Point2D getConnectionLegs() {
+        return connectionLegs;
+    }
+
+    public void setConnectionLegs(Point2D connectionLegs) {
+        this.connectionLegs = connectionLegs;
+    }
+
+    public Point2D getConnectionArms() {
+        return connectionArms;
+    }
+
+    public void setConnectionArms(Point2D connectionArms) {
+        this.connectionArms = connectionArms;
+    }
+
+    public Circle getHead() {
+        return head;
+    }
+
+    public void setHead(Circle head) {
+        this.head = head;
+    }
+
+    public Line getBody() {
+        return body;
+    }
+
+    public void setBody(Line body) {
+        this.body = body;
+    }
+
+    public Line getArms() {
+        return arms;
+    }
+
+    public void setArms(Line arms) {
+        this.arms = arms;
+    }
+
+    public Line getLegL() {
+        return legL;
+    }
+
+    public void setLegL(Line legL) {
+        this.legL = legL;
+    }
+
+    public Line getLegR() {
+        return legR;
+    }
+
+    public void setLegR(Line legR) {
+        this.legR = legR;
+    }
+
     @Override
     public void draw(Graphics graphics) {
         head.draw(graphics);

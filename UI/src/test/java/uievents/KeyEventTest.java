@@ -36,7 +36,7 @@ public class KeyEventTest {
 
     @Test
     public void test_different_keyEvents(){
-        KeyEvent keyEvent3 = new KeyEvent(KeyEventType.COLON);
+        KeyEvent keyEvent3 = new KeyEvent(KeyEventType.IRRELEVANT);
         assertFalse(keyEvent.equals(keyEvent3));
     }
 

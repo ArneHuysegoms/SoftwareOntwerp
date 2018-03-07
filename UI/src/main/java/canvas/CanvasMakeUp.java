@@ -1,11 +1,12 @@
 package canvas;
 
-import canvascomponents.Clickable;
-import canvascomponents.diagram.*;
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
+import diagram.label.Label;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-
-import java.awt.geom.Point2D;
 
 /**
  * Main layer between pure UI and the domain
@@ -22,7 +23,7 @@ public class CanvasMakeUp {
      * Construct a new basic CanvasMakeUp
      */
     public CanvasMakeUp(){
-        activeDiagram = new SequenceDiagram();
+        setActiveDiagram(new SequenceDiagram());
     }
 
     /**
@@ -80,7 +81,6 @@ public class CanvasMakeUp {
                     this.getActiveDiagram().deleteElement();
                     break;
                 case CHAR:
-                case COLON:
                     if(getActiveDiagram().selectedElementIsLabel()){
                         getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
                     }
@@ -95,7 +95,6 @@ public class CanvasMakeUp {
         else{
           switch (keyEvent.getKeyEventType()){
               case CHAR:
-              case COLON:
                   if(getActiveDiagram().selectedElementIsLabel()){
                       getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
                   }
