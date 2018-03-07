@@ -22,7 +22,7 @@ public class CanvasMakeUp {
      * Construct a new basic CanvasMakeUp
      */
     public CanvasMakeUp(){
-        activeDiagram = new SequenceDiagram();
+        setActiveDiagram(new SequenceDiagram());
     }
 
     /**
