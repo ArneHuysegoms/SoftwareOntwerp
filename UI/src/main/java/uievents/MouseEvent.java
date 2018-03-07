@@ -47,4 +47,5 @@ public class MouseEvent {
     private void setPoint(Point2D point){
         this.point = point;
     }
+
 }

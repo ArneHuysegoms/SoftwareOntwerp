@@ -11,6 +11,7 @@ public class KeyEventFactoryTest {
     private KeyEvent keyEvent3;
     private KeyEvent keyEvent4;
     private KeyEvent keyEvent5;
+    private KeyEvent keyEvent6;
     private KeyEventFactory keyEventFactory;
 
     @Before
@@ -18,9 +19,10 @@ public class KeyEventFactoryTest {
         keyEventFactory = new KeyEventFactory();
         keyEvent1 = new KeyEvent(KeyEventType.TAB);
         keyEvent2 = new KeyEvent(KeyEventType.DEL);
-        keyEvent3 = new KeyEvent(KeyEventType.COLON);
+        keyEvent3 = new KeyEvent(KeyEventType.IRRELEVANT);
         keyEvent4 = new KeyEvent(KeyEventType.CHAR, 'a');
         keyEvent5 = new KeyEvent(KeyEventType.BACKSPACE);
+        keyEvent6 = new KeyEvent(KeyEventType.CHAR);
     }
     @Test
     public void test_create_tab(){
@@ -33,8 +35,8 @@ public class KeyEventFactoryTest {
         assertTrue(test.equals(keyEvent2));
     }
     @Test
-    public void test_create_colon(){
-        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_TYPED, 186, ':');
+    public void test_create_irrelevant(){
+        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 0, '*');
         assertTrue(test.equals(keyEvent3));
     }
     @Test
@@ -46,6 +48,11 @@ public class KeyEventFactoryTest {
     public void test_create_backspace(){
         KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 8, '\b');
         assertTrue(test.equals(keyEvent5));
+    }
+    @Test
+    public void test_create_denied_char(){
+        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_TYPED, 0, '7');
+        assertTrue(test.equals(keyEvent6));
     }
 
 }
