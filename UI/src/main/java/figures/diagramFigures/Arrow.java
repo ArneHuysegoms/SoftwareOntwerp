@@ -6,17 +6,19 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Arrow extends Figure {
-    private Line line;
+    private Point2D lineStart, lineEnd;
     private Line arrowTop;
     private Line arrowBottom;
 
     public Arrow(Point2D start, Point2D end) {
-        line = new Line(start, end);
+        lineStart = start;
+        lineEnd = end;
         calculateArrowHead((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 
     public Arrow(int x, int y, int x2, int y2) {
-        line = new Line(x, y, x2, y2);
+        lineStart = new Point2D.Double(x, y);
+        lineEnd = new Point2D.Double(x2, y2);
         calculateArrowHead(x, y, x2, y2);
     }
 
@@ -64,8 +66,24 @@ public class Arrow extends Figure {
 
     @Override
     public void draw(Graphics graphics) {
-        line.draw(graphics);
-        arrowTop.draw(graphics);
-        arrowBottom.draw(graphics);
+        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics);
+        this.getArrowTop().draw(graphics);
+        this.getArrowBottom().draw(graphics);
+    }
+
+    public Point2D getLineStart() {
+        return lineStart;
+    }
+
+    public Point2D getLineEnd() {
+        return lineEnd;
+    }
+
+    public Line getArrowTop() {
+        return arrowTop;
+    }
+
+    public Line getArrowBottom() {
+        return arrowBottom;
     }
 }

@@ -13,7 +13,6 @@ public class LabelDrawer implements Drawer{
 
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
-        new Box(start, end).draw(graphics);
         graphics.drawString(label, (int)start.getX()+3, (int)start.getY()+10);
     }
 }
