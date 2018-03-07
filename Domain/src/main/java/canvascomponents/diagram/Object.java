@@ -88,6 +88,21 @@ public class Object extends Party{
     }
 
     /**
+     * method to find the correct location for the label of a Party
+     *
+     * @return a Point2D indicating the location
+     */
+    @Override
+    public Point2D getCorrectLabelPosition() {
+        return new Point2D.Double(this.getCoordinate().getX() + 5, this.getCoordinate().getY() + 25);
+    }
+
+    @Override
+    public double getXLocationOfLifeline() {
+        return this.getCoordinate().getX() + WIDTH/2;
+    }
+
+    /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked
      * @return

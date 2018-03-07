@@ -1,24 +1,23 @@
 package figures.basicShapes;
 
-import figures.PointXY;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Circle extends Shape{
 
-    private PointXY center;
+    private Point2D center;
     private int radius;
 
     public Circle(int x, int y, int radius){
-        center = new PointXY(x-radius, y-radius);
+        center = new Point2D.Double(x-radius, y-radius);
         this.radius = radius*2;
     }
 
-    public Circle(PointXY center, int radius){
-        this(center.getX(), center.getY(), radius);
+    public Circle(Point2D center, int radius){
+        this((int)center.getX(), (int)center.getY(), radius);
     }
 
-    public PointXY getCenter(){
+    public Point2D getCenter(){
         return this.center;
     }
 
@@ -28,6 +27,6 @@ public class Circle extends Shape{
 
     @Override
     public void draw(Graphics graphics) {
-        graphics.drawOval(center.getX(), center.getY(), radius, radius);
+        graphics.drawOval((int)center.getX(), (int)center.getY(), radius, radius);
     }
 }

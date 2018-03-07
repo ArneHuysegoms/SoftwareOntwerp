@@ -1,35 +1,66 @@
 package figures.basicShapes;
 
-import figures.PointXY;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-public class Rectangle extends Shape{
+public class Rectangle extends Shape {
 
-    private PointXY position;
-    private int width;
-    private int length;
+    protected Point2D positionTL;
+    protected Point2D cornerTR;
+    protected Point2D cornerBR;
+    protected Point2D cornerBL;
 
-    public Rectangle(int x, int y, int width, int length){
-        this.position = new PointXY(x, y);
-        this.width = width;
-        this.length = length;
+    public Rectangle(int x, int y, int width, int length) {
+        setPositionTL(new Point2D.Double(x, y));
+        setCornerTR(new Point2D.Double(x+width, y));
+        setCornerBR(new Point2D.Double(x+width, y+length));
+        setCornerBL(new Point2D.Double(x, y+length));
     }
 
-    public PointXY getPosition() {
-        return position;
+    public Rectangle(Point2D tl, Point2D br){
+        setPositionTL(tl);
+        setCornerBR(br);
+        setCornerBL(new Point2D.Double(tl.getX(), br.getY()));
+        setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
-    public int getWidth() {
-        return width;
+    public Point2D getPositionTL() {
+        return positionTL;
     }
 
-    public int getLength(){
-        return length;
+    public void setPositionTL(Point2D positionTL) {
+        this.positionTL = positionTL;
+    }
+
+    public Point2D getCornerTR() {
+        return cornerTR;
+    }
+
+    public void setCornerTR(Point2D cornerTR) {
+        this.cornerTR = cornerTR;
+    }
+
+    public Point2D getCornerBR() {
+        return cornerBR;
+    }
+
+    public void setCornerBR(Point2D cornerBR) {
+        this.cornerBR = cornerBR;
+    }
+
+    public Point2D getCornerBL() {
+        return cornerBL;
+    }
+
+    public void setCornerBL(Point2D cornerBL) {
+        this.cornerBL = cornerBL;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        graphics.drawRect(position.getX(), position.getY(), width, length);
+        new Line(positionTL, cornerTR).draw(graphics);
+        new Line(cornerTR, cornerBR).draw(graphics);
+        new Line(cornerBR, cornerBL).draw(graphics);
+        new Line(cornerBL, positionTL).draw(graphics);
     }
 }

@@ -1,6 +1,11 @@
 package canvas;
 
+import canvascomponents.diagram.Diagram;
+import figures.FigureConverter;
+import figures.basicShapes.DashedLine;
+import uievents.KeyEvent;
 import uievents.KeyEventFactory;
+import uievents.MouseEvent;
 import uievents.MouseEventFactory;
 
 import java.awt.*;
@@ -13,6 +18,8 @@ public class InteractrCanvas extends CanvasWindow{
      * @param title Window title
      */
 
+    private CanvasMakeUp canvasMakeUp;
+    //private FigureConverter figureConverter;
     private KeyEventFactory keyFactory;
     private MouseEventFactory mouseFactory;
 
@@ -20,19 +27,29 @@ public class InteractrCanvas extends CanvasWindow{
         super(title);
         keyFactory = new KeyEventFactory();
         mouseFactory = new MouseEventFactory();
+        canvasMakeUp = new CanvasMakeUp();
+        //figureConverter = new FigureConverter();
     }
 
     public void paint(Graphics g){
-
+        g.drawLine(0,0, (int)((Math.random()*250)+1),45);
+        new DashedLine(0,45,600,45).draw(g);
+        new DashedLine(0,105,600,105).draw(g);
+        FigureConverter.getInstance().draw(g,canvasMakeUp.getActiveDiagram());
     }
 
     @Override
     public void handleMouseEvent(int id, int x, int y, int clickCount){
         Point2D point = new Point2D.Double(x,y);
-        mouseFactory.createMouseEvent(id, clickCount, point);
+        MouseEvent e = mouseFactory.createMouseEvent(id, clickCount, point);
+        canvasMakeUp.handleMouseEvent(e);
+        this.repaint();
     }
+
     @Override
     public void handleKeyEvent(int id, int keyCode, char keyChar){
-        keyFactory.createKeyEvent(id, keyCode, keyChar);
+        KeyEvent e = keyFactory.createKeyEvent(id, keyCode, keyChar);
+        canvasMakeUp.handleKeyEvent(e);
+        this.repaint();
     }
 }

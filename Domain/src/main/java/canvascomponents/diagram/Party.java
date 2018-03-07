@@ -205,6 +205,15 @@ public abstract class Party implements Clickable{
     }
 
     /**
+     * update the coordinate of the label
+     *
+     * @param newLabelPosition the new position for the battery
+     */
+    public void updateLabelCoordinate(Point2D newLabelPosition){
+        getLabel().setCoordinate(newLabelPosition);
+    }
+
+    /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked
      * @return
@@ -212,6 +221,20 @@ public abstract class Party implements Clickable{
      */
     @Override
     public abstract boolean isClicked(Point2D point2D);
+
+    /**
+     * method to find the correct location for the label of a Party
+     *
+     * @return a Point2D indicating the location
+     */
+    public abstract Point2D getCorrectLabelPosition();
+
+    /**
+     *
+     *
+     * @return
+     */
+    public abstract double getXLocationOfLifeline();
 
 
 }

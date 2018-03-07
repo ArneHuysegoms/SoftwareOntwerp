@@ -1,46 +1,34 @@
 package figures.basicShapes;
 
-import figures.PointXY;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-public class Line extends Shape{
+public class Line extends Shape {
 
-    private PointXY start;
-    private PointXY end;
+    protected Point2D start;
+    protected Point2D end;
 
-    public Line (int x1, int y1, int x2, int y2){
-        start = new PointXY(x1, y1);
-        end = new PointXY(x2, y2);
+    public Line(int x1, int y1, int x2, int y2) {
+        start = new Point2D.Double(x1, y1);
+        end = new Point2D.Double(x2, y2);
     }
 
-    public Line (PointXY p1, PointXY p2){
+    public Line(Point2D p1, Point2D p2) {
         start = p1;
         end = p2;
     }
 
-    public PointXY getStart() {
+    public Point2D getStart() {
         return start;
     }
 
-    public PointXY getEnd() {
+    public Point2D getEnd() {
         return end;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        graphics.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
+        graphics.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 
-    /*
-    public void drawDashed(Graphics graphics) {
-        int finX=start.getX();
-        int finY = start.getY();
-        int dashSize = 4;
-        while(finX != end.getX() && finY != end.getY()){
-            graphics.drawLine(finX, finY, finX+4, finY+4);
-
-        }
-    }
-    */
 }
