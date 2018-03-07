@@ -122,7 +122,7 @@ public abstract class Diagram{
      * sets the selected element of the diagram
      * @param selectedElement
      */
-    private void setSelectedElement(Clickable selectedElement){
+    public void setSelectedElement(Clickable selectedElement){
         this.selectedElement = selectedElement;
     }
 
@@ -394,6 +394,7 @@ public abstract class Diagram{
                 }
             }
         }
+        setProperMessagePositions();
     }
 
     /**
@@ -418,8 +419,6 @@ public abstract class Diagram{
             p.setCoordinate(newPosition);
             p.updateLabelCoordinate(p.getCorrectLabelPosition());
         }
-
-
     }
 
     /**
@@ -502,6 +501,21 @@ public abstract class Diagram{
     ////////////////////////////////////
     //  utilities
     ////////////////////////////////////
+
+    /**
+     * sets the yLocation of all messages in the tree to an appropriate number
+     */
+    private void setProperMessagePositions(){
+        Message message = this.getFirstMessage();
+        int yLocation = 120;
+        while(message != null){
+            message.setyLocation(yLocation);
+            yLocation += 35;
+            Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver()), message.getyLocation() - 15);
+            message.getLabel().setCoordinate(labelCoordinate);
+            message = message.getNextMessage();
+        }
+    }
 
     /**
      * returns a x-position for a new label, based on the location of the sender and receiver
@@ -795,6 +809,16 @@ public abstract class Diagram{
      */
     private Clickable selectClickableElement(Point2D point2D){
         List<Clickable> possibleElements = new ArrayList<>();
+        Message message = this.getFirstMessage();
+        while(message != null) {
+            if (message.isClicked(point2D)) {
+                possibleElements.add(message);
+            }
+            if(message.getLabel().isClicked(point2D)){
+                possibleElements.add(message.getLabel());
+            }
+            message = message.getNextMessage();
+        }
         for(Party party : this.getParties()){
             if(party.isClicked(point2D)){
                 possibleElements.add(party);
@@ -807,13 +831,6 @@ public abstract class Diagram{
                     return new MessageStart(party, point2D);
                 }
             }
-        }
-        Message message = this.getFirstMessage();
-        while(message != null) {
-            if (message.isClicked(point2D)) {
-                possibleElements.add(message);
-            }
-            message = message.getNextMessage();
         }
         if(possibleElements.size() == 1){
            return possibleElements.get(0);

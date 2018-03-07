@@ -68,7 +68,7 @@ public class Message implements Clickable{
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    private void setyLocation(int yLocation) {
+    public void setyLocation(int yLocation) {
         this.yLocation = yLocation;
     }
 
