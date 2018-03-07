@@ -45,49 +45,50 @@ public abstract class Diagram{
     //  constructors
     ////////////////////////////////////
 
-    /**
-     * creates an empty diagram
-     */
+//    /**
+//     * creates an empty diagram
+//     */
+//
+//    public Diagram() {
+//        this(null, null);
+//    }
+//
+//    /**
+//     * creates a new diagram with the given parties and the first message of the call stack
+//     *
+//     * @param parties
+//     * @param firstMessage
+//     */
+//
+//    public Diagram(List<Party> parties, Message firstMessage){
+//        this(parties, firstMessage, null);
+//    }
+//
+//    /**
+//     * creates a new diagram with the given parties, the first message of the call stack and the currently selected element
+//     *
+//     * @param parties
+//     * @param firstMessage
+//     * @param selectedElement
+//     */
+//
+//    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
+//        this(parties, firstMessage, selectedElement, "");
+//    }
+//
+//    /**
+//     * creates a new diagram with the given parties, the first message of the call stack, the currently selected element and the text for the label in edit
+//     *
+//     * @param parties
+//     * @param firstMessage
+//     * @param selectedElement
+//     * @param labelContainer
+//     */
+//
+//    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
+//        this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
+//    }
 
-    public Diagram() {
-        this(null, null);
-    }
-
-    /**
-     * creates a new diagram with the given parties and the first message of the call stack
-     *
-     * @param parties
-     * @param firstMessage
-     */
-
-    public Diagram(List<Party> parties, Message firstMessage){
-        this(parties, firstMessage, null);
-    }
-
-    /**
-     * creates a new diagram with the given parties, the first message of the call stack and the currently selected element
-     *
-     * @param parties
-     * @param firstMessage
-     * @param selectedElement
-     */
-
-    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement){
-        this(parties, firstMessage, selectedElement, "");
-    }
-
-    /**
-     * creates a new diagram with the given parties, the first message of the call stack, the currently selected element and the text for the label in edit
-     *
-     * @param parties
-     * @param firstMessage
-     * @param selectedElement
-     * @param labelContainer
-     */
-
-    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer){
-        this(parties, firstMessage, selectedElement, labelContainer, false, true, false);
-    }
 
     /**
      * creates a new diagram with the given parties, the first message of the call stack, the currently selected element, the text for the label in edit and the
@@ -109,6 +110,7 @@ public abstract class Diagram{
         this.setLabelMode(labelMode);
         this.setMessageMode(messageMode);
         this.setValidLabel(validLabel);
+        this.setMessageNumbers();
         }
 
     /**********************************************************************************************************/
@@ -306,14 +308,13 @@ public abstract class Diagram{
      * @param point2D the location on which to add a new party
      */
     public void addNewParty(Point2D point2D){
-        int posSeq = findNextPositionInSequenceDiagram();
         Point2D finalPosition = null;
         PartyLabel label;
         if(isValidPartyLocation(point2D)){
             finalPosition = getValidPartyLocation(point2D);
             try {
                 label = new PartyLabel("|", new Point2D.Double(finalPosition.getX() + 10, finalPosition.getY() + 20));
-                Object object = new Object(posSeq, finalPosition, label);
+                Object object = new Object(0, finalPosition, label);
                 this.addParty(object);
                 startEditingLable(label);
             }
@@ -321,6 +322,7 @@ public abstract class Diagram{
                 System.out.println(e.getMessage());
             }
         }
+        setSequenceNumbers();
     }
 
     /**
@@ -336,7 +338,7 @@ public abstract class Diagram{
                 try {
                     Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
                     newActor.updateLabelCoordinate(newActor.getCorrectLabelPosition());
-                    this.updateMessagesForChangedParty(newActor);
+                    //this.updateMessagesForChangedParty(newActor);
                     this.removeParty(o);
                     this.addParty(newActor);
                     selectedElement = newActor;
@@ -350,7 +352,7 @@ public abstract class Diagram{
                 try {
                     Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
                     newObject.updateLabelCoordinate(newObject.getCorrectLabelPosition());
-                    this.updateMessagesForChangedParty(newObject);
+                    //this.updateMessagesForChangedParty(newObject);
                     this.removeParty(a);
                     this.addParty(newObject);
                     selectedElement = newObject;
@@ -403,6 +405,7 @@ public abstract class Diagram{
             }
         }
         setProperMessagePositions();
+        setMessageNumbers();
     }
 
     /**
@@ -427,6 +430,7 @@ public abstract class Diagram{
             p.setCoordinate(newPosition);
             p.updateLabelCoordinate(p.getCorrectLabelPosition());
         }
+        this.setSequenceNumbers();
     }
 
     /**
@@ -509,6 +513,83 @@ public abstract class Diagram{
     ////////////////////////////////////
     //  utilities
     ////////////////////////////////////
+
+    /**
+     * updates the sequence Numbers of all the parties currently in the diagram based on their current xCoordinate on the diagram
+     */
+    private void setSequenceNumbers(){
+        int pos = 1;
+        List<Party> sorted = new ArrayList<>();
+        List<Party> notSorted = new ArrayList<>(this.getParties());
+        for(int i = 0; i < this.getParties().size(); i++){
+            Party next = notSorted.get(0);
+            for(int j = i; j < notSorted.size(); j++){
+                if(notSorted.get(j).getCoordinate().getX() < next.getCoordinate().getX()){
+                    next = notSorted.get(j);
+                }
+            }
+            try {
+                next.setPositionInSequenceDiagram(pos);
+                pos++;
+                sorted.add(next);
+                notSorted.remove(next);
+            }
+            catch (DomainException exception){
+                System.out.println(exception.getMessage());
+            }
+        }
+    }
+
+    /**
+     * loops over the callStack to give each invocation their appropriate messageNumber
+     *
+     * this method serves as entrypoint to the real method, and gives the appropriate input
+     */
+    private void setMessageNumbers(){
+        if(this.getFirstMessage() != null) {
+            setMessageNumbers(1, 1, false,0);
+        }
+    }
+
+    /**
+     * loops over the callStack to give each invocation their appropriate messageNumber
+     *
+     * this method should not be called directly, instead use the setMessageNumbers() method. that method will call this one with
+     * the correct input.
+     *
+     * @param N the N part of the messageNumber as specified by the assignment
+     * @param e the eta part of the messageNumber as specified by the assignment
+     */
+    private void setMessageNumbers(int N, int e, boolean active, int stack) {
+        Message message = this.getFirstMessage();
+        while(message != null ){
+            if(message instanceof InvocationMessage) {
+                stack++;
+                InvocationMessage m = (InvocationMessage) message;
+                if (!active) {
+                    m.setMessageNumber("" + N);
+                    N++;
+                    active = true;
+                }
+                else {
+                    m.setMessageNumber("" + N + "." + e);
+                    e++;
+                }
+            }
+            else {
+                stack--;
+            }
+            if(stack == 0){
+                active = false;
+                e = 1;
+            }
+            message = message.getNextMessage();
+        }
+    }
+
+    private int setStackNumber(Message m, int stack){
+        return 0;
+    }
 
     /**
      * sets the yLocation of all messages in the tree to an appropriate number
@@ -652,6 +733,7 @@ public abstract class Diagram{
                 }
             }
         }
+        this.setMessageNumbers();
     }
 
     /**
@@ -730,6 +812,16 @@ public abstract class Diagram{
          return null;
     }
 
+    //TODO
+
+    /**
+     * checks the stack to see if message can be at the stack
+     *
+     * @param message the message to add to the stack
+     * @param stack an int value to keep track of the depth of the call tree by the parties
+     *
+     * @return if the message can be added to the message tree
+     */
     private boolean checkStack(Message message, int stack){
         if(message == null){
             return false;
@@ -871,42 +963,28 @@ public abstract class Diagram{
         return selected;
     }
 
-    /**
-     * Finds the next position in the sequenceDiagram
-     *
-     * @return an integer denoting the next position
-     */
-    private int findNextPositionInSequenceDiagram(){
-        int pos = 0;
-        for(Party party : this.getParties()){
-            if(party.getPositionInSequenceDiagram() > pos){
-                pos = party.getPositionInSequenceDiagram();
-            }
-        }
-        return pos++;
-    }
-
-    /**
-     *
-     * @param party
-     */
-    private void updateMessagesForChangedParty(Party party){
-        Message message = firstMessage;
-        while(message != null){
-            if(message.getReceiver().equals(party)){
-                message.setReceiver(party);
-            }
-            if(message.getSender().equals(party)){
-                try {
-                    message.setSender(party);
-                }
-                catch (DomainException exc){
-                    System.out.println(exc.getMessage());
-                }
-            }
-            message = message.getNextMessage();
-        }
-    }
+//    /**
+//     *
+//     *
+//     * @param party
+//     */
+//    private void updateMessagesForChangedParty(Party party){
+//        Message message = firstMessage;
+//        while(message != null){
+//            if(message.getReceiver().equals(party)){
+//                message.setReceiver(party);
+//            }
+//            if(message.getSender().equals(party)){
+//                try {
+//                    message.setSender(party);
+//                }
+//                catch (DomainException exc){
+//                    System.out.println(exc.getMessage());
+//                }
+//            }
+//            message = message.getNextMessage();
+//        }
+//    }
 
     /**
      * Finds the message proceeding the message on the provided yLocation
