@@ -20,6 +20,7 @@ public class CommunicationObjectHelper {
     private void traverserMessages(Message message) {
         Party sender, receiver;
         PartyPair pair;
+        boolean found=false;
 
         if (message instanceof InvocationMessage) {
             pairs.add(new PartyPair(message.getSender(), message.getReceiver(), message));
@@ -38,10 +39,13 @@ public class CommunicationObjectHelper {
                     temp = pairs.get(i);
                     if (temp.equalPair(sender, receiver)) {
                         temp.addMessage(message);
-                    } else {
-                        pairs.add(new PartyPair(sender, receiver, message));
+                        found = true;
                     }
                 }
+                if(!found){
+                    pairs.add(new PartyPair(sender, receiver, message));
+                }
+                found = false;
             }
             message = message.getNextMessage();
         }

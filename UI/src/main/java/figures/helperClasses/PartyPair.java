@@ -53,7 +53,7 @@ public class PartyPair extends Pair {
         for (int i = 0; i < messages.size(); i++) {
             message = (InvocationMessage) messages.get(i);
             start = calculateStart(i * spread);
-            end = calculateEnd(i * spread);
+            end = calculateEnd  (i * spread);
             messageDrawer.draw(graphics, start, end, "");
             //TODO labels tekenen:
             String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
