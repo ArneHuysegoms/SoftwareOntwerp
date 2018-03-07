@@ -7,7 +7,7 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public class Message implements Clickable{
+public abstract class Message implements Clickable{
 
     private Message nextMessage;
     private Label label;
@@ -181,4 +181,7 @@ public class Message implements Clickable{
     public double getDistance(Point2D point2D) {
         return Math.abs(point2D.getY() - yLocation);
     }
+
+    @Override
+    public abstract String toString();
 }
