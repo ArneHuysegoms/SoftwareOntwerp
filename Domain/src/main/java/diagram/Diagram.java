@@ -277,6 +277,22 @@ public abstract class Diagram{
     public boolean selectedElementIsParty(){
         return this.getSelectedElement() instanceof Party;
     }
+    /**
+     * checks if the currently selected element is an Actor
+     *
+     * @return true if the the currently selected element is a Party, false otherwise
+     */
+    public boolean selectedElementIsActor(){
+        return this.getSelectedElement() instanceof Actor;
+    }
+    /**
+     * checks if the currently selected element is an Object
+     *
+     * @return true if the the currently selected element is a Party, false otherwise
+     */
+    public boolean selectedElementIsObject(){
+        return this.getSelectedElement() instanceof Object;
+    }
 
     /**
      * checks if the currently selected element is a MessageStart
