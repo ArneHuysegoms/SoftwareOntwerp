@@ -13,7 +13,6 @@ public class CommunicationInvokeMessageDrawer extends MessageDrawer {
 
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
-        //TODO enkel invokes?
         new Arrow(start, end).draw(graphics);
     }
 }

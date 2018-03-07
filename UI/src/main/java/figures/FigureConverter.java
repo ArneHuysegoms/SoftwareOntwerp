@@ -23,7 +23,9 @@ public class FigureConverter {
             boxDrawingStrategy,
             invokeMessageDrawingStrategy,
             responseMessageDrawingStrategy,
-            labelDrawingStrategy;
+            labelDrawingStrategy,
+            //TODO LayoutDrawer maken
+            layoutStrategy;
 
     private FigureConverter() {
 
@@ -116,7 +118,7 @@ public class FigureConverter {
 
         if (m != null) {
             //TODO enkel sequence (wrs ergens samen met lifeline duhh)
-            drawFirstActivationBar(graphics, activationBarCount2.get(0));
+            //drawFirstActivationBar(graphics, activationBarCount2.get(0));
         }
         Point2D start, end;
         while (m != null) {
