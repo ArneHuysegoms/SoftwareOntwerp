@@ -3,6 +3,8 @@ import diagram.Clickable;
 import diagram.CommunicationsDiagram;
 import diagram.Diagram;
 import diagram.SequenceDiagram;
+import diagram.party.Actor;
+import diagram.party.Party;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -109,6 +111,34 @@ public class CanvasMakeUpTest {
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.DRAG, new Point2D.Double(25,51)));
         Clickable c1 = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,51));
         assertTrue(c.equals(c1));
+    }
+
+    @Test
+    public void test_handleMouseEvent_leftClick(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof Party);
+    }
+
+    /*@Test
+    public void test_handleMouseEvent_leftDoubleClick_changePartyType(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
+        System.out.println(canvasMakeUp.getActiveDiagram().getSelectedElement().getClass());
+    }*/
+
+    @Test
+    public void test_handleMouseEvent_leftDoubleClick_addParty(){
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        assertTrue(canvasMakeUp.getActiveDiagram().getParties().contains(c));
     }
 
 }
