@@ -13,6 +13,7 @@ import diagram.message.Message;
 import diagram.party.Party;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.*;
+import figures.helperClasses.CommunicationObjectHelper;
 import figures.helperClasses.Pair;
 
 import java.awt.*;
@@ -25,14 +26,15 @@ import java.util.List;
 public class FigureConverter {
     private static FigureConverter instance = null;
 
+    private boolean activeDiagramIsSequence;
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             boxDrawingStrategy,
             invokeMessageDrawingStrategy,
             responseMessageDrawingStrategy,
             labelDrawingStrategy,
-            //TODO LayoutDrawer maken
-            layoutStrategy;
+    //TODO LayoutDrawer maken
+    layoutStrategy;
 
     private FigureConverter() {
 
@@ -51,12 +53,14 @@ public class FigureConverter {
 
 
         if (diagram instanceof SequenceDiagram) {
+            activeDiagramIsSequence = true;
             actorDrawingStrategy = new SequenceActorDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
             invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
             responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
         }
         if (diagram instanceof CommunicationsDiagram) {
+            activeDiagramIsSequence = false;
             actorDrawingStrategy = new CommunicationActorDrawer();
             objectDrawingStrategy = new CommunicationObjectDrawer();
             invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
@@ -93,20 +97,21 @@ public class FigureConverter {
     }
 
     private void drawSelectionBox(Graphics graphics, Diagram diagram) {
-        //TODO try refactor instanceof
-
         Clickable c = diagram.getSelectedElement();
 
-        if(c instanceof Actor){
-            Actor a = (Actor)c;
-            Point2D start = new Point2D.Double(a.getCoordinate().getX()-(Actor.WIDTH/2),a.getCoordinate().getY()),
-                    end = new Point2D.Double(a.getCoordinate().getX()+(Actor.WIDTH/2),a.getCoordinate().getY()+Actor.WIDTH);
-            boxDrawingStrategy.draw(graphics,start, end,"");
-
-        } else if(c instanceof Label){
-            Label l = (Label)c;
+        if (diagram.selectedElementIsActor()) {
+            Actor a = (Actor) c;
+            Point2D start = new Point2D.Double(a.getCoordinate().getX() - (Actor.WIDTH / 2), a.getCoordinate().getY()),
+                    end = new Point2D.Double(a.getCoordinate().getX() + (Actor.WIDTH / 2), a.getCoordinate().getY() + Actor.WIDTH);
+            boxDrawingStrategy.draw(graphics, start, end, "");
+        } else if (diagram.selectedElementIsLabel()) {
+            Label l = (Label) c;
             Point2D start = l.getCoordinate();
-            boxDrawingStrategy.draw(graphics,start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height),"");
+            boxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height), "");
+        } else if (diagram.selectedElementIsObject()) {
+            //TODO selected item object
+        } else if (diagram.selectedElementIsMessage()) {
+            //TODO selected item Message
         }
     }
 
@@ -127,19 +132,24 @@ public class FigureConverter {
             //TODO enkel sequence (wrs ergens samen met lifeline duhh)
             //drawFirstActivationBar(graphics, activationBarCount2.get(0));
         }
-        Point2D start, end;
-        while (m != null) {
-            start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
-            end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
+        if (activeDiagramIsSequence) {
+            Point2D start, end;
+            while (m != null) {
 
-            if (m instanceof InvocationMessage)
-                this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
-            if (m instanceof ResultMessage)
-                this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
+                start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
+                end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
 
-            this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
+                if (m instanceof InvocationMessage)
+                    this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
+                if (m instanceof ResultMessage)
+                    this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
 
-            m = m.getNextMessage();
+                this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
+
+                m = m.getNextMessage();
+            }
+        } else {
+            new CommunicationObjectHelper(m).draw(graphics, invokeMessageDrawingStrategy, labelDrawingStrategy);
         }
     }
 
