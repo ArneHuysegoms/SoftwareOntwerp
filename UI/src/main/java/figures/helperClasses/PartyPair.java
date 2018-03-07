@@ -51,7 +51,14 @@ public class PartyPair extends Pair {
         for(int i = 0; i<messages.size();i++){
             messageDrawer.draw(graphics, calculateStart(), calculateEnd(i*spread),"");
             //TODO labels tekenen:
-            // labelDrawer.draw(graphics,,,message);
+            labelDrawer.draw(graphics,calculateLabelStartPosition(),null,message.get);
         }
+    }
+
+    private Point2D calculateLabelStartPosition(){
+        double x = Math.round((getSender().getCoordinate().getX()+getReceiver().getCoordinate().getX())/2);
+        double y = Math.round((getSender().getCoordinate().getY()+getReceiver().getCoordinate().getY())/2);
+
+        return new Point2D.Double(x,y);
     }
 }
