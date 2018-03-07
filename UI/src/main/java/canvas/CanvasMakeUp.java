@@ -37,7 +37,7 @@ public class CanvasMakeUp {
     /**
      *
      * @param activeDiagram
-     *          the diagram that should beome the active diagram
+     *          the diagram that should become the active diagram
      */
     private void setActiveDiagram(Diagram activeDiagram) {
         this.activeDiagram = activeDiagram;
