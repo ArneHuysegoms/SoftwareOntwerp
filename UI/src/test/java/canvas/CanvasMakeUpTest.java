@@ -137,12 +137,14 @@ public class CanvasMakeUpTest {
         canvasMakeUp.getActiveDiagram().addCharToLabel('S');
         canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, ((Party) canvasMakeUp.getActiveDiagram().getSelectedElement()).getLabel().getCoordinate()));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof PartyLabel);
+
     }
 
-    @Test
+    /*@Test
     public void test_handleMouseEvent_released(){
 
-    }
+    }*/
 
     @Test
     public void test_handleMouseEvent_leftClick(){
