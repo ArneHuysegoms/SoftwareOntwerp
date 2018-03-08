@@ -86,6 +86,6 @@ public abstract class Label implements Clickable {
     }
 
     public static boolean isCorrectCharForLabel(char charToAdd){
-        return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':';
+        return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':' || charToAdd == ' ';
     }
 }

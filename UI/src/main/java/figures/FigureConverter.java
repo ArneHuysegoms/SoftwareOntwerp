@@ -7,14 +7,14 @@ import diagram.SequenceDiagram;
 import diagram.label.Label;
 import diagram.party.Actor;
 import diagram.party.Object;
-import diagram.message.ResultMessage;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Party;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.*;
+import figures.basicShapes.DashedLine;
 import figures.helperClasses.CommunicationObjectHelper;
-import figures.helperClasses.Lifeline;
+import figures.helperClasses.LifelineHelper;
 import figures.helperClasses.Pair;
 
 import java.awt.*;
@@ -34,6 +34,8 @@ public class FigureConverter {
             invokeMessageDrawingStrategy,
             responseMessageDrawingStrategy,
             labelDrawingStrategy,
+            lifeLineDrawer,
+            selectionBoxDrawingStrategy,
     //TODO LayoutDrawer maken
     layoutStrategy;
 
@@ -50,10 +52,12 @@ public class FigureConverter {
 
     public void draw(Graphics graphics, Diagram diagram) {
         boxDrawingStrategy = new BoxDrawer();
+        selectionBoxDrawingStrategy = new SelectionBoxDrawer();
         labelDrawingStrategy = new LabelDrawer();
 
 
         if (diagram instanceof SequenceDiagram) {
+            lifeLineDrawer = new SequenceLifelineDrawer();
             activeDiagramIsSequence = true;
             actorDrawingStrategy = new SequenceActorDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
@@ -104,20 +108,57 @@ public class FigureConverter {
             Actor a = (Actor) c;
             Point2D start = new Point2D.Double(a.getCoordinate().getX() - (Actor.WIDTH / 2), a.getCoordinate().getY()),
                     end = new Point2D.Double(a.getCoordinate().getX() + (Actor.WIDTH / 2), a.getCoordinate().getY() + Actor.WIDTH);
-            boxDrawingStrategy.draw(graphics, start, end, "");
+            selectionBoxDrawingStrategy.draw(graphics, start, end, "");
         } else if (diagram.selectedElementIsLabel()) {
             Label l = (Label) c;
             Point2D start = l.getCoordinate();
-            boxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height), "");
+            selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height), "");
         } else if (diagram.selectedElementIsObject()) {
-            //TODO selected item object
+            Object object = (Object) c;
+            int selectionBoxSize = 5;
+            Point2D start = new Point2D.Double(object.getCoordinate().getX() - selectionBoxSize, object.getCoordinate().getY() - selectionBoxSize);
+            Point2D end = new Point2D.Double(object.getCoordinate().getX() + Object.WIDTH + selectionBoxSize, object.getCoordinate().getY() + Object.HEIGHT + selectionBoxSize);
+            selectionBoxDrawingStrategy.draw(graphics, start, end, "");
         } else if (diagram.selectedElementIsMessage()) {
-            //TODO selected item Message
+            Message m = (Message) c;
+            Point2D start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation() - (Message.HEIGHT / 2));
+            Point2D end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation() + (Message.HEIGHT / 2));
+            selectionBoxDrawingStrategy.draw(graphics, start, end, "");
         }
     }
 
     private void drawActivationBar() {
 
+    }
+
+    private void drawLifeline(Graphics graphics, Diagram diagram) {
+        Message m = diagram.getFirstMessage();
+        Point2D start, end;
+
+        if (m != null) {
+            Message last = null, first = diagram.getFirstMessage();
+            boolean foundLast = false;
+            while (!foundLast) {
+                if (m.getNextMessage() != null) {
+                    m = m.getNextMessage();
+                } else {
+                    last = m;
+                    foundLast = true;
+                }
+            }
+
+            for (Party p : diagram.getParties()) {
+                start = new Point2D.Double(p.getXLocationOfLifeline(), first.getyLocation() - Message.HEIGHT);
+                end = new Point2D.Double(p.getXLocationOfLifeline(), last.getyLocation() + Message.HEIGHT * 2);
+                lifeLineDrawer.draw(graphics, start, end, "");
+            }
+        } else {
+            for (Party p : diagram.getParties()) {
+                start = new Point2D.Double(p.getXLocationOfLifeline(), p.getCoordinate().getY() + Object.HEIGHT);
+                end = new Point2D.Double(p.getXLocationOfLifeline(), p.getCoordinate().getY() + Object.HEIGHT + Message.HEIGHT * 4);
+                lifeLineDrawer.draw(graphics, start, end, "");
+            }
+        }
     }
 
     private void drawMessages(Graphics graphics, Diagram diagram) {
@@ -129,16 +170,14 @@ public class FigureConverter {
 
         //drawActivationBars(#######);
 
-        if (m != null) {
-            //TODO enkel sequence (wrs ergens samen met lifeline duhh)
-            //drawFirstActivationBar(graphics, activationBarCount2.get(0));
-        }
+
         if (activeDiagramIsSequence) {
+            LifelineHelper lifelineHelper;
+            if (m != null) {
+                lifelineHelper = new LifelineHelper(m);
+                lifelineHelper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
+            }
 
-            if (m != null)
-                new Lifeline(m).draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
-
-            //Point2D start, end;
             while (m != null) {
                 /*
                 start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
@@ -153,6 +192,8 @@ public class FigureConverter {
 
                 m = m.getNextMessage();
             }
+
+            drawLifeline(graphics, diagram);
         } else {
             new CommunicationObjectHelper(m).draw(graphics, invokeMessageDrawingStrategy, labelDrawingStrategy);
         }
@@ -223,26 +264,4 @@ public class FigureConverter {
         }
         return activationBarCount;
     }
-
-    private void drawActivationBars(List<Pair<Party, Integer>> list) {
-        //TODO draw them bars
-
-        Point2D start, end;
-
-        //to calculate y
-        int passedMessages = 0;
-
-        for (Pair<Party, Integer> p : list) {
-        }
-
-    }
-
-    private void drawFirstActivationBar(Graphics graphics, Pair<Party, Integer> pair) {
-        Point2D start, end;
-        int messageHeight = 16;
-        start = new Point2D.Double(pair.getA().getCoordinate().getX() + 15, 78);
-        end = new Point2D.Double(pair.getA().getCoordinate().getX() + 35, 78 + (messageHeight * pair.getB() * 2));
-        boxDrawingStrategy.draw(graphics, start, end, "");
-    }
-
 }

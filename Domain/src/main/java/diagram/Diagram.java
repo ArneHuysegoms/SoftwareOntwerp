@@ -550,7 +550,7 @@ public abstract class Diagram{
      * @param N the N part of the messageNumber as specified by the assignment
      * @param e the eta part of the messageNumber as specified by the assignment
      */
-    private void setMessageNumbers(int N, int e, boolean active, int stack) {
+    private void setMessageNumbers(int N, int e, boolean active, int stack){
         Message message = this.getFirstMessage();
         while(message != null ){
             if(message instanceof InvocationMessage) {

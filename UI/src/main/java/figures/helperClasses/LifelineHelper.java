@@ -11,12 +11,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lifeline {
+public class LifelineHelper {
     private Party party;
     private List<ActivationBar> bars;
     private Message initialMessage;
 
-    public Lifeline(Message message) {
+    public LifelineHelper(Message message) {
         bars = new ArrayList<ActivationBar>();
         setInitialMessage(message);
 
@@ -45,11 +45,19 @@ public class Lifeline {
         }
     }
 
-    /**
-     * Calculate the dashed line's length
-     */
-    private void calculateLengthOfLine() {
-        //TODO
+    public int calculateLengthOfLine() {
+        int counter = 0;
+        Message tempMessage, response;
+        for(ActivationBar a : bars){
+            tempMessage = a.getSent();
+            response = a.getResponse();
+
+            while(tempMessage != response){
+                counter++;
+                tempMessage = tempMessage.getNextMessage();
+            }
+        }
+        return counter;
     }
 
     public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
