@@ -3,13 +3,14 @@ import figures.diagramFigures.*;
 import figures.helperClasses.*;
 import uievents.*;
 import canvas.*;
+import canvaswindow.*;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CanvasMakeUpTest.class,
+        CanvasControllerTest.class,
         CircleTest.class,
         DashedLineTest.class,
         LineTest.class,
@@ -24,6 +25,7 @@ import org.junit.runners.Suite;
         BoxTest.class,
         ArrowTest.class,
         DashedArrowTest.class,
+        InteractrCanvasTest.class,
 
 
 })
