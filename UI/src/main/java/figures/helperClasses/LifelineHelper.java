@@ -45,21 +45,6 @@ public class LifelineHelper {
         }
     }
 
-    public int calculateLengthOfLine() {
-        int counter = 0;
-        Message tempMessage, response;
-        for(ActivationBar a : bars){
-            tempMessage = a.getSent();
-            response = a.getResponse();
-
-            while(tempMessage != response){
-                counter++;
-                tempMessage = tempMessage.getNextMessage();
-            }
-        }
-        return counter;
-    }
-
     public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
         for (ActivationBar a : bars) {
             a.draw(graphics,boxDrawer, invokeDrawer, responseDrawer);
