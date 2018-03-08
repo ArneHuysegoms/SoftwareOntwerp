@@ -78,7 +78,9 @@ public class CanvasController {
      */
     public void handleMouseEvent(MouseEvent mouseEvent){
         if(checkIfValidLable()){
-            this.getFacade().stopEditingLabel();
+            if(this.getFacade().getSelectedElement() != null && !this.getFacade().selectedElementIsLabel()){
+                this.getFacade().stopEditingLabel();
+            }
             switch (mouseEvent.getMouseEventType()){
                 case DRAG:
                     if(this.getFacade().selectedElementIsParty()){
