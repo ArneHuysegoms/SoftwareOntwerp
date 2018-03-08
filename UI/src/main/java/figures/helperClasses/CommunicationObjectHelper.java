@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunicationObjectHelper {
+    //TODO move to Figureconverter as private class
     private List<PartyPair> pairs;
 
     public CommunicationObjectHelper(Message m) {

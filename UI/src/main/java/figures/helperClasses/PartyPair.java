@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartyPair extends Pair {
+    //TODO move to Figureconverter as private class
+
     private int arrowCount = 1;
     private List<Message> messages;
 
