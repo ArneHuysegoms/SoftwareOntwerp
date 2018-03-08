@@ -23,7 +23,6 @@ public class Arrow extends Figure {
     }
 
     private void calculateArrowHead(int x, int y, int x2, int y2) {
-        //TODO tweak arrow directions, better boundries for switching head
         if (x < x2) {
             if (y == y2) {
                 arrowTop = new Line(x2, y, x2 - 10, y - 10);
