@@ -3,6 +3,10 @@ import diagram.Clickable;
 import diagram.CommunicationsDiagram;
 import diagram.Diagram;
 import diagram.SequenceDiagram;
+import diagram.label.PartyLabel;
+import diagram.party.Actor;
+import diagram.party.Party;
+import figures.helperClasses.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -29,6 +33,21 @@ public class CanvasMakeUpTest {
 
     @Test
     public void test_changeActiveDiagram(){
+        canvasMakeUp.changeActiveDiagram();
+        assertTrue(canvasMakeUp.getActiveDiagram() instanceof CommunicationsDiagram);
+    }
+
+    @Test
+    public void test_changeActiveDiagram_twice(){
+        canvasMakeUp.changeActiveDiagram();
+        canvasMakeUp.changeActiveDiagram();
+        assertTrue(canvasMakeUp.getActiveDiagram() instanceof SequenceDiagram);
+    }
+
+    @Test
+    public void test_changeActiveDiagram_three_times(){
+        canvasMakeUp.changeActiveDiagram();
+        canvasMakeUp.changeActiveDiagram();
         canvasMakeUp.changeActiveDiagram();
         assertTrue(canvasMakeUp.getActiveDiagram() instanceof CommunicationsDiagram);
     }
@@ -102,6 +121,72 @@ public class CanvasMakeUpTest {
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.DRAG, new Point2D.Double(25,51)));
         Clickable c1 = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,51));
         assertTrue(c.equals(c1));
+    }
+
+    @Test
+    public void test_handleMouseEvent_pressed_away_from_invalidLabel(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(25,50)));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof PartyLabel);
+    }
+
+    @Test
+    public void test_handleMouseEvent_pressed_validLabel_of_object(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, ((Party) canvasMakeUp.getActiveDiagram().getSelectedElement()).getLabel().getCoordinate()));
+        assertFalse(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof PartyLabel);
+
+    }
+
+    @Test
+    public void test_handleMouseEvent_pressed_other_object_from_object(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(80,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('L');
+        canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED,new Point2D.Double(25,50)));
+        assertEquals(canvasMakeUp.getActiveDiagram().getSelectedElement(), c);
+
+    }
+
+    /*@Test
+    public void test_handleMouseEvent_released(){
+
+    }*/
+
+    @Test
+    public void test_handleMouseEvent_leftClick(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof Party);
+    }
+
+    @Test
+    public void test_handleMouseEvent_leftDoubleClick_changePartyType(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof Actor);
+    }
+
+    @Test
+    public void test_handleMouseEvent_leftDoubleClick_addParty(){
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        Clickable c = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        assertTrue(canvasMakeUp.getActiveDiagram().getParties().contains(c));
     }
 
 }

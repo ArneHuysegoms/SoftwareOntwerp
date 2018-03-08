@@ -1,6 +1,6 @@
 package main;
 
-import canvas.InteractrCanvas;
+import canvaswindow.InteractrCanvas;
 
 public class main {
 
