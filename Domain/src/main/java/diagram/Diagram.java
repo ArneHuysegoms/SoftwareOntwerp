@@ -791,7 +791,13 @@ public abstract class Diagram{
     private void startEditingLable(Label label){
         this.setSelectedElement(label);
         this.setLabelMode(true);
-        this.setValidLabel(false);
+        if(label.isValidLabel(label.getLabel())){
+            this.setValidLabel(true);
+            labelContainer = label.getLabel();
+        }
+        else{
+            this.setValidLabel(false);
+        }
         this.editableLable = label;
     }
 
