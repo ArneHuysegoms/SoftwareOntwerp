@@ -31,7 +31,7 @@ public class InteractrCanvas extends CanvasWindow {
     }
 
     public void paint(Graphics g){
-        FigureConverter.getInstance().draw(g, canvasController.getActiveDiagram());
+        FigureConverter.getInstance().draw(g, canvasController.getFacade().getActiveDiagram());
     }
 
     @Override
