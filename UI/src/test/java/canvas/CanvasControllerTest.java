@@ -6,6 +6,7 @@ import diagram.SequenceDiagram;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import diagram.party.Party;
+import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -188,21 +189,21 @@ public class CanvasControllerTest {
         assertTrue(canvasController.getFacade().getActiveDiagram().getParties().contains(c));
     }
 
-    @Test
-    public void test_label_resets(){
-        canvasController.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
-        canvasController.getActiveDiagram().addCharToLabel(':');
-        canvasController.getActiveDiagram().addCharToLabel('S');
-        canvasController.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
-        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getCoordinate());
-        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
+   /* @Test
+    public void test_label_resets() throws DomainException{
+        canvasController.getFacade().addNewParty(new Point2D.Double(25,50));
+        canvasController.getFacade().addCharToLabel(':');
+        canvasController.getFacade().addCharToLabel('S');
+        canvasController.getFacade().findSelectedElement(new Point2D.Double(25,50));
+        System.out.println(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getCoordinate());
+        System.out.println(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getLabel());
         canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(200,200)));
         canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
-        System.out.println(canvasController.getActiveDiagram().getSelectedElement().getClass());
-        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
         canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
-        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
-
-
-    }
+        ((Party) canvasController.getFacade().getSelectedElement()).getLabel().setLabel(":F");
+        canvasController.getFacade().findSelectedElement(new Point2D.Double(25,50));
+        canvasController.getFacade().addCharToLabel(':');
+        canvasController.getFacade().addCharToLabel('F');
+        assertEquals(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getLabel(), ":F");
+    }*/
 }
