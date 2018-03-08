@@ -7,6 +7,7 @@ import diagram.SequenceDiagram;
 import diagram.label.Label;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import uievents.MouseEventType;
 
 /**
  * Main layer between pure UI and the domain
@@ -172,7 +173,7 @@ public class CanvasMakeUp {
         Clickable selected = activeDiagram.getSelectedElement();
         Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && selected instanceof Label) {
+            if (selected.equals(newSelected) && selected instanceof Label && mouseEvent.getMouseEventType() == MouseEventType.LEFTCLICK) {
                 this.getActiveDiagram().editLabel();
             }
         }
