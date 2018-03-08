@@ -3,8 +3,10 @@ import diagram.Clickable;
 import diagram.CommunicationsDiagram;
 import diagram.Diagram;
 import diagram.SequenceDiagram;
+import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import diagram.party.Party;
+import figures.helperClasses.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -119,6 +121,27 @@ public class CanvasMakeUpTest {
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.DRAG, new Point2D.Double(25,51)));
         Clickable c1 = canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,51));
         assertTrue(c.equals(c1));
+    }
+
+    @Test
+    public void test_handleMouseEvent_pressed_invalidLabel(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(25,50)));
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof PartyLabel);
+    }
+
+    @Test
+    public void test_handleMouseEvent_pressed_validLabel_of_object(){
+        canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasMakeUp.getActiveDiagram().addCharToLabel(':');
+        canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, ((Party) canvasMakeUp.getActiveDiagram().getSelectedElement()).getLabel().getCoordinate()));
+    }
+
+    @Test
+    public void test_handleMouseEvent_released(){
+
     }
 
     @Test
