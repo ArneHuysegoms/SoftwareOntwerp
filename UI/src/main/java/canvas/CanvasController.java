@@ -1,13 +1,8 @@
 package canvas;
 
-import diagram.Clickable;
-import diagram.CommunicationsDiagram;
-import diagram.Diagram;
-import diagram.SequenceDiagram;
-import diagram.label.Label;
+import diagram.*;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import uievents.MouseEventType;
 
 /**
  * Main layer between pure UI and the domain
@@ -16,53 +11,21 @@ import uievents.MouseEventType;
  */
 public class CanvasController {
 
-    private Diagram activeDiagram;
-
-    private Diagram previousDiagram;
+    private DomainFacade facade;
 
     /**
      * Construct a new basic CanvasController
      */
     public CanvasController(){
-        setActiveDiagram(new SequenceDiagram());
+        this.setFacade(new DomainFacade());
     }
 
-    /**
-     *
-     * @return the diagram that is the active view at the moment
-     */
-    public Diagram getActiveDiagram() {
-        return activeDiagram;
+    public DomainFacade getFacade() {
+        return facade;
     }
 
-    /**
-     *
-     * @param activeDiagram
-     *          the diagram that should become the active diagram
-     */
-    private void setActiveDiagram(Diagram activeDiagram) {
-        this.activeDiagram = activeDiagram;
-    }
-
-    /**
-     * Change the active diagram to a diagram of the other type
-     */
-    public void changeActiveDiagram(){
-        if(this.getActiveDiagram() instanceof SequenceDiagram){
-            Diagram communication = new CommunicationsDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
-                    activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
-            if(previousDiagram != null ) {
-                communication.resetPartyPositions(previousDiagram.getParties());
-            }
-            this.previousDiagram = activeDiagram;
-            activeDiagram = communication;
-        } else{
-            Diagram sequence =  new SequenceDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
-                    activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
-            sequence.resetToSequencePositions();
-            this.previousDiagram = activeDiagram;
-            activeDiagram = sequence;
-        }
+    private void setFacade(DomainFacade facade) {
+        this.facade = facade;
     }
 
     /**
@@ -72,21 +35,21 @@ public class CanvasController {
      */
     public void handleKeyEvent(KeyEvent keyEvent){
         if(checkIfValidLable()){
-            this.getActiveDiagram().stopEditingLabel();
+            this.getFacade().stopEditingLabel();
             switch (keyEvent.getKeyEventType()){
                 case TAB:
-                    this.changeActiveDiagram();
+                    this.getFacade().changeActiveDiagram();
                     break;
                 case DEL:
-                    this.getActiveDiagram().deleteElement();
+                    this.getFacade().deleteElement();
                     break;
                 case CHAR:
-                    if(getActiveDiagram().selectedElementIsLabel()){
-                        getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
+                    if(this.getFacade().selectedElementIsLabel()){
+                        this.getFacade().addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    this.getActiveDiagram().removeLastCharFromLabel();
+                    this.getFacade().removeLastCharFromLabel();
                     break;
                 default:
                     break;
@@ -95,12 +58,12 @@ public class CanvasController {
         else{
           switch (keyEvent.getKeyEventType()){
               case CHAR:
-                  if(getActiveDiagram().selectedElementIsLabel()){
-                      getActiveDiagram().addCharToLabel(keyEvent.getKeyChar());
+                  if(this.getFacade().selectedElementIsLabel()){
+                      this.getFacade().addCharToLabel(keyEvent.getKeyChar());
                   }
                   break;
               case BACKSPACE:
-                  this.getActiveDiagram().removeLastCharFromLabel();
+                  this.getFacade().removeLastCharFromLabel();
                   break;
               default:
                   break;
@@ -115,30 +78,30 @@ public class CanvasController {
      */
     public void handleMouseEvent(MouseEvent mouseEvent){
         if(checkIfValidLable()){
-            this.getActiveDiagram().stopEditingLabel();
+            this.getFacade().stopEditingLabel();
             switch (mouseEvent.getMouseEventType()){
                 case DRAG:
-                    if(this.getActiveDiagram().selectedElementIsParty()){
-                        this.getActiveDiagram().changePartyPosition(mouseEvent.getPoint());
+                    if(this.getFacade().selectedElementIsParty()){
+                        this.getFacade().changePartyPosition(mouseEvent.getPoint());
                     }
                     break;
                 case PRESSED:
                     handleMousePressed(mouseEvent);
                     break;
                 case RELEASE:
-                    if(this.getActiveDiagram().selectedElementIsMessageStart()){
-                        this.getActiveDiagram().addNewMessage(mouseEvent.getPoint());
+                    if(this.getFacade().selectedElementIsMessageStart()){
+                        this.getFacade().addNewMessage(mouseEvent.getPoint());
                     }
                     break;
                 case LEFTCLICK:
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    if(this.getActiveDiagram().selectedElementIsParty()){
-                        getActiveDiagram().changePartyType(mouseEvent.getPoint());
+                    if(this.getFacade().selectedElementIsParty()){
+                        this.getFacade().changePartyType(mouseEvent.getPoint());
                     }
-                    if(getActiveDiagram().getSelectedElement() == null){
-                        getActiveDiagram().addNewParty(mouseEvent.getPoint());
+                    if(this.getFacade().getSelectedElement() == null){
+                        this.getFacade().addNewParty(mouseEvent.getPoint());
                     }
                     break;
                 default:
@@ -152,7 +115,7 @@ public class CanvasController {
      * @return true if the label in edit is valid, false otherwise
      */
     private boolean checkIfValidLable(){
-        return this.getActiveDiagram().isValidLabel();
+        return this.getFacade().checkIfValidLable();
     }
 
     /**
@@ -161,11 +124,11 @@ public class CanvasController {
      * @param mouseEvent the MouseEvent containing the information of the event
      */
     private void handleLeftClick(MouseEvent mouseEvent){
-        Clickable selected = activeDiagram.getSelectedElement();
-        Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
+        Clickable selected = this.getFacade().getSelectedElement();
+        Clickable newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && this.getActiveDiagram().selectedElementIsLabel()) {
-                this.getActiveDiagram().editLabel();
+            if (selected.equals(newSelected) && this.getFacade().selectedElementIsLabel()) {
+                this.getFacade().editLabel();
             }
         }
     }
@@ -176,9 +139,9 @@ public class CanvasController {
      * @param mouseEvent the event to handle
      */
     private void handleMousePressed(MouseEvent mouseEvent){
-        Clickable wouldBe = this.getActiveDiagram().wouldBeSelectedElement(mouseEvent.getPoint());
-        if(! getActiveDiagram().isLabel(wouldBe)){
-            getActiveDiagram().setSelectedElement(wouldBe);
+        Clickable wouldBe = this.getFacade().wouldBeSelectedElement(mouseEvent.getPoint());
+        if(! this.getFacade().isLabel(wouldBe)){
+            this.getFacade().setSelectedElement(wouldBe);
         }
     }
 }
