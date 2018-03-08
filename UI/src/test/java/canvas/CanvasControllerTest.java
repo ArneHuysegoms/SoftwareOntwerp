@@ -188,22 +188,4 @@ public class CanvasControllerTest {
         Clickable c = canvasController.getFacade().getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
         assertTrue(canvasController.getFacade().getActiveDiagram().getParties().contains(c));
     }
-
-   /* @Test
-    public void test_label_resets() throws DomainException{
-        canvasController.getFacade().addNewParty(new Point2D.Double(25,50));
-        canvasController.getFacade().addCharToLabel(':');
-        canvasController.getFacade().addCharToLabel('S');
-        canvasController.getFacade().findSelectedElement(new Point2D.Double(25,50));
-        System.out.println(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getCoordinate());
-        System.out.println(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getLabel());
-        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(200,200)));
-        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
-        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
-        ((Party) canvasController.getFacade().getSelectedElement()).getLabel().setLabel(":F");
-        canvasController.getFacade().findSelectedElement(new Point2D.Double(25,50));
-        canvasController.getFacade().addCharToLabel(':');
-        canvasController.getFacade().addCharToLabel('F');
-        assertEquals(((Party) canvasController.getFacade().getSelectedElement()).getLabel().getLabel(), ":F");
-    }*/
 }
