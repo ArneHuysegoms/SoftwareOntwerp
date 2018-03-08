@@ -1,5 +1,7 @@
-package canvas;
+package canvaswindow;
 
+import canvas.CanvasMakeUp;
+import canvaswindow.CanvasWindow;
 import figures.FigureConverter;
 import figures.basicShapes.DashedLine;
 import uievents.KeyEvent;
@@ -10,7 +12,7 @@ import uievents.MouseEventFactory;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class InteractrCanvas extends CanvasWindow{
+public class InteractrCanvas extends CanvasWindow {
     /**
      * Initializes a CanvasWindow object.
      *

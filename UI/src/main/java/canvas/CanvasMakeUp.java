@@ -7,6 +7,7 @@ import diagram.SequenceDiagram;
 import diagram.label.Label;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import uievents.MouseEventType;
 
 /**
  * Main layer between pure UI and the domain
@@ -37,7 +38,7 @@ public class CanvasMakeUp {
     /**
      *
      * @param activeDiagram
-     *          the diagram that should beome the active diagram
+     *          the diagram that should become the active diagram
      */
     private void setActiveDiagram(Diagram activeDiagram) {
         this.activeDiagram = activeDiagram;
@@ -55,8 +56,7 @@ public class CanvasMakeUp {
             }
             this.previousDiagram = activeDiagram;
             activeDiagram = communication;
-        }
-        else{
+        } else{
             Diagram sequence =  new SequenceDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
                     activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
             sequence.resetToSequencePositions();
@@ -173,17 +173,21 @@ public class CanvasMakeUp {
         Clickable selected = activeDiagram.getSelectedElement();
         Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && selected instanceof Label) {
+            if (selected.equals(newSelected) && this.getActiveDiagram().selectedElementIsLabel()) {
                 this.getActiveDiagram().editLabel();
             }
         }
     }
 
+    /**
+     * Handles MouseEvents of type MouseEvent.Pressed
+     *
+     * @param mouseEvent the event to handle
+     */
     private void handleMousePressed(MouseEvent mouseEvent){
-        Clickable selected = activeDiagram.getSelectedElement();
-        activeDiagram.findSelectedElement(mouseEvent.getPoint());
-        if(this.getActiveDiagram().selectedElementIsLabel()){
-            this.getActiveDiagram().setSelectedElement(selected);
+        Clickable wouldBe = this.getActiveDiagram().wouldBeSelectedElement(mouseEvent.getPoint());
+        if(! getActiveDiagram().isLabel(wouldBe)){
+            getActiveDiagram().setSelectedElement(wouldBe);
         }
     }
 }

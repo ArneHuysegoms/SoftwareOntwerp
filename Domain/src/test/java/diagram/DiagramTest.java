@@ -172,15 +172,36 @@ public class DiagramTest {
     }
 
     @Test
-    public void Test_addNewMessage_between_FirstMessage_and_its_result(){
+    public void Test_addNewParty_sets_correct_sequenceNumbers(){
         Diagram seq = new SequenceDiagram(parties, firstMessage);
-        seq.findSelectedElement(new Point2D.Double(25,130));
+        seq.addNewParty(new Point2D.Double(10, 75));
+
+        assertEquals(2, actor1.getPositionInSequenceDiagram());
+        assertEquals(3, object1.getPositionInSequenceDiagram());
+    }
+
+    @Test
+    public void Test_adding_new_Messages_gets_correct_MessageNumber_simple_stack(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+        seq.findSelectedElement(new Point2D.Double(25,250));
         assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
 
-        seq.addNewMessage(new Point2D.Double(150, 130));
-        assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
-        assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
+        seq.addNewMessage(new Point2D.Double(150, 250));
+
+        assertEquals("1",((InvocationMessage) (seq.getFirstMessage())).getMessageNumber());
+
+        assertEquals("2",((InvocationMessage) (seq.getFirstMessage().getNextMessage().getNextMessage())).getMessageNumber());
     }
+//    @Test
+//    public void Test_addNewMessage_between_FirstMessage_and_its_result(){
+//        Diagram seq = new SequenceDiagram(parties, firstMessage);
+//        seq.findSelectedElement(new Point2D.Double(25,130));
+//        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+//
+//        seq.addNewMessage(new Point2D.Double(150, 130));
+//        assertTrue(seq.getFirstMessage().getNextMessage() instanceof InvocationMessage);
+//        assertEquals(secondMessage, seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage());
+//    }
 
     @Test
     public void Test_addNewMessage_after_last_message(){
@@ -231,5 +252,29 @@ public class DiagramTest {
         Diagram seq = new SequenceDiagram(parties, firstMessage, labelActor1);
         seq.deleteElement();
         assertFalse(seq.getParties().contains(actor1));
+    }
+
+    @Test
+    public void Test_adding_new_Messages_gets_correct_MessageNumber_complex_stack(){
+        Diagram seq = new SequenceDiagram(parties, firstMessage);
+
+        seq.addParty(actor2);
+
+        seq.findSelectedElement(new Point2D.Double(150, 130));
+
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+
+        seq.addNewMessage(new Point2D.Double(225, 130));
+
+        seq.findSelectedElement(new Point2D.Double(30,350));
+        assertTrue(seq.getSelectedElement() instanceof Diagram.MessageStart);
+
+        seq.addNewMessage(new Point2D.Double(230, 350));
+
+        assertEquals("1",((InvocationMessage) (seq.getFirstMessage())).getMessageNumber());
+
+        assertEquals("1.1",((InvocationMessage) (seq.getFirstMessage().getNextMessage())).getMessageNumber());
+
+        assertEquals("2", ((InvocationMessage) (seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage())).getMessageNumber());
     }
 }
