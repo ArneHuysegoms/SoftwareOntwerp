@@ -135,9 +135,9 @@ public class CanvasMakeUpTest {
         canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
         canvasMakeUp.getActiveDiagram().addCharToLabel(':');
         canvasMakeUp.getActiveDiagram().addCharToLabel('S');
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
-        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,80)));
-        System.out.println(canvasMakeUp.getActiveDiagram().getSelectedElement().getClass());
+        assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof Actor);
     }
 
     @Test
