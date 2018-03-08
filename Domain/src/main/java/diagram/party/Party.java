@@ -231,9 +231,9 @@ public abstract class Party implements Clickable{
     public abstract Point2D getCorrectLabelPosition();
 
     /**
+     * method to get the x location of the lifeline belonging to the party
      *
-     *
-     * @return
+     * @return returns a double which denotes the x location of the lifeline belonging to the party
      */
     public abstract double getXLocationOfLifeline();
 
