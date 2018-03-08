@@ -25,7 +25,7 @@ public class KeyEventFactory {
                 return new KeyEvent(KeyEventType.BACKSPACE);
             }
         } else if (id == java.awt.event.KeyEvent.KEY_TYPED) {
-            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':') {
+            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {
                 return new KeyEvent(KeyEventType.CHAR);
