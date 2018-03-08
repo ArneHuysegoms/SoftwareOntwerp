@@ -1,6 +1,6 @@
 package figures.helperClasses;
 
-import canvas.CanvasWindow;
+import canvaswindow.CanvasWindow;
 import figures.basicShapes.DashedLine;
 import figures.basicShapes.DashedRectangle;
 import figures.basicShapes.Line;

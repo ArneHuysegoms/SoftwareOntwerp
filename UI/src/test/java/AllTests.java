@@ -22,6 +22,7 @@ import org.junit.runners.Suite;
         PairTest.class,
         BoxTest.class,
         ArrowTest.class,
+        DashedArrowTest.class,
 
 
 })

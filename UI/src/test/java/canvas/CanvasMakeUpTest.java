@@ -43,6 +43,14 @@ public class CanvasMakeUpTest {
     }
 
     @Test
+    public void test_changeActiveDiagram_three_times(){
+        canvasMakeUp.changeActiveDiagram();
+        canvasMakeUp.changeActiveDiagram();
+        canvasMakeUp.changeActiveDiagram();
+        assertTrue(canvasMakeUp.getActiveDiagram() instanceof CommunicationsDiagram);
+    }
+
+    @Test
     public void test_handleKeyEvent_tab(){
         Diagram d = canvasMakeUp.getActiveDiagram();
         KeyEventType type = KeyEventType.TAB;
@@ -122,15 +130,15 @@ public class CanvasMakeUpTest {
         assertTrue(canvasMakeUp.getActiveDiagram().getSelectedElement() instanceof Party);
     }
 
-    /*@Test
+    @Test
     public void test_handleMouseEvent_leftDoubleClick_changePartyType(){
         canvasMakeUp.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
         canvasMakeUp.getActiveDiagram().addCharToLabel(':');
         canvasMakeUp.getActiveDiagram().addCharToLabel('S');
         canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTDOUBLECLICK, new Point2D.Double(25,50)));
-        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,50)));
+        canvasMakeUp.handleMouseEvent(new MouseEvent(MouseEventType.LEFTCLICK, new Point2D.Double(25,80)));
         System.out.println(canvasMakeUp.getActiveDiagram().getSelectedElement().getClass());
-    }*/
+    }
 
     @Test
     public void test_handleMouseEvent_leftDoubleClick_addParty(){
