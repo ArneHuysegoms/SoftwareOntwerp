@@ -1,13 +1,12 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
-import figures.Drawer.PartyDrawer;
-import figures.basicShapes.DashedLine;
+import figures.Drawer.Drawer;
 import figures.diagramFigures.StickMan;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class SequenceActorDrawer extends PartyDrawer {
+public class SequenceActorDrawer implements Drawer {
 
     public SequenceActorDrawer(){
 
