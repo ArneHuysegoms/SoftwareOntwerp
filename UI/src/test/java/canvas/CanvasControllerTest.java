@@ -6,6 +6,7 @@ import diagram.SequenceDiagram;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import diagram.party.Party;
+import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -187,5 +188,4 @@ public class CanvasControllerTest {
         Clickable c = canvasController.getFacade().getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
         assertTrue(canvasController.getFacade().getActiveDiagram().getParties().contains(c));
     }
-
 }

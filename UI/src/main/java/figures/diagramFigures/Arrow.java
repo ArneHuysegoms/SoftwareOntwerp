@@ -16,12 +16,6 @@ public class Arrow extends Figure {
         calculateArrowHead((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 
-    public Arrow(int x, int y, int x2, int y2) {
-        lineStart = new Point2D.Double(x, y);
-        lineEnd = new Point2D.Double(x2, y2);
-        calculateArrowHead(x, y, x2, y2);
-    }
-
     private void calculateArrowHead(int x, int y, int x2, int y2) {
         if (x < x2) {
             if (y == y2) {
