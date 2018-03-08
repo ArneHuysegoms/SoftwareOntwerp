@@ -14,16 +14,16 @@ import uievents.MouseEventType;
  *
  * Interprets UIEvents and addresses the appropriate functions in the diagram.
  */
-public class CanvasMakeUp {
+public class CanvasController {
 
     private Diagram activeDiagram;
 
     private Diagram previousDiagram;
 
     /**
-     * Construct a new basic CanvasMakeUp
+     * Construct a new basic CanvasController
      */
-    public CanvasMakeUp(){
+    public CanvasController(){
         setActiveDiagram(new SequenceDiagram());
     }
 
@@ -145,15 +145,6 @@ public class CanvasMakeUp {
                     break;
             }
         }
-    }
-
-    /**
-     * checks if the active diagram is in LabelMode, which will block some of the functionality
-     *
-     * @return true if the active diagram is in labelMode, false otherwise
-     */
-    private boolean checkIfInLabelMode(){
-        return this.activeDiagram.isLabelMode();
     }
 
     /**
