@@ -1,15 +1,14 @@
-package figures.Drawer.DiagramSpecificDrawers;
+package figures.Drawer;
 
-import figures.Drawer.PartyDrawer;
-import figures.basicShapes.DashedLine;
 import figures.diagramFigures.Box;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class SequenceObjectDrawer extends PartyDrawer {
+public class SelectionBoxDrawer implements Drawer {
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
+        graphics.setColor(Color.RED);
         new Box(start, end).draw(graphics);
     }
 }

@@ -51,6 +51,4 @@ public class StickManTest {
     public void test_getConnectionArms_constructor2(){
         assertEquals(stickMan2.getConnectionArms(), new Point2D.Double(10, 25));
     }
-    //TODO assemblefigure
-    //TODO setters
 }
