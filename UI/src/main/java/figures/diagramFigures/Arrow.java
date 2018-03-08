@@ -63,6 +63,11 @@ public class Arrow extends Figure {
 
     }
 
+    /**
+     * a draw fucntion that draws on the Graphics parameter object
+     * @param graphics
+     *      object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Line(this.getLineStart(), this.getLineEnd()).draw(graphics);

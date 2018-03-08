@@ -26,6 +26,11 @@ public class Line extends Shape {
         return end;
     }
 
+    /**
+     * a draw fucntion that draws on the Graphics parameter object
+     * @param graphics
+     *      object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         graphics.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());

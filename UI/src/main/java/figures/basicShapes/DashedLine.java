@@ -21,6 +21,11 @@ public class DashedLine extends Line {
         lengthLeft = Math.sqrt(Math.pow((end.getX() - currentX), 2) + Math.pow((end.getY() - currentY), 2));
     }
 
+    /**
+     * a draw fucntion that draws on the Graphics parameter object
+     * @param graphics
+     *      object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         boolean toggleDraw = true;
