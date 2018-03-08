@@ -173,7 +173,7 @@ public class CanvasMakeUp {
         Clickable selected = activeDiagram.getSelectedElement();
         Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && selected instanceof Label && mouseEvent.getMouseEventType() == MouseEventType.LEFTCLICK) {
+            if (selected.equals(newSelected) && selected instanceof Label) {
                 this.getActiveDiagram().editLabel();
             }
         }
@@ -182,7 +182,7 @@ public class CanvasMakeUp {
     private void handleMousePressed(MouseEvent mouseEvent){
         Clickable selected = activeDiagram.getSelectedElement();
         activeDiagram.findSelectedElement(mouseEvent.getPoint());
-        if(this.getActiveDiagram().selectedElementIsLabel()){
+        if(this.getActiveDiagram().selectedElementIsLabel() && mouseEvent.getMouseEventType() == MouseEventType.LEFTCLICK){
             this.getActiveDiagram().setSelectedElement(selected);
         }
     }
