@@ -26,8 +26,6 @@ import org.junit.runners.Suite;
         ArrowTest.class,
         DashedArrowTest.class,
         InteractrCanvasTest.class,
-
-
 })
 
 public class AllTests {
