@@ -57,6 +57,8 @@ public class FigureConverter {
 
 
         if (diagram instanceof SequenceDiagram) {
+            new SequenceLayoutDrawer().draw(graphics,null,null,"");
+
             lifeLineDrawer = new SequenceLifelineDrawer();
             activeDiagramIsSequence = true;
             actorDrawingStrategy = new SequenceActorDrawer();
