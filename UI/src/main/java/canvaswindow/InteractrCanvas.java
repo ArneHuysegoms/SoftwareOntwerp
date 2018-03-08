@@ -33,9 +33,6 @@ public class InteractrCanvas extends CanvasWindow {
     }
 
     public void paint(Graphics g){
-        g.drawLine(0,0, (int)((Math.random()*250)+1),45);
-        new DashedLine(0,45,600,45).draw(g);
-        new DashedLine(0,105,600,105).draw(g);
         FigureConverter.getInstance().draw(g,canvasMakeUp.getActiveDiagram());
     }
 
