@@ -14,6 +14,7 @@ import diagram.party.Party;
 import figures.Drawer.*;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.helperClasses.CommunicationObjectHelper;
+import figures.helperClasses.Lifeline;
 import figures.helperClasses.Pair;
 
 import java.awt.*;
@@ -133,9 +134,13 @@ public class FigureConverter {
             //drawFirstActivationBar(graphics, activationBarCount2.get(0));
         }
         if (activeDiagramIsSequence) {
-            Point2D start, end;
-            while (m != null) {
 
+            if (m != null)
+                new Lifeline(m).draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
+
+            //Point2D start, end;
+            while (m != null) {
+                /*
                 start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
                 end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
 
@@ -143,7 +148,7 @@ public class FigureConverter {
                     this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
                 if (m instanceof ResultMessage)
                     this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
-
+                */
                 this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
 
                 m = m.getNextMessage();
