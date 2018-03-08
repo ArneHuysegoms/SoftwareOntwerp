@@ -117,11 +117,11 @@ public class ActivationBar {
         return hasParentBar;
     }
 
-    private Message getSent() {
+    public Message getSent() {
         return sent;
     }
 
-    private Message getResponse() {
+    public Message getResponse() {
         return response;
     }
 
