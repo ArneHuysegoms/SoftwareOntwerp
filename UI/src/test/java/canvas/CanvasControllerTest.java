@@ -188,4 +188,21 @@ public class CanvasControllerTest {
         assertTrue(canvasController.getActiveDiagram().getParties().contains(c));
     }
 
+    @Test
+    public void test_label_resets(){
+        canvasController.getActiveDiagram().addNewParty(new Point2D.Double(25,50));
+        canvasController.getActiveDiagram().addCharToLabel(':');
+        canvasController.getActiveDiagram().addCharToLabel('S');
+        canvasController.getActiveDiagram().findSelectedElement(new Point2D.Double(25,50));
+        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getCoordinate());
+        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
+        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(200,200)));
+        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
+        System.out.println(canvasController.getActiveDiagram().getSelectedElement().getClass());
+        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
+        canvasController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(35,70)));
+        System.out.println(((Party) canvasController.getActiveDiagram().getSelectedElement()).getLabel().getLabel());
+
+
+    }
 }
