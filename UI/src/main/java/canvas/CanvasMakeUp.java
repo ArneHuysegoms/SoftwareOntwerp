@@ -173,17 +173,21 @@ public class CanvasMakeUp {
         Clickable selected = activeDiagram.getSelectedElement();
         Clickable newSelected = activeDiagram.findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && selected instanceof Label) {
+            if (selected.equals(newSelected) && this.getActiveDiagram().selectedElementIsLabel()) {
                 this.getActiveDiagram().editLabel();
             }
         }
     }
 
+    /**
+     * Handles MouseEvents of type MouseEvent.Pressed
+     *
+     * @param mouseEvent the event to handle
+     */
     private void handleMousePressed(MouseEvent mouseEvent){
-        Clickable selected = activeDiagram.getSelectedElement();
-        activeDiagram.findSelectedElement(mouseEvent.getPoint());
-        if(this.getActiveDiagram().selectedElementIsLabel() && mouseEvent.getMouseEventType() == MouseEventType.LEFTCLICK){
-            this.getActiveDiagram().setSelectedElement(selected);
+        Clickable wouldBe = this.getActiveDiagram().wouldBeSelectedElement(mouseEvent.getPoint());
+        if(! getActiveDiagram().isLabel(wouldBe)){
+            getActiveDiagram().setSelectedElement(wouldBe);
         }
     }
 }

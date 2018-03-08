@@ -354,7 +354,7 @@ public abstract class Diagram{
                 try {
                     Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
                     newActor.updateLabelCoordinate(newActor.getCorrectLabelPosition());
-                    //this.updateMessagesForChangedParty(newActor);
+                    this.updateMessagesForChangedParty(o, newActor);
                     this.removeParty(o);
                     this.addParty(newActor);
                     selectedElement = newActor;
@@ -368,7 +368,7 @@ public abstract class Diagram{
                 try {
                     Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
                     newObject.updateLabelCoordinate(newObject.getCorrectLabelPosition());
-                    //this.updateMessagesForChangedParty(newObject);
+                    this.updateMessagesForChangedParty(a, newObject);
                     this.removeParty(a);
                     this.addParty(newObject);
                     selectedElement = newObject;
@@ -471,6 +471,23 @@ public abstract class Diagram{
     }
 
     /**
+     * finds the selected element without setting it as the selected element
+     *
+     * @param location the location of the ui event
+     * @return the element that would be selected
+     */
+    public Clickable wouldBeSelectedElement(Point2D location){
+        Clickable selected = selectClickableElement(location);
+        if(! (selected instanceof Label)){
+            stopEditingLabel();
+            this.setLabelMode(false);
+            labelContainer = "";
+            editableLable = null;
+        }
+        return selected;
+    }
+
+    /**
      * adds the given char to the Label in edit
      *
      * @param newChar
@@ -490,7 +507,9 @@ public abstract class Diagram{
      * Start editing the currently selected element, that is a label
      */
     public void editLabel(){
-        startEditingLable((Label) this.getSelectedElement());
+        Label label = (Label) this.getSelectedElement();
+        labelContainer = label.getLabel();
+        startEditingLable(label);
     }
 
     /**
@@ -793,13 +812,23 @@ public abstract class Diagram{
      * @return true if the party is on top of the call stack, false otherwise
      */
     private boolean checkCallStack(Message previous, Party sender){
-        if(previous == null || (previous.getNextMessage() instanceof ResultMessage && previous.getReceiver().equals(sender)) || previous.getNextMessage() == null){
+        if(previous == null || (previous instanceof InvocationMessage && previous.getReceiver().equals(sender))){
             return true;
         }
         else if(this.getFirstMessage() != null){
-            return this.getFirstMessage().getSender().equals(sender);
+            return this.getFirstMessage().getSender().equals(sender) && ! (previous instanceof InvocationMessage);
         }
         return false;
+    }
+
+    /**
+     * return wethers or not this clickable is a Label object
+     *
+     * @param clickable the clickable to inspect
+     * @return true if the clickable is an instance of Label
+     */
+    public boolean isLabel(Clickable clickable){
+        return clickable instanceof Label;
     }
 
 //    /**
@@ -980,28 +1009,29 @@ public abstract class Diagram{
         return selected;
     }
 
-//    /**
-//     *
-//     *
-//     * @param party
-//     */
-//    private void updateMessagesForChangedParty(Party party){
-//        Message message = firstMessage;
-//        while(message != null){
-//            if(message.getReceiver().equals(party)){
-//                message.setReceiver(party);
-//            }
-//            if(message.getSender().equals(party)){
-//                try {
-//                    message.setSender(party);
-//                }
-//                catch (DomainException exc){
-//                    System.out.println(exc.getMessage());
-//                }
-//            }
-//            message = message.getNextMessage();
-//        }
-//    }
+    /**
+     * updates all the messasges to relink them to the appropriate party
+     *
+     * @param old the old party of the message
+     * @param newParty the new party of the message
+     */
+    private void updateMessagesForChangedParty(Party old, Party newParty){
+        Message message = firstMessage;
+        while(message != null){
+            if(message.getReceiver().equals(old)){
+                message.setReceiver(newParty);
+            }
+            if(message.getSender().equals(old)){
+                try {
+                    message.setSender(newParty);
+                }
+                catch (DomainException exc){
+                    System.out.println(exc.getMessage());
+                }
+            }
+            message = message.getNextMessage();
+        }
+    }
 
     /**
      * Finds the message proceeding the message on the provided yLocation
