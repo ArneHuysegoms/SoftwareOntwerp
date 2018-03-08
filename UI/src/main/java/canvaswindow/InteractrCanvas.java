@@ -1,5 +1,6 @@
-package canvas;
+package canvaswindow;
 
+import canvas.CanvasMakeUp;
 import canvaswindow.CanvasWindow;
 import figures.FigureConverter;
 import figures.basicShapes.DashedLine;
