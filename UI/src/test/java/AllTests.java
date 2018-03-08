@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
         DashedLineTest.class,
         LineTest.class,
         RectangleTest.class,
+        DashedRectangleTest.class,
         StickManTest.class,
         KeyEventFactoryTest.class,
         KeyEventTest.class,
