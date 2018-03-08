@@ -37,7 +37,7 @@ public class CanvasMakeUp {
     /**
      *
      * @param activeDiagram
-     *          the diagram that should beome the active diagram
+     *          the diagram that should become the active diagram
      */
     private void setActiveDiagram(Diagram activeDiagram) {
         this.activeDiagram = activeDiagram;
@@ -55,8 +55,7 @@ public class CanvasMakeUp {
             }
             this.previousDiagram = activeDiagram;
             activeDiagram = communication;
-        }
-        else{
+        } else{
             Diagram sequence =  new SequenceDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
                     activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
             sequence.resetToSequencePositions();

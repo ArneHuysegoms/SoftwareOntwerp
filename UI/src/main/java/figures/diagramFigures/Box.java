@@ -9,12 +9,28 @@ public class Box extends Figure {
 
     private Point2D tl, br;
     public Box(Point2D start, Point2D end) {
-        tl = start;
-        br = end;
+        setTl(start);
+        setBr(end);
+    }
+
+    public Point2D getTl() {
+        return tl;
+    }
+
+    public void setTl(Point2D tl) {
+        this.tl = tl;
+    }
+
+    public Point2D getBr() {
+        return br;
+    }
+
+    public void setBr(Point2D br) {
+        this.br = br;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        new Rectangle(tl,br).draw(graphics);
+        new Rectangle(this.getTl(),this.getBr()).draw(graphics);
     }
 }
