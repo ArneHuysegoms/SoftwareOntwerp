@@ -2,6 +2,9 @@ package figures.basicShapes;
 
 import java.awt.*;
 
+/**
+ * a class used to draw a dashed rectangle
+ */
 public class DashedRectangle extends Rectangle{
     public DashedRectangle(int x, int y, int width, int length) {
         super(x, y, width, length);

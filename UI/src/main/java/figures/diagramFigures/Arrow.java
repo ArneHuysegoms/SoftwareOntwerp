@@ -5,6 +5,9 @@ import figures.basicShapes.Line;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * a class used to draw an arrow
+ */
 public class Arrow extends Figure {
     private Point2D lineStart, lineEnd;
     private Line arrowTop;

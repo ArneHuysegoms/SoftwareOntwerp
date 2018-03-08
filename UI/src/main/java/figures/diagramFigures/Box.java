@@ -5,6 +5,9 @@ import figures.basicShapes.Rectangle;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * a class used to draw a rectangle box
+ */
 public class Box extends Figure {
 
     private Point2D tl, br;

@@ -3,6 +3,9 @@ package figures.basicShapes;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * a class used to draw a line
+ */
 public class Line extends Shape {
 
     protected Point2D start;

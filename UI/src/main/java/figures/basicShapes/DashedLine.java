@@ -3,6 +3,9 @@ package figures.basicShapes;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * a class used to draw a dashed line
+ */
 public class DashedLine extends Line {
 
     private double lengthLeft;

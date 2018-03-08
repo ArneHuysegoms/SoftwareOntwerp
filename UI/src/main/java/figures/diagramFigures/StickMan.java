@@ -6,6 +6,9 @@ import figures.basicShapes.Line;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * a class used to draw a stickman
+ */
 public class StickMan extends Figure {
     private Point2D topOfHead;
 
