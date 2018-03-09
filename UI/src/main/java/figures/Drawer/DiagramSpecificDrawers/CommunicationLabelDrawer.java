@@ -7,6 +7,17 @@ import java.awt.geom.Point2D;
 
 public class CommunicationLabelDrawer implements Drawer {
 
+    /**
+     *
+     * @param graphics
+     *      object used to draw on the program's window
+     * @param start
+     *      point touching the sender object
+     * @param end
+     *      point touching the receiver object
+     * @param label
+     *      string to be drawn
+     */
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
         double x = Math.round((start.getX() + end.getX()) / 2);

@@ -13,12 +13,30 @@ public class Arrow extends Figure {
     private Line arrowTop;
     private Line arrowBottom;
 
+    /**
+     *
+     * @param start
+     *      the arrow's start point
+     * @param end
+     *      the arrow's end point
+     */
     public Arrow(Point2D start, Point2D end) {
         lineStart = start;
         lineEnd = end;
         calculateArrowHead((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
     }
 
+    /**
+     * methods that calculates the arrow's head at the end point
+     * @param x
+     *      the x-coordinate of the arrow's start point
+     * @param y
+     *      the y-coordinate of the arrow's start point
+     * @param x2
+     *      the x-coordinate of the arrow's end point
+     * @param y2
+     *      the y-coordinate of the arrow's end point
+     */
     private void calculateArrowHead(int x, int y, int x2, int y2) {
         if (x < x2) {
             if (y == y2) {
@@ -72,18 +90,34 @@ public class Arrow extends Figure {
         this.getArrowBottom().draw(graphics);
     }
 
+    /**
+     * returns the arrow's start point
+     * @return
+     */
     public Point2D getLineStart() {
         return lineStart;
     }
 
+    /**
+     * returns the arrow's end point
+     * @return
+     */
     public Point2D getLineEnd() {
         return lineEnd;
     }
 
+    /**
+     * returns the arrow head's upper line
+     * @return
+     */
     public Line getArrowTop() {
         return arrowTop;
     }
 
+    /**
+     * returns the arrow head's bottom line
+     * @return
+     */
     public Line getArrowBottom() {
         return arrowBottom;
     }

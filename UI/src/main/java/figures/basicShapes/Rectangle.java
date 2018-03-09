@@ -34,9 +34,9 @@ public class Rectangle extends Shape {
     /**
      *
      * @param tl
-     *      the rectangles top-left point
+     *      the rectangle's top-left point
      * @param br
-     *      the rectangles bottom-right point
+     *      the rectangle's bottom-right point
      */
     public Rectangle(Point2D tl, Point2D br){
         setPositionTL(tl);
