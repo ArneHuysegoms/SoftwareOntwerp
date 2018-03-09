@@ -53,15 +53,7 @@ public class StickManTest {
     public void test_getConnectionArms_constructor2(){
         assertEquals(stickMan2.getConnectionArms(), new Point2D.Double(10, 25));
     }
-    @Test
-    public void test_getHead_constructor(){
-        Circle c = new Circle(5,15,5);
-        System.out.println(stickMan.getHead().getCenter().getX());
-        System.out.println(stickMan.getHead().getCenter().getY());
-        System.out.println(stickMan.getHead().getRadius());
-        System.out.println(c.getRadius());
-        System.out.println(c.getCenter());
-    }
+
     @Test
     public void test_getArms_constructor(){
         assertEquals(stickMan.getArms().getStart(), new Point2D.Double(4,25));
@@ -71,5 +63,26 @@ public class StickManTest {
     public void test_getLegL_constructor(){
         assertEquals(stickMan.getLegL().getStart(), new Point2D.Double(10,40));
         assertEquals(stickMan.getLegL().getEnd(), new Point2D.Double(6,55));
+    }
+    @Test
+    public void test_getLegR_constructor(){
+        assertEquals(stickMan.getLegR().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan.getLegR().getEnd(), new Point2D.Double(14,55));
+    }
+
+    @Test
+    public void test_getArms_constructor2(){
+        assertEquals(stickMan2.getArms().getStart(), new Point2D.Double(4,25));
+        assertEquals(stickMan2.getArms().getEnd(), new Point2D.Double(16,25));
+    }
+    @Test
+    public void test_getLegL_constructor2(){
+        assertEquals(stickMan2.getLegL().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan2.getLegL().getEnd(), new Point2D.Double(6,55));
+    }
+    @Test
+    public void test_getLegR_constructor2(){
+        assertEquals(stickMan2.getLegR().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan2.getLegR().getEnd(), new Point2D.Double(14,55));
     }
 }
