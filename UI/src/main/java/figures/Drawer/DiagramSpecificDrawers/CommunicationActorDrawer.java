@@ -1,12 +1,12 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
-import figures.Drawer.PartyDrawer;
+import figures.Drawer.Drawer;
 import figures.diagramFigures.Box;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class CommunicationActorDrawer extends PartyDrawer {
+public class CommunicationActorDrawer implements Drawer {
 
     public CommunicationActorDrawer(){
 

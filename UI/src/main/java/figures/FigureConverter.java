@@ -5,29 +5,28 @@ import diagram.CommunicationsDiagram;
 import diagram.Diagram;
 import diagram.SequenceDiagram;
 import diagram.label.Label;
-import diagram.party.Actor;
-import diagram.party.Object;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.party.Actor;
+import diagram.party.Object;
 import diagram.party.Party;
-import figures.Drawer.*;
+import figures.Drawer.BoxDrawer;
 import figures.Drawer.DiagramSpecificDrawers.*;
-import figures.basicShapes.DashedLine;
-import figures.helperClasses.CommunicationObjectHelper;
-import figures.helperClasses.LifelineHelper;
+import figures.Drawer.Drawer;
+import figures.Drawer.LabelDrawer;
+import figures.Drawer.SelectionBoxDrawer;
 import figures.helperClasses.Pair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class FigureConverter {
     private static FigureConverter instance = null;
 
-    private boolean activeDiagramIsSequence;
+    private boolean activeDiagramIsSequence, activeDiagramIsCommunication;
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             boxDrawingStrategy,
@@ -35,9 +34,7 @@ public class FigureConverter {
             responseMessageDrawingStrategy,
             labelDrawingStrategy,
             lifeLineDrawer,
-            selectionBoxDrawingStrategy,
-    //TODO LayoutDrawer maken
-    layoutStrategy;
+            selectionBoxDrawingStrategy;
 
     private FigureConverter() {
 
@@ -51,16 +48,32 @@ public class FigureConverter {
 
 
     public void draw(Graphics graphics, Diagram diagram) {
+
+        init(graphics, diagram);
+
+        complexDrawings(graphics, diagram);
+
+        drawSelectionBox(graphics, diagram);
+
+        if (activeDiagramIsSequence)
+            drawLifeline(graphics, diagram);
+
+        for (Party p : diagram.getParties()) {
+            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
+            drawParties(graphics, diagram, p);
+        }
+    }
+
+    public void init(Graphics graphics, Diagram diagram) {
         boxDrawingStrategy = new BoxDrawer();
         selectionBoxDrawingStrategy = new SelectionBoxDrawer();
         labelDrawingStrategy = new LabelDrawer();
 
-
         if (diagram instanceof SequenceDiagram) {
-            new SequenceLayoutDrawer().draw(graphics,null,null,"");
-
-            lifeLineDrawer = new SequenceLifelineDrawer();
             activeDiagramIsSequence = true;
+            activeDiagramIsCommunication = false;
+            new SequenceLayoutDrawer().draw(graphics, null, null, "");
+            lifeLineDrawer = new SequenceLifelineDrawer();
             actorDrawingStrategy = new SequenceActorDrawer();
             objectDrawingStrategy = new SequenceObjectDrawer();
             invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
@@ -68,38 +81,26 @@ public class FigureConverter {
         }
         if (diagram instanceof CommunicationsDiagram) {
             activeDiagramIsSequence = false;
+            activeDiagramIsCommunication = true;
             actorDrawingStrategy = new CommunicationActorDrawer();
             objectDrawingStrategy = new CommunicationObjectDrawer();
             invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
             responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
         }
-
-        drawParties(graphics, diagram);
-
-        drawMessages(graphics, diagram);
-
-        drawSelectionBox(graphics, diagram);
-
     }
 
     private void drawLabel(Graphics graphics, Point2D point, String label) {
         labelDrawingStrategy.draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
     }
 
-    private void drawParties(Graphics graphics, Diagram diagram) {
-        Point2D start, end;
+    private void drawParties(Graphics graphics, Diagram diagram, Party p) {
+        Point2D start = p.getCoordinate();
+        Point2D end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
 
-        for (Party p : diagram.getParties()) {
-            start = p.getCoordinate();
-            end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
-            if (p instanceof Actor) {
-                actorDrawingStrategy.draw(graphics, start, end, "");
-            } else {
-
-                objectDrawingStrategy.draw(graphics, start, end, "");
-            }
-
-            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
+        if (p instanceof Actor) {
+            actorDrawingStrategy.draw(graphics, start, end, "");
+        } else {
+            objectDrawingStrategy.draw(graphics, start, end, "");
         }
     }
 
@@ -127,10 +128,6 @@ public class FigureConverter {
             Point2D end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation() + (Message.HEIGHT / 2));
             selectionBoxDrawingStrategy.draw(graphics, start, end, "");
         }
-    }
-
-    private void drawActivationBar() {
-
     }
 
     private void drawLifeline(Graphics graphics, Diagram diagram) {
@@ -163,107 +160,320 @@ public class FigureConverter {
         }
     }
 
-    private void drawMessages(Graphics graphics, Diagram diagram) {
+    private void complexDrawings(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
-        //TODO replace this calculation to draw-method where instanceof is checked for sequencediagram
-        List<Pair<Party, Integer>> activationBarCount2 = calculateActivationBars2(m);
-
-        //Map<Integer, Integer> activationBarCount = calculateActivationBars(dissectionMessages);
-
-        //drawActivationBars(#######);
-
 
         if (activeDiagramIsSequence) {
-            LifelineHelper lifelineHelper;
+            SequenceActivationBarAndMessageHelper helper;
             if (m != null) {
-                lifelineHelper = new LifelineHelper(m);
-                lifelineHelper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
+                helper = new SequenceActivationBarAndMessageHelper(m);
+                helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
             }
 
             while (m != null) {
-                /*
-                start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation());
-                end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation());
-
-                if (m instanceof InvocationMessage)
-                    this.invokeMessageDrawingStrategy.draw(graphics, start, end, "");
-                if (m instanceof ResultMessage)
-                    this.responseMessageDrawingStrategy.draw(graphics, start, end, "");
-                */
                 this.drawLabel(graphics, m.getLabel().getCoordinate(), m.getLabel().getLabel());
-
                 m = m.getNextMessage();
             }
-
-            drawLifeline(graphics, diagram);
         } else {
-            new CommunicationObjectHelper(m).draw(graphics, invokeMessageDrawingStrategy, labelDrawingStrategy);
+            new CommunicationArrowAndLabelHelper(m).draw(graphics, invokeMessageDrawingStrategy, labelDrawingStrategy);
         }
     }
+}
 
-    private List<Boolean> dissectMessages(Message m) {
-        //true = invoke, false = response
-        List<Boolean> dissectionMessages = new ArrayList<Boolean>();
+class CommunicationArrowAndLabelHelper {
+    private List<PartyPair> pairs;
 
-
-        while (m != null) {
-            if (m instanceof InvocationMessage)
-                dissectionMessages.add(true);
-            else
-                dissectionMessages.add(false);
-
-            m = m.getNextMessage();
-        }
-
-        return dissectionMessages;
+    public CommunicationArrowAndLabelHelper(Message m) {
+        pairs = new ArrayList<PartyPair>();
+        traverserMessages(m);
     }
 
-    private HashMap<Integer, Integer> calculateActivationBars(List<Boolean> dissectionMessages) {
-        HashMap<Integer, Integer> activationBarCount = new HashMap<Integer, Integer>();
+    private void traverserMessages(Message message) {
+        Party sender, receiver;
+        PartyPair pair;
+        boolean found = false;
 
-        int invokeCounter = 0, responseCounter = 0, activationBarsCalculated = 0;
-        for (Boolean b : dissectionMessages) {
-            if (b) {
-                invokeCounter++;
-            }
-            if (!b) {
-                if (responseCounter < invokeCounter) {
-                    responseCounter++;
+        if (message instanceof InvocationMessage) {
+            pairs.add(new PartyPair(message.getSender(), message.getReceiver(), message));
+            message = message.getNextMessage();
+        }
+
+        while (message != null) {
+            if (message instanceof InvocationMessage) {
+
+                sender = message.getSender();
+                receiver = message.getReceiver();
+
+                PartyPair temp;
+                int size = pairs.size();
+                for (int i = 0; i < size; i++) {
+                    temp = pairs.get(i);
+                    if (temp.equalPair(sender, receiver)) {
+                        temp.addMessage(message);
+                        found = true;
+                    }
                 }
+                if (!found) {
+                    pairs.add(new PartyPair(sender, receiver, message));
+                }
+                found = false;
+            }
+            message = message.getNextMessage();
+        }
+    }
+
+    public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
+        for (PartyPair pair : pairs) {
+            pair.draw(graphics, messageDrawer, labelDrawer);
+        }
+    }
+
+    class PartyPair extends Pair {
+        private int arrowCount = 1;
+        private List<Message> messages;
+
+        public PartyPair(Party first, Party second, Message m) {
+            super(first, second);
+            messages = new ArrayList<Message>();
+            messages.add(m);
+        }
+
+        public boolean equalPair(Party sender, Party receiver) {
+            return sender == this.getA() && receiver == this.getB();
+        }
+
+        public void addMessage(Message message) {
+            messages.add(message);
+        }
+
+        public Party getSender() {
+            return (Party) this.getA();
+        }
+
+        public Party getReceiver() {
+            return (Party) this.getB();
+        }
+
+        public Point2D calculateStart(int spaceBetweenArrows) {
+            return new Point2D.Double(getSender().getCoordinate().getX() + Object.WIDTH, getSender().getCoordinate().getY() + spaceBetweenArrows);
+        }
+
+        public Point2D calculateEnd(int spaceBetweenArrows) {
+            return new Point2D.Double(getReceiver().getCoordinate().getX(), getReceiver().getCoordinate().getY() + spaceBetweenArrows);
+        }
+
+        public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
+            int spread = Object.HEIGHT / messages.size();
+            InvocationMessage message;
+            Point2D start, end;
+
+            for (int i = 0; i < messages.size(); i++) {
+                message = (InvocationMessage) messages.get(i);
+                start = calculateStart(i * spread);
+                end = calculateEnd(i * spread);
+                messageDrawer.draw(graphics, start, end, "");
+                //TODO labels tekenen:
+                String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
+                labelDrawer.draw(graphics, calculateLabelStartPosition(start, end), null, label);
+            }
+        }
+
+        private Point2D calculateLabelStartPosition(Point2D start, Point2D end) {
+            double x = Math.round((start.getX() + end.getX()) / 2);
+            double y = Math.round((start.getY() + end.getY()) / 2);
+
+            return new Point2D.Double(x, y);
+        }
+    }
+}
+
+class SequenceActivationBarAndMessageHelper {
+    private Party party;
+    private List<ActivationBar> bars;
+    private Message initialMessage;
+
+    public SequenceActivationBarAndMessageHelper(Message message) {
+        bars = new ArrayList<ActivationBar>();
+        setInitialMessage(message);
+
+        calculateOuterBars(getInitialMessage());
+    }
+
+    private void calculateOuterBars(Message message) {
+        int invokeCounter = 0, responseCounter = 0;
+        Message sent = null;
+        while (message != null) {
+            if (message instanceof InvocationMessage) {
+                if (sent == null) {
+                    sent = message;
+                }
+                invokeCounter++;
+            } else {
+                responseCounter++;
             }
 
             if (responseCounter > 0 && invokeCounter == responseCounter) {
-                activationBarsCalculated++;
-                activationBarCount.put(activationBarsCalculated, invokeCounter);
-                invokeCounter = 0 - activationBarsCalculated;
-                responseCounter = 0;
+                bars.add(new ActivationBar(sent, message,false));
+                sent = null;
             }
+
+            message = message.getNextMessage();
         }
-        return activationBarCount;
     }
 
-    private ArrayList<Pair<Party, Integer>> calculateActivationBars2(Message m) {
-        ArrayList<Pair<Party, Integer>> activationBarCount = new ArrayList<Pair<Party, Integer>>();
+    public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
+        for (ActivationBar a : bars) {
+            a.draw(graphics,boxDrawer, invokeDrawer, responseDrawer);
+        }
+    }
 
-        int invokeCounter = 0, responseCounter = 0, activationBarsCalculated = 0;
-        while (m != null) {
-            if (m instanceof InvocationMessage)
-                invokeCounter++;
-            else {
-                if (responseCounter < invokeCounter) {
-                    responseCounter++;
+    private void setInitialMessage(Message initialMessage) {
+        this.initialMessage = initialMessage;
+    }
+
+    public Message getInitialMessage() {
+        return initialMessage;
+    }
+
+
+    class ActivationBar {
+        private int barWidth = 20;
+        private boolean hasParentBar = true;
+        private List<ActivationBar> bars;
+        private Message sent, response;
+
+        public ActivationBar(Message sent, Message received) {
+            bars = new ArrayList<ActivationBar>();
+            setSent(sent);
+            setReceived(received);
+
+            calculateBars(getSent().getNextMessage());
+        }
+
+        public ActivationBar(Message sent, Message received, boolean hasParentBar) {
+            this(sent, received);
+            setParent(hasParentBar);
+        }
+
+        /**
+         * Calculates next layer of activation bars within this activation bar
+         */
+        private void calculateBars(Message nextMessage) {
+            if (!nextMessage.equals(response)) {
+                int invokeCounter = 0, responseCounter = 0;
+                Message sent = null;
+
+                while (nextMessage != response) {
+                    if (nextMessage instanceof InvocationMessage) {
+                        if (sent == null) {
+                            sent = nextMessage;
+                        }
+                        invokeCounter++;
+                    } else {
+                        responseCounter++;
+                    }
+
+                    if (responseCounter > 0 && invokeCounter == responseCounter) {
+                        bars.add(new ActivationBar(sent, nextMessage));
+                        sent = null;
+                    }
+
+                    nextMessage = nextMessage.getNextMessage();
                 }
             }
-
-            if (responseCounter > 0 && invokeCounter == responseCounter) {
-                activationBarsCalculated++;
-                activationBarCount.add(new Pair<Party, Integer>(m.getSender(), invokeCounter));
-                invokeCounter = 0 - activationBarsCalculated;
-                responseCounter = 0;
-            }
-
-            m = m.getNextMessage();
         }
-        return activationBarCount;
+
+        private void setSent(Message sent) {
+            this.sent = sent;
+        }
+
+        private void setReceived(Message received) {
+            this.response = received;
+        }
+
+        private Party getSender() {
+            return sent.getSender();
+        }
+
+        private Party getReceiver() {
+            return sent.getReceiver();
+        }
+
+        public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
+
+            boxDrawer.draw(graphics, calculateOwnBarStart(), calculateOwnBarEnd(), "");
+            boxDrawer.draw(graphics, calculateBrotherBarStart(), calculateBrotherBarEnd(), null);
+
+            invokeDrawer.draw(graphics, new Point2D.Double(calculateOwnBarStartX() + barWidth, calculateBarStartY()), new Point2D.Double(calculateBrotherBarStartX(), calculateBarStartY()), null);
+            responseDrawer.draw(graphics, new Point2D.Double(calculateBrotherBarStartX(), calculateBarEndY()), new Point2D.Double(calculateOwnBarStartX() + barWidth, calculateBarEndY()), null);
+
+            for (ActivationBar a : bars) {
+                a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer);
+            }
+        }
+
+        private void setParent(boolean hasParentBar) {
+            this.hasParentBar = hasParentBar;
+        }
+
+        private Boolean hasParent() {
+            return hasParentBar;
+        }
+
+        public Message getSent() {
+            return sent;
+        }
+
+        public Message getResponse() {
+            return response;
+        }
+
+        private double calculateOwnBarStartX() {
+            if (hasParent()) {
+                return getSent().getSender().getXLocationOfLifeline();
+            } else {
+                return getSent().getSender().getXLocationOfLifeline() - (barWidth / 2);
+            }
+        }
+
+        private double calculateBarStartY() {
+            return getSent().getyLocation();
+        }
+
+        private double calculateBarEndY() {
+            return getResponse().getyLocation();
+        }
+
+        private double calculateOwnBarEndX() {
+            if (hasParent()) {
+                return getResponse().getReceiver().getXLocationOfLifeline() + barWidth;
+            } else {
+                return getSent().getSender().getXLocationOfLifeline() + (barWidth / 2);
+            }
+        }
+
+        private double calculateBrotherBarEndX() {
+            return getResponse().getSender().getXLocationOfLifeline() + (barWidth / 2);
+        }
+
+        private double calculateBrotherBarStartX() {
+            return getSent().getReceiver().getXLocationOfLifeline() - (barWidth / 2);
+        }
+
+        private Point2D calculateOwnBarStart() {
+            return new Point2D.Double(calculateOwnBarStartX(), calculateBarStartY());
+        }
+
+        private Point2D calculateOwnBarEnd() {
+            return new Point2D.Double(calculateOwnBarEndX(), calculateBarEndY());
+        }
+
+        private Point2D calculateBrotherBarStart() {
+            return new Point2D.Double(calculateBrotherBarStartX(), calculateBarStartY());
+        }
+
+        private Point2D calculateBrotherBarEnd() {
+            return new Point2D.Double(calculateBrotherBarEndX(), calculateBarEndY());
+        }
     }
 }

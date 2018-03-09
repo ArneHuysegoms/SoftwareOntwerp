@@ -1,12 +1,13 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
-import figures.Drawer.MessageDrawer;
+import figures.Drawer.Drawer;
 import figures.diagramFigures.Arrow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class SequenceInvokeMessageDrawer extends MessageDrawer{
+public class SequenceInvokeMessageDrawer implements Drawer
+{
 
     public SequenceInvokeMessageDrawer(){
 

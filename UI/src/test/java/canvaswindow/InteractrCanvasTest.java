@@ -95,4 +95,36 @@ public class InteractrCanvasTest {
         this.screenshot("interactrCanvas_message_stack.png");
     }
 
+    @Test
+    public void test_communication_diagram() throws InterruptedException,IOException, AWTException {
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,75,76,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,212,76,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,212,76,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'F');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,379,76,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,379,76,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'T');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,115,151,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,252,150,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,253,135,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,419,139,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,300,200,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,300,200,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
+        TimeUnit.SECONDS.sleep(2);
+        this.screenshot("communication_diagram.png");
+    }
+
 }
