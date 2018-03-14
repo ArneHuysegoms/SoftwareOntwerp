@@ -10,6 +10,7 @@ import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
+
 import figures.Drawer.BoxDrawer;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
