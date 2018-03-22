@@ -127,4 +127,19 @@ public class InteractrCanvasTest {
         this.screenshot("communication_diagram.png");
     }
 
+    @Test
+    public void test_interactrCanvas_changeParty() throws IOException, AWTException, InterruptedException {
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,68,67,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,85,95,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,85,95,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,85,95,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,85,95,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,85,95,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,85,95,2);
+        TimeUnit.SECONDS.sleep(2);
+        this.screenshot("test_interactrCanvas_addParty.png");
+    }
+
 }
