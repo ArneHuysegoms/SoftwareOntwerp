@@ -1,6 +1,7 @@
 package canvas;
 
-import diagram.*;
+import diagram.Clickable;
+import diagram.DomainFacade;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 
