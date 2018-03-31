@@ -1,4 +1,9 @@
-package diagram;
+package facade;
+
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
 
 import java.awt.geom.Point2D;
 
