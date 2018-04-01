@@ -764,7 +764,13 @@ public abstract class Diagram{
      * @return true if the party is on top of the call stack, false otherwise
      */
     private boolean checkCallStack(Message previous, Party sender){
-        if(previous == null || (previous instanceof InvocationMessage && previous.getReceiver().equals(sender))){
+        /*if(previous == null || (previous instanceof InvocationMessage && previous.getReceiver().equals(sender))){
+            return true;
+        }*/
+        if(previous == null){
+            return true;
+        }
+        if(previous.getReceiver().equals(sender)){
             return true;
         }
         else if(this.getFirstMessage() != null){

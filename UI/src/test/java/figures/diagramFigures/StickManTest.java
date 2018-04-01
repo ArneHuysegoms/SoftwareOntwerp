@@ -1,5 +1,6 @@
 package figures.diagramFigures;
 
+import figures.basicShapes.Circle;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class StickManTest {
     private StickMan stickMan;
@@ -50,5 +52,37 @@ public class StickManTest {
     @Test
     public void test_getConnectionArms_constructor2(){
         assertEquals(stickMan2.getConnectionArms(), new Point2D.Double(10, 25));
+    }
+
+    @Test
+    public void test_getArms_constructor(){
+        assertEquals(stickMan.getArms().getStart(), new Point2D.Double(4,25));
+        assertEquals(stickMan.getArms().getEnd(), new Point2D.Double(16,25));
+    }
+    @Test
+    public void test_getLegL_constructor(){
+        assertEquals(stickMan.getLegL().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan.getLegL().getEnd(), new Point2D.Double(6,55));
+    }
+    @Test
+    public void test_getLegR_constructor(){
+        assertEquals(stickMan.getLegR().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan.getLegR().getEnd(), new Point2D.Double(14,55));
+    }
+
+    @Test
+    public void test_getArms_constructor2(){
+        assertEquals(stickMan2.getArms().getStart(), new Point2D.Double(4,25));
+        assertEquals(stickMan2.getArms().getEnd(), new Point2D.Double(16,25));
+    }
+    @Test
+    public void test_getLegL_constructor2(){
+        assertEquals(stickMan2.getLegL().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan2.getLegL().getEnd(), new Point2D.Double(6,55));
+    }
+    @Test
+    public void test_getLegR_constructor2(){
+        assertEquals(stickMan2.getLegR().getStart(), new Point2D.Double(10,40));
+        assertEquals(stickMan2.getLegR().getEnd(), new Point2D.Double(14,55));
     }
 }
