@@ -22,7 +22,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * a class that converts the data from the diagram model to drawn figures of the program's window
+ */
 public class FigureConverter {
     private static FigureConverter instance = null;
 
@@ -36,10 +38,18 @@ public class FigureConverter {
             lifeLineDrawer,
             selectionBoxDrawingStrategy;
 
+    /**
+     * default constructor
+     */
     private FigureConverter() {
 
     }
 
+    /**
+     * if an instance of this class excists, it gets returned. Otherwise it gets created and then returned
+     *
+     * @return an instance of this class
+     */
     public static FigureConverter getInstance() {
         if (instance == null)
             instance = new FigureConverter();
@@ -47,6 +57,12 @@ public class FigureConverter {
     }
 
 
+    /**
+     * upper draw function
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     */
     public void draw(Graphics graphics, Diagram diagram) {
 
         init(graphics, diagram);
@@ -64,6 +80,12 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * creates all drawing strategy- and other object that will be use to draw the diagram
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     */
     public void init(Graphics graphics, Diagram diagram) {
         boxDrawingStrategy = new BoxDrawer();
         selectionBoxDrawingStrategy = new SelectionBoxDrawer();
@@ -89,10 +111,24 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * method that uses the a label drawer to draw the label on the canvas
+     *
+     * @param graphics object used to draw on the program's window
+     * @param point    point slightly to the top-left of the label string
+     * @param label    string to be drawn
+     */
     private void drawLabel(Graphics graphics, Point2D point, String label) {
-        labelDrawingStrategy.draw(graphics, point, new Point2D.Double(point.getX() + Label.width, point.getY() + Label.height), label);
+        labelDrawingStrategy.draw(graphics, point, null, label);
     }
 
+    /**
+     * method that uses the a party drawer to draw a party on the canvas
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     * @param p        party to be drawn on the canvas
+     */
     private void drawParties(Graphics graphics, Diagram diagram, Party p) {
         Point2D start = p.getCoordinate();
         Point2D end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
@@ -104,6 +140,12 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * method that uses the selection box drawer to draw a box around the currently selected selectable parts of the diagram
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     */
     private void drawSelectionBox(Graphics graphics, Diagram diagram) {
         Clickable c = diagram.getSelectedElement();
 
@@ -130,6 +172,12 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * methos that determines the lengths of the longest lifeline and draws these for every party
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     */
     private void drawLifeline(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
         Point2D start, end;
@@ -160,6 +208,12 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * a method that uses helper classes to destruct data so activation bars and message arrows and labels can be drawn
+     *
+     * @param graphics object used to draw on the program's window
+     * @param diagram  the diagram object to be drawn on the canvas
+     */
     private void complexDrawings(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
 
@@ -180,17 +234,27 @@ public class FigureConverter {
     }
 }
 
+/**
+ * helper class for calculating message arrow and label locations
+ */
 class CommunicationArrowAndLabelHelper {
     private List<PartyPair> pairs;
 
+    /**
+     * @param m the first message of the diagram
+     */
     public CommunicationArrowAndLabelHelper(Message m) {
         pairs = new ArrayList<PartyPair>();
         traverserMessages(m);
     }
 
+    /**
+     * a method that counts how many arrows are between two senders and saves this data in a PartyPair-object
+     *
+     * @param message the first message of the diagram
+     */
     private void traverserMessages(Message message) {
         Party sender, receiver;
-        PartyPair pair;
         boolean found = false;
 
         if (message instanceof InvocationMessage) {
@@ -222,46 +286,100 @@ class CommunicationArrowAndLabelHelper {
         }
     }
 
+    /**
+     * @param graphics      object used to draw on the program's window
+     * @param messageDrawer the message drawer to be used to draw messages
+     * @param labelDrawer   the label drawer to be used to draw messages
+     */
     public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
         for (PartyPair pair : pairs) {
             pair.draw(graphics, messageDrawer, labelDrawer);
         }
     }
 
+    /**
+     * helper class to save how many messages are sent from a specific sender to a speific receiver
+     */
     class PartyPair extends Pair {
-        private int arrowCount = 1;
         private List<Message> messages;
 
+        /**
+         * @param first  the sender of a message to the second party
+         * @param second the receiver of a message from the first party
+         * @param m      a message that has been sent from the first party to the second
+         */
         public PartyPair(Party first, Party second, Message m) {
             super(first, second);
             messages = new ArrayList<Message>();
             messages.add(m);
         }
 
+        /**
+         * method used to check if two parties are the same as the sender and receiver stored in this pair (order matters)
+         *
+         * @param sender   Party that is a sender of a message to reveiver party
+         * @param receiver party that is a receiver of a message from the sender party
+         * @return true if the parties and order match
+         */
         public boolean equalPair(Party sender, Party receiver) {
             return sender == this.getA() && receiver == this.getB();
         }
 
+        /**
+         * adds a message that has been sent from the first stored to the second stored party in this pair
+         *
+         * @param message the message sent from the first stored to the second stored party in this pair
+         */
         public void addMessage(Message message) {
             messages.add(message);
         }
 
+        /**
+         * returns the sender of the messages
+         *
+         * @return the sender of the messages
+         */
         public Party getSender() {
             return (Party) this.getA();
         }
 
+        /**
+         * returns the receiver of the messages
+         *
+         * @return the receiver of the messages
+         */
         public Party getReceiver() {
             return (Party) this.getB();
         }
 
+        /**
+         * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
+         * @param spaceBetweenArrows
+         * @return
+         *      start point of the arrow
+         */
         public Point2D calculateStart(int spaceBetweenArrows) {
             return new Point2D.Double(getSender().getCoordinate().getX() + Object.WIDTH, getSender().getCoordinate().getY() + spaceBetweenArrows);
         }
 
+        /**
+         * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
+         * @param spaceBetweenArrows
+         * @return
+         *      end point of the arrow
+         */
         public Point2D calculateEnd(int spaceBetweenArrows) {
             return new Point2D.Double(getReceiver().getCoordinate().getX(), getReceiver().getCoordinate().getY() + spaceBetweenArrows);
         }
 
+        /**
+         *
+         * @param graphics object used to draw on the program's window
+         * @param messageDrawer
+         *      message drawer to be use to draw the arrows between the two parties
+         * @param labelDrawer
+         *      message drawer to be use to draw the label above the drawn arrows
+         */
         public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
             int spread = Object.HEIGHT / messages.size();
             InvocationMessage message;
@@ -272,12 +390,20 @@ class CommunicationArrowAndLabelHelper {
                 start = calculateStart(i * spread);
                 end = calculateEnd(i * spread);
                 messageDrawer.draw(graphics, start, end, "");
-                //TODO labels tekenen:
                 String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
                 labelDrawer.draw(graphics, calculateLabelStartPosition(start, end), null, label);
             }
         }
 
+        /**
+         * methos that calculates the label's start position
+         * @param start
+         *      start possition of the message that the label belongs tho
+         * @param end
+         *      end possition of the message that the label belongs tho
+         * @return
+         *      the label's start position
+         */
         private Point2D calculateLabelStartPosition(Point2D start, Point2D end) {
             double x = Math.round((start.getX() + end.getX()) / 2);
             double y = Math.round((start.getY() + end.getY()) / 2);
@@ -287,11 +413,18 @@ class CommunicationArrowAndLabelHelper {
     }
 }
 
+/**
+ * helper class for calculating message arrow and activation bar locations
+ */
 class SequenceActivationBarAndMessageHelper {
-    private Party party;
     private List<ActivationBar> bars;
     private Message initialMessage;
 
+    /**
+     *
+     * @param message
+     *      the first message of the diagram
+     */
     public SequenceActivationBarAndMessageHelper(Message message) {
         bars = new ArrayList<ActivationBar>();
         setInitialMessage(message);
@@ -299,6 +432,12 @@ class SequenceActivationBarAndMessageHelper {
         calculateOuterBars(getInitialMessage());
     }
 
+    /**
+     * a method that creates and stores an ActivationBar object for every activation bar on the lifeline of the first party.
+     * At creating an ActivationBar object, the object calls a very similar method .
+     * @param message
+     *      the first message of the diagram
+     */
     private void calculateOuterBars(Message message) {
         int invokeCounter = 0, responseCounter = 0;
         Message sent = null;
@@ -313,7 +452,7 @@ class SequenceActivationBarAndMessageHelper {
             }
 
             if (responseCounter > 0 && invokeCounter == responseCounter) {
-                bars.add(new ActivationBar(sent, message,false));
+                bars.add(new ActivationBar(sent, message, false));
                 sent = null;
             }
 
@@ -321,27 +460,56 @@ class SequenceActivationBarAndMessageHelper {
         }
     }
 
+    /**
+     *
+     * @param graphics
+     * @param boxDrawer
+     *      a box drawer object to be used to draw the activation bars
+     * @param invokeDrawer
+     *      a drawer object to be used to draw invocation messages
+     * @param responseDrawer
+     *      a drawer object to be used to draw response messages
+     */
     public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
         for (ActivationBar a : bars) {
-            a.draw(graphics,boxDrawer, invokeDrawer, responseDrawer);
+            a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer);
         }
     }
 
+    /**
+     * sets initial message of the diagram
+     * @param initialMessage
+     *      initial message of the diagram
+     */
     private void setInitialMessage(Message initialMessage) {
         this.initialMessage = initialMessage;
     }
 
+    /**
+     * returns initial message of the diagram
+     * @return
+     *  initial message of the diagram
+     */
     public Message getInitialMessage() {
         return initialMessage;
     }
 
-
+    /**
+     * class that represents an activation bar. An object of this class stores activation bars from messages that are outgoing from this one.
+     */
     class ActivationBar {
         private int barWidth = 20;
         private boolean hasParentBar = true;
         private List<ActivationBar> bars;
         private Message sent, response;
 
+        /**
+         *
+         * @param sent
+         *      first message that is outgoing from this activation bar
+         * @param received
+         *      response to the sent message
+         */
         public ActivationBar(Message sent, Message received) {
             bars = new ArrayList<ActivationBar>();
             setSent(sent);
@@ -350,13 +518,24 @@ class SequenceActivationBarAndMessageHelper {
             calculateBars(getSent().getNextMessage());
         }
 
+        /**
+         *
+         * @param sent
+         *      first message that is outgoing from this activation bar
+         * @param received
+         *      response to the sent message
+         * @param hasParentBar
+         *      flag that tells if this activationbar is stacked on an other one
+         */
         public ActivationBar(Message sent, Message received, boolean hasParentBar) {
             this(sent, received);
             setParent(hasParentBar);
         }
 
         /**
-         * Calculates next layer of activation bars within this activation bar
+         * a method that creates and stores an ActivationBar object for every activation bar that should be stacked on this on
+         * @param nextMessage
+         *      message that follows the first message of this activation bar
          */
         private void calculateBars(Message nextMessage) {
             if (!nextMessage.equals(response)) {
@@ -383,22 +562,34 @@ class SequenceActivationBarAndMessageHelper {
             }
         }
 
+        /**
+         * sets the first message of this activation bar
+         * @param sent
+         *      the first message of this activation bar
+         */
         private void setSent(Message sent) {
             this.sent = sent;
         }
 
+        /**
+         * sets the last message of this activation bar
+         * @param received
+         *      the last message of this activation bar
+         */
         private void setReceived(Message received) {
             this.response = received;
         }
 
-        private Party getSender() {
-            return sent.getSender();
-        }
-
-        private Party getReceiver() {
-            return sent.getReceiver();
-        }
-
+        /**
+         *
+         * @param graphics
+         * @param boxDrawer
+         *      a box drawer object to be used to draw the activation bars
+         * @param invokeDrawer
+         *      a drawer object to be used to draw invocation messages
+         * @param responseDrawer
+         *      a drawer object to be used to draw response messages
+         */
         public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
 
             boxDrawer.draw(graphics, calculateOwnBarStart(), calculateOwnBarEnd(), "");
@@ -412,22 +603,46 @@ class SequenceActivationBarAndMessageHelper {
             }
         }
 
+        /**
+         * sets the flag that tells if this activation bar is stacked on another one
+         * @param hasParentBar
+         *      the flag that tells if this activation bar is stacked on another one
+         */
         private void setParent(boolean hasParentBar) {
             this.hasParentBar = hasParentBar;
         }
 
+        /**
+         * returns if this activation bar is stacked on another one
+         * @return
+         */
         private Boolean hasParent() {
             return hasParentBar;
         }
 
+        /**
+         * return the first message of this activation bar
+         * @return
+         *      the first message of this activation bar
+         */
         public Message getSent() {
             return sent;
         }
 
+        /**
+         * return the last message of this activation bar
+         * @return
+         *      the last message of this activation bar
+         */
         public Message getResponse() {
             return response;
         }
 
+        /**
+         * returns x-coordinate for the start point of this activation bar
+         * @return
+         *      x-coordinate for the start point of this activation bar
+         */
         private double calculateOwnBarStartX() {
             if (hasParent()) {
                 return getSent().getSender().getXLocationOfLifeline();
@@ -436,14 +651,29 @@ class SequenceActivationBarAndMessageHelper {
             }
         }
 
+        /**
+         * returns y-coordinate for the start point of this activation bar and for the one that is created because of the outgoing message
+         * @return
+         *      x-coordinate for the start point of this activation bar
+         */
         private double calculateBarStartY() {
             return getSent().getyLocation();
         }
 
+        /**
+         * returns y-coordinate for the end point of this activation bar and for the one that is created because of the outgoing message
+         * @return
+         *      x-coordinate for the start point of this activation bar
+         */
         private double calculateBarEndY() {
             return getResponse().getyLocation();
         }
 
+        /**
+         * returns x-coordinate for the end point of this activation bar
+         * @return
+         *      x-coordinate for the end point of this activation bar
+         */
         private double calculateOwnBarEndX() {
             if (hasParent()) {
                 return getResponse().getReceiver().getXLocationOfLifeline() + barWidth;
@@ -452,26 +682,56 @@ class SequenceActivationBarAndMessageHelper {
             }
         }
 
+        /**
+         * returns x-coordinate for the end point of the activation bar that is created because of the outgoing message
+         * @return
+         *      x-coordinate for the end point of the activation bar that is created because of the outgoing message
+         */
         private double calculateBrotherBarEndX() {
             return getResponse().getSender().getXLocationOfLifeline() + (barWidth / 2);
         }
 
+        /**
+         * returns x-coordinate for the start point of the activation bar that is created because of the outgoing message
+         * @return
+         *      x-coordinate for the start point of the activation bar that is created because of the outgoing message
+         */
         private double calculateBrotherBarStartX() {
             return getSent().getReceiver().getXLocationOfLifeline() - (barWidth / 2);
         }
 
+        /**
+         * calculates the start point of this activation bar
+         * @return
+         *      the start point of this activation bar
+         */
         private Point2D calculateOwnBarStart() {
             return new Point2D.Double(calculateOwnBarStartX(), calculateBarStartY());
         }
 
+        /**
+         * calculates the end point of this activation bar
+         * @return
+         *      the end point of this activation bar
+         */
         private Point2D calculateOwnBarEnd() {
             return new Point2D.Double(calculateOwnBarEndX(), calculateBarEndY());
         }
 
+        /**
+         * calculates the start point of the activation bar that is created because of the outgoing message
+         * @return
+         *      the start point of the activation bar that is created because of the outgoing message
+         */
         private Point2D calculateBrotherBarStart() {
             return new Point2D.Double(calculateBrotherBarStartX(), calculateBarStartY());
         }
 
+        /**
+         * calculates the end point of the activation bar that is created because of the outgoing message
+         * @return
+         *      the end point of the activation bar that is created because of the outgoing message
+         */
         private Point2D calculateBrotherBarEnd() {
             return new Point2D.Double(calculateBrotherBarEndX(), calculateBarEndY());
         }

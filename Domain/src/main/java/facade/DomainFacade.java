@@ -1,4 +1,9 @@
-package diagram;
+package facade;
+
+import diagram.Clickable;
+import diagram.CommunicationsDiagram;
+import diagram.Diagram;
+import diagram.SequenceDiagram;
 
 import java.awt.geom.Point2D;
 
@@ -74,7 +79,7 @@ public class DomainFacade {
      * @param location the location to find an element on
      * @return the element on the provided location, null if no such element exist
      */
-    public Clickable findSelectedElement(Point2D location){
+    public Clickable findSelectedElement(Point2D location) {
         return this.getActiveDiagram().findSelectedElement(location);
     }
 
