@@ -7,9 +7,6 @@ import java.awt.geom.Point2D;
 
 public class Object extends Party {
 
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 50;
-
     public Object(){
         super();
     }
@@ -69,23 +66,6 @@ public class Object extends Party {
 
     public Object(String instanceName, String className, int positionInSequenceDiagram, Point2D positionInCommunicationsDiagram, Label label) throws DomainException {
         super(instanceName, className, positionInSequenceDiagram, positionInCommunicationsDiagram, label);
-    }
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this message
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX();
-        double startY = this.getCoordinate().getY();
-        double endX = startX + WIDTH;
-        double endY = startY + HEIGHT;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 
     /**

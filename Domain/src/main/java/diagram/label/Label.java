@@ -10,9 +10,6 @@ public abstract class Label implements Clickable {
     private Point2D coordinate;
     private String label;
 
-    public static final int width = 45;
-    public static final int height = 14;
-
     public Label(){
 
     }
@@ -65,24 +62,6 @@ public abstract class Label implements Clickable {
             throw new DomainException("a message label has to start with a lowercase character");
         }
         this.label = label;
-    }
-
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this actor
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX();
-        double startY = this.getCoordinate().getY();
-        double endX = startX + width;
-        double endY = startY + height;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
     }
 
     public static boolean isCorrectCharForLabel(char charToAdd){

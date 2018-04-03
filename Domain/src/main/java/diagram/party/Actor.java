@@ -7,8 +7,6 @@ import exceptions.DomainException;
 import java.awt.geom.Point2D;
 
 public class Actor extends Party {
-    public static final int WIDTH = 50;
-    public static final int HEIGHT = 50;
 
 
     public Actor(){
@@ -68,23 +66,6 @@ public class Actor extends Party {
     }
 
     /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this actor
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX() - WIDTH/2;
-        double startY = this.getCoordinate().getY();
-        double endX = startX + WIDTH;
-        double endY = startY + HEIGHT;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
-    }
-
-    /**
      * method to find the correct location for the label of a Party
      *
      * @return a Point2D indicating the location
@@ -105,8 +86,8 @@ public class Actor extends Party {
      * @return
      *       returns the distance between the coordinate of this actor and the given point
      */
-    @Override
+    /*@Override
     public double getDistance(Point2D point2D) {
         return this.getCoordinate().distance(point2D);
-    }
+    }*/
 }

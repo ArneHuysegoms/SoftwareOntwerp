@@ -6,7 +6,7 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public abstract class Party implements Clickable{
+public abstract class Party{
 
     private String instanceName;
     private String className;
@@ -213,15 +213,6 @@ public abstract class Party implements Clickable{
     public void updateLabelCoordinate(Point2D newLabelPosition){
         getLabel().setCoordinate(newLabelPosition);
     }
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this actor
-     */
-    @Override
-    public abstract boolean isClicked(Point2D point2D);
 
     /**
      * method to find the correct location for the label of a Party

@@ -16,9 +16,6 @@ public abstract class Message implements Clickable{
 
     private int yLocation;
 
-    public static final int HEIGHT = 16;
-
-
     public Message(){
 
     }
@@ -150,27 +147,6 @@ public abstract class Message implements Clickable{
         this.sender = sender;
     }
 
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this message
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        Point2D senderLocation = getSender().getCoordinate();
-        Point2D receiverLocation = getReceiver().getCoordinate();
-        int messageLocation = getyLocation();
-
-
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = senderLocation.getX();
-        double startY = messageLocation - HEIGHT/2;
-        double endX = receiverLocation.getX();
-        double endY = messageLocation + HEIGHT/2;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
-    }
     /**
      * @param point2D
      *        The coordinates of the mouse where the user clicked
