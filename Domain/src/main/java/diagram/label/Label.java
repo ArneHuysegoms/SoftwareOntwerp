@@ -5,40 +5,12 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 
-public abstract class Label implements Clickable {
+public abstract class Label{
 
-    private Point2D coordinate;
     private String label;
 
     public Label(){
 
-    }
-
-    /**
-     * @param coordinate
-     *        The coordinate of the left upmost point of the label
-     * @post the coordinate of the new label equals the given coordinate
-     *       new.getCoordinate == coordinate;
-     */
-    public Label(Point2D coordinate){
-       this.setCoordinate(coordinate);
-    }
-
-    /**
-     * @return  returns the coordinate of label
-     */
-    public Point2D getCoordinate() {
-        return coordinate;
-    }
-
-    /**
-     * @param coordinate
-     *        The coordinate of the left upmost point of the label
-     * @post the coordinate of the new label equals the given coordinate
-     *       new.getCoordinate == coordinate;
-     */
-    public void setCoordinate(Point2D coordinate) {
-        this.coordinate = coordinate;
     }
 
     public abstract boolean isValidLabel(String label);
@@ -66,5 +38,19 @@ public abstract class Label implements Clickable {
 
     public static boolean isCorrectCharForLabel(char charToAdd){
         return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':' || charToAdd == ' ';
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Label){
+            Label l = (Label) o;
+            return this.label.equals(l.getLabel());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return this.label.hashCode();
     }
 }

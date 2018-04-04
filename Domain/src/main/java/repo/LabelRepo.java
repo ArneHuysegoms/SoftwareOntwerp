@@ -1,6 +1,7 @@
 package repo;
 
 import java.awt.geom.Point2D;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,10 @@ public class LabelRepo {
                 .orElseThrow(DomainException::new);
     }
 
+    public void updateLabelPosition(Point2D newPosition, Label label){
+        this.getMap().put(label, newPosition);
+    }
+
     public Point2D getLocationOfLabel(Label label){
         return this.getMap().get(label);
     }
@@ -52,6 +57,12 @@ public class LabelRepo {
     public void removeLabelByPosition(Point2D location) throws DomainException{
         Label l = this.getLabelAtPosition(location);
         this.removeLabel(l);
+    }
+
+    public Map<Label, Double> getDistancesFromPointForLabels(Point2D point){
+        return this.getMap().entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
     }
 
     public Set<Label> getClickedLabels(Point2D location){
@@ -78,6 +89,16 @@ public class LabelRepo {
         double endX = startX + WIDTH;
         double endY = startY + HEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
+    }
+
+    /**
+     * @param point2D
+     *        The coordinates of the mouse where the user clicked
+     * @return
+     *       returns the distance between the coordinate of this message and the given point
+     */
+    public double getDistance(Point2D point2D, Label label) {
+        return this.getLocationOfLabel(label).distance(point2D);
     }
 
 }

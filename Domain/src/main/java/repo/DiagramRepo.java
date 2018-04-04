@@ -1,6 +1,7 @@
 package repo;
 
 import diagram.label.Label;
+import diagram.message.Message;
 import diagram.party.Party;
 import exceptions.DomainException;
 
@@ -23,7 +24,7 @@ public abstract class DiagramRepo {
         this.partyRepo = partyRepo;
     }
 
-    public Party getMessageAtPosition(Point2D location) throws DomainException {
+    public Party getPartyAtPosition(Point2D location) throws DomainException {
         return this.partyRepo.getPartyAtPosition(location);
     }
 
@@ -41,6 +42,10 @@ public abstract class DiagramRepo {
 
     public void removePartyByPosition(Point2D location) throws DomainException {
         this.partyRepo.removePartyByPosition(location);
+    }
+
+    public void updatePartyPosition(Point2D newPosition, Party party){
+        this.partyRepo.updatePartyPosition(newPosition, party);
     }
 
     private Set<Party> getClickedParties(Point2D clickedLocation){
@@ -67,8 +72,39 @@ public abstract class DiagramRepo {
         this.labelRepo.removeLabelByPosition(location);
     }
 
+    public void updateLabelPosition(Point2D newPosition, Label label){
+        this.labelRepo.updateLabelPosition(newPosition, label);
+    }
+
     private Set<Label> getClickedLabels(Point2D location){
         return this.labelRepo.getClickedLabels(location);
     }
 
+    public Message getMessageAtPosition(int yLocation) throws DomainException {
+        return this.messageRepo.getMessageAtPosition(yLocation);
+    }
+
+    public int getLocationOfMessage(Message message){
+        return this.messageRepo.getLocationOfMessage(message);
+    }
+
+    public void addMessageWithLocation(Message message, int yLocation){
+        this.messageRepo.addMessageWithLocation(message, yLocation);
+    }
+
+    public void removeMessage(Message message){
+        this.messageRepo.removeMessage(message);
+    }
+
+    public void removeMessageByPosition(int yLocation) throws DomainException{
+        this.messageRepo.removeMessageByPosition(yLocation);
+    }
+
+    private Set<Message> getClickedMessages(Point2D clickedLocation){
+        return this.messageRepo.getClickedMessages(clickedLocation, this.partyRepo);
+    }
+
+    public void updateMessageLocation(int yLocation, Message message){
+        this.messageRepo.updateMessageLocation(yLocation, message);
+    }
 }

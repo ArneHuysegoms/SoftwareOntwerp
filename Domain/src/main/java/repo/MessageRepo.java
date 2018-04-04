@@ -27,7 +27,7 @@ public class MessageRepo {
         return this.messageYLocationMap;
     }
 
-    public Message getMessageAtPosition(Integer yLocation) throws DomainException{
+    public Message getMessageAtPosition(int yLocation) throws DomainException{
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().equals(yLocation))
@@ -36,11 +36,11 @@ public class MessageRepo {
                 .orElseThrow(DomainException::new);
     }
 
-    public Integer getLocationOfMessage(Message message){
+    public int getLocationOfMessage(Message message){
         return this.getMap().get(message);
     }
 
-    public void addMessageWithLocation(Message message, Integer yLocation){
+    public void addMessageWithLocation(Message message, int yLocation){
         this.getMap().put(message, yLocation);
     }
 
@@ -48,13 +48,22 @@ public class MessageRepo {
         this.getMap().remove(message);
     }
 
-    public void removeMessageByPosition(Integer yLocation) throws DomainException{
+    public void removeMessageByPosition(int yLocation) throws DomainException{
         Message l = this.getMessageAtPosition(yLocation);
         this.removeMessage(l);
     }
 
+    public void updateMessageLocation(int yLocation, Message message){
+        this.getMap().put(message, yLocation);
+    }
 
-    public Set<Message> getClickedMessagess(Point2D location, PartyRepo repo){
+    public Map<Message, Double> getDistancesFromPointForMessages(Point2D point){
+        return this.getMap().entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
+    }
+
+    public Set<Message> getClickedMessages(Point2D location, PartyRepo repo){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> isClicked(location, entry.getKey(), repo))
@@ -84,5 +93,16 @@ public class MessageRepo {
         double endX = receiverLocation.getX();
         double endY = messageLocation + HEIGHT/2;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
+    }
+
+
+    /**
+     * @param point2D
+     *        The coordinates of the mouse where the user clicked
+     * @return
+     *       returns the distance between the coordinate of this message and the given point
+     */
+    public double getDistance(Point2D point2D, Message message) {
+        return Math.abs(point2D.getY() - this.getLocationOfMessage(message));
     }
 }

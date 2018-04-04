@@ -16,8 +16,6 @@ public class Actor extends Party {
     /**
      * @param positionInSequenceDiagram
      *        The position where this actor is located within the sequence diagram
-     * @param point2D
-     *        The coordinates of the middle, most upper point of this actor
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -33,9 +31,8 @@ public class Actor extends Party {
      *
      *
      */
-
-    public Actor( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
-        this("", "", positionInSequenceDiagram, point2D, label);
+    public Actor( int positionInSequenceDiagram, PartyLabel label) throws DomainException{
+        this("", "", positionInSequenceDiagram, label);
     }
 
 
@@ -46,8 +43,6 @@ public class Actor extends Party {
      *        The class name for this actor
      * @param positionInSequenceDiagram
      *        The position where this actor is located within the sequence diagram
-     * @param coordinate
-     *        The coordinates of the left upmost point of this actor
      * @param label
      *        The label belonging with this actor
      * @post  The new instanceName of this instance is equal to the given instanceName
@@ -61,15 +56,15 @@ public class Actor extends Party {
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      */
-    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Label label) throws DomainException{
-        super(instanceName, className, positionInSequenceDiagram, coordinate, label);
+    public Actor(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException{
+        super(instanceName, className, positionInSequenceDiagram, label);
     }
 
-    /**
+    /*
      * method to find the correct location for the label of a Party
      *
      * @return a Point2D indicating the location
-     */
+     *//*
     @Override
     public Point2D getCorrectLabelPosition() {
         return new Point2D.Double(this.getCoordinate().getX() - 10, this.getCoordinate().getY() + 50);
@@ -78,16 +73,15 @@ public class Actor extends Party {
     @Override
     public double getXLocationOfLifeline() {
         return this.getCoordinate().getX();
-    }
+    }*/
 
-    /**
+    /*
      * @param point2D
      *        The coordinates of the mouse where the user clicked
      * @return
      *       returns the distance between the coordinate of this actor and the given point
-     */
-    /*@Override
-    public double getDistance(Point2D point2D) {
-        return this.getCoordinate().distance(point2D);
-    }*/
+     @Override
+     public double getDistance(Point2D point2D) {
+     return this.getCoordinate().distance(point2D);
+     }*/
 }

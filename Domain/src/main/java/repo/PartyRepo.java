@@ -41,6 +41,10 @@ public class PartyRepo {
                 .orElseThrow(DomainException::new);
     }
 
+    public void updatePartyPosition(Point2D newPosition, Party party){
+        this.getMap().put(party, newPosition);
+    }
+
     public Point2D getLocationOfParty(Party party){
         return this.getMap().get(party);
     }
@@ -74,6 +78,12 @@ public class PartyRepo {
                 })
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
+    }
+
+    public Map<Party, Double> getDistancesFromPointForParties(Point2D point){
+        return this.getMap().entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
     }
 
     /**
@@ -110,5 +120,15 @@ public class PartyRepo {
         double endX = startX + OBJECTWIDTH;
         double endY = startY + OBJECTHEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
+    }
+
+    /**
+     * @param point2D
+     *        The coordinates of the mouse where the user clicked
+     * @return
+     *       returns the distance between the coordinate of this message and the given point
+     */
+    public double getDistance(Point2D point2D, Party party) {
+        return this.getLocationOfParty(party).distance(point2D);
     }
 }

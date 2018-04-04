@@ -11,7 +11,6 @@ public abstract class Party{
     private String instanceName;
     private String className;
     private int positionInSequenceDiagram;
-    private Point2D coordinate;
     private Label label;
 
 
@@ -22,8 +21,6 @@ public abstract class Party{
     /**
      * @param positionInSequenceDiagram
      *        The position where this actor is located within the sequence diagram
-     * @param point2D
-     *        The coordinates of the left upmost point of this actor
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -41,9 +38,8 @@ public abstract class Party{
      *
      *
      */
-
-    public Party( int positionInSequenceDiagram, Point2D point2D, Label label) throws DomainException{
-        this("", "", positionInSequenceDiagram, point2D, label);
+    public Party( int positionInSequenceDiagram, Label label) throws DomainException{
+        this("", "", positionInSequenceDiagram, label);
     }
 
     /**
@@ -54,8 +50,6 @@ public abstract class Party{
      *        The class name for this actor
      * @param positionInSequenceDiagram
      *        The position where this actor is located within the sequence diagram
-     * @param coordinate
-     *        The coordinates of the left upmost point of this actor
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -73,19 +67,11 @@ public abstract class Party{
      *
      *
      */
-    public Party(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Label label) throws DomainException{
+    public Party(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException{
         this.setLabel(label);
         this.setInstanceName(instanceName);
         this.setClassName(className);
         this.setPositionInSequenceDiagram(positionInSequenceDiagram);
-        this.setCoordinate(coordinate);
-    }
-
-    /**
-     * Return the left upmost coordinate of this party
-     */
-    public Point2D getCoordinate() {
-        return coordinate;
     }
 
     /**
@@ -153,24 +139,12 @@ public abstract class Party{
      * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
      *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
      */
-    public void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException{
-        if(positionInSequenceDiagram < 0){
+    public void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException {
+        if (positionInSequenceDiagram < 0) {
             throw new DomainException("Position of actor in sequenceDiagram must 0 or greater");
         }
         this.positionInSequenceDiagram = positionInSequenceDiagram;
     }
-
-
-    /**
-     * @param coordinate
-     *        The coordinates of the left upmost point of this actor
-     * @post  The new coordinate of this party is equal to the given coordinate
-     *        | new.getCoordinate == coordinate
-     */
-    public void setCoordinate(Point2D coordinate) {
-        this.coordinate = coordinate;
-    }
-
 
     /**
      * @return  returns the full label
@@ -178,7 +152,6 @@ public abstract class Party{
     public String getFullLabel(){
         return this.getInstanceName() + ": " + this.getClassName();
     }
-
 
     /**
      * @param newLabel the label to edit to
@@ -205,28 +178,19 @@ public abstract class Party{
         this.label = label;
     }
 
-    /**
-     * update the coordinate of the label
-     *
-     * @param newLabelPosition the new position for the battery
-     */
-    public void updateLabelCoordinate(Point2D newLabelPosition){
-        getLabel().setCoordinate(newLabelPosition);
-    }
-
-    /**
+/*    *//*
      * method to find the correct location for the label of a Party
      *
      * @return a Point2D indicating the location
-     */
+     *//*
     public abstract Point2D getCorrectLabelPosition();
 
-    /**
+    *//*
      * method to get the x location of the lifeline belonging to the party
      *
      * @return returns a double which denotes the x location of the lifeline belonging to the party
-     */
-    public abstract double getXLocationOfLifeline();
+     *//*
+    public abstract double getXLocationOfLifeline();*/
 
 
 }
