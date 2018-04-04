@@ -28,7 +28,7 @@ public class KeyEventFactory {
             } else if (keyCode == 17){
                 setCtrlPressed(true);
                 System.out.println("Set TRUE");
-            } else if (keyCode != 68 || keyCode != 78) {
+            } else if (keyCode != 68 && keyCode != 78) {
                 setCtrlPressed(false);
             } else if (keyCode == 68) {
                 if (ctrlPressed == true) {
