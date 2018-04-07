@@ -61,30 +61,4 @@ public class Object extends Party {
     public Object(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException {
         super(instanceName, className, positionInSequenceDiagram, label);
     }
-
-   /* *//**
-     * method to find the correct location for the label of a Party
-     *
-     * @return a Point2D indicating the location
-     *//*
-    @Override
-    public Point2D getCorrectLabelPosition() {
-        return new Point2D.Double(this.getCoordinate().getX() + 5, this.getCoordinate().getY() + 25);
-    }
-
-    @Override
-    public double getXLocationOfLifeline() {
-        return this.getCoordinate().getX() + WIDTH/2;
-    }*/
-
-    /*
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *       returns the distance between the coordinate of this message and the given point
-     *//*
-    @Override
-    public double getDistance(Point2D point2D) {
-        return this.getCoordinate().distance(point2D);
-    }*/
 }

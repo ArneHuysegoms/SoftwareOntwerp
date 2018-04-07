@@ -532,50 +532,39 @@ public abstract class Diagram{
 
     /**
      * loops over the callStack to give each invocation their appropriate messageNumber
-     *
-     * this method serves as entrypoint to the real method, and gives the appropriate input
      */
     private void setMessageNumbers(){
         if(this.getFirstMessage() != null) {
-            setMessageNumbers(1, 1, false,0);
-        }
-    }
-
-    /**
-     * loops over the callStack to give each invocation their appropriate messageNumber
-     *
-     * this method should not be called directly, instead use the setMessageNumbers() method. that method will call this one with
-     * the correct input.
-     *
-     * @param N the N part of the messageNumber as specified by the assignment
-     * @param e the eta part of the messageNumber as specified by the assignment
-     */
-    private void setMessageNumbers(int N, int e, boolean active, int stack){
-        Message message = this.getFirstMessage();
-        while(message != null ){
-            if(message instanceof InvocationMessage) {
-                stack++;
-                InvocationMessage m = (InvocationMessage) message;
-                if (!active) {
-                    m.setMessageNumber("" + N);
-                    N++;
-                    active = true;
+            boolean active = false;
+            int stack = 0;
+            Message message = this.getFirstMessage();
+            int N = 1;
+            int e = 1;
+            while(message != null ){
+                if(message instanceof InvocationMessage) {
+                    stack++;
+                    InvocationMessage m = (InvocationMessage) message;
+                    if (!active) {
+                        m.setMessageNumber("" + N);
+                        N++;
+                        active = true;
+                    }
+                    else {
+                        N--;
+                        m.setMessageNumber("" + N + "." + e);
+                        e++;
+                        N++;
+                    }
                 }
                 else {
-                    N--;
-                    m.setMessageNumber("" + N + "." + e);
-                    e++;
-                    N++;
+                    stack--;
                 }
+                if(stack == 0){
+                    active = false;
+                    e = 1;
+                }
+                message = message.getNextMessage();
             }
-            else {
-                stack--;
-            }
-            if(stack == 0){
-                active = false;
-                e = 1;
-            }
-            message = message.getNextMessage();
         }
     }
 
@@ -992,41 +981,6 @@ public abstract class Diagram{
             p.setCoordinate(this.getValidPartyLocation(p.getCoordinate()));
         }
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  abstract methods
-    ////////////////////////////////////
-
-    /**
-     * Checks whether the location of the UIEvent is a valid location to trigger a new Party instantiation
-     *
-     * Has to be implemented in subclass
-     *
-     * @param point2D the position of the UIEvent
-     * @return true if the location will trigger the addition of a new party to the diagram, false otherwise
-     */
-    public abstract boolean isValidPartyLocation(Point2D point2D);
-
-    /**
-     * Returns a valid location for the position of a party based on the provided location of the UIEvent
-     *
-     * Has to implemented in subclasses
-     *
-     * @param point2D the original position of the UIEvent
-     * @return Point2D, the appropriate location for a new Party
-     */
-    public abstract Point2D getValidPartyLocation(Point2D point2D);
-
-    /**
-     * Determines if the location belongs to the lifeline of the given Party
-     *
-     * @param location the location of the ClickEvent
-     * @param party a party of the diagram
-     * @return true if the location belongs to the lifeline of the party, false otherwise
-     */
-    public abstract boolean isLifeLine(Point2D location, Party party);
 
     /**********************************************************************************************************/
 

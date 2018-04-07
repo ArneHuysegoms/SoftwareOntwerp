@@ -11,9 +11,6 @@ import java.util.List;
  */
 public class SequenceDiagram extends Diagram {
 
-    private static final int MINY = 50;
-    private static final int MAXY = 100;
-
     /**
      * see superclass
      */
@@ -69,39 +66,4 @@ public class SequenceDiagram extends Diagram {
                                  String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
         super(parties, firstMessage, selectedElement, labelContainer, labelMode, validLabel, messageMode);
     }
-
-    /**
-     *
-     * @param point2D the position of the UIEvent
-     * @return whether the location is valid location
-     */
-    @Override
-    public boolean isValidPartyLocation(Point2D point2D) {
-        return point2D.getY() >= MINY && point2D.getY() <= MAXY;
-    }
-
-    /**
-     * retusn a valid postion for a new party based on the given location
-     *
-     * @param point2D the original position of the UIEvent
-     * @return
-     */
-    @Override
-    public Point2D getValidPartyLocation(Point2D point2D) {
-        return new Point2D.Double(point2D.getX(), MINY);
-    }
-
-    /**
-     * determines whether the location belongs to the lifeline of the given party
-     *
-     * @param location the location of the ClickEvent
-     * @param party a party of the diagram
-     * @return true if the location belongs to the lifeline of the given party, false otherwise
-     */
-    @Override
-    public boolean isLifeLine(Point2D location, Party party) {
-        return (location.getY() > MAXY) && (location.getX() >= party.getXLocationOfLifeline() - 20 && location.getX() <= party.getXLocationOfLifeline() + 20);
-    }
-
-
 }

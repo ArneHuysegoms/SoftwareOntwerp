@@ -1,9 +1,6 @@
 package diagram.label;
 
-import diagram.Clickable;
 import exceptions.DomainException;
-
-import java.awt.geom.Point2D;
 
 public abstract class Label{
 

@@ -1,4 +1,4 @@
-package repo;
+package repo.party;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import diagram.party.Actor;
 import diagram.party.Party;
 import exceptions.DomainException;
 
@@ -24,8 +23,19 @@ public class PartyRepo {
         this(new HashMap<>());
     }
 
-    public PartyRepo(HashMap<Party, Point2D> labelPoint2DMap){
+    public PartyRepo(Map<Party, Point2D> labelPoint2DMap){
         this.partyPoint2DMap = labelPoint2DMap;
+    }
+
+    public Map<Party, Point2D> getPartyPoint2DMap() {
+        return partyPoint2DMap;
+    }
+
+    private void setPartyPoint2DMap(Map<Party, Point2D> partyPoint2DMap) throws IllegalArgumentException{
+        if(partyPoint2DMap == null){
+            throw new IllegalArgumentException("map may not be null");
+        }
+        this.partyPoint2DMap = partyPoint2DMap;
     }
 
     private Map<Party, Point2D> getMap(){
@@ -41,16 +51,8 @@ public class PartyRepo {
                 .orElseThrow(DomainException::new);
     }
 
-    public void updatePartyPosition(Point2D newPosition, Party party){
-        this.getMap().put(party, newPosition);
-    }
-
     public Point2D getLocationOfParty(Party party){
         return this.getMap().get(party);
-    }
-
-    public void addPartyWithLocation(Party party, Point2D location){
-        this.getMap().put(party, location);
     }
 
     public void removeParty(Party party){
@@ -62,28 +64,82 @@ public class PartyRepo {
         this.removeParty(l);
     }
 
+    public Map<Party, Double> getDistancesFromPointForParties(Point2D point){
+        return this.getMap().entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
+    }
+
+    /**
+     * @param point2D
+     *        The coordinates of the mouse where the user clicked
+     * @param party
+     *        the party to find the distance to
+     * @return
+     *       returns the distance between the party and the given point
+     */
+    public double getDistance(Point2D point2D, Party party) {
+        return this.getLocationOfParty(party).distance(point2D);
+    }
+
+    /**
+     * method to find the correct location for the label of a Party
+     *
+     * @param party
+     *          the party to find a correct labelposition for
+     *
+     * @return a Point2D indicating the location
+     */
+    public Point2D getCorrectLabelPosition(Party party){
+        if(party instanceof Object){
+            return new Point2D.Double(this.getLocationOfParty(party).getX() + 5,
+                    this.getLocationOfParty(party).getY() + 25);
+        }
+        else{
+            return new Point2D.Double(this.getLocationOfParty(party).getX() - 10,
+                    this.getLocationOfParty(party).getY() + 50);
+        }
+    }
+
+    /**
+     * method to get the x location of the lifeline belonging to the party
+     *
+     * @param party
+     *        the party to find the x location of the lifeline for
+     *
+     * @return returns a double which denotes the x location of the lifeline belonging to the party
+     */
+    public double getXLocationOfLifeline(Party party){
+        if(party instanceof Object){
+            return this.getLocationOfParty(party).getX() + OBJECTWIDTH/2;
+        }
+        else{
+            return this.getLocationOfParty(party).getX();
+        }
+    }
+
     public Set<Party> getClickedParties(Point2D clickedLocation){
-        return this.partyPoint2DMap.entrySet()
+        return this.getMap().entrySet()
                 .stream()
                 .filter(pair -> {
-                    if(pair.getKey() instanceof Actor){
-                        return isClickedActor(clickedLocation, getLocationOfParty(pair.getKey()));
+                    if(pair.getKey() instanceof Object){
+                        return isClickedObject(clickedLocation, pair.getValue());
                     }
-                    else if(pair.getKey() instanceof Object){
-                        return isClickedObject(clickedLocation, getLocationOfParty(pair.getKey()));
+                    else if(pair.getKey() instanceof Party){
+                        return isClickedActor(clickedLocation, pair.getValue());
                     }
-                    else{
-                        return false;
-                    }
+                    return false;
                 })
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
 
-    public Map<Party, Double> getDistancesFromPointForParties(Point2D point){
-        return this.getMap().entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
+    public void updatePartyPosition(Point2D newPosition, Party party){
+        this.getMap().put(party, newPosition);
+    }
+
+    public void addPartyWithLocation(Party party, Point2D location){
+        this.getMap().put(party, location);
     }
 
     /**
@@ -120,15 +176,5 @@ public class PartyRepo {
         double endX = startX + OBJECTWIDTH;
         double endY = startY + OBJECTHEIGHT;
         return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
-    }
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *       returns the distance between the coordinate of this message and the given point
-     */
-    public double getDistance(Point2D point2D, Party party) {
-        return this.getLocationOfParty(party).distance(point2D);
     }
 }

@@ -1,4 +1,4 @@
-package repo;
+package repo.message;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import diagram.message.Message;
 import exceptions.DomainException;
+import repo.party.PartyRepo;
 
 public class MessageRepo {
 

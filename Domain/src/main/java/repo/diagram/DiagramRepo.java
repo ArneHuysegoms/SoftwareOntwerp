@@ -1,9 +1,10 @@
-package repo;
+package repo.diagram;
 
 import diagram.label.Label;
-import diagram.message.Message;
 import diagram.party.Party;
 import exceptions.DomainException;
+import repo.label.LabelRepo;
+import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 import java.util.Set;
@@ -11,16 +12,36 @@ import java.util.Set;
 public abstract class DiagramRepo {
 
     private LabelRepo labelRepo;
-    private MessageRepo messageRepo;
     private PartyRepo partyRepo;
 
     public DiagramRepo(){
-        this(new LabelRepo(), new MessageRepo(), new PartyRepo());
+        this(new LabelRepo(), new PartyRepo());
     }
 
-    public DiagramRepo(LabelRepo labelRepo, MessageRepo messageRepo, PartyRepo partyRepo){
+    public DiagramRepo(LabelRepo labelRepo, PartyRepo partyRepo){
+        this.setLabelRepo(labelRepo);
+        this.setPartyRepo(partyRepo);
+    }
+
+    public LabelRepo getLabelRepo() {
+        return labelRepo;
+    }
+
+    private void setLabelRepo(LabelRepo labelRepo) throws IllegalArgumentException{
+        if(labelRepo == null){
+            throw new IllegalArgumentException("labelRepo may not be null");
+        }
         this.labelRepo = labelRepo;
-        this.messageRepo = messageRepo;
+    }
+
+    public PartyRepo getPartyRepo() {
+        return partyRepo;
+    }
+
+    private void setPartyRepo(PartyRepo partyRepo) throws IllegalArgumentException{
+        if(partyRepo == null){
+            throw new IllegalArgumentException("partyRepo may not be null");
+        }
         this.partyRepo = partyRepo;
     }
 
@@ -80,31 +101,32 @@ public abstract class DiagramRepo {
         return this.labelRepo.getClickedLabels(location);
     }
 
-    public Message getMessageAtPosition(int yLocation) throws DomainException {
-        return this.messageRepo.getMessageAtPosition(yLocation);
-    }
+    /**
+     * Checks whether the location of the UIEvent is a valid location to trigger a new Party instantiation
+     *
+     * Has to be implemented in subclass
+     *
+     * @param point2D the position of the UIEvent
+     * @return true if the location will trigger the addition of a new party to the diagram, false otherwise
+     */
+    public abstract boolean isValidPartyLocation(Point2D point2D);
 
-    public int getLocationOfMessage(Message message){
-        return this.messageRepo.getLocationOfMessage(message);
-    }
+    /**
+     * Returns a valid location for the position of a party based on the provided location of the UIEvent
+     *
+     * Has to implemented in subclasses
+     *
+     * @param point2D the original position of the UIEvent
+     * @return Point2D, the appropriate location for a new Party
+     */
+    public abstract Point2D getValidPartyLocation(Point2D point2D);
 
-    public void addMessageWithLocation(Message message, int yLocation){
-        this.messageRepo.addMessageWithLocation(message, yLocation);
-    }
-
-    public void removeMessage(Message message){
-        this.messageRepo.removeMessage(message);
-    }
-
-    public void removeMessageByPosition(int yLocation) throws DomainException{
-        this.messageRepo.removeMessageByPosition(yLocation);
-    }
-
-    private Set<Message> getClickedMessages(Point2D clickedLocation){
-        return this.messageRepo.getClickedMessages(clickedLocation, this.partyRepo);
-    }
-
-    public void updateMessageLocation(int yLocation, Message message){
-        this.messageRepo.updateMessageLocation(yLocation, message);
-    }
+    /**
+     * Determines if the location belongs to the lifeline of the given Party
+     *
+     * @param location the location of the ClickEvent
+     * @param xCoordinateOfLifeline location of the parties lifeline
+     * @return true if the location belongs to the lifeline of the party, false otherwise
+     */
+    public abstract boolean isLifeLine(Point2D location, double xCoordinateOfLifeline);
 }

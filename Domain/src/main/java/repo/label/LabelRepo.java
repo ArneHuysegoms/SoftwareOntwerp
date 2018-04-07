@@ -1,7 +1,6 @@
-package repo;
+package repo.label;
 
 import java.awt.geom.Point2D;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
