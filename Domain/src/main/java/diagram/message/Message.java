@@ -1,10 +1,11 @@
 package diagram.message;
 
+import diagram.DiagramElement;
 import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public abstract class Message{
+public abstract class Message extends DiagramElement {
 
     private Message nextMessage;
     private Label label;

@@ -1,6 +1,8 @@
 package repo.diagram;
 
+import diagram.DiagramElement;
 import diagram.message.Message;
+import diagram.party.Party;
 import exceptions.DomainException;
 import repo.label.LabelRepo;
 import repo.message.MessageRepo;
@@ -34,34 +36,6 @@ public class SequenceRepo extends DiagramRepo {
             throw new IllegalArgumentException("messageRepo may not be null");
         }
         this.messageRepo = messageRepo;
-    }
-
-    public Message getMessageAtPosition(int yLocation) throws DomainException {
-        return this.messageRepo.getMessageAtPosition(yLocation);
-    }
-
-    public int getLocationOfMessage(Message message){
-        return this.messageRepo.getLocationOfMessage(message);
-    }
-
-    public void addMessageWithLocation(Message message, int yLocation){
-        this.messageRepo.addMessageWithLocation(message, yLocation);
-    }
-
-    public void removeMessage(Message message){
-        this.messageRepo.removeMessage(message);
-    }
-
-    public void removeMessageByPosition(int yLocation) throws DomainException{
-        this.messageRepo.removeMessageByPosition(yLocation);
-    }
-
-    private Set<Message> getClickedMessages(Point2D clickedLocation){
-        return this.messageRepo.getClickedMessages(clickedLocation, this.getPartyRepo());
-    }
-
-    public void updateMessageLocation(int yLocation, Message message){
-        this.messageRepo.updateMessageLocation(yLocation, message);
     }
 
     /**

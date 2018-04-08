@@ -14,8 +14,6 @@ public class Actor extends Party {
     }
 
     /**
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -31,8 +29,8 @@ public class Actor extends Party {
      *
      *
      */
-    public Actor( int positionInSequenceDiagram, PartyLabel label) throws DomainException{
-        this("", "", positionInSequenceDiagram, label);
+    public Actor(PartyLabel label) throws DomainException{
+        this("", "", label);
     }
 
 
@@ -41,8 +39,6 @@ public class Actor extends Party {
      *        The instance name for this actor
      * @param className
      *        The class name for this actor
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
      * @param label
      *        The label belonging with this actor
      * @post  The new instanceName of this instance is equal to the given instanceName
@@ -56,8 +52,8 @@ public class Actor extends Party {
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      */
-    public Actor(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException{
-        super(instanceName, className, positionInSequenceDiagram, label);
+    public Actor(String instanceName, String className, Label label) throws DomainException{
+        super(instanceName, className, label);
     }
 
     /*

@@ -1,8 +1,9 @@
 package diagram.label;
 
+import diagram.DiagramElement;
 import exceptions.DomainException;
 
-public abstract class Label{
+public abstract class Label extends DiagramElement {
 
     private String label;
 

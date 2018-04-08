@@ -13,8 +13,6 @@ public class Object extends Party {
 
 
     /**
-     * @param positionInSequenceDiagram
-     *        The position where this object is located within the sequence diagram
      * @param label
      *        The label belonging with this object
      * @throws DomainException
@@ -28,8 +26,8 @@ public class Object extends Party {
      *
      *
      */
-    public Object( int positionInSequenceDiagram, Label label) throws DomainException{
-        this("", "", positionInSequenceDiagram, label);
+    public Object(Label label) throws DomainException{
+        this("", "", label);
     }
 
 
@@ -39,8 +37,6 @@ public class Object extends Party {
      *        The instance name for this actor
      * @param className
      *        The class name for this actor
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -58,7 +54,7 @@ public class Object extends Party {
      *
      *
      */
-    public Object(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException {
-        super(instanceName, className, positionInSequenceDiagram, label);
+    public Object(String instanceName, String className, Label label) throws DomainException {
+        super(instanceName, className, label);
     }
 }

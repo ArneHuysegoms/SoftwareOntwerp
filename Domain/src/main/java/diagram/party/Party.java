@@ -1,16 +1,13 @@
 package diagram.party;
 
-import diagram.Clickable;
+import diagram.DiagramElement;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
-
-public abstract class Party{
+public abstract class Party extends DiagramElement {
 
     private String instanceName;
     private String className;
-    private int positionInSequenceDiagram;
     private Label label;
 
 
@@ -19,8 +16,6 @@ public abstract class Party{
     }
 
     /**
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -31,15 +26,13 @@ public abstract class Party{
      *        | new.getLabel == label
      * @post  The new className of this party is equal to the given className
      *        | new.getClassName == className
-     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
-     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      *
      *
      */
-    public Party( int positionInSequenceDiagram, Label label) throws DomainException{
-        this("", "", positionInSequenceDiagram, label);
+    public Party(Label label) throws DomainException{
+        this("", "", label);
     }
 
     /**
@@ -48,8 +41,6 @@ public abstract class Party{
      *        The instance name for this actor
      * @param className
      *        The class name for this actor
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -60,18 +51,15 @@ public abstract class Party{
      *        | new.getLabel == label
      * @post  The new className of this party is equal to the given className
      *        | new.getClassName == className
-     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
-     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      *
      *
      */
-    public Party(String instanceName, String className, int positionInSequenceDiagram, Label label) throws DomainException{
+    public Party(String instanceName, String className, Label label) throws DomainException{
         this.setLabel(label);
         this.setInstanceName(instanceName);
         this.setClassName(className);
-        this.setPositionInSequenceDiagram(positionInSequenceDiagram);
     }
 
     /**
@@ -121,29 +109,6 @@ public abstract class Party{
      */
     private void setClassName(Label label) {
         this.className = label.getLabel().split("//:")[1];
-    }
-
-    /**
-     * @return Returns the postion of the party in the sequence diagram
-     */
-    public int getPositionInSequenceDiagram() {
-        return positionInSequenceDiagram;
-    }
-
-
-    /**
-     * @param positionInSequenceDiagram
-     *        the position in the sequence diagram
-     * @throws DomainException
-     *       the postion of the party in sequenceDiagram must 0 or greater
-     * @post  The new positionInSequenceDiagram of this party is equal to the given positionInSequenceDiagram
-     *        | new.getPositionInSequenceDiagram == positionInSequenceDiagram
-     */
-    public void setPositionInSequenceDiagram(int positionInSequenceDiagram) throws DomainException {
-        if (positionInSequenceDiagram < 0) {
-            throw new DomainException("Position of actor in sequenceDiagram must 0 or greater");
-        }
-        this.positionInSequenceDiagram = positionInSequenceDiagram;
     }
 
     /**

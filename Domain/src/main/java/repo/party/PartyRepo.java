@@ -2,10 +2,12 @@ package repo.party;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import diagram.DiagramElement;
 import diagram.party.Party;
 import exceptions.DomainException;
 
@@ -118,7 +120,7 @@ public class PartyRepo {
         }
     }
 
-    public Set<Party> getClickedParties(Point2D clickedLocation){
+    public Set<DiagramElement> getClickedParties(Point2D clickedLocation){
         return this.getMap().entrySet()
                 .stream()
                 .filter(pair -> {
@@ -140,6 +142,10 @@ public class PartyRepo {
 
     public void addPartyWithLocation(Party party, Point2D location){
         this.getMap().put(party, location);
+    }
+
+    public Set<Party> getAllParties(){
+        return this.getMap().keySet();
     }
 
     /**

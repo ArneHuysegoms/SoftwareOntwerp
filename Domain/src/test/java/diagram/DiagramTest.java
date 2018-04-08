@@ -1,8 +1,5 @@
 package diagram;
 
-import diagram.CommunicationsDiagram;
-import diagram.Diagram;
-import diagram.SequenceDiagram;
 import diagram.label.Label;
 import diagram.label.MessageLabel;
 import diagram.label.PartyLabel;

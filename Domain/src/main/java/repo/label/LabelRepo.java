@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import diagram.DiagramElement;
 import diagram.label.Label;
 import exceptions.DomainException;
 
@@ -64,7 +65,7 @@ public class LabelRepo {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> getDistance(point, e.getKey())));
     }
 
-    public Set<Label> getClickedLabels(Point2D location){
+    public Set<DiagramElement> getClickedLabels(Point2D location){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> isClicked(location, getLocationOfLabel(entry.getKey())))
@@ -80,7 +81,7 @@ public class LabelRepo {
      * @return
      *        True if the clicked coordinates are within the coordinates of the image of this actor
      */
-    public boolean isClicked(Point2D clickedLocation, Point2D labelLocation) {
+    private boolean isClicked(Point2D clickedLocation, Point2D labelLocation) {
         double clickX = clickedLocation.getX();
         double clickY = clickedLocation.getY();
         double startX = labelLocation.getX();
@@ -96,7 +97,7 @@ public class LabelRepo {
      * @return
      *       returns the distance between the coordinate of this message and the given point
      */
-    public double getDistance(Point2D point2D, Label label) {
+    private double getDistance(Point2D point2D, Label label) {
         return this.getLocationOfLabel(label).distance(point2D);
     }
 

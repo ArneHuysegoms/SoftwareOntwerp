@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Superclass of diagrams, contains most of the business logic in changing the diagram
  */
-public abstract class Diagram{
+public class Diagram{
 
     /**********************************************************************************************************/
 
@@ -26,18 +26,9 @@ public abstract class Diagram{
     //  variables
     ////////////////////////////////////
 
-    private boolean messageMode;
-
     private List<Party> parties;
 
-    private Clickable selectedElement;
-
     private Message firstMessage;
-
-    private boolean labelMode;
-    private boolean validLabel;
-    private String labelContainer = "";
-    private Label editableLable;
 
     /**********************************************************************************************************/
 
@@ -46,66 +37,29 @@ public abstract class Diagram{
     ////////////////////////////////////
 
     /**
-     * creates a new diagram with the given parties, the first message of the call stack, the currently selected element, the text for the label in edit and the
-     * state for the flags
+     * create a new blank diagram
+     */
+    public Diagram(){
+        this(new ArrayList<Party>(), null);
+    }
+
+    /**
+     * creates a new diagram with the given parties, the first message of the call stack
      *
      * @param parties
      * @param firstMessage
-     * @param selectedElement
-     * @param labelContainer
-     * @param labelMode
-     * @param validLabel
-     * @param messageMode
      */
-    public Diagram(List<Party> parties, Message firstMessage, Clickable selectedElement, String labelContainer, boolean labelMode, boolean validLabel, boolean messageMode){
+    public Diagram(List<Party> parties, Message firstMessage){
         this.setParties(parties);
-        this.labelContainer = labelContainer;
-        this.setSelectedElement(selectedElement);
         this.setFirstMessage(firstMessage);
-        this.setLabelMode(labelMode);
-        this.setMessageMode(messageMode);
-        this.setValidLabel(validLabel);
         this.setMessageNumbers();
-        }
+    }
 
     /**********************************************************************************************************/
 
     ////////////////////////////////////
     //  setters and getters
     ////////////////////////////////////
-
-    /**
-     * sets the editable label to the given label
-     *
-     * @param label
-     */
-    private void setEditableLable(Label label){
-        this.editableLable = label;
-    }
-
-    /**
-     * sets the selected element of the diagram
-     * @param selectedElement
-     */
-    public void setSelectedElement(Clickable selectedElement){
-        this.selectedElement = selectedElement;
-    }
-
-    /**
-     *
-     * @return the currently selected element
-     */
-    public Clickable getSelectedElement() {
-        return selectedElement;
-    }
-
-    /**
-     *
-     * @return the labelcontainer of this diagram
-     */
-    public String getLabelContainer(){
-        return this.labelContainer;
-    }
 
     /**
      * sets the first message of the message stack
@@ -164,109 +118,6 @@ public abstract class Diagram{
         this.getParties().remove(party);
     }
 
-    /**
-     * sets the new state for the labelMode flag
-     * @param labelMode
-     */
-    private void setLabelMode(boolean labelMode){
-        this.labelMode = labelMode;
-    }
-
-    /**
-     *
-     * @return the flag for labelMode
-     */
-    public boolean isLabelMode(){
-        return this.labelMode;
-    }
-
-    /**
-     * set the state of the validlabel flag
-     *
-     * @param validLabel the new state for the flag
-     */
-    private void setValidLabel(boolean validLabel){
-        this.validLabel = validLabel;
-    }
-
-    /**
-     *
-     * @return whether the label is valid
-     */
-    public boolean isValidLabel(){
-        return this.validLabel;
-    }
-
-    /**
-     * sets messageMode to the provided state
-     *
-     * @param messageMode
-     */
-    private void setMessageMode(boolean messageMode){
-        this.messageMode = messageMode;
-    }
-
-    /**
-     * inspector for messageMode
-     *
-     * @return true if the diagram is in messageMode, false otherwise
-     */
-    public boolean isMessageMode(){
-        return this.messageMode;
-    }
-
-    /**
-     * checks if the currently selected element is a label
-     *
-     * @return true if the the currently selected element is a label, false otherwise
-     */
-    public boolean selectedElementIsLabel(){
-        return this.getSelectedElement() instanceof Label;
-    }
-
-    /**
-     * checks if the currently selected element is a Party
-     *
-     * @return true if the the currently selected element is a Party, false otherwise
-     */
-    public boolean selectedElementIsParty(){
-        return this.getSelectedElement() instanceof Party;
-    }
-    /**
-     * checks if the currently selected element is an Actor
-     *
-     * @return true if the the currently selected element is a Party, false otherwise
-     */
-    public boolean selectedElementIsActor(){
-        return this.getSelectedElement() instanceof Actor;
-    }
-    /**
-     * checks if the currently selected element is an Object
-     *
-     * @return true if the the currently selected element is a Party, false otherwise
-     */
-    public boolean selectedElementIsObject(){
-        return this.getSelectedElement() instanceof Object;
-    }
-
-    /**
-     * checks if the currently selected element is a MessageStart
-     *
-     * @return true if the the currently selected element is a MessageStart, false otherwise
-     */
-    public boolean selectedElementIsMessageStart(){
-        return this.getSelectedElement() instanceof MessageStart;
-    }
-
-    /**
-     * checks if the currently selected element is a message
-     *
-     * @return true if the the currently selected element is a message, false otherwise
-     */
-    public boolean selectedElementIsMessage() {
-        return this.selectedElement instanceof Message;
-    }
-
     /**********************************************************************************************************/
 
     ////////////////////////////////////
@@ -274,65 +125,58 @@ public abstract class Diagram{
     ////////////////////////////////////
 
     /**
-     * Adds a new party on the given location, per use case will be in the form of an object
+     * Adds a new party in the form of an object
      *
-     * @param point2D the location on which to add a new party
+     * @return the newly added party
      */
-    public void addNewParty(Point2D point2D){
-        Point2D finalPosition = null;
+    public Party addNewParty(){
         PartyLabel label;
-        if(isValidPartyLocation(point2D)){
-            finalPosition = getValidPartyLocation(point2D);
-            try {
-                label = new PartyLabel("|", new Point2D.Double(finalPosition.getX() + 10, finalPosition.getY() + 20));
-                Object object = new Object(0, finalPosition, label);
-                this.addParty(object);
-                startEditingLable(label);
-            }
-            catch (Exception e){
-                System.out.println(e.getMessage());
-            }
+        Party object  = null;
+        try {
+            label = new PartyLabel("|");
+            object = new Object(label);
+            this.addParty(object);
         }
-        setSequenceNumbers();
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return object;
     }
 
     /**
      * changes the party type of the Party on the provided location
      *
-     * @param point2D the location of the party to change the type of
+     * @param oldParty the party to change the type off
+     *
+     * @return the newly created party
      */
-    public void changePartyType(Point2D point2D){
-        this.setSelectedElement(selectClickableElement(point2D));
-        if(this.getSelectedElement() instanceof Party){
-            if(this.getSelectedElement() instanceof Object){
-                Object o = (Object) this.getSelectedElement();
+    public Party changePartyType(Party oldParty){
+        Party newParty = null;
+            if(oldParty instanceof Object){
+                Object o = (Object) oldParty;
                 try {
-                    Party newActor = new Actor(o.getInstanceName(), o.getClassName(), o.getPositionInSequenceDiagram(), o.getCoordinate(), o.getLabel());
-                    newActor.updateLabelCoordinate(newActor.getCorrectLabelPosition());
-                    this.updateMessagesForChangedParty(o, newActor);
+                    newParty = new Actor(o.getInstanceName(), o.getClassName(), o.getLabel());
+                    this.updateMessagesForChangedParty(o, newParty);
                     this.removeParty(o);
-                    this.addParty(newActor);
-                    selectedElement = newActor;
+                    this.addParty(newParty);
                 }
                 catch (DomainException exception){
                     System.out.println(exception.getMessage());
                 }
             }
             else{
-                Actor a = (Actor) this.getSelectedElement();
+                Actor a = (Actor) oldParty;
                 try {
-                    Party newObject = new Object(a.getInstanceName(), a.getClassName(), a.getPositionInSequenceDiagram(), a.getCoordinate(), a.getLabel());
-                    newObject.updateLabelCoordinate(newObject.getCorrectLabelPosition());
-                    this.updateMessagesForChangedParty(a, newObject);
+                    newParty = new Object(a.getInstanceName(), a.getClassName(), a.getLabel());
+                    this.updateMessagesForChangedParty(a, newParty);
                     this.removeParty(a);
-                    this.addParty(newObject);
-                    selectedElement = newObject;
+                    this.addParty(newParty);
                 }
                 catch (DomainException exception){
                     System.out.println(exception.getMessage());
                 }
             }
-        }
+        return newParty;
     }
 
     /**
@@ -403,86 +247,6 @@ public abstract class Diagram{
         }
         this.setSequenceNumbers();
     }
-
-    /**
-     * finds the element that is selected based on the click on the provided location
-     *
-     * @param point2D the location that was clicked on
-     * @return the element that was clicked on
-     */
-    public Clickable findSelectedElement(Point2D point2D){
-        if(! (selectClickableElement(point2D) instanceof Label)){
-            stopEditingLabel();
-            this.setLabelMode(false);
-            labelContainer = "";
-            editableLable = null;
-        }
-        Clickable selected = selectClickableElement(point2D);
-        this.setSelectedElement(selected);
-        if(selected instanceof Label){
-            this.setEditableLable((Label) selected);
-        }
-        return selected;
-    }
-
-    /**
-     * finds the selected element without setting it as the selected element
-     *
-     * @param location the location of the ui event
-     * @return the element that would be selected
-     */
-    public Clickable wouldBeSelectedElement(Point2D location){
-        Clickable selected = selectClickableElement(location);
-        if(! (selected instanceof Label)){
-            stopEditingLabel();
-            this.setLabelMode(false);
-            labelContainer = "";
-            editableLable = null;
-        }
-        return selected;
-    }
-
-    /**
-     * adds the given char to the Label in edit
-     *
-     * @param newChar
-     */
-    public void addCharToLabel(char newChar){
-        appendCharToLabel(newChar);
-    }
-
-    /**
-     * removes the last Char from the Label in edit
-     */
-    public void removeLastCharFromLabel(){
-        removeCharFromContainer();
-    }
-
-    /**
-     * Start editing the currently selected element, that is a label
-     */
-    public void editLabel(){
-        Label label = (Label) this.getSelectedElement();
-        labelContainer = label.getLabel();
-        startEditingLable(label);
-    }
-
-    /**
-     * Stop editing the label that was selected
-     *
-     * @throws DomainException if the final label isn't valid
-     */
-    public void stopEditingLabel(){
-        try {
-            if(editableLable != null ) {
-                this.editableLable.setLabel(labelContainer);
-            }
-        }
-        catch (DomainException exc){
-            System.out.println(exc.getMessage());
-        }
-    }
-
     /**
      * deletes the element that is currently selected
      */
@@ -503,32 +267,6 @@ public abstract class Diagram{
     ////////////////////////////////////
     //  utilities
     ////////////////////////////////////
-
-    /**
-     * updates the sequence Numbers of all the parties currently in the diagram based on their current xCoordinate on the diagram
-     */
-    private void setSequenceNumbers(){
-        int pos = 1;
-        List<Party> sorted = new ArrayList<>();
-        List<Party> notSorted = new ArrayList<>(this.getParties());
-        for(int i = 0; i < this.getParties().size(); i++){
-            Party next = notSorted.get(0);
-            for(int j = i; j < notSorted.size(); j++){
-                if(notSorted.get(j).getCoordinate().getX() < next.getCoordinate().getX()){
-                    next = notSorted.get(j);
-                }
-            }
-            try {
-                next.setPositionInSequenceDiagram(pos);
-                pos++;
-                sorted.add(next);
-                notSorted.remove(next);
-            }
-            catch (DomainException exception){
-                System.out.println(exception.getMessage());
-            }
-        }
-    }
 
     /**
      * loops over the callStack to give each invocation their appropriate messageNumber
@@ -617,28 +355,7 @@ public abstract class Diagram{
      */
     private void deleteParty(Party party){
         rearrangeMessageTreeByParty(party);
-        changeSequenceNumbers(party.getPositionInSequenceDiagram());
         this.removeParty(party);
-    }
-
-    /**
-     * changes the position of the parties in the sequence diagram based on the provided removed position
-     *
-     * @param deletedPosition the position in the sequence diagram that was deleted
-     *
-     * @throws DomainException if no valid new location can be given to the remaining parties
-     */
-    private void changeSequenceNumbers(int deletedPosition){
-        for(Party p : this.getParties()){
-            if(p.getPositionInSequenceDiagram() > deletedPosition){
-                try {
-                    p.setPositionInSequenceDiagram(p.getPositionInSequenceDiagram() - 1);
-                }
-                catch (DomainException exception){
-                    System.out.println(exception.getMessage());
-                }
-            }
-        }
     }
 
     /**
@@ -667,6 +384,8 @@ public abstract class Diagram{
      * deletes a message or a party if the provided label is its label
      *
      * @param label the label of the element to delete
+     *
+     *  TODO check this function
      */
     private void deleteLabel(Label label){
         boolean done = false;
@@ -690,6 +409,8 @@ public abstract class Diagram{
 
     /**
      * Rearranges the message tree upon deletion of the provided party
+     *
+     * TODO give back skipped messages for deletion
      *
      * @param party the party that will be deleted
      */
@@ -769,140 +490,6 @@ public abstract class Diagram{
     }
 
     /**
-     * return wethers or not this clickable is a Label object
-     *
-     * @param clickable the clickable to inspect
-     * @return true if the clickable is an instance of Label
-     */
-    public boolean isLabel(Clickable clickable){
-        return clickable instanceof Label;
-    }
-
-    /**
-     * Starts the proces of editing the label, sets the label as the selected element and initiates appropriate flags and variables
-     *
-     * @param label the label to edit
-     */
-    private void startEditingLable(Label label){
-        this.setSelectedElement(label);
-        this.setLabelMode(true);
-        if(label.isValidLabel(label.getLabel())){
-            this.setValidLabel(true);
-            labelContainer = label.getLabel();
-        }
-        else{
-            this.setValidLabel(false);
-        }
-        this.editableLable = label;
-    }
-
-
-    /**
-     * Appends the char of a keyStroke to the label that's being edited
-     *
-     * @param newChar the newChar to append
-     */
-    private void appendCharToLabel(char newChar){
-        if(this.labelContainer.isEmpty()){
-            this.labelContainer = "";
-        }
-        if(Label.isCorrectCharForLabel(newChar)) {
-            this.labelContainer += newChar;
-            String label = labelContainer + "|";
-            this.setNewLabel(label);
-        }
-    }
-
-    /**
-     * removes the last char from the label that is being edited
-     */
-    private void removeCharFromContainer(){
-        if(this.labelContainer.length() > 0){
-            String label = this.labelContainer.substring(0, labelContainer.length() - 1);
-            labelContainer = label;
-            this.setNewLabel(labelContainer + "|");
-        }
-    }
-
-    /**
-     * sets the label of the Label in edit to the given label
-     *
-     * @param label
-     */
-    private void setNewLabel(String label){
-        try {
-            boolean valid = editableLable.isValidLabel(label);
-            editableLable.setLabel(label);
-           this.setValidLabel(valid);
-        }
-        catch (DomainException exc){
-            System.out.println(exc.getMessage());
-        }
-    }
-
-    /**
-     * Finds the element that has been clicked by the location of the MouseEvent
-     *
-     * @param point2D the location of the MouseEvent
-     * @return the element which has been clicked on
-     */
-    private Clickable selectClickableElement(Point2D point2D){
-        List<Clickable> possibleElements = new ArrayList<>();
-        Message message = this.getFirstMessage();
-        while(message != null) {
-            if (message.isClicked(point2D)) {
-                possibleElements.add(message);
-            }
-            if(message.getLabel().isClicked(point2D)){
-                possibleElements.add(message.getLabel());
-            }
-            message = message.getNextMessage();
-        }
-        for(Party party : this.getParties()){
-            if(party.isClicked(point2D)){
-                possibleElements.add(party);
-            }
-            if(party.getLabel().isClicked(point2D)){
-                possibleElements.add(party.getLabel());
-            }
-            if(isLifeLine(point2D, party)){
-                if(possibleElements.size() == 0 ) {
-                    return new MessageStart(party, point2D);
-                }
-            }
-        }
-        if(possibleElements.size() == 1){
-           return possibleElements.get(0);
-        }
-        else if(possibleElements.size() == 0){
-            return null;
-        }
-        else{
-            return findMostLikelyElement(possibleElements, point2D);
-        }
-    }
-
-    /**
-     * if multiple elements overlap on the location of a mouseEvent, this function will determine which element was clicked
-     *
-     * @param possibleElements all overlapping elements
-     *
-     * @param point2D the location of the MouseClick
-     * @return the element that has been clicked on, based on distance to the MouseEvent
-     */
-    private Clickable findMostLikelyElement(List<Clickable> possibleElements, Point2D point2D){
-        Clickable selected = possibleElements.get(0);
-        double dist = possibleElements.get(0).getDistance(point2D);
-        for(Clickable c : possibleElements){
-            if(c.getDistance(point2D) < dist){
-                dist = c.getDistance(point2D);
-                selected = c;
-            }
-        }
-        return selected;
-    }
-
-    /**
      * updates all the messasges to relink them to the appropriate party
      *
      * @param old the old party of the message
@@ -933,7 +520,6 @@ public abstract class Diagram{
      *
      * @return the message that will preceed the one the given yLocation, null if none was found or didn't exist
      */
-
     private Message findPreviousMessage(int yLocation){
         Message message = this.getFirstMessage();
         if(message == null){
@@ -957,67 +543,4 @@ public abstract class Diagram{
         }
         return null;
     }
-
-    /**
-     * resets the position of the parties to the old positions
-     *
-     * @param oldParties a list of the old parties
-     */
-    public void resetPartyPositions(List<Party> oldParties){
-        for(Party old : oldParties){
-            for(Party np : this.getParties()){
-                if(old.equals(np)){
-                    np.setCoordinate(old.getCoordinate());
-                }
-            }
-        }
-    }
-
-    /**
-     * resets the positions of the parties in this diagram to positions valid for this diagram
-     */
-    public void resetToSequencePositions(){
-        for(Party p : this.getParties()){
-            p.setCoordinate(this.getValidPartyLocation(p.getCoordinate()));
-        }
-    }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  Helper class
-    ////////////////////////////////////
-
-    /**
-     * Class to help adding messages, stocks the Startlocation and Sender of a new message
-     */
-    public class MessageStart implements Clickable{
-
-        Party party;
-        Point2D startloction;
-
-        private MessageStart(Party party, Point2D startLocation){
-            this.party = party;
-            this.startloction = startLocation;
-        }
-
-        private Party getParty(){
-            return this.party;
-        }
-
-        private Point2D getStartloction(){
-            return this.startloction;
-        }
-
-        @Override
-        public boolean isClicked(Point2D point2D) {
-            return false;
-        }
-
-        @Override
-        public double getDistance(Point2D point2D) {
-            return 0;
-        }
-    }
-
 }

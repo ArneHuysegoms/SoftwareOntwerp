@@ -1,5 +1,6 @@
 package repo.diagram;
 
+import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.party.Party;
 import exceptions.DomainException;
@@ -45,60 +46,59 @@ public abstract class DiagramRepo {
         this.partyRepo = partyRepo;
     }
 
-    public Party getPartyAtPosition(Point2D location) throws DomainException {
-        return this.partyRepo.getPartyAtPosition(location);
+    /**
+     * Finds the element that has been clicked by the location of the MouseEvent
+     *
+     * @param clickedLocation the location of the MouseEvent
+     * @return the element which has been clicked on
+     */
+    public DiagramElement getSelectedDiagramElement(Point2D clickedLocation) throws DomainException{
+        Set<DiagramElement> clickedElements =  this.partyRepo.getClickedParties(clickedLocation);
+        clickedElements.addAll(this.labelRepo.getClickedLabels(clickedLocation));
+        if(clickedElements.size() == 1){
+            return clickedElements.stream().findFirst().orElseThrow(DomainException::new);
+        }
+        else if(clickedElements.size() > 1){
+            return findMostLikelyElement(clickedElements, clickedLocation);
+        }
+        else{
+            for(Party party : partyRepo.getAllParties()){
+                if(isLifeLine(clickedLocation, partyRepo.getXLocationOfLifeline(party))){
+                    return new MessageStart(party, clickedLocation);
+                }
+            }
+        }
+        return null;
     }
 
-    public Point2D getLocationOfParty(Party party){
-        return this.partyRepo.getLocationOfParty(party);
-    }
-
-    public void addPartyWithLocation(Party party, Point2D location){
-        this.partyRepo.addPartyWithLocation(party, location);
-    }
-
-    public void removeParty(Party party){
-        this.partyRepo.removeParty(party);
-    }
-
-    public void removePartyByPosition(Point2D location) throws DomainException {
-        this.partyRepo.removePartyByPosition(location);
-    }
-
-    public void updatePartyPosition(Point2D newPosition, Party party){
-        this.partyRepo.updatePartyPosition(newPosition, party);
-    }
-
-    private Set<Party> getClickedParties(Point2D clickedLocation){
-        return this.partyRepo.getClickedParties(clickedLocation);
-    }
-
-    public Label getLabelAtPosition(Point2D location) throws DomainException {
-        return this.labelRepo.getLabelAtPosition(location);
-    }
-
-    public Point2D getLocationOfLabel(Label label){
-        return this.labelRepo.getLocationOfLabel(label);
-    }
-
-    public void addLabelwithLocation(Label label, Point2D location){
-        this.labelRepo.addLabelWithLocation(label, location);
-    }
-
-    public void removeLabel(Label label){
-        this.labelRepo.removeLabel(label);
-    }
-
-    public void removeLabelByPosition(Point2D location) throws DomainException{
-        this.labelRepo.removeLabelByPosition(location);
-    }
-
-    public void updateLabelPosition(Point2D newPosition, Label label){
-        this.labelRepo.updateLabelPosition(newPosition, label);
-    }
-
-    private Set<Label> getClickedLabels(Point2D location){
-        return this.labelRepo.getClickedLabels(location);
+    /**
+     * if multiple elements overlap on the location of a mouseEvent, this function will determine which element was clicked
+     *
+     * @param clickedElements all overlapping elements
+     *
+     * @param clickedLocation the location of the MouseClick
+     * @return the element that has been clicked on, based on distance to the MouseEvent
+     */
+    private DiagramElement findMostLikelyElement(Set<DiagramElement> clickedElements, Point2D clickedLocation){
+        DiagramElement selected = null;
+        double dist = Double.MAX_VALUE;
+        for(DiagramElement element : clickedElements){
+            if(element instanceof Label){
+                Label l = (Label) element;
+                if(labelRepo.getLocationOfLabel(l).distance(clickedLocation) < dist){
+                    selected = l;
+                    dist = labelRepo.getLocationOfLabel(l).distance(clickedLocation);
+                }
+            }
+            else if(element instanceof Party){
+                Party p = (Party) element;
+                if(partyRepo.getLocationOfParty(p).distance(clickedLocation) < dist){
+                    selected = p;
+                    dist = partyRepo.getLocationOfParty(p).distance(clickedLocation);
+                }
+            }
+        }
+        return selected;
     }
 
     /**
@@ -129,4 +129,26 @@ public abstract class DiagramRepo {
      * @return true if the location belongs to the lifeline of the party, false otherwise
      */
     public abstract boolean isLifeLine(Point2D location, double xCoordinateOfLifeline);
+
+    /**
+     * Class to help adding messages, stocks the Startlocation and Sender of a new message
+     */
+    public class MessageStart extends DiagramElement {
+
+        Party party;
+        Point2D startloction;
+
+        private MessageStart(Party party, Point2D startLocation) {
+            this.party = party;
+            this.startloction = startLocation;
+        }
+
+        private Party getParty() {
+            return this.party;
+        }
+
+        private Point2D getStartloction() {
+            return this.startloction;
+        }
+    }
 }
