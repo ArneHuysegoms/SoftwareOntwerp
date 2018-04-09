@@ -1,6 +1,9 @@
 package facade;
 
 import diagram.Diagram;
+import diagram.DiagramElement;
+import diagram.label.Label;
+import diagram.message.Message;
 import diagram.party.Party;
 import exceptions.DomainException;
 import repo.diagram.CommunicationRepo;
@@ -8,6 +11,8 @@ import repo.diagram.DiagramRepo;
 import repo.diagram.SequenceRepo;
 
 import java.awt.geom.Point2D;
+import java.util.List;
+import java.util.Set;
 
 /**
  * this class servers as the entrypoint for all of the domain functionality
@@ -136,23 +141,6 @@ public class DomainFacade {
         repo.getLabelRepo().addLabelWithLocation(newParty.getLabel(), labelPosition);
     }
 
-
-    /*******************************************************************************************/
-
-   /* *//*
-     *
-     * @return true if the label in edit is valid, false otherwise
-     *//*
-    public boolean checkIfValidLable(){
-        return this.getActiveDiagram().isValidLabel();
-    }*/
-
-    /**
-     *
-     * @return the currently selected element of the active diagram
-     */
-    public Clickable getSelectedElement(){ return this.getActiveDiagram().getSelectedElement();}
-
     /**
      * find the element on the given location
      *
@@ -161,17 +149,71 @@ public class DomainFacade {
      * @param location the location to find an element on
      * @return the element on the provided location, null if no such element exist
      */
-    public Clickable findSelectedElement(Point2D location) {
-        return this.getActiveDiagram().findSelectedElement(location);
+    public DiagramElement findSelectedElement(Point2D location) throws DomainException{
+        return this.getActiveRepo().getSelectedDiagramElement(location);
     }
 
     /**
+     * deletes the element of the diagram whom the given label belongs to
      *
-     * @return wether the currently selected element is an label
+     * @param label the label of the element to delete
      */
-    public boolean selectedElementIsLabel(){
-        return this.getActiveDiagram().selectedElementIsLabel();
+    public void deleteElementByLabel(Label label){
+        Set<DiagramElement> deletedElements = this.getDiagram().deleteElementByLabel(label);
+        for(DiagramElement d : deletedElements){
+            if(d instanceof Party){
+                Party p = (Party) d;
+                deletePartyInRepos(p);
+            }
+            else if(d instanceof Message){
+                Message m = (Message) m;
+                deleteMessageInRepos(m);
+            }
+        }
     }
+
+    private void deleteMessageInRepos(Message message){
+        if(this.getActiveRepo() instanceof CommunicationRepo){
+            this.getActiveRepo().getLabelRepo().removeLabel(message.getLabel());
+        }
+        else{
+            SequenceRepo s = (SequenceRepo) this.getOtherRepo();
+            s.getMessageRepo().removeMessage(message);
+            s.getLabelRepo().removeLabel(message.getLabel());
+            s.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage());
+        }
+    }
+
+    private void deletePartyInRepos(Party party) {
+        this.getActiveRepo().getPartyRepo().removeParty(party);
+        this.getActiveRepo().getLabelRepo().removeLabel(party.getLabel());
+
+        DiagramRepo other = this.getOtherRepo();
+
+        other.getPartyRepo().removeParty(party);
+        other.getLabelRepo().removeLabel(party.getLabel());
+    }
+
+    /**
+     * change the location of the provided party to the provided location
+     *
+     * @param newLocation the new location
+     * @param party the party to change the location of
+     *
+     * TODO also set the correct positions for communicationRepo
+     */
+    public void changePartyPosition(Point2D newLocation, Party party){
+        Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
+        this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
+        if(this.getActiveRepo() instanceof SequenceRepo){
+            SequenceRepo s = (SequenceRepo) getActiveRepo();
+            s.getMessageRepo(resetLabelPositionsForMovedParty(s.getLabelRepo(), s.getPartyRepo(), party));
+
+        }
+    }
+
+
+    /*******************************************************************************************/
 
    /* *//*
      * start editing the currently selected label
@@ -180,48 +222,12 @@ public class DomainFacade {
         this.getActiveDiagram().editLabel();
     }*/
 
-    /**
-     * returns the element that would be selected element on that location
-     *
-     * @param location the location to inspect
-     * @return the clickable that would be selected on that position
-     */
-    public Clickable wouldBeSelectedElement(Point2D location){
-        return this.getActiveDiagram().wouldBeSelectedElement(location);
-    }
-
-    /**
-     * sets the provided element as the selected element in the diagram
-     *
-     * @param clickable the element to set as the selected element
-     */
-    public void setSelectedElement(Clickable clickable){
-        this.getActiveDiagram().setSelectedElement(clickable);
-    }
-
-    /**
-     * checks wether or not the clickable element is a label
-     *
-     * @param clickable the clickable element to inspect
-     * @return wether or not the clickable element is a label
-     */
-    public boolean isLabel(Clickable clickable){
-        return this.getActiveDiagram().isLabel(clickable);
-    }
-
     /*
      * stops editing the currently selected label
      *//*
     public void stopEditingLabel(){
         this.getActiveDiagram().stopEditingLabel();
     }*/
-
-    /**
-     * deletes the currently selected element
-     */
-    public void deleteElement(){
-        this.getActiveDiagram().deleteElement();
-    }
 
     /*
      * adds the given char to the currently selected label
@@ -238,32 +244,6 @@ public class DomainFacade {
     public void removeLastCharFromLabel(){
         this.getActiveDiagram().removeLastCharFromLabel();
     }*/
-
-    /**
-     * returns whether or not the currently selected element is a party
-     *
-     * @return whether or not the currently selected element is a party
-     */
-    public boolean selectedElementIsParty(){
-        return this.getActiveDiagram().selectedElementIsParty();
-    }
-
-    /**
-     * change the location of the currently selected party to the provided location
-     *
-     * @param location the new location
-     */
-    public void changePartyPosition(Point2D location){
-        this.getActiveDiagram().changePartyPosition(location);
-    }
-
-    /**
-     *
-     * @return whether or not the currently selected element is a messageStart
-     */
-    public boolean selectedElementIsMessageStart(){
-        return this.getActiveDiagram().selectedElementIsMessageStart();
-    }
 
     /**
      * adds a new message on the given location

@@ -13,7 +13,9 @@ import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Superclass of diagrams, contains most of the business logic in changing the diagram
@@ -180,93 +182,122 @@ public class Diagram{
     }
 
     /**
-     * Adds a new message to the messagestack, with the receiver being the owner of the lifeline containing the provided location
+     * deletes the element whom the given label belongs too
      *
-     * @param endlocation location on which the dragging was stopped
-     * @throws IllegalStateException if the location doesn't respond to a receiving party
+     * @param label the label of the element to delete
+     *
+     * @return a Set of diagramelements to remove the positions of
      */
-    public void addNewMessage(Point2D endlocation) throws IllegalStateException{
-        Party receiver = findReceiver(endlocation);
-        if(receiver == null){
-            System.out.println("Other lifeline not found");
+    public Set<DiagramElement> deleteElementByLabel(Label label){
+        Set<DiagramElement> deletedElements = new HashSet<>();
+        DiagramElement element = findParentElement(label);
+        if(element instanceof Party){
+            Party p =  (Party) element;
+            deletedElements.addAll(deleteParty(p));
         }
-        else {
-            MessageStart MessageStart = (MessageStart) this.getSelectedElement();
-            Party sender = MessageStart.getParty();
-            if(! receiver.equals(sender)) {
-                Point2D startLocation = MessageStart.getStartloction();
-                Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
-                if (checkCallStack(previous, sender)) {
-                    try {
-                        Message next;
-                        if (previous == null) {
-                            next = this.getFirstMessage();
-                        } else {
-                            next = previous.getNextMessage();
-                        }
-                        Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() + 12)), sender, receiver, new Double(startLocation.getY() + 12).intValue());
-                        MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender), startLocation.getY() - 12));
-                        Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() - 12).intValue());
-                        if (previous != null) {
-                            previous.setNextMessage(invocation);
-                        } else {
-                            this.setFirstMessage(invocation);
-                        }
-                        startEditingLable(messageLabel);
-                    } catch (DomainException exc) {
-                        System.out.println(exc.getMessage());
-                    }
+        else if(element instanceof Message){
+            Message m = (Message) element;
+            deletedElements.addAll(deleteMessage(m));
+        }
+        return deletedElements;
+    }
+
+    private DiagramElement findParentElement(Label label){
+        for(Party p : parties){
+            if(p.getLabel().equals(label)){
+                return p;
+            }
+        }
+        if(this.getFirstMessage() != null){
+            Message message = this.getFirstMessage();
+            while(message != null){
+                if(message.getLabel().equals(label)){
+                    return message;
                 }
             }
         }
-        setProperMessagePositions();
-        setMessageNumbers();
+        return null;
     }
 
     /**
-     * changes the position of the selected element
+     * Rearranges the message tree upon deletion of the provided party
      *
-     * if the party is dragged outside of the canvas the party is stuck on (0,0).
+     * @param party the party that will be deleted
      *
-     * @param newPosition the new position for the selected element
+     * @return a set of messages that have been deleted
      */
-    public void changePartyPosition(Point2D newPosition){
-        if(newPosition.getY() < 0){
-            newPosition.setLocation(newPosition.getX(), 0);
-        }
-        if(newPosition.getX() < 0){
-            newPosition.setLocation(0, newPosition.getY());
-        }
-        if(this.getSelectedElement() instanceof Party){
-            Party p = (Party) this.getSelectedElement();
-            if(! isValidPartyLocation( newPosition)){
-                newPosition = getValidPartyLocation(newPosition);
+    private Set<DiagramElement> rearrangeMessageTreeByParty(Party party){
+        Set<DiagramElement> deletedElements = new HashSet<>();
+        deletedElements.add(party);
+        if(this.getFirstMessage() != null) {
+            Message previous = getFirstMessage();
+            if (getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)) {
+                deletedElements.add(getFirstMessage());
+                firstMessage = null;
             }
-            p.setCoordinate(newPosition);
-            p.updateLabelCoordinate(p.getCorrectLabelPosition());
+            else {
+                Message message = previous.getNextMessage();
+                while (message != null) {
+                    if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
+                        deletedElements.add(message);
+                        List<Message> dependentMessages = skipOverDependentMessages(message, -1);
+                        if(dependentMessages.size() > 1) {
+                            message = dependentMessages.get(dependentMessages.size() - 1);
+                            deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
+                            if (previous != null) {
+                                previous.setNextMessage(message);
+                                previous = message.getNextMessage();
+                            }
+                        }
+                        else if(dependentMessages.size() == 1){
+                            message = dependentMessages.get(dependentMessages.size() - 1);
+                            if (previous != null) {
+                                previous.setNextMessage(message);
+                                previous = message.getNextMessage();
+                            }
+                        }
+                    }
+                    message = message.getNextMessage();
+                }
+            }
         }
-        this.setSequenceNumbers();
+        this.setMessageNumbers();
+        return deletedElements;
     }
+
     /**
-     * deletes the element that is currently selected
+     * Finds the first message that doesn't directly or indirectly depend on the provided Message
+     *
+     * @param message the message of which the next not depending descendant message must be found
+     * @param stack integer counting the stack of the messages
+     * @return the message that are between the provided message and the next not dependent message, with t he next
+     *          not dependent message included at the last position
      */
-    public void deleteElement(){
-        if(selectedElementIsParty()){
-            deleteParty((Party) this.selectedElement);
+    private List<Message> skipOverDependentMessages(Message message, int stack){
+        List<Message> dependentMessages = new ArrayList<>();
+        while(stack < 0 ){
+            message = message.getNextMessage();
+            if(message != null) {
+                if (message instanceof InvocationMessage) {
+                    stack--;
+                    if(stack < 0){
+                        dependentMessages.add(message);
+                    }
+                }
+                else {
+                    stack++;
+                    if(stack < 0){
+                        dependentMessages.add(message);
+                    }
+                }
+            }
+            else{
+                return null;
+            }
         }
-        else if(selectedElementIsMessage()){
-            deleteMessage((Message) this.selectedElement);
-        }
-        else if(selectedElementIsLabel()){
-            deleteLabel((Label) this.selectedElement);
-        }
+        dependentMessages.add(message.getNextMessage());
+        return dependentMessages;
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  utilities
-    ////////////////////////////////////
 
     /**
      * loops over the callStack to give each invocation their appropriate messageNumber
@@ -307,63 +338,28 @@ public class Diagram{
     }
 
     /**
-     * sets the yLocation of all messages in the tree to an appropriate number
-     */
-    private void setProperMessagePositions(){
-        Message message = this.getFirstMessage();
-        int yLocation = 120;
-        while(message != null){
-            message.setyLocation(yLocation);
-            yLocation += 35;
-            Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver()), message.getyLocation() - 15);
-            message.getLabel().setCoordinate(labelCoordinate);
-            message = message.getNextMessage();
-        }
-    }
-
-    /**
-     * returns a x-position for a new label, based on the location of the sender and receiver
-     *
-     * @param p1 the first party
-     * @param p2 the second party
-     *
-     * @return a new Point2D containing the location for the new message
-     */
-    private Double getNewLabelXPosition(Party p1, Party p2){
-        return (p1.getCoordinate().getX() + p2.getCoordinate().getX())/2;
-    }
-
-    /**
-     * Finds the receiver of a message based on the endlocation of the messageDrag
-     *
-     * @param endlocation the location where the dragging for the message stopped
-     * @return the party that corresponds to the location
-     */
-    private Party findReceiver(Point2D endlocation){
-        for(Party party : parties){
-            if(isLifeLine(endlocation, party)){
-                return party;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Deletes a party from the diagram.
      *
      * @param party the party that will be deleted
+     *
+     * @return a set of diagramelements that need to be deleted
      */
-    private void deleteParty(Party party){
-        rearrangeMessageTreeByParty(party);
+    private Set<DiagramElement> deleteParty(Party party){
+        Set<DiagramElement> deletedElements = new HashSet<>();
+        deletedElements.addAll(rearrangeMessageTreeByParty(party));
         this.removeParty(party);
+        return deletedElements;
     }
 
     /**
      * deletes a message by adding the next independent message to the message preceding it, cutting out the dependent part of the message stack
      *
      * @param message the message to be deleted
+     *
+     * @return a set of diagremelements that are deleted
      */
-    private void deleteMessage(Message message){
+    private Set<DiagramElement> deleteMessage(Message message){
+        Set<DiagramElement> deletedElements = new HashSet<>();
         if(message instanceof InvocationMessage) {
             if (!message.equals(this.getFirstMessage())) {
                 Message iter = this.getFirstMessage();
@@ -372,99 +368,30 @@ public class Diagram{
                     iter = iter.getNextMessage();
                 }
                 previous = iter;
-                Message next = skipOverDependentMessages(message, -1);
-                previous.setNextMessage(next);
-            } else {
-                this.setFirstMessage(skipOverDependentMessages(message, -1));
-            }
-        }
-    }
-
-    /**
-     * deletes a message or a party if the provided label is its label
-     *
-     * @param label the label of the element to delete
-     *
-     *  TODO check this function
-     */
-    private void deleteLabel(Label label){
-        boolean done = false;
-        for(Party party : this.getParties()){
-            if(! done && party.getLabel().equals(label)){
-                deleteParty(party);
-            }
-        }
-        if(! done){
-            if(this.getFirstMessage() != null){
-                Message message = this.getFirstMessage();
-                while(! (message == null) && ! message.getLabel().equals(label) ){
-                    message = message.getNextMessage();
-                }
-                if(message != null){
-                    deleteMessage(message);
-                }
-            }
-        }
-    }
-
-    /**
-     * Rearranges the message tree upon deletion of the provided party
-     *
-     * TODO give back skipped messages for deletion
-     *
-     * @param party the party that will be deleted
-     */
-    private void rearrangeMessageTreeByParty(Party party){
-        if(this.getFirstMessage() != null) {
-            Message previous = getFirstMessage();
-            if (getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)) {
-                firstMessage = null;
-            }
-            else {
-                Message message = previous.getNextMessage();
-                while (message != null) {
-                    if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
-                        message = skipOverDependentMessages(message, -1);
-                        if (previous != null) {
-                            previous.setNextMessage(message);
-                            previous = message.getNextMessage();
-                        }
+                List<Message> dependentMessages = skipOverDependentMessages(message, -1);
+                Message next;
+                if(dependentMessages.size() > 1) {
+                    next = dependentMessages.get(dependentMessages.size() - 1);
+                    deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
+                    if (previous != null) {
+                        previous.setNextMessage(next);
                     }
-                    message = message.getNextMessage();
+                }
+                else if(dependentMessages.size() == 1){
+                    next = dependentMessages.get(dependentMessages.size() - 1);
+                    if (previous != null) {
+                        previous.setNextMessage(next);
+                    }
+                }
+            } else {
+                List<Message> dependentMessages = skipOverDependentMessages(message, -1);
+                this.setFirstMessage(dependentMessages.get(dependentMessages.size() - 1));
+                if(deletedElements.size() > 1) {
+                    deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
                 }
             }
         }
-        this.setMessageNumbers();
-    }
-
-    /**
-     * Finds the first message that doesn't directly or indirectly depend on the provided Message
-     *
-     * works recursively
-     *
-     * @param message the message of which the next not depending descendant message must be found
-     * @param stack integer counting the stack of the messages
-     * @return the first message that doesn't depend on the provided message
-     */
-    private Message skipOverDependentMessages(Message message, int stack){
-        if(message == null){
-            return null;
-        }
-        while(stack < 0 ){
-            message = message.getNextMessage();
-            if(message != null) {
-                if (message instanceof InvocationMessage) {
-                    stack--;
-                }
-                else {
-                    stack++;
-                }
-            }
-            else{
-                return null;
-            }
-        }
-        return message.getNextMessage();
+        return deletedElements;
     }
 
     /**
@@ -511,6 +438,79 @@ public class Diagram{
             }
             message = message.getNextMessage();
         }
+    }
+
+    /*********************************************************************************/
+
+    /**
+     * Adds a new message to the messagestack, with the receiver being the owner of the lifeline containing the provided location
+     *
+     * @param endlocation location on which the dragging was stopped
+     * @throws IllegalStateException if the location doesn't respond to a receiving party
+     */
+    public void addNewMessage(Point2D endlocation) throws IllegalStateException{
+        Party receiver = findReceiver(endlocation);
+        if(receiver == null){
+            System.out.println("Other lifeline not found");
+        }
+        else {
+            MessageStart MessageStart = (MessageStart) this.getSelectedElement();
+            Party sender = MessageStart.getParty();
+            if(! receiver.equals(sender)) {
+                Point2D startLocation = MessageStart.getStartloction();
+                Message previous = findPreviousMessage(new Double(startLocation.getY()).intValue());
+                if (checkCallStack(previous, sender)) {
+                    try {
+                        Message next;
+                        if (previous == null) {
+                            next = this.getFirstMessage();
+                        } else {
+                            next = previous.getNextMessage();
+                        }
+                        Message resultMessage = new ResultMessage(next, new MessageLabel("", new Point2D.Double(getNewLabelXPosition(sender, receiver), startLocation.getY() + 12)), sender, receiver, new Double(startLocation.getY() + 12).intValue());
+                        MessageLabel messageLabel = new MessageLabel("|", new Point2D.Double(getNewLabelXPosition(receiver, sender), startLocation.getY() - 12));
+                        Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender, new Double(startLocation.getY() - 12).intValue());
+                        if (previous != null) {
+                            previous.setNextMessage(invocation);
+                        } else {
+                            this.setFirstMessage(invocation);
+                        }
+                        startEditingLable(messageLabel);
+                    } catch (DomainException exc) {
+                        System.out.println(exc.getMessage());
+                    }
+                }
+            }
+        }
+        setProperMessagePositions();
+        setMessageNumbers();
+    }
+
+    /**
+     * returns a x-position for a new label, based on the location of the sender and receiver
+     *
+     * @param p1 the first party
+     * @param p2 the second party
+     *
+     * @return a new Point2D containing the location for the new message
+     */
+    private Double getNewLabelXPosition(Party p1, Party p2){
+        return (p1.getCoordinate().getX() + p2.getCoordinate().getX())/2;
+    }
+
+    /**
+     * Finds the receiver of a message based on the endlocation of the messageDrag
+     *
+     * @param endlocation the location where the dragging for the message stopped
+     * @return the party that corresponds to the location
+     */
+    private Party findReceiver(Point2D endlocation){
+        for(Party party : parties){
+            if(isLifeLine(endlocation, party)){
+                return party;
+            }
+        }
+        return null;
     }
 
     /**

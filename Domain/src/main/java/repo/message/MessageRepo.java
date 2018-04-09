@@ -106,4 +106,19 @@ public class MessageRepo {
     public double getDistance(Point2D point2D, Message message) {
         return Math.abs(point2D.getY() - this.getLocationOfMessage(message));
     }
+
+    /**
+     * sets the yLocation of all messages in the tree to an appropriate number
+     */
+    public void resetMessagePositions(Message firstMessage){
+        Message message = firstMessage;
+        int yLocation = 120;
+        while(message != null){
+            message.setyLocation(yLocation);
+            yLocation += 35;
+            Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver()), message.getyLocation() - 15);
+            message.getLabel().setCoordinate(labelCoordinate);
+            message = message.getNextMessage();
+        }
+    }
 }
