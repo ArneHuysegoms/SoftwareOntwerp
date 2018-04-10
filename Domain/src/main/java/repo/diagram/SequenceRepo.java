@@ -6,6 +6,7 @@ import diagram.party.Party;
 import exceptions.DomainException;
 import repo.label.LabelRepo;
 import repo.message.MessageRepo;
+import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
@@ -19,7 +20,7 @@ public class SequenceRepo extends DiagramRepo {
     private MessageRepo messageRepo;
 
     public SequenceRepo(){
-        this(new LabelRepo(), new PartyRepo(), new MessageRepo());
+        this(new LabelRepo(), new PartyRepo(), new SequenceMessageRepo());
     }
 
     public SequenceRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){

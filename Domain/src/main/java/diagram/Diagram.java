@@ -487,18 +487,6 @@ public class Diagram{
     }
 
     /**
-     * returns a x-position for a new label, based on the location of the sender and receiver
-     *
-     * @param p1 the first party
-     * @param p2 the second party
-     *
-     * @return a new Point2D containing the location for the new message
-     */
-    private Double getNewLabelXPosition(Party p1, Party p2){
-        return (p1.getCoordinate().getX() + p2.getCoordinate().getX())/2;
-    }
-
-    /**
      * Finds the receiver of a message based on the endlocation of the messageDrag
      *
      * @param endlocation the location where the dragging for the message stopped

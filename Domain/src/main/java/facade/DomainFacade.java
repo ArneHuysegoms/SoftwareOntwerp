@@ -166,7 +166,7 @@ public class DomainFacade {
                 deletePartyInRepos(p);
             }
             else if(d instanceof Message){
-                Message m = (Message) m;
+                Message m = (Message) d;
                 deleteMessageInRepos(m);
             }
         }
@@ -180,7 +180,7 @@ public class DomainFacade {
             SequenceRepo s = (SequenceRepo) this.getOtherRepo();
             s.getMessageRepo().removeMessage(message);
             s.getLabelRepo().removeLabel(message.getLabel());
-            s.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage());
+            s.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage(), s.getPartyRepo(), s.getLabelRepo());
         }
     }
 
@@ -199,15 +199,13 @@ public class DomainFacade {
      *
      * @param newLocation the new location
      * @param party the party to change the location of
-     *
-     * TODO also set the correct positions for communicationRepo
      */
     public void changePartyPosition(Point2D newLocation, Party party){
         Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
         this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
         if(this.getActiveRepo() instanceof SequenceRepo){
             SequenceRepo s = (SequenceRepo) getActiveRepo();
-            s.getMessageRepo(resetLabelPositionsForMovedParty(s.getLabelRepo(), s.getPartyRepo(), party));
+            s.getMessageRepo().resetLabelPositionsForMovedParty(s.getLabelRepo(), s.getPartyRepo(), party);
 
         }
     }
