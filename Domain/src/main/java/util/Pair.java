@@ -1,47 +1,59 @@
 package util;
 
-public class Pair<T> {
+/**
+ * a generic class that stores 2 objects,  a pair.
+ */
+public class Pair<A,B> {
 
-    private T first;
-    private T second;
+    private final A first;
+    private final B second;
 
-    public Pair(T first, T second){
-        this.setFirst(first);
-        this.setSecond(second);
+    /**
+     *
+     * @param first
+     *      first object to store
+     * @param second
+     *      second object to store
+     */
+    public Pair(A first, B second){
+        this.first = first;
+        this.second = second;
     }
 
-    public T getFirst() {
+    /**
+     * returns the first object
+     * @return
+     *      the first object
+     */
+    public A getA(){
         return first;
     }
 
-    public void setFirst(T first) {
-        this.first = first;
-    }
-
-    public T getSecond() {
+    /**
+     * returns the second object
+     * @return
+     *      the second object
+     */
+    public B getB(){
         return second;
-    }
-
-    public void setSecond(T second) {
-        this.second = second;
     }
 
     @Override
     public boolean equals(Object o){
         if(o instanceof Pair){
             Pair p = (Pair) o;
-            return p.getFirst().equals(this.getFirst()) && p.getSecond().equals(this.getSecond());
+            return p.getA().equals(this.getA()) && p.getB().equals(this.getB());
         }
         return false;
     }
 
     @Override
     public int hashCode(){
-        return (this.getFirst().hashCode() + this.getSecond().hashCode()) %37;
+        return (this.getA().hashCode() + this.getB().hashCode()) %37;
     }
 
     @Override
     public String toString(){
-        return "First: " + this.getFirst().toString() + " Second: " + this.getSecond().toString();
+        return "First: " + this.getA().toString() + " Second: " + this.getB().toString();
     }
 }

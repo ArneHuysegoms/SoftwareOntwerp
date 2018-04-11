@@ -202,11 +202,7 @@ public class DomainFacade {
     public void changePartyPosition(Point2D newLocation, Party party){
         Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
         this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
-        if(this.getActiveRepo() instanceof SequenceRepo){
-            SequenceRepo s = (SequenceRepo) getActiveRepo();
-            s.getMessageRepo().resetLabelPositionsForMovedParty(s.getLabelRepo(), s.getPartyRepo(), party);
-
-        }
+        this.getActiveRepo().getMessageRepo().resetLabelPositionsForMovedParty(getActiveRepo().getLabelRepo(), getActiveRepo().getPartyRepo(), party);
     }
 
     /**

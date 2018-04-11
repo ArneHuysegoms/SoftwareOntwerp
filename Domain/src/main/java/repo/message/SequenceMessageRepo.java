@@ -119,7 +119,7 @@ public class SequenceMessageRepo extends MessageRepo{
         Message message = firstMessage;
         int yLocation = 120;
         while(message != null){
-            this.addMessageWithLocation(message, yLocation);
+            this.updateMessageLocation(yLocation,message);
             yLocation += 35;
             Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver(), partyRepo)
                     , this.getLocationOfMessage(message) - 15);
