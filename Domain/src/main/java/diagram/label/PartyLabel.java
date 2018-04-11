@@ -1,11 +1,9 @@
 package diagram.label;
 
-import diagram.label.Label;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
-
 public class PartyLabel extends Label {
+
     private String label;
 
     public PartyLabel(){
@@ -15,8 +13,6 @@ public class PartyLabel extends Label {
     /**
      * @param label
      *        The label that has to be given to this party
-     * @param coordinate
-     *        The left upmost coordinate where this label starts
      * @throws DomainException
      *        The label of this party has to be in the form instanceName:classname
      * @post  The new label of this party is equal to the given label
@@ -24,8 +20,7 @@ public class PartyLabel extends Label {
      * @post  The new coordinate of this label is equal to the given label
      *        | new.getCoordinate == coordinate
      */
-    public PartyLabel(String label, Point2D coordinate) throws DomainException {
-        super(coordinate);
+    public PartyLabel(String label) throws DomainException {
         this.setLabel(label);
     }
 
@@ -54,17 +49,5 @@ public class PartyLabel extends Label {
      */
     public boolean isValidLabel(String label){
         return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*.");
-    }
-
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *       returns the distance between the coordinate of this label and the given point
-     */
-    @Override
-    public double getDistance(Point2D point2D) {
-        return this.getCoordinate().distance(point2D);
     }
 }

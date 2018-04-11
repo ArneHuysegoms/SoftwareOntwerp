@@ -1,36 +1,24 @@
 package diagram.label;
 
-import diagram.label.Label;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
-
 public class MessageLabel extends Label {
+
     private String label;
 
     public MessageLabel(){
         super();
     }
-/**
- * @param coordinate
- *        The coordinate of the left upmost point of the label
- * @post the coordinate of the new label equals the given coordinate
- *       new.getCoordinate == coordinate;
- */
+
     /**
      * @param label
-     * @param coordinate
-     *        The coordinate of the left upmost point of the label
-     * @post the coordinate of the new label equals the given coordinate
-     *       new.getCoordinate == coordinate;
      * @throws DomainException
      *         The label has to start with a lowercase character
      *
      * @post The labeltext of the new label equals the label of the new messageLabel
      *       | new.getLabel == label;
      */
-    public MessageLabel(String label, Point2D coordinate) throws DomainException {
-        super(coordinate);
+    public MessageLabel(String label) throws DomainException {
         this.setLabel(label);
 
     }
@@ -61,17 +49,5 @@ public class MessageLabel extends Label {
      */
     public void setLabel(String label) throws DomainException {
         this.label = label;
-    }
-
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *       returns the distance between the coordinate of this message and the given point
-     */
-
-    @Override
-    public double getDistance(Point2D point2D) {
-        return this.getCoordinate().distance(point2D);
     }
 }

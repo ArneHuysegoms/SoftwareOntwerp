@@ -1,23 +1,16 @@
 package diagram.message;
 
-import diagram.Clickable;
+import diagram.DiagramElement;
 import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
-
-public abstract class Message implements Clickable{
+public abstract class Message extends DiagramElement {
 
     private Message nextMessage;
     private Label label;
     private Party receiver;
     private Party sender;
-
-    private int yLocation;
-
-    public static final int HEIGHT = 16;
-
 
     public Message(){
 
@@ -32,8 +25,6 @@ public abstract class Message implements Clickable{
      *        The party who receives this message
      * @param sender
      *        The party which sends this message
-     * @param yLocation
-     *        The y coordiante of the location where the message starts
      * @throws DomainException
      *        The sender cannot be null
      * @post  The new nextMessage of this message is equal to the given nextMessage
@@ -47,31 +38,11 @@ public abstract class Message implements Clickable{
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public Message(Message nextMessage, Label label, Party receiver, Party sender, int yLocation) throws DomainException{
+    public Message(Message nextMessage, Label label, Party receiver, Party sender) throws DomainException{
         this.setNextMessage(nextMessage);
         this.setLabel(label);
         this.setReceiver(receiver);
         this.setSender(sender);
-        this.setyLocation(yLocation);
-    }
-
-
-    /**
-     * @return returns the y coordinate of the start position of this message
-     *
-     */
-    public int getyLocation() {
-        return yLocation;
-    }
-
-    /**
-     * @param yLocation
-     *        the y coordinate of the start position of this message
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
-     */
-    public void setyLocation(int yLocation) {
-        this.yLocation = yLocation;
     }
 
     /**
@@ -150,38 +121,21 @@ public abstract class Message implements Clickable{
         this.sender = sender;
     }
 
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this message
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        Point2D senderLocation = getSender().getCoordinate();
-        Point2D receiverLocation = getReceiver().getCoordinate();
-        int messageLocation = getyLocation();
-
-
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = senderLocation.getX();
-        double startY = messageLocation - HEIGHT/2;
-        double endX = receiverLocation.getX();
-        double endY = messageLocation + HEIGHT/2;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
-    }
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *       returns the distance between the coordinate of this message and the given point
-     */
-    @Override
-    public double getDistance(Point2D point2D) {
-        return Math.abs(point2D.getY() - yLocation);
-    }
-
     @Override
     public abstract String toString();
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Message){
+            Message m = (Message) o;
+            return m.getLabel().equals(this.getLabel()) && m.getReceiver().equals(this.getReceiver())
+                    && m.getSender().equals(this.getSender());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return (this.getLabel().hashCode() + this.getSender().hashCode() + this.getReceiver().hashCode()) % 17;
+    }
 }

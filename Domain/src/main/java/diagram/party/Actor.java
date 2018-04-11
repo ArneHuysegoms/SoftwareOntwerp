@@ -7,8 +7,6 @@ import exceptions.DomainException;
 import java.awt.geom.Point2D;
 
 public class Actor extends Party {
-    public static final int WIDTH = 50;
-    public static final int HEIGHT = 50;
 
 
     public Actor(){
@@ -16,10 +14,6 @@ public class Actor extends Party {
     }
 
     /**
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
-     * @param point2D
-     *        The coordinates of the middle, most upper point of this actor
      * @param label
      *        The label belonging with this actor
      * @throws DomainException
@@ -35,9 +29,8 @@ public class Actor extends Party {
      *
      *
      */
-
-    public Actor( int positionInSequenceDiagram, Point2D point2D, PartyLabel label) throws DomainException{
-        this("", "", positionInSequenceDiagram, point2D, label);
+    public Actor(PartyLabel label) throws DomainException{
+        this("", "", label);
     }
 
 
@@ -46,10 +39,6 @@ public class Actor extends Party {
      *        The instance name for this actor
      * @param className
      *        The class name for this actor
-     * @param positionInSequenceDiagram
-     *        The position where this actor is located within the sequence diagram
-     * @param coordinate
-     *        The coordinates of the left upmost point of this actor
      * @param label
      *        The label belonging with this actor
      * @post  The new instanceName of this instance is equal to the given instanceName
@@ -63,32 +52,15 @@ public class Actor extends Party {
      * @post  The new coordinate of this party is equal to the given coordinate
      *        | new.getCoordinate == coordinate
      */
-    public Actor(String instanceName, String className, int positionInSequenceDiagram, Point2D coordinate, Label label) throws DomainException{
-        super(instanceName, className, positionInSequenceDiagram, coordinate, label);
+    public Actor(String instanceName, String className, Label label) throws DomainException{
+        super(instanceName, className, label);
     }
 
-    /**
-     * @param point2D
-     *        The coordinates of the mouse where the user clicked
-     * @return
-     *        True if the clicked coordinates are within the coordinates of the image of this actor
-     */
-    @Override
-    public boolean isClicked(Point2D point2D) {
-        double clickX = point2D.getX();
-        double clickY = point2D.getY();
-        double startX = this.getCoordinate().getX() - WIDTH/2;
-        double startY = this.getCoordinate().getY();
-        double endX = startX + WIDTH;
-        double endY = startY + HEIGHT;
-        return (clickX >= startX && clickX <= endX) && (clickY >= startY && clickY <= endY);
-    }
-
-    /**
+    /*
      * method to find the correct location for the label of a Party
      *
      * @return a Point2D indicating the location
-     */
+     *//*
     @Override
     public Point2D getCorrectLabelPosition() {
         return new Point2D.Double(this.getCoordinate().getX() - 10, this.getCoordinate().getY() + 50);
@@ -97,16 +69,15 @@ public class Actor extends Party {
     @Override
     public double getXLocationOfLifeline() {
         return this.getCoordinate().getX();
-    }
+    }*/
 
-    /**
+    /*
      * @param point2D
      *        The coordinates of the mouse where the user clicked
      * @return
      *       returns the distance between the coordinate of this actor and the given point
-     */
-    @Override
-    public double getDistance(Point2D point2D) {
-        return this.getCoordinate().distance(point2D);
-    }
+     @Override
+     public double getDistance(Point2D point2D) {
+     return this.getCoordinate().distance(point2D);
+     }*/
 }

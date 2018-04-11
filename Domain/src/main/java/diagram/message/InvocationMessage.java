@@ -1,11 +1,10 @@
 package diagram.message;
 
-import diagram.Clickable;
 import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public class InvocationMessage extends Message implements Clickable {
+public class InvocationMessage extends Message{
 
     private String messageNumber;
 
@@ -21,8 +20,6 @@ public class InvocationMessage extends Message implements Clickable {
      *        The party who receives this message
      * @param sender
      *        The party which sends this message
-     * @param yLocation
-     *        The y coordiante of the location where the message starts
      * @throws DomainException
      *        The sender cannot be null
      * @post  The new message of this message is equal to the given message
@@ -36,8 +33,8 @@ public class InvocationMessage extends Message implements Clickable {
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public InvocationMessage(Message message, Label label, Party receiver, Party sender, int yLocation) throws DomainException{
-        this(message, label, receiver, sender, yLocation, "");
+    public InvocationMessage(Message message, Label label, Party receiver, Party sender) throws DomainException{
+        this(message, label, receiver, sender, "");
     }
 
     /**
@@ -49,8 +46,6 @@ public class InvocationMessage extends Message implements Clickable {
      *        The party who receives this message
      * @param sender
      *        The party which sends this message
-     * @param yLocation
-     *        The y coordiante of the location where the message starts
      * @param messageNumber
      *        The messageNumber used in the communication Diagram
      * @throws DomainException
@@ -66,8 +61,8 @@ public class InvocationMessage extends Message implements Clickable {
      * @post  The new yLocation of this message is equal to the given yLocation
      *        | new.getyLocation == yLocation
      */
-    public InvocationMessage(Message message, Label label, Party receiver, Party sender, int yLocation, String messageNumber) throws DomainException{
-        super(message, label, receiver, sender, yLocation);
+    public InvocationMessage(Message message, Label label, Party receiver, Party sender, String messageNumber) throws DomainException{
+        super(message, label, receiver, sender);
         this.setMessageNumber(messageNumber);
     }
 
@@ -94,5 +89,19 @@ public class InvocationMessage extends Message implements Clickable {
     @Override
     public String toString() {
         return this.getMessageNumber() + " " + this.getLabel().getLabel();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof InvocationMessage){
+            InvocationMessage m = (InvocationMessage) o;
+            return super.equals(m) && m.getMessageNumber().equals(this.getMessageNumber());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return (super.hashCode() + this.getMessageNumber().hashCode()) % 17;
     }
 }

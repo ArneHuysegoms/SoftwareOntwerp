@@ -1,9 +1,6 @@
 package figures;
 
-import diagram.Clickable;
-import diagram.CommunicationsDiagram;
 import diagram.Diagram;
-import diagram.SequenceDiagram;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
