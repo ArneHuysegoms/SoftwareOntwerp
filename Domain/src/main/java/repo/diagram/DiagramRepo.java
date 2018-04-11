@@ -5,6 +5,7 @@ import diagram.label.Label;
 import diagram.party.Party;
 import exceptions.DomainException;
 import repo.label.LabelRepo;
+import repo.message.MessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
@@ -14,12 +15,9 @@ public abstract class DiagramRepo {
 
     private LabelRepo labelRepo;
     private PartyRepo partyRepo;
+    private MessageRepo messageRepo;
 
-    public DiagramRepo(){
-        this(new LabelRepo(), new PartyRepo());
-    }
-
-    public DiagramRepo(LabelRepo labelRepo, PartyRepo partyRepo){
+    public DiagramRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){
         this.setLabelRepo(labelRepo);
         this.setPartyRepo(partyRepo);
     }
@@ -44,6 +42,17 @@ public abstract class DiagramRepo {
             throw new IllegalArgumentException("partyRepo may not be null");
         }
         this.partyRepo = partyRepo;
+    }
+
+    public MessageRepo getMessageRepo() {
+        return messageRepo;
+    }
+
+    private void setMessageRepo(MessageRepo messageRepo) {
+        if(messageRepo == null){
+            throw new IllegalArgumentException("messageRepo may not be null");
+        }
+        this.messageRepo = messageRepo;
     }
 
     /**
@@ -131,6 +140,21 @@ public abstract class DiagramRepo {
     public abstract boolean isLifeLine(Point2D location, double xCoordinateOfLifeline);
 
     /**
+     * Finds the receiver of a message based on the endlocation of the messageDrag
+     *
+     * @param endlocation the location where the dragging for the message stopped
+     * @return the party that corresponds to the location
+     */
+    public Party findReceiver(Point2D endlocation){
+        for(Party party : this.getPartyRepo().getAllParties()){
+            if(isLifeLine(endlocation, this.getPartyRepo().getXLocationOfLifeline(party))){
+                return party;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Class to help adding messages, stocks the Startlocation and Sender of a new message
      */
     public class MessageStart extends DiagramElement {
@@ -143,11 +167,11 @@ public abstract class DiagramRepo {
             this.startloction = startLocation;
         }
 
-        private Party getParty() {
+        public Party getParty() {
             return this.party;
         }
 
-        private Point2D getStartloction() {
+        public Point2D getStartloction() {
             return this.startloction;
         }
     }

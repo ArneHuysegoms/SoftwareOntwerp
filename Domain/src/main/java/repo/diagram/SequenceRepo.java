@@ -1,42 +1,23 @@
 package repo.diagram;
 
-import diagram.DiagramElement;
-import diagram.message.Message;
-import diagram.party.Party;
-import exceptions.DomainException;
 import repo.label.LabelRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
-import java.util.Set;
 
 public class SequenceRepo extends DiagramRepo {
 
     private static final int MINY = 50;
     private static final int MAXY = 100;
 
-    private MessageRepo messageRepo;
-
     public SequenceRepo(){
         this(new LabelRepo(), new PartyRepo(), new SequenceMessageRepo());
     }
 
     public SequenceRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){
-        super(labelRepo, partyRepo);
-        this.setMessageRepo(messageRepo);
-    }
-
-    public MessageRepo getMessageRepo() {
-        return messageRepo;
-    }
-
-    private void setMessageRepo(MessageRepo messageRepo) throws IllegalArgumentException{
-        if(messageRepo == null){
-            throw new IllegalArgumentException("messageRepo may not be null");
-        }
-        this.messageRepo = messageRepo;
+        super(labelRepo, partyRepo, messageRepo);
     }
 
     /**

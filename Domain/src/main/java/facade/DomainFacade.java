@@ -65,7 +65,7 @@ public class DomainFacade {
         return sequenceRepo;
     }
 
-    public void setSequenceRepo(DiagramRepo sequenceRepo) {
+    private void setSequenceRepo(DiagramRepo sequenceRepo) {
         this.sequenceRepo = sequenceRepo;
     }
 
@@ -73,7 +73,7 @@ public class DomainFacade {
         return communicationRepo;
     }
 
-    public void setCommunicationRepo(DiagramRepo communicationRepo) {
+    private void setCommunicationRepo(DiagramRepo communicationRepo) {
         this.communicationRepo = communicationRepo;
     }
 
@@ -173,15 +173,14 @@ public class DomainFacade {
     }
 
     private void deleteMessageInRepos(Message message){
-        if(this.getActiveRepo() instanceof CommunicationRepo){
-            this.getActiveRepo().getLabelRepo().removeLabel(message.getLabel());
-        }
-        else{
-            SequenceRepo s = (SequenceRepo) this.getOtherRepo();
-            s.getMessageRepo().removeMessage(message);
-            s.getLabelRepo().removeLabel(message.getLabel());
-            s.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage(), s.getPartyRepo(), s.getLabelRepo());
-        }
+            activeRepo.getMessageRepo().removeMessage(message);
+            activeRepo.getLabelRepo().removeLabel(message.getLabel());
+            activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
+            DiagramRepo o = this.getOtherRepo();
+            o.getMessageRepo().removeMessage(message);
+            o.getLabelRepo().removeLabel(message.getLabel());
+            o.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage(), o.getPartyRepo(), o.getLabelRepo());
+
     }
 
     private void deletePartyInRepos(Party party) {
@@ -210,8 +209,35 @@ public class DomainFacade {
         }
     }
 
-
-    /*******************************************************************************************/
+    /**
+     * adds a new message on the given location
+     *
+     * @param location the location to add a message on
+     * @param messageStart the start of the message
+     *
+     * @return the label to edit
+     */
+    public DiagramElement addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
+        if(this.getActiveRepo() instanceof SequenceRepo) {
+            SequenceRepo sequenceRepo = (SequenceRepo) this.getActiveRepo();
+            Party Sender = messageStart.getParty();
+            Party receiver = this.getActiveRepo().findReceiver(location);
+            if (receiver != null) {
+                int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
+                Message previous = sequenceRepo.getMessageRepo().findPreviousMessage(yLocation, diagram.getFirstMessage());
+                List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
+                getActiveRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
+                this.getOtherRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
+                if(addedMessages.size() == 2){
+                    return addedMessages.get(0).getLabel();
+                }
+                else{
+                    throw new IllegalStateException("New messages weren't added");
+                }
+            }
+        }
+        return null;
+    }
 
    /* *//*
      * start editing the currently selected label
@@ -242,13 +268,4 @@ public class DomainFacade {
     public void removeLastCharFromLabel(){
         this.getActiveDiagram().removeLastCharFromLabel();
     }*/
-
-    /**
-     * adds a new message on the given location
-     *
-     * @param location the location to add a message on
-     */
-    public void addNewMessage(Point2D location){
-        this.getActiveDiagram().addNewMessage(location);
-    }
 }

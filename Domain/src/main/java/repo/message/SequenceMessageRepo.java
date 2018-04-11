@@ -8,6 +8,7 @@ import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -153,5 +154,44 @@ public class SequenceMessageRepo extends MessageRepo{
                     , this.getLocationOfMessage(message) - 15);
             labelRepo.addLabelWithLocation(message.getLabel(), labelCoordinate);
         }
+    }
+
+    /**
+     * Finds the message proceeding the message on the provided yLocation
+     *
+     * @param yLocation the ylocation of the next event to add
+     *
+     * @return the message that will preceed the one the given yLocation, null if none was found or didn't exist
+     */
+    public Message findPreviousMessage(int yLocation, Message firstMessage){
+        Message message = firstMessage;
+        if(message == null){
+            return null;
+        }
+        if(this.getLocationOfMessage(message) > yLocation){
+            return null;
+        }
+        Message previous = message;
+        Message next;
+        boolean found = false;
+        while(! found){
+            next = previous.getNextMessage();
+            if(next == null){
+                return previous;
+            }
+            if(this.getLocationOfMessage(next) > yLocation){
+                return previous;
+            }
+            previous = next;
+        }
+        return null;
+    }
+
+    @Override
+    public void addMessages(List<Message> messages, Message firstMessage, PartyRepo partyRepo, LabelRepo labelRepo) {
+        for(Message m : messages){
+            this.addMessageWithLocation(m, 999999);
+        }
+        this.resetMessagePositions(firstMessage, partyRepo, labelRepo);
     }
 }
