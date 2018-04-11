@@ -47,7 +47,9 @@ public class InteractionMediator {
     }
 
     public void addSubwindow(Subwindow subwindow){
-        this.subwindows.add(subwindow);
+        if(!this.getSubwindows().contains(subwindow)){
+            this.subwindows.add(subwindow);
+        }
     }
 
     public void updateSubwindow(Subwindow subwindow){
