@@ -1,11 +1,10 @@
 package diagram.label;
 
 import diagram.DiagramElement;
-import exceptions.DomainException;
 
 public abstract class Label extends DiagramElement {
 
-    private String label;
+    protected String label;
 
     public Label(){
 
@@ -19,19 +18,6 @@ public abstract class Label extends DiagramElement {
      */
     public String getLabel() {
         return label;
-    }
-
-    /**
-     * @param label
-     *        The text to set the label to
-     * @throws DomainException
-     *         The label has to start with a lowercase character
-     */
-    public void setLabel(String label) throws DomainException {
-        if (!isValidLabel(label)) {
-            throw new DomainException("a message label has to start with a lowercase character");
-        }
-        this.label = label;
     }
 
     public static boolean isCorrectCharForLabel(char charToAdd){

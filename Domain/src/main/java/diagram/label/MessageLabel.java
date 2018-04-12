@@ -4,12 +4,6 @@ import exceptions.DomainException;
 
 public class MessageLabel extends Label {
 
-    private String label;
-
-    public MessageLabel(){
-        super();
-    }
-
     /**
      * @param label
      * @throws DomainException
@@ -33,14 +27,6 @@ public class MessageLabel extends Label {
         return label.equals("") || Character.isLowerCase(label.charAt(0));
     }
 
-
-    /**
-     * @return  returns the label of this MessageLabel
-     */
-    public String getLabel() {
-        return label;
-    }
-
     /**
      * @param label
      *        The text to set the label to
@@ -48,6 +34,9 @@ public class MessageLabel extends Label {
      *         The label has to start with a lowercase character
      */
     public void setLabel(String label) throws DomainException {
-        this.label = label;
+        if (!isValidLabel(label)) {
+            throw new DomainException("a message label has to start with a lowercase character");
+        }
+        super.label = label;
     }
 }

@@ -17,11 +17,18 @@ public class LabelRepo {
 
     private Map<Label, Point2D> labelPoint2DMap;
 
-    public LabelRepo(){
+    public LabelRepo() {
         this(new HashMap<>());
     }
 
-    public LabelRepo(HashMap<Label, Point2D> labelPoint2DMap){
+    public LabelRepo(Map<Label, Point2D> labelPoint2DMap){
+        this.setLabelPoint2DMap(labelPoint2DMap);
+    }
+
+    private void setLabelPoint2DMap(Map<Label, Point2D> labelPoint2DMap){
+        if(labelPoint2DMap == null){
+            throw new IllegalArgumentException("Map may not be null");
+        }
         this.labelPoint2DMap = labelPoint2DMap;
     }
 

@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 
 public class CommunicationRepo extends DiagramRepo {
 
-    public CommunicationRepo(){
+    public CommunicationRepo() {
         this(new LabelRepo(), new PartyRepo(), new CommunicationMessageRepo());
     }
 

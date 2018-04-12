@@ -1,4 +1,4 @@
-package repo;
+package repo.party;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
@@ -8,7 +8,6 @@ import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.*;
-import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -56,8 +55,8 @@ public class PartyRepoTest {
     @Test
     public void Test_Default_Constructor_works(){
         PartyRepo p = new PartyRepo();
-        assertNotNull(p.getPartyPoint2DMap());
-        assertEquals(0, p.getPartyPoint2DMap().size());
+        assertNotNull(p.getMap());
+        assertEquals(0, p.getMap().size());
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -68,9 +67,9 @@ public class PartyRepoTest {
     @Test
     public void Test_Add_party_works_with_good_arguments(){
         PartyRepo p = new PartyRepo();
-        assertEquals(0, p.getPartyPoint2DMap().size());
+        assertEquals(0, p.getMap().size());
         p.addPartyWithLocation(actor1, validPoint1);
-        assertEquals(1, p.getPartyPoint2DMap().size());
+        assertEquals(1, p.getMap().size());
         assertTrue(p.getAllParties().contains(actor1));
     }
 
@@ -160,5 +159,15 @@ public class PartyRepoTest {
         p.addPartyWithLocation(object1, validPoint2);
         Set<DiagramElement> clickeds = p.getClickedParties(new Point2D.Double(50,60));
         assertEquals(clickeds.size(),1);
+        assertTrue(clickeds.contains(actor1));
+    }
+
+    @Test
+    public void Test_getXLocationOfLifeline(){
+        PartyRepo p = new PartyRepo();
+        p.addPartyWithLocation(actor1, validPoint1);
+        p.addPartyWithLocation(object1, validPoint2);
+        assertTrue(validPoint1.getX() == p.getXLocationOfLifeline(actor1));
+        assertTrue(validPoint2.getX() + PartyRepo.OBJECTWIDTH/2 == p.getXLocationOfLifeline(object1));
     }
 }
