@@ -19,7 +19,7 @@ public class TempMain {
     }
 }
 
-class Cvw extends CanvasWindow{
+class Cvw extends CanvasWindow {
 
     /**
      * Initializes a CanvasWindow object.
@@ -30,18 +30,19 @@ class Cvw extends CanvasWindow{
         super(title);
     }
 
-    public void paint(Graphics g){
-        new CloseButton(100,100).draw(g);
-        new SubwindowFigure(new Point2D.Double(50,50)).draw(g);
+    public void paint(Graphics g) {
+        new CloseButton(100, 100).draw(g);
+        new SubwindowFigure(new Point2D.Double(50, 50), 300, 300).draw(g);
     }
 
     @Override
-    public void handleMouseEvent(int id, int x, int y, int clickCount){
+    public void handleMouseEvent(int id, int x, int y, int clickCount) {
 
     }
 
     @Override
-    public void handleKeyEvent(int id, int keyCode, char keyChar){
+    public void handleKeyEvent(int id, int keyCode, char keyChar) {
 
     }
 }
+
