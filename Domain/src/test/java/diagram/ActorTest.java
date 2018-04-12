@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class ActorTest {
 
-    @Test
+   /* @Test
     public void isClicked() throws DomainException {
         Point2D point2D = new Point2D.Double(50, 400);
         Point2D lblPoint = new Point2D.Double(25, 350);
@@ -41,5 +41,5 @@ public class ActorTest {
         assertEquals("Actor", a.getClassName());
         assertEquals(point2D, a.getCoordinate());
         assertEquals(actorLabel, a.getLabel());
-    }
+    }*/
 }

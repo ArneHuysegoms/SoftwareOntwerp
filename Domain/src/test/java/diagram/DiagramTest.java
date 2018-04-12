@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 public class DiagramTest {
 
-    Party actor1;
+    /*Party actor1;
     Party object1;
     Party actor2;
     Party object2;
@@ -273,5 +273,5 @@ public class DiagramTest {
         assertEquals("1.1",((InvocationMessage) (seq.getFirstMessage().getNextMessage())).getMessageNumber());
 
         assertEquals("2", ((InvocationMessage) (seq.getFirstMessage().getNextMessage().getNextMessage().getNextMessage().getNextMessage())).getMessageNumber());
-    }
+    }*/
 }
