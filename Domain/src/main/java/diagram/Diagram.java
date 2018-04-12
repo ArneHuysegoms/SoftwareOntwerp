@@ -152,7 +152,7 @@ public class Diagram {
         if (oldParty instanceof Object) {
             Object o = (Object) oldParty;
             try {
-                newParty = new Actor(o.getInstanceName(), o.getClassName(), o.getLabel());
+                newParty = new Actor(o.getLabel());
                 this.updateMessagesForChangedParty(o, newParty);
                 this.removeParty(o);
                 this.addParty(newParty);
@@ -162,7 +162,7 @@ public class Diagram {
         } else {
             Actor a = (Actor) oldParty;
             try {
-                newParty = new Object(a.getInstanceName(), a.getClassName(), a.getLabel());
+                newParty = new Object(a.getLabel());
                 this.updateMessagesForChangedParty(a, newParty);
                 this.removeParty(a);
                 this.addParty(newParty);

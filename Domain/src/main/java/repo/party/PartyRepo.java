@@ -2,7 +2,6 @@ package repo.party;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class PartyRepo {
     }
 
     public PartyRepo(Map<Party, Point2D> labelPoint2DMap){
-        this.partyPoint2DMap = labelPoint2DMap;
+        this.setPartyPoint2DMap(labelPoint2DMap);
     }
 
     public Map<Party, Point2D> getPartyPoint2DMap() {

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class PartyLabelTest {
 
-    PartyLabel partyLabel;
+    /*PartyLabel partyLabel;
 
     @Before
     public void setUp(){
@@ -46,5 +46,5 @@ public class PartyLabelTest {
         PartyLabel l = new PartyLabel("test:Dist", lblPoint);
         Point2D point = new Point2D.Double(30, 350);
         assertEquals(5,l.getDistance(point), 0.001);
-    }
+    }*/
 }

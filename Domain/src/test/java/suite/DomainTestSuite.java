@@ -1,13 +1,12 @@
-package diagram;
+package suite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import repo.PartyRepoTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ActorTest.class,
-        DiagramTest.class,
-        PartyLabelTest.class,
+        PartyRepoTest.class
 })
 
 public class DomainTestSuite {
