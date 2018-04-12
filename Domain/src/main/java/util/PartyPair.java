@@ -1,13 +1,10 @@
 package util;
 
-import diagram.message.InvocationMessage;
 import diagram.message.Message;
-import diagram.party.Object;
 import diagram.party.Party;
 import repo.label.LabelRepo;
 import repo.party.PartyRepo;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
