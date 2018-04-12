@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import diagram.DiagramElement;
 import diagram.party.Party;
+import diagram.party.Object;
 import exceptions.DomainException;
 
 public class PartyRepo {
@@ -28,10 +29,6 @@ public class PartyRepo {
         this.setPartyPoint2DMap(labelPoint2DMap);
     }
 
-    public Map<Party, Point2D> getPartyPoint2DMap() {
-        return partyPoint2DMap;
-    }
-
     private void setPartyPoint2DMap(Map<Party, Point2D> partyPoint2DMap) throws IllegalArgumentException{
         if(partyPoint2DMap == null){
             throw new IllegalArgumentException("map may not be null");
@@ -39,7 +36,7 @@ public class PartyRepo {
         this.partyPoint2DMap = partyPoint2DMap;
     }
 
-    private Map<Party, Point2D> getMap(){
+    public Map<Party, Point2D> getMap(){
         return this.partyPoint2DMap;
     }
 
@@ -111,12 +108,14 @@ public class PartyRepo {
      * @return returns a double which denotes the x location of the lifeline belonging to the party
      */
     public double getXLocationOfLifeline(Party party){
+        return this.getLocationOfParty(party).getX() + getXOffsetOfLifeline(party);
+    }
+
+    private int getXOffsetOfLifeline(Party party){
         if(party instanceof Object){
-            return this.getLocationOfParty(party).getX() + OBJECTWIDTH/2;
+            return OBJECTWIDTH/2;
         }
-        else{
-            return this.getLocationOfParty(party).getX();
-        }
+        return 0;
     }
 
     public Set<DiagramElement> getClickedParties(Point2D clickedLocation){

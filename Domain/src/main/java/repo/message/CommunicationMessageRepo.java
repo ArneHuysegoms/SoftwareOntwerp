@@ -19,6 +19,10 @@ public class CommunicationMessageRepo extends MessageRepo {
         pairs = new ArrayList<>();
     }
 
+    public List<PartyPair> getMap(){
+        return this.pairs;
+    }
+
     @Override
     public void removeMessage(Message message) {}
 

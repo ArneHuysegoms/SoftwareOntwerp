@@ -27,7 +27,7 @@ public class SequenceMessageRepo extends MessageRepo{
         this.messageYLocationMap = messageYLocationMap;
     }
 
-    private Map<Message, Integer> getMap(){
+    public Map<Message, Integer> getMap(){
         return this.messageYLocationMap;
     }
 
