@@ -25,7 +25,7 @@ public class LabelRepo {
         this.labelPoint2DMap = labelPoint2DMap;
     }
 
-    private Map<Label, Point2D> getMap(){
+    public Map<Label, Point2D> getMap(){
         return this.labelPoint2DMap;
     }
 
