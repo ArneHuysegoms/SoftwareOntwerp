@@ -6,10 +6,6 @@ import exceptions.DomainException;
 
 public class ResultMessage extends Message {
 
-     public ResultMessage(){
-
-     }
-
     /**
      * @param message
      *        The invcation message where this message belongs to
@@ -29,8 +25,6 @@ public class ResultMessage extends Message {
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
      public ResultMessage(Message message, Label label, Party receiver, Party sender) throws DomainException {
          super(message, label, receiver, sender);

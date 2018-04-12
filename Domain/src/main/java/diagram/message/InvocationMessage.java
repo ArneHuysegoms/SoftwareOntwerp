@@ -8,9 +8,6 @@ public class InvocationMessage extends Message{
 
     private String messageNumber;
 
-    public InvocationMessage(){
-
-    }
     /**
      * @param message
      *        The next message on the callstack
@@ -21,7 +18,7 @@ public class InvocationMessage extends Message{
      * @param sender
      *        The party which sends this message
      * @throws DomainException
-     *        The sender cannot be null
+     *        The sender or receiver cannot be null
      * @post  The new message of this message is equal to the given message
      *        | new.getMessage == Message;
      * @post  The new label of this message is equal to the given label
@@ -30,8 +27,6 @@ public class InvocationMessage extends Message{
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender) throws DomainException{
         this(message, label, receiver, sender, "");
@@ -49,7 +44,7 @@ public class InvocationMessage extends Message{
      * @param messageNumber
      *        The messageNumber used in the communication Diagram
      * @throws DomainException
-     *        The sender cannot be null
+     *        The sender or receiver cannot be null
      * @post  The new message of this message is equal to the given message
      *        | new.getMessage == Message;
      * @post  The new label of this message is equal to the given label
@@ -58,8 +53,6 @@ public class InvocationMessage extends Message{
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender, String messageNumber) throws DomainException{
         super(message, label, receiver, sender);

@@ -2,12 +2,10 @@ package diagram.party;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
-import exceptions.DomainException;
 
 public abstract class Party extends DiagramElement {
 
     private Label label;
-
 
     public Party(){
 
@@ -16,10 +14,8 @@ public abstract class Party extends DiagramElement {
     /**
      * @param label
      *        The label belonging with this actor
-     * @throws DomainException
-     *         This Actor cannot have the given instanceName, className, positionInSequenceDiagram, coordinate or label
      */
-    public Party(Label label) throws DomainException{
+    public Party(Label label){
         this.setLabel(label);
     }
 

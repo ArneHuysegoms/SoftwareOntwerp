@@ -10,10 +10,8 @@ public class Object extends Party {
     /**
      * @param label
      *        The label belonging with this object
-     * @throws DomainException
-     *         This object cannot have the given positionInSequenceDiagram, coordinate or label
      */
-    public Object(Label label) throws DomainException{
-        this.setLabel(label);
+    public Object(Label label){
+        super(label);
     }
 }

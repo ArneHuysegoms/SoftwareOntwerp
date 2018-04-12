@@ -35,8 +35,6 @@ public abstract class Message extends DiagramElement {
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public Message(Message nextMessage, Label label, Party receiver, Party sender) throws DomainException{
         this.setNextMessage(nextMessage);
@@ -92,9 +90,12 @@ public abstract class Message extends DiagramElement {
      *        The receiving party
      * @post  The new receiver of this message is equal to the given receiver
      *        | new.getReceiver == receiver
-     *
+     * @throws DomainException if the receiver is invalid
      */
-    public void setReceiver(Party receiver) {
+    public void setReceiver(Party receiver) throws DomainException {
+        if(receiver == null){
+            throw new DomainException("Receiver of message can't be null");
+        }
         this.receiver = receiver;
     }
 

@@ -151,24 +151,16 @@ public class Diagram {
         Party newParty = null;
         if (oldParty instanceof Object) {
             Object o = (Object) oldParty;
-            try {
-                newParty = new Actor(o.getLabel());
-                this.updateMessagesForChangedParty(o, newParty);
-                this.removeParty(o);
-                this.addParty(newParty);
-            } catch (DomainException exception) {
-                System.out.println(exception.getMessage());
-            }
+            newParty = new Actor(o.getLabel());
+            this.updateMessagesForChangedParty(o, newParty);
+            this.removeParty(o);
+            this.addParty(newParty);
         } else {
             Actor a = (Actor) oldParty;
-            try {
-                newParty = new Object(a.getLabel());
-                this.updateMessagesForChangedParty(a, newParty);
-                this.removeParty(a);
-                this.addParty(newParty);
-            } catch (DomainException exception) {
-                System.out.println(exception.getMessage());
-            }
+            newParty = new Object(a.getLabel());
+            this.updateMessagesForChangedParty(a, newParty);
+            this.removeParty(a);
+            this.addParty(newParty);
         }
         return newParty;
     }
@@ -401,11 +393,15 @@ public class Diagram {
      * @param old      the old party of the message
      * @param newParty the new party of the message
      */
-    private void updateMessagesForChangedParty(Party old, Party newParty) {
+    private void updateMessagesForChangedParty(Party old, Party newParty){
         Message message = firstMessage;
         while (message != null) {
             if (message.getReceiver().equals(old)) {
-                message.setReceiver(newParty);
+                try {
+                    message.setReceiver(newParty);
+                } catch (DomainException exc) {
+                    System.out.println(exc.getMessage());
+                }
             }
             if (message.getSender().equals(old)) {
                 try {
