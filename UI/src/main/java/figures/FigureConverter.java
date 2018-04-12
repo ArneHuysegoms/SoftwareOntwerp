@@ -19,10 +19,12 @@ import figures.helperClasses.Pair;
 import repo.diagram.CommunicationRepo;
 import repo.diagram.DiagramRepo;
 import repo.diagram.SequenceRepo;
+import repo.label.LabelRepo;
 import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import subwindow.Subwindow;
 import util.PartyPair;
 
 import java.awt.*;
@@ -34,6 +36,10 @@ import java.util.List;
  * a class that converts the data from the diagram model to drawn figures of the program's window
  */
 public class FigureConverter {
+
+    //TODO Die lijn waar parties mogen in een sequence diagram
+    //TODO Sequence helper voor activation bar met secuenceMessageRepo late werke om juist x te berekenen.
+    //TODO (wrs) Draw selection box
     private static FigureConverter instance = null;
 
     private boolean activeDiagramIsSequence, activeDiagramIsCommunication;
@@ -78,10 +84,14 @@ public class FigureConverter {
             init(repo);
 
             drawParties(graphics, repo.getPartyRepo());
-            drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap());
-            drawLabels(graphics, repo.getMessageRepo());
-
+            drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), sub.getFacade().getDiagram().getFirstMessage());
+            drawLabels(graphics, repo.getLabelRepo());
+            //drawSelectionBox( ... );
         }
+    }
+
+    private void drawDiagramTypeSpecificStuff(Graphics graphics, Message firstMessage) {
+
     }
 
     private void drawParties(Graphics graphics, PartyRepo partyRepo) {
@@ -101,16 +111,19 @@ public class FigureConverter {
         }
     }
 
-    private void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap) {
+    private void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
         if (messageRepo instanceof SequenceMessageRepo) {
-            drawSequenceMessages(graphics, (SequenceMessageRepo)messageRepo, partyMap);
-
+            SequenceActivationBarAndMessageHelper helper;
+            if (firstMessage != null) {
+                helper = new SequenceActivationBarAndMessageHelper(firstMessage);
+                helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
+            }
         } else {
-            messageRepo = (CommunicationMessageRepo) messageRepo;
+            drawCommunicationMessages(graphics, (CommunicationMessageRepo) messageRepo, partyMap);
         }
     }
 
-    private void drawSequenceMessages(Graphics  graphics, SequenceMessageRepo messageRepo, Map<Party, Point2D> partyMap){
+    private void drawSequenceMessages(Graphics graphics, SequenceMessageRepo messageRepo, Map<Party, Point2D> partyMap) {
         //integer is y-location
         Map<Message, Integer> messageMap = ((SequenceMessageRepo) messageRepo).getMap();
 
@@ -120,94 +133,106 @@ public class FigureConverter {
             startLocation.setLocation(startLocation.getX(), entry.getValue());
             endLocation.setLocation(endLocation.getX(), entry.getValue());
 
-            if(entry.getKey() instanceof ResultMessage){
-                responseMessageDrawingStrategy.draw(graphics,startLocation,endLocation,"");
-            }
-            else{
-                invokeMessageDrawingStrategy.draw(graphics,startLocation,endLocation,"");
+            if (entry.getKey() instanceof ResultMessage) {
+                responseMessageDrawingStrategy.draw(graphics, startLocation, endLocation, "");
+            } else {
+                invokeMessageDrawingStrategy.draw(graphics, startLocation, endLocation, "");
             }
         }
     }
 
-    private void drawCommunicationMessages(CommunicationMessageRepo messageRepo){
+    private void drawCommunicationMessages(Graphics graphics, CommunicationMessageRepo messageRepo, Map<Party, Point2D> partyMap) {
         List<PartyPair> pairs = messageRepo.getMap();
-    }
 
-    private void drawLabels(Graphics graphics, MessageRepo messageRepo) {
-    }
+        for (PartyPair pair : pairs) {
+            //pair.draw(graphics, messageDrawer, labelDrawer);
 
-    public void draw(Graphics graphics, Diagram diagram) {
-        //draw(g, list<subwindows>)
-        init(diagram);
+            int spread = PartyRepo.OBJECTHEIGHT / pair.getNumberOfMessages();
+            InvocationMessage message;
+            Point2D start, end;
 
-        complexDrawings(graphics, diagram);
-
-        drawSelectionBox(graphics, diagram);
-
-        if (activeDiagramIsSequence)
-            drawLifeline(graphics, diagram);
-
-        for (Party p : diagram.getParties()) {
-            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
-            drawParties(graphics, diagram, p);
+            for (int i = 0; i < pair.getNumberOfMessages(); i++) {
+                start = calculateStart(i * spread, pair, partyMap);
+                end = calculateEnd(i * spread, pair, partyMap);
+                invokeMessageDrawingStrategy.draw(graphics, start, end, "");
+            }
         }
     }
 
     /**
-     * creates all drawing strategy- and other object that will be use to draw the diagram
+     * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
      *
-     * @param repo the active repository for a specific type of diagram
+     * @param spaceBetweenArrows
+     * @param pair
+     * @param partyMap
+     * @return start point of the arrow
      */
-    public void init(DiagramRepo repo) {
-        boxDrawingStrategy = new BoxDrawer();
-        selectionBoxDrawingStrategy = new SelectionBoxDrawer();
-        labelDrawingStrategy = new LabelDrawer();
-
-        if (repo instanceof SequenceRepo) {
-            activeDiagramIsSequence = true;
-            activeDiagramIsCommunication = false;
-            lifeLineDrawer = new SequenceLifelineDrawer();
-            actorDrawingStrategy = new SequenceActorDrawer();
-            objectDrawingStrategy = new SequenceObjectDrawer();
-            invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
-            responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
-        }
-        if (repo instanceof CommunicationRepo) {
-            activeDiagramIsSequence = false;
-            activeDiagramIsCommunication = true;
-            actorDrawingStrategy = new CommunicationActorDrawer();
-            objectDrawingStrategy = new CommunicationObjectDrawer();
-            invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
-            responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
-        }
+    public Point2D calculateStart(int spaceBetweenArrows, PartyPair pair, Map<Party, Point2D> partyMap) {
+        double x, y;
+        x = partyMap.get(pair.getSender()).getX();
+        y = partyMap.get(pair.getSender()).getY();
+        return new Point2D.Double(x, y + spaceBetweenArrows);
     }
 
     /**
-     * method that uses the a label drawer to draw the label on the canvas
+     * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
      *
-     * @param graphics object used to draw on the program's window
-     * @param point    point slightly to the top-left of the label string
-     * @param label    string to be drawn
+     * @param spaceBetweenArrows
+     * @param pair
+     * @param partyMap
+     * @return end point of the arrow
      */
-    private void drawLabel(Graphics graphics, Point2D point, String label) {
-        labelDrawingStrategy.draw(graphics, point, null, label);
+    public Point2D calculateEnd(int spaceBetweenArrows, PartyPair pair, Map<Party, Point2D> partyMap) {
+        double x, y;
+        x = partyMap.get(pair.getReceiver()).getX();
+        y = partyMap.get(pair.getReceiver()).getY();
+        return new Point2D.Double(x, y + spaceBetweenArrows);
+    }
+
+    private void drawLabels(Graphics graphics, LabelRepo messageRepo) {
+        Map<Label, Point2D> labelMap = messageRepo.getMap();
+
+        for (Map.Entry<Label, Point2D> entry : labelMap.entrySet()) {
+            Point2D start = entry.getValue();
+            Point2D end;
+
+            labelDrawingStrategy.draw(graphics, start, null, entry.getKey().getLabel());
+        }
     }
 
     /**
-     * method that uses the a party drawer to draw a party on the canvas
+     * method that determines the lengths of the longest lifeline and draws these for every party
      *
      * @param graphics object used to draw on the program's window
-     * @param diagram  the diagram object to be drawn on the canvas
-     * @param p        party to be drawn on the canvas
+     * @param partyMap  the diagram object to be drawn on the canvas
      */
-    private void drawParties(Graphics graphics, Diagram diagram, Party p) {
-        Point2D start = p.getCoordinate();
-        Point2D end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
+    private void drawLifeline(Graphics graphics, Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap, Message firstMessage) {
+        Message m = firstMessage;
+        Point2D start, end;
 
-        if (p instanceof Actor) {
-            actorDrawingStrategy.draw(graphics, start, end, "");
+        if (m != null) {
+            Message last = null, first = firstMessage;
+            boolean foundLast = false;
+            while (!foundLast) {
+                if (m.getNextMessage() != null) {
+                    m = m.getNextMessage();
+                } else {
+                    last = m;
+                    foundLast = true;
+                }
+            }
+            //x-coordiaten tweeken hier?
+            for (Point2D point : partyMap.values()) {
+                start = new Point2D.Double(point.getX(), messageMap.get(first) - MessageRepo.HEIGHT);
+                end = new Point2D.Double(point.getX(), messageMap.get(last) + MessageRepo.HEIGHT * 2);
+                lifeLineDrawer.draw(graphics, start, end, "");
+            }
         } else {
-            objectDrawingStrategy.draw(graphics, start, end, "");
+            for (Point2D point : partyMap.values()) {
+                start = new Point2D.Double(point.getX(), point.getY() + MessageRepo.HEIGHT);
+                end = new Point2D.Double(point.getX(), point.getY() + PartyRepo.OBJECTHEIGHT +  MessageRepo.HEIGHT * 4);
+                lifeLineDrawer.draw(graphics, start, end, "");
+            }
         }
     }
 
@@ -244,38 +269,79 @@ public class FigureConverter {
     }
 
     /**
-     * methos that determines the lengths of the longest lifeline and draws these for every party
+     * creates all drawing strategy- and other object that will be use to draw the diagram
+     *
+     * @param repo the active repository for a specific type of diagram
+     */
+    public void init(DiagramRepo repo) {
+        boxDrawingStrategy = new BoxDrawer();
+        selectionBoxDrawingStrategy = new SelectionBoxDrawer();
+        labelDrawingStrategy = new LabelDrawer();
+
+        if (repo instanceof SequenceRepo) {
+            activeDiagramIsSequence = true;
+            activeDiagramIsCommunication = false;
+            lifeLineDrawer = new SequenceLifelineDrawer();
+            actorDrawingStrategy = new SequenceActorDrawer();
+            objectDrawingStrategy = new SequenceObjectDrawer();
+            invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
+        }
+        if (repo instanceof CommunicationRepo) {
+            activeDiagramIsSequence = false;
+            activeDiagramIsCommunication = true;
+            actorDrawingStrategy = new CommunicationActorDrawer();
+            objectDrawingStrategy = new CommunicationObjectDrawer();
+            invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
+            responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
+        }
+    }
+
+
+    /*
+    public void draw(Graphics graphics, Diagram diagram) {
+        //draw(g, list<subwindows>)
+        init(diagram);
+
+        complexDrawings(graphics, diagram);
+
+        drawSelectionBox(graphics, diagram);
+
+        if (activeDiagramIsSequence)
+            drawLifeline(graphics, diagram);
+
+        for (Party p : diagram.getParties()) {
+            drawLabel(graphics, p.getLabel().getCoordinate(), p.getLabel().getLabel());
+            drawParties(graphics, diagram, p);
+        }
+    }
+
+    /**
+     * method that uses the a label drawer to draw the label on the canvas
+     *
+     * @param graphics object used to draw on the program's window
+     * @param point    point slightly to the top-left of the label string
+     * @param label    string to be drawn
+
+    private void drawLabel(Graphics graphics, Point2D point, String label) {
+        labelDrawingStrategy.draw(graphics, point, null, label);
+    }
+
+    /**
+     * method that uses the a party drawer to draw a party on the canvas
      *
      * @param graphics object used to draw on the program's window
      * @param diagram  the diagram object to be drawn on the canvas
-     */
-    private void drawLifeline(Graphics graphics, Diagram diagram) {
-        Message m = diagram.getFirstMessage();
-        Point2D start, end;
+     * @param p        party to be drawn on the canvas
 
-        if (m != null) {
-            Message last = null, first = diagram.getFirstMessage();
-            boolean foundLast = false;
-            while (!foundLast) {
-                if (m.getNextMessage() != null) {
-                    m = m.getNextMessage();
-                } else {
-                    last = m;
-                    foundLast = true;
-                }
-            }
+    private void drawParties(Graphics graphics, Diagram diagram, Party p) {
+        Point2D start = p.getCoordinate();
+        Point2D end = new Point2D.Double(start.getX() + Object.WIDTH, start.getY() + Object.HEIGHT);
 
-            for (Party p : diagram.getParties()) {
-                start = new Point2D.Double(p.getXLocationOfLifeline(), first.getyLocation() - Message.HEIGHT);
-                end = new Point2D.Double(p.getXLocationOfLifeline(), last.getyLocation() + Message.HEIGHT * 2);
-                lifeLineDrawer.draw(graphics, start, end, "");
-            }
+        if (p instanceof Actor) {
+            actorDrawingStrategy.draw(graphics, start, end, "");
         } else {
-            for (Party p : diagram.getParties()) {
-                start = new Point2D.Double(p.getXLocationOfLifeline(), p.getCoordinate().getY() + Object.HEIGHT);
-                end = new Point2D.Double(p.getXLocationOfLifeline(), p.getCoordinate().getY() + Object.HEIGHT + Message.HEIGHT * 4);
-                lifeLineDrawer.draw(graphics, start, end, "");
-            }
+            objectDrawingStrategy.draw(graphics, start, end, "");
         }
     }
 
@@ -284,7 +350,7 @@ public class FigureConverter {
      *
      * @param graphics object used to draw on the program's window
      * @param diagram  the diagram object to be drawn on the canvas
-     */
+
     private void complexDrawings(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();
 
@@ -303,220 +369,9 @@ public class FigureConverter {
             new CommunicationArrowAndLabelHelper(m).draw(graphics, invokeMessageDrawingStrategy, labelDrawingStrategy);
         }
     }
+    */
 
-    //Te verwijderen
-    private class Subwindow {
-        private DomainFacade facade;
-        private Object mediator;
-        private int width, height, level;
-        private Point2D position;
-        private boolean labelMode;
-        private Label label;
-
-        public Subwindow() {
-            width = 300;
-            height = 300;
-        }
-
-        public void updateLabels(char c) {
-
-        }
-
-        public boolean isInLabelMode() {
-            return false;
-        }
-
-        public Party getSelectedElement(Point2D point) {
-            return null;
-        }
-
-        public Diagram getDiagram() {
-            return null;
-        }
-
-        public DomainFacade getFacade() {
-            return facade;
-        }
-    }
-
-
-    /**
-     * helper class for calculating message arrow and label locations
-     */
-    private class CommunicationArrowAndLabelHelper {
-        private List<PartyPair> pairs;
-
-        /**
-         * @param m the first message of the diagram
-         */
-        public CommunicationArrowAndLabelHelper(Message m) {
-            pairs = new ArrayList<PartyPair>();
-            traverserMessages(m);
-        }
-
-        /**
-         * a method that counts how many arrows are between two senders and saves this data in a PartyPair-object
-         *
-         * @param message the first message of the diagram
-         */
-        private void traverserMessages(Message message) {
-            Party sender, receiver;
-            boolean found = false;
-
-            if (message instanceof InvocationMessage) {
-                pairs.add(new PartyPair(message.getSender(), message.getReceiver(), message));
-                message = message.getNextMessage();
-            }
-
-            while (message != null) {
-                if (message instanceof InvocationMessage) {
-
-                    sender = message.getSender();
-                    receiver = message.getReceiver();
-
-                    PartyPair temp;
-                    int size = pairs.size();
-                    for (int i = 0; i < size; i++) {
-                        temp = pairs.get(i);
-                        if (temp.equalPair(sender, receiver)) {
-                            temp.addMessage(message);
-                            found = true;
-                        }
-                    }
-                    if (!found) {
-                        pairs.add(new PartyPair(sender, receiver, message));
-                    }
-                    found = false;
-                }
-                message = message.getNextMessage();
-            }
-        }
-
-        /**
-         * @param graphics      object used to draw on the program's window
-         * @param messageDrawer the message drawer to be used to draw messages
-         * @param labelDrawer   the label drawer to be used to draw messages
-         */
-        public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
-            for (PartyPair pair : pairs) {
-                pair.draw(graphics, messageDrawer, labelDrawer);
-            }
-        }
-
-        /**
-         * helper class to save how many messages are sent from a specific sender to a speific receiver
-         */
-        private class PartyPair extends Pair {
-            private List<Message> messages;
-
-            /**
-             * @param first  the sender of a message to the second party
-             * @param second the receiver of a message from the first party
-             * @param m      a message that has been sent from the first party to the second
-             */
-            public PartyPair(Party first, Party second, Message m) {
-                super(first, second);
-                messages = new ArrayList<Message>();
-                messages.add(m);
-            }
-
-            /**
-             * method used to check if two parties are the same as the sender and receiver stored in this pair (order matters)
-             *
-             * @param sender   Party that is a sender of a message to reveiver party
-             * @param receiver party that is a receiver of a message from the sender party
-             * @return true if the parties and order match
-             */
-            public boolean equalPair(Party sender, Party receiver) {
-                return sender == this.getA() && receiver == this.getB();
-            }
-
-            /**
-             * adds a message that has been sent from the first stored to the second stored party in this pair
-             *
-             * @param message the message sent from the first stored to the second stored party in this pair
-             */
-            public void addMessage(Message message) {
-                messages.add(message);
-            }
-
-            /**
-             * returns the sender of the messages
-             *
-             * @return the sender of the messages
-             */
-            public Party getSender() {
-                return (Party) this.getA();
-            }
-
-            /**
-             * returns the receiver of the messages
-             *
-             * @return the receiver of the messages
-             */
-            public Party getReceiver() {
-                return (Party) this.getB();
-            }
-
-            /**
-             * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
-             *
-             * @param spaceBetweenArrows
-             * @return start point of the arrow
-             */
-            public Point2D calculateStart(int spaceBetweenArrows) {
-                return new Point2D.Double(getSender().getCoordinate().getX() + Object.WIDTH, getSender().getCoordinate().getY() + spaceBetweenArrows);
-            }
-
-            /**
-             * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
-             *
-             * @param spaceBetweenArrows
-             * @return end point of the arrow
-             */
-            public Point2D calculateEnd(int spaceBetweenArrows) {
-                return new Point2D.Double(getReceiver().getCoordinate().getX(), getReceiver().getCoordinate().getY() + spaceBetweenArrows);
-            }
-
-            /**
-             * @param graphics      object used to draw on the program's window
-             * @param messageDrawer message drawer to be use to draw the arrows between the two parties
-             * @param labelDrawer   message drawer to be use to draw the label above the drawn arrows
-             */
-            public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
-                int spread = Object.HEIGHT / messages.size();
-                InvocationMessage message;
-                Point2D start, end;
-
-                for (int i = 0; i < messages.size(); i++) {
-                    message = (InvocationMessage) messages.get(i);
-                    start = calculateStart(i * spread);
-                    end = calculateEnd(i * spread);
-                    messageDrawer.draw(graphics, start, end, "");
-                    String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
-                    labelDrawer.draw(graphics, calculateLabelStartPosition(start, end), null, label);
-                }
-            }
-
-            /**
-             * methos that calculates the label's start position
-             *
-             * @param start start possition of the message that the label belongs tho
-             * @param end   end possition of the message that the label belongs tho
-             * @return the label's start position
-             */
-            private Point2D calculateLabelStartPosition(Point2D start, Point2D end) {
-                double x = Math.round((start.getX() + end.getX()) / 2);
-                double y = Math.round((start.getY() + end.getY()) / 2);
-
-                return new Point2D.Double(x, y);
-            }
-        }
-    }
-
-    /**
-     * helper class for calculating message arrow and activation bar locations
-     */
+    //TODO refactor disss
     private class SequenceActivationBarAndMessageHelper {
         private List<ActivationBar> bars;
         private Message initialMessage;
@@ -822,4 +677,188 @@ public class FigureConverter {
             }
         }
     }
+
+    /*
+    /**
+     * helper class for calculating message arrow and label locations
+
+    private class CommunicationArrowAndLabelHelper {
+        private List<PartyPair> pairs;
+
+        /**
+         * @param m the first message of the diagram
+
+        public CommunicationArrowAndLabelHelper(Message m) {
+            pairs = new ArrayList<PartyPair>();
+            traverserMessages(m);
+        }
+
+        /**
+         * a method that counts how many arrows are between two senders and saves this data in a PartyPair-object
+         *
+         * @param message the first message of the diagram
+
+        private void traverserMessages(Message message) {
+            Party sender, receiver;
+            boolean found = false;
+
+            if (message instanceof InvocationMessage) {
+                pairs.add(new PartyPair(message.getSender(), message.getReceiver(), message));
+                message = message.getNextMessage();
+            }
+
+            while (message != null) {
+                if (message instanceof InvocationMessage) {
+
+                    sender = message.getSender();
+                    receiver = message.getReceiver();
+
+                    PartyPair temp;
+                    int size = pairs.size();
+                    for (int i = 0; i < size; i++) {
+                        temp = pairs.get(i);
+                        if (temp.equalPair(sender, receiver)) {
+                            temp.addMessage(message);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        pairs.add(new PartyPair(sender, receiver, message));
+                    }
+                    found = false;
+                }
+                message = message.getNextMessage();
+            }
+        }
+
+        /**
+         * @param graphics      object used to draw on the program's window
+         * @param messageDrawer the message drawer to be used to draw messages
+         * @param labelDrawer   the label drawer to be used to draw messages
+
+        public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
+            for (PartyPair pair : pairs) {
+                pair.draw(graphics, messageDrawer, labelDrawer);
+            }
+        }
+
+
+        /**
+         * helper class to save how many messages are sent from a specific sender to a speific receiver
+
+        private class PartyPair extends Pair {
+            private List<Message> messages;
+
+            /**
+             * @param first  the sender of a message to the second party
+             * @param second the receiver of a message from the first party
+             * @param m      a message that has been sent from the first party to the second
+
+            public PartyPair(Party first, Party second, Message m) {
+                super(first, second);
+                messages = new ArrayList<Message>();
+                messages.add(m);
+            }
+
+            /**
+             * method used to check if two parties are the same as the sender and receiver stored in this pair (order matters)
+             *
+             * @param sender   Party that is a sender of a message to reveiver party
+             * @param receiver party that is a receiver of a message from the sender party
+             * @return true if the parties and order match
+
+            public boolean equalPair(Party sender, Party receiver) {
+                return sender == this.getA() && receiver == this.getB();
+            }
+
+            /**
+             * adds a message that has been sent from the first stored to the second stored party in this pair
+             *
+             * @param message the message sent from the first stored to the second stored party in this pair
+
+            public void addMessage(Message message) {
+                messages.add(message);
+            }
+
+            /**
+             * returns the sender of the messages
+             *
+             * @return the sender of the messages
+
+            public Party getSender() {
+                return (Party) this.getA();
+            }
+
+            /**
+             * returns the receiver of the messages
+             *
+             * @return the receiver of the messages
+
+            public Party getReceiver() {
+                return (Party) this.getB();
+            }
+
+            /**
+             * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
+             *
+             * @param spaceBetweenArrows
+             * @return start point of the arrow
+
+            public Point2D calculateStart(int spaceBetweenArrows) {
+                return new Point2D.Double(getSender().getCoordinate().getX() + Object.WIDTH, getSender().getCoordinate().getY() + spaceBetweenArrows);
+            }
+
+            /**
+             * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
+             *
+             * @param spaceBetweenArrows
+             * @return end point of the arrow
+
+            public Point2D calculateEnd(int spaceBetweenArrows) {
+                return new Point2D.Double(getReceiver().getCoordinate().getX(), getReceiver().getCoordinate().getY() + spaceBetweenArrows);
+            }
+
+            /**
+             * @param graphics      object used to draw on the program's window
+             * @param messageDrawer message drawer to be use to draw the arrows between the two parties
+             * @param labelDrawer   message drawer to be use to draw the label above the drawn arrows
+
+            public void draw(Graphics graphics, Drawer messageDrawer, Drawer labelDrawer) {
+                int spread = Object.HEIGHT / messages.size();
+                InvocationMessage message;
+                Point2D start, end;
+
+                for (int i = 0; i < messages.size(); i++) {
+                    message = (InvocationMessage) messages.get(i);
+                    start = calculateStart(i * spread);
+                    end = calculateEnd(i * spread);
+                    messageDrawer.draw(graphics, start, end, "");
+                    String label = message.getMessageNumber() + " " + message.getLabel().getLabel();
+                    labelDrawer.draw(graphics, calculateLabelStartPosition(start, end), null, label);
+                }
+            }
+
+            /**
+             * methos that calculates the label's start position
+             *
+             * @param start start possition of the message that the label belongs tho
+             * @param end   end possition of the message that the label belongs tho
+             * @return the label's start position
+
+            private Point2D calculateLabelStartPosition(Point2D start, Point2D end) {
+                double x = Math.round((start.getX() + end.getX()) / 2);
+                double y = Math.round((start.getY() + end.getY()) / 2);
+
+                return new Point2D.Double(x, y);
+            }
+        }
+
+    }
+    */
+
+
+    /**
+     * helper class for calculating message arrow and activation bar locations
+     */
+
 }
