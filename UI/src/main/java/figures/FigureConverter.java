@@ -4,6 +4,7 @@ import diagram.Diagram;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -22,6 +23,7 @@ import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import util.PartyPair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -75,19 +77,17 @@ public class FigureConverter {
             repo = sub.getFacade().getActiveRepo();
             init(repo);
 
-
             drawParties(graphics, repo.getPartyRepo());
-            drawMessages(graphics, repo.getMessageRepo());
+            drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap());
             drawLabels(graphics, repo.getMessageRepo());
 
         }
     }
 
     private void drawParties(Graphics graphics, PartyRepo partyRepo) {
-        Map<Party, Point2D> partyMap =  partyRepo.getPartyPoint2DMap();
+        Map<Party, Point2D> partyMap = partyRepo.getMap();
 
-
-        for(Map.Entry<Party, Point2D> entry: partyMap.entrySet()){
+        for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {
             Point2D start = entry.getValue();
             Point2D end;
 
@@ -101,29 +101,36 @@ public class FigureConverter {
         }
     }
 
-    private void drawMessages(Graphics graphics, MessageRepo messageRepo) {
-        if(messageRepo instanceof SequenceMessageRepo){
-            messageRepo = (SequenceMessageRepo)messageRepo;
+    private void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap) {
+        if (messageRepo instanceof SequenceMessageRepo) {
+            drawSequenceMessages(graphics, (SequenceMessageRepo)messageRepo, partyMap);
+
+        } else {
+            messageRepo = (CommunicationMessageRepo) messageRepo;
         }
-        else{
-            messageRepo = (CommunicationMessageRepo)messageRepo;
-        }
+    }
 
-        Map<Message, Point2D> messageMap =  messageRepo;
+    private void drawSequenceMessages(Graphics  graphics, SequenceMessageRepo messageRepo, Map<Party, Point2D> partyMap){
+        //integer is y-location
+        Map<Message, Integer> messageMap = ((SequenceMessageRepo) messageRepo).getMap();
 
+        for (Map.Entry<Message, Integer> entry : messageMap.entrySet()) {
+            Point2D startLocation = partyMap.get(entry.getKey().getSender());
+            Point2D endLocation = partyMap.get(entry.getKey().getReceiver());
+            startLocation.setLocation(startLocation.getX(), entry.getValue());
+            endLocation.setLocation(endLocation.getX(), entry.getValue());
 
-        for(Map.Entry<Party, Point2D> entry: partyMap.entrySet()){
-            Point2D start = entry.getValue();
-            Point2D end;
-
-            if (entry.getKey() instanceof Actor) {
-                end = new Point2D.Double(start.getX() + PartyRepo.ACTORWIDTH, start.getY() + PartyRepo.ACTORHEIGHT);
-                actorDrawingStrategy.draw(graphics, start, end, "");
-            } else {
-                end = new Point2D.Double(start.getX() + PartyRepo.OBJECTWIDTH, start.getY() + PartyRepo.OBJECTHEIGHT);
-                objectDrawingStrategy.draw(graphics, start, end, "");
+            if(entry.getKey() instanceof ResultMessage){
+                responseMessageDrawingStrategy.draw(graphics,startLocation,endLocation,"");
+            }
+            else{
+                invokeMessageDrawingStrategy.draw(graphics,startLocation,endLocation,"");
             }
         }
+    }
+
+    private void drawCommunicationMessages(CommunicationMessageRepo messageRepo){
+        List<PartyPair> pairs = messageRepo.getMap();
     }
 
     private void drawLabels(Graphics graphics, MessageRepo messageRepo) {
@@ -301,29 +308,29 @@ public class FigureConverter {
     private class Subwindow {
         private DomainFacade facade;
         private Object mediator;
-        private int width,height, level;
+        private int width, height, level;
         private Point2D position;
         private boolean labelMode;
         private Label label;
 
-        public Subwindow(){
+        public Subwindow() {
             width = 300;
             height = 300;
         }
 
-        public void updateLabels(char c){
+        public void updateLabels(char c) {
 
         }
 
-        public boolean isInLabelMode(){
+        public boolean isInLabelMode() {
             return false;
         }
 
-        public Party getSelectedElement(Point2D point){
+        public Party getSelectedElement(Point2D point) {
             return null;
         }
 
-        public Diagram getDiagram(){
+        public Diagram getDiagram() {
             return null;
         }
 
