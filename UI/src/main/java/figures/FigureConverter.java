@@ -116,7 +116,7 @@ public class FigureConverter {
             SequenceActivationBarAndMessageHelper helper;
             if (firstMessage != null) {
                 helper = new SequenceActivationBarAndMessageHelper(firstMessage);
-                helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy);
+                helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy, partyMap, ((SequenceMessageRepo) messageRepo).getMap());
             }
         } else {
             drawCommunicationMessages(graphics, (CommunicationMessageRepo) messageRepo, partyMap);
@@ -371,7 +371,6 @@ public class FigureConverter {
     }
     */
 
-    //TODO refactor disss
     private class SequenceActivationBarAndMessageHelper {
         private List<ActivationBar> bars;
         private Message initialMessage;
@@ -420,9 +419,9 @@ public class FigureConverter {
          * @param invokeDrawer   a drawer object to be used to draw invocation messages
          * @param responseDrawer a drawer object to be used to draw response messages
          */
-        public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
+        public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer, Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
             for (ActivationBar a : bars) {
-                a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer);
+                a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer,partyMap,messageMap);
             }
         }
 
@@ -529,16 +528,16 @@ public class FigureConverter {
              * @param invokeDrawer   a drawer object to be used to draw invocation messages
              * @param responseDrawer a drawer object to be used to draw response messages
              */
-            public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer) {
+            public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer, Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
 
-                boxDrawer.draw(graphics, calculateOwnBarStart(), calculateOwnBarEnd(), "");
-                boxDrawer.draw(graphics, calculateBrotherBarStart(), calculateBrotherBarEnd(), null);
+                boxDrawer.draw(graphics, calculateOwnBarStart(partyMap,messageMap), calculateOwnBarEnd(partyMap,messageMap), "");
+                boxDrawer.draw(graphics, calculateBrotherBarStart(partyMap,messageMap), calculateBrotherBarEnd(partyMap,messageMap), null);
 
-                invokeDrawer.draw(graphics, new Point2D.Double(calculateOwnBarStartX() + barWidth, calculateBarStartY()), new Point2D.Double(calculateBrotherBarStartX(), calculateBarStartY()), null);
-                responseDrawer.draw(graphics, new Point2D.Double(calculateBrotherBarStartX(), calculateBarEndY()), new Point2D.Double(calculateOwnBarStartX() + barWidth, calculateBarEndY()), null);
+                invokeDrawer.draw(graphics, new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarStartY(messageMap)), new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarStartY(messageMap)), null);
+                responseDrawer.draw(graphics, new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarEndY(messageMap)), new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarEndY(messageMap)), null);
 
                 for (ActivationBar a : bars) {
-                    a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer);
+                    a.draw(graphics, boxDrawer, invokeDrawer, responseDrawer,partyMap,messageMap);
                 }
             }
 
@@ -583,30 +582,30 @@ public class FigureConverter {
              *
              * @return x-coordinate for the start point of this activation bar
              */
-            private double calculateOwnBarStartX() {
+            private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
                 if (hasParent()) {
-                    return getSent().getSender().getXLocationOfLifeline();
+                    return partyMap.get(getSent().getSender()).getX();
                 } else {
-                    return getSent().getSender().getXLocationOfLifeline() - (barWidth / 2);
+                    return partyMap.get(getSent().getSender()).getX() - (barWidth / 2);
                 }
             }
 
             /**
              * returns y-coordinate for the start point of this activation bar and for the one that is created because of the outgoing message
              *
-             * @return x-coordinate for the start point of this activation bar
+             * @return y-coordinate for the start point of this activation bar
              */
-            private double calculateBarStartY() {
-                return getSent().getyLocation();
+            private double calculateBarStartY(Map<Message, Integer> messageMap) {
+                return messageMap.get(getSent());
             }
 
             /**
              * returns y-coordinate for the end point of this activation bar and for the one that is created because of the outgoing message
              *
-             * @return x-coordinate for the start point of this activation bar
+             * @return y-coordinate for the start point of this activation bar
              */
-            private double calculateBarEndY() {
-                return getResponse().getyLocation();
+            private double calculateBarEndY(Map<Message, Integer> messageMap) {
+                return messageMap.get(getResponse());
             }
 
             /**
@@ -614,11 +613,11 @@ public class FigureConverter {
              *
              * @return x-coordinate for the end point of this activation bar
              */
-            private double calculateOwnBarEndX() {
+            private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
                 if (hasParent()) {
-                    return getResponse().getReceiver().getXLocationOfLifeline() + barWidth;
+                    return partyMap.get(getResponse().getReceiver()).getX() + barWidth;
                 } else {
-                    return getSent().getSender().getXLocationOfLifeline() + (barWidth / 2);
+                    return partyMap.get(getSent().getSender()).getX() + (barWidth / 2);
                 }
             }
 
@@ -627,8 +626,8 @@ public class FigureConverter {
              *
              * @return x-coordinate for the end point of the activation bar that is created because of the outgoing message
              */
-            private double calculateBrotherBarEndX() {
-                return getResponse().getSender().getXLocationOfLifeline() + (barWidth / 2);
+            private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
+                return partyMap.get((getResponse().getSender())).getX() + (barWidth / 2);
             }
 
             /**
@@ -636,8 +635,8 @@ public class FigureConverter {
              *
              * @return x-coordinate for the start point of the activation bar that is created because of the outgoing message
              */
-            private double calculateBrotherBarStartX() {
-                return getSent().getReceiver().getXLocationOfLifeline() - (barWidth / 2);
+            private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
+                return partyMap.get(getSent().getReceiver()).getX() - (barWidth / 2);
             }
 
             /**
@@ -645,8 +644,8 @@ public class FigureConverter {
              *
              * @return the start point of this activation bar
              */
-            private Point2D calculateOwnBarStart() {
-                return new Point2D.Double(calculateOwnBarStartX(), calculateBarStartY());
+            private Point2D calculateOwnBarStart(Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
+                return new Point2D.Double(calculateOwnBarStartX(partyMap), calculateBarStartY(messageMap));
             }
 
             /**
@@ -654,8 +653,8 @@ public class FigureConverter {
              *
              * @return the end point of this activation bar
              */
-            private Point2D calculateOwnBarEnd() {
-                return new Point2D.Double(calculateOwnBarEndX(), calculateBarEndY());
+            private Point2D calculateOwnBarEnd(Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
+                return new Point2D.Double(calculateOwnBarEndX(partyMap), calculateBarEndY(messageMap));
             }
 
             /**
@@ -663,8 +662,8 @@ public class FigureConverter {
              *
              * @return the start point of the activation bar that is created because of the outgoing message
              */
-            private Point2D calculateBrotherBarStart() {
-                return new Point2D.Double(calculateBrotherBarStartX(), calculateBarStartY());
+            private Point2D calculateBrotherBarStart(Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
+                return new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarStartY(messageMap));
             }
 
             /**
@@ -672,8 +671,8 @@ public class FigureConverter {
              *
              * @return the end point of the activation bar that is created because of the outgoing message
              */
-            private Point2D calculateBrotherBarEnd() {
-                return new Point2D.Double(calculateBrotherBarEndX(), calculateBarEndY());
+            private Point2D calculateBrotherBarEnd(Map<Party, Point2D> partyMap,Map<Message, Integer> messageMap) {
+                return new Point2D.Double(calculateBrotherBarEndX(partyMap), calculateBarEndY(messageMap));
             }
         }
     }
