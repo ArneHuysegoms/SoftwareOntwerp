@@ -2,6 +2,7 @@ package subwindow;
 
 import diagram.Clickable;
 import diagram.label.Label;
+import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
 
@@ -33,9 +34,18 @@ public class Subwindow {
     }
 
     public void updateLabels(char c){
-        // hier check of in subwindow?
-        // stuur naar mediator -> past alle andere subwindows aan
-        this.mediator.updateLabel(c);
+        // probeer het label up te daten
+        // zo ja:
+        //      stuur naar mediator -> past alle andere subwindows aan
+        // zo niet:
+        //      doe niks
+        try {
+            this.label.setLabel(label.getLabel() + c);
+            this.mediator.updateLabel(this.label);
+        }
+        catch (DomainException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public boolean isInLabelMode(){

@@ -11,14 +11,11 @@ import java.util.ArrayList;
 public class InteractionMediator {
     private ArrayList<Subwindow> subwindows;
 
-    public void updateLabel(char c){
-        /*
-        Check if label correct
-        juist -> alles aangepast
-        fout -> enkel
-         */
-        for(Subwindow s : getSubwindows()){
-            s.getFacade().addCharToLabel(c);
+    public void updateLabel(Label label){
+        // update de labels die overeenkomen met dit label
+        // hoe de overeenkomstige labels vinden?
+        for(Subwindow s : this.subwindows){
+            s.
         }
     }
 
