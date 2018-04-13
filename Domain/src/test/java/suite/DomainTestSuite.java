@@ -1,5 +1,6 @@
 package suite;
 
+import diagram.diagram.DiagramTest;
 import diagram.label.MessageLabelTest;
 import diagram.label.PartyLabelTest;
 import diagram.message.InvocationMessageTest;
@@ -16,7 +17,8 @@ import repo.party.PartyRepoTest;
         MessageLabelTest.class,
         PartyLabelTest.class,
         InvocationMessageTest.class,
-        ResultMessageTest.class
+        ResultMessageTest.class,
+        DiagramTest.class
 })
 
 public class DomainTestSuite {
