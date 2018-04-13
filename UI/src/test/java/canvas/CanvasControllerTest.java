@@ -1,12 +1,8 @@
 package canvas;
-import diagram.Clickable;
-import diagram.CommunicationsDiagram;
 import diagram.Diagram;
-import diagram.SequenceDiagram;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import diagram.party.Party;
-import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
