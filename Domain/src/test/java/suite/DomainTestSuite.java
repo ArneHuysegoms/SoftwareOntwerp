@@ -8,6 +8,7 @@ import diagram.message.ResultMessageTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import repo.label.LabelRepoTest;
+import repo.message.SequenceMessageRepoTest;
 import repo.party.PartyRepoTest;
 
 @RunWith(Suite.class)
@@ -18,7 +19,8 @@ import repo.party.PartyRepoTest;
         PartyLabelTest.class,
         InvocationMessageTest.class,
         ResultMessageTest.class,
-        DiagramTest.class
+        DiagramTest.class,
+        SequenceMessageRepoTest.class
 })
 
 public class DomainTestSuite {

@@ -20,6 +20,7 @@ public abstract class DiagramRepo {
     public DiagramRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){
         this.setLabelRepo(labelRepo);
         this.setPartyRepo(partyRepo);
+        this.setMessageRepo(messageRepo);
     }
 
     public LabelRepo getLabelRepo() {
