@@ -24,37 +24,37 @@ import static org.junit.Assert.*;
 
 public class SequenceMessageRepoTest {
 
-    Party actor1;
-    Label label1;
+    private Party actor1;
+    private Label label1;
 
-    Party object2;
-    Label label2;
+    private Party object2;
+    private Label label2;
 
-    Party actor3;
-    Label label3;
+    private Party actor3;
+    private Label label3;
 
-    Message inv1;
-    Message res1;
-    Label invLabell;
+    private Message inv1;
+    private Message res1;
+    private Label invLabell;
 
-    Message inv2;
-    Message res2;
-    Label invLabel2;
+    private Message inv2;
+    private Message res2;
+    private Label invLabel2;
 
-    Message inv3;
-    Message res3;
-    Label invLabel3;
+    private Message inv3;
+    private Message res3;
+    private Label invLabel3;
 
-    Point2D validPoint1;
-    Point2D validPoint2;
-    Point2D validPoint3;
+    private Point2D validPoint1;
+    private Point2D validPoint2;
+    private Point2D validPoint3;
 
-    List<Message> messages;
+    private List<Message> messages;
 
-    PartyRepo partyRepo;
-    LabelRepo labelRepo;
+    private PartyRepo partyRepo;
+    private LabelRepo labelRepo;
 
-    SequenceMessageRepo smrepo;
+    private SequenceMessageRepo smrepo;
 
     @Before
     public void setUp(){

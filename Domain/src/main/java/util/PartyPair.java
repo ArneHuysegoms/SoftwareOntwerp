@@ -23,6 +23,10 @@ public class PartyPair extends Pair {
         messages.add(m);
     }
 
+    public List<Message> getMessages(){
+        return messages;
+    }
+
     /**
      * method used to check if two parties are the same as the sender and receiver stored in this pair (order matters)
      *
