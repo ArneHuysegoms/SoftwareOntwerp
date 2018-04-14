@@ -2,12 +2,7 @@ package figures.diagramFigures;
 
 import org.junit.Before;
 import org.junit.Test;
-import subwindow.Subwindow;
-
-import java.awt.*;
 import java.awt.geom.Point2D;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SubwindowFigureTest {
