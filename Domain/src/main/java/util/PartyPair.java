@@ -117,4 +117,8 @@ public class PartyPair extends Pair {
 
         return new Point2D.Double(x, y);
     }
+
+    public int getNumberOfMessages(){
+        return messages.size();
+    }
 }
