@@ -90,7 +90,7 @@ public class PartyRepo {
      */
     public Point2D getCorrectLabelPosition(Party party){
         if(party instanceof Object){
-            return new Point2D.Double(this.getLocationOfParty(party).getX() + 5,
+            return new Point2D.Double(this.getLocationOfParty(party).getX() + 10,
                     this.getLocationOfParty(party).getY() + 25);
         }
         else{

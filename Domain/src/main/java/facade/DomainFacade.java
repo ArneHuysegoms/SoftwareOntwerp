@@ -89,11 +89,11 @@ public class DomainFacade {
      *
      * @param location the location of the new Party
      */
-    public void addNewParty(Point2D location){
+    public Label addNewParty(Point2D location){
         Party newParty = this.getDiagram().addNewParty();
-        addNewPartyToRepos(activeRepo, newParty, location);
-        DiagramRepo other = getOtherRepo();
-        addNewPartyToRepos(other, newParty, location);
+        activeRepo.addNewPartyToRepos(newParty, location);
+        getOtherRepo().addNewPartyToRepos(newParty, location);
+        return newParty.getLabel();
     }
 
     /**
@@ -103,9 +103,8 @@ public class DomainFacade {
      */
     public void changePartyType(Party oldParty) throws DomainException{
         Party newParty = diagram.changePartyType(oldParty);
-        changePartyTypeInRepos(oldParty, newParty, activeRepo);
-        DiagramRepo other = getOtherRepo();
-        changePartyTypeInRepos(oldParty, newParty, other);
+        activeRepo.changePartyTypeInRepos(oldParty, newParty);
+        getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
     }
 
     private DiagramRepo getOtherRepo(){
@@ -115,30 +114,6 @@ public class DomainFacade {
         else {
             return communicationRepo;
         }
-    }
-
-    private void addNewPartyToRepos(DiagramRepo repo, Party newParty, Point2D location){
-        if(repo.isValidPartyLocation(location)) {
-            Point2D correctPartyLocation = repo.getValidPartyLocation(location);
-            if(newParty != null){
-                repo.getPartyRepo().addPartyWithLocation(newParty, location);
-                repo.getLabelRepo().addLabelWithLocation(newParty.getLabel(),
-                        new Point2D.Double(correctPartyLocation.getX() + 10,
-                                correctPartyLocation.getY() + 20));
-            }
-        }
-    }
-
-    private void changePartyTypeInRepos(Party oldParty, Party newParty, DiagramRepo repo) throws DomainException {
-        Point2D location = repo.getPartyRepo().getLocationOfParty(oldParty);
-        Point2D labelLocation = repo.getLabelRepo().getLocationOfLabel(oldParty.getLabel());
-
-        repo.getPartyRepo().removeParty(oldParty);
-        repo.getLabelRepo().removeLabelByPosition(labelLocation);
-
-        repo.getPartyRepo().addPartyWithLocation(newParty, location);
-        Point2D labelPosition = repo.getPartyRepo().getCorrectLabelPosition(newParty);
-        repo.getLabelRepo().addLabelWithLocation(newParty.getLabel(), labelPosition);
     }
 
     /**
@@ -173,14 +148,9 @@ public class DomainFacade {
     }
 
     private void deleteMessageInRepos(Message message){
-            activeRepo.getMessageRepo().removeMessage(message);
-            activeRepo.getLabelRepo().removeLabel(message.getLabel());
-            activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
-            DiagramRepo o = this.getOtherRepo();
-            o.getMessageRepo().removeMessage(message);
-            o.getLabelRepo().removeLabel(message.getLabel());
-            o.getMessageRepo().resetMessagePositions(this.diagram.getFirstMessage(), o.getPartyRepo(), o.getLabelRepo());
-
+        Message firstMessage = diagram.getFirstMessage();
+        activeRepo.deleteMessageInRepos(message, firstMessage);
+        getOtherRepo().deleteMessageInRepos(message, firstMessage);
     }
 
     private void deletePartyInRepos(Party party) {
@@ -213,7 +183,7 @@ public class DomainFacade {
      *
      * @return the label to edit
      */
-    public DiagramElement addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
+    public Label addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
         if(this.getActiveRepo() instanceof SequenceRepo) {
             SequenceRepo sequenceRepo = (SequenceRepo) this.getActiveRepo();
             Party Sender = messageStart.getParty();

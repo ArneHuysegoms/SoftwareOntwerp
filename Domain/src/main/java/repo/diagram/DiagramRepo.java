@@ -2,6 +2,7 @@ package repo.diagram;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
+import diagram.message.Message;
 import diagram.party.Party;
 import exceptions.DomainException;
 import repo.label.LabelRepo;
@@ -63,8 +64,8 @@ public abstract class DiagramRepo {
      * @return the element which has been clicked on
      */
     public DiagramElement getSelectedDiagramElement(Point2D clickedLocation) throws DomainException{
-        Set<DiagramElement> clickedElements =  this.partyRepo.getClickedParties(clickedLocation);
-        clickedElements.addAll(this.labelRepo.getClickedLabels(clickedLocation));
+        Set<DiagramElement> clickedElements =  this.getPartyRepo().getClickedParties(clickedLocation);
+        clickedElements.addAll(this.getLabelRepo().getClickedLabels(clickedLocation));
         if(clickedElements.size() == 1){
             return clickedElements.stream().findFirst().orElseThrow(DomainException::new);
         }
@@ -72,8 +73,8 @@ public abstract class DiagramRepo {
             return findMostLikelyElement(clickedElements, clickedLocation);
         }
         else{
-            for(Party party : partyRepo.getAllParties()){
-                if(isLifeLine(clickedLocation, partyRepo.getXLocationOfLifeline(party))){
+            for(Party party : getPartyRepo().getAllParties()){
+                if(isLifeLine(clickedLocation, getPartyRepo().getXLocationOfLifeline(party))){
                     return new MessageStart(party, clickedLocation);
                 }
             }
@@ -95,20 +96,50 @@ public abstract class DiagramRepo {
         for(DiagramElement element : clickedElements){
             if(element instanceof Label){
                 Label l = (Label) element;
-                if(labelRepo.getLocationOfLabel(l).distance(clickedLocation) < dist){
+                if(getLabelRepo().getLocationOfLabel(l).distance(clickedLocation) < dist){
                     selected = l;
-                    dist = labelRepo.getLocationOfLabel(l).distance(clickedLocation);
+                    dist = getLabelRepo().getLocationOfLabel(l).distance(clickedLocation);
                 }
             }
             else if(element instanceof Party){
                 Party p = (Party) element;
-                if(partyRepo.getLocationOfParty(p).distance(clickedLocation) < dist){
+                if(getPartyRepo().getLocationOfParty(p).distance(clickedLocation) < dist){
                     selected = p;
-                    dist = partyRepo.getLocationOfParty(p).distance(clickedLocation);
+                    dist = getPartyRepo().getLocationOfParty(p).distance(clickedLocation);
                 }
             }
         }
         return selected;
+    }
+
+    public void addNewPartyToRepos(Party newParty, Point2D location){
+        if(isValidPartyLocation(location)) {
+            Point2D correctPartyLocation = getValidPartyLocation(location);
+            if(newParty != null){
+                getPartyRepo().addPartyWithLocation(newParty, location);
+                getLabelRepo().addLabelWithLocation(newParty.getLabel(),
+                        new Point2D.Double(correctPartyLocation.getX() + 10,
+                                correctPartyLocation.getY() + 20));
+            }
+        }
+    }
+
+    public void changePartyTypeInRepos(Party oldParty, Party newParty) throws DomainException{
+        Point2D location = getPartyRepo().getLocationOfParty(oldParty);
+        Point2D labelLocation = getLabelRepo().getLocationOfLabel(oldParty.getLabel());
+
+        getPartyRepo().removeParty(oldParty);
+        getLabelRepo().removeLabelByPosition(labelLocation);
+
+        getPartyRepo().addPartyWithLocation(newParty, location);
+        Point2D labelPosition = getPartyRepo().getCorrectLabelPosition(newParty);
+        getLabelRepo().addLabelWithLocation(newParty.getLabel(), labelPosition);
+    }
+
+    public void deleteMessageInRepos(Message message, Message firstMessage){
+        getMessageRepo().removeMessage(message);
+        getLabelRepo().removeLabel(message.getLabel());
+        getMessageRepo().resetMessagePositions(firstMessage, getPartyRepo(), getLabelRepo());
     }
 
     /**

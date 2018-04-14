@@ -149,7 +149,7 @@ public class PartyRepoTest {
     public void Test_getCorrectLabelPosition_for_object_works(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(object1, validPoint2);
-        assertEquals(new Point2D.Double(105,125), p.getCorrectLabelPosition(object1));
+        assertEquals(new Point2D.Double(110,125), p.getCorrectLabelPosition(object1));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package repo.diagram;
 
 import repo.label.LabelRepo;
-import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 
@@ -16,7 +15,7 @@ public class SequenceRepo extends DiagramRepo {
         this(new LabelRepo(), new PartyRepo(), new SequenceMessageRepo());
     }
 
-    public SequenceRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){
+    public SequenceRepo(LabelRepo labelRepo, PartyRepo partyRepo, SequenceMessageRepo messageRepo){
         super(labelRepo, partyRepo, messageRepo);
     }
 
@@ -51,8 +50,6 @@ public class SequenceRepo extends DiagramRepo {
      */
     @Override
     public boolean isLifeLine(Point2D location, double xCoordinateOfLifeline) {
-        return (location.getY() > MAXY) &&
-                (location.getX() >= xCoordinateOfLifeline - 20
-                        && location.getX() <= xCoordinateOfLifeline + 20);
+        return (location.getY() > MAXY) && (location.getX() >= xCoordinateOfLifeline - 20 && location.getX() <= xCoordinateOfLifeline + 20);
     }
 }

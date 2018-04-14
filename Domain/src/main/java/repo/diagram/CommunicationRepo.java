@@ -2,7 +2,6 @@ package repo.diagram;
 
 import repo.label.LabelRepo;
 import repo.message.CommunicationMessageRepo;
-import repo.message.MessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
@@ -13,7 +12,7 @@ public class CommunicationRepo extends DiagramRepo {
         this(new LabelRepo(), new PartyRepo(), new CommunicationMessageRepo());
     }
 
-    public CommunicationRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo){
+    public CommunicationRepo(LabelRepo labelRepo, PartyRepo partyRepo, CommunicationMessageRepo messageRepo){
         super(labelRepo, partyRepo, messageRepo);
     }
 
