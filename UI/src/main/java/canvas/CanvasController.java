@@ -1,8 +1,11 @@
 package canvas;
 
 import facade.DomainFacade;
+import subwindow.Subwindow;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+
+import java.util.List;
 
 /**
  * Main layer between pure UI and the domain
@@ -145,5 +148,9 @@ public class CanvasController {
         if(! this.getFacade().isLabel(wouldBe)){
             this.getFacade().setSelectedElement(wouldBe);
         }
+    }
+
+    public List<Subwindow> getSubwindows() {
+        return subwindows;
     }
 }
