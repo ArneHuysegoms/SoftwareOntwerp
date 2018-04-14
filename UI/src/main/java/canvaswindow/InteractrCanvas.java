@@ -18,7 +18,7 @@ public class InteractrCanvas extends CanvasWindow {
      */
 
     private CanvasController canvasController;
-    //private FigureConverter figureConverter;
+    private FigureConverter figureConverter;
     private KeyEventFactory keyFactory;
     private MouseEventFactory mouseFactory;
 
@@ -27,11 +27,11 @@ public class InteractrCanvas extends CanvasWindow {
         keyFactory = new KeyEventFactory();
         mouseFactory = new MouseEventFactory();
         canvasController = new CanvasController();
-        //figureConverter = new FigureConverter();
+        figureConverter = new FigureConverter();
     }
 
     public void paint(Graphics g){
-        FigureConverter.getInstance().draw(g, canvasController.getFacade().getActiveDiagram());
+        figureConverter.draw(g, canvasController.getSubwindows());
     }
 
     @Override
