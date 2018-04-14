@@ -15,6 +15,7 @@ import java.util.List;
 public class CanvasController {
 
     private DomainFacade facade;
+    private List<Subwindow> subwindows;
 
     /**
      * Construct a new basic CanvasController
