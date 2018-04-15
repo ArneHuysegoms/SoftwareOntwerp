@@ -1,13 +1,15 @@
 package subwindow;
 
 import diagram.label.Label;
+import diagram.label.MessageLabel;
+import diagram.label.PartyLabel;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
 
 import java.awt.geom.Point2D;
 
-public class Subwindow {
+public class Subwindow implements Comparable{
     private int width;
     private int height;
     private Point2D position;
@@ -33,15 +35,24 @@ public class Subwindow {
         //      stuur naar mediator -> past alle andere subwindows aan
         // zo niet:
         //      doe niks
+
         try {
-            this.getFacade().getActiveRepo().getLabelRepo().
-            this.label.setLabel(label.getLabel() + c);
-            this.mediator.updateLabel(this.label);
+            if(this.getLabel() instanceof MessageLabel){
+                MessageLabel l = (MessageLabel) this.getFacade().getActiveRepo().getLabelRepo().getLabelAtPosition(this.getPosition());
+                l.setLabel(this.getLabel().getLabel() + c);
+            }
+            else if(this.getLabel() instanceof MessageLabel){
+                PartyLabel l = (PartyLabel) this.getFacade().getActiveRepo().getLabelRepo().getLabelAtPosition(this.getPosition());
+                l.setLabel(this.getLabel().getLabel() + c);
+            }
+
         }
         catch (DomainException e){
             System.out.println(e.getMessage());
         }
     }
+
+
 
     public boolean isInLabelMode(){
         return this.labelMode;
@@ -101,5 +112,20 @@ public class Subwindow {
 
     public void setFacade(DomainFacade facade) {
         this.facade = facade;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Subwindow){
+            if ( this.getLevel() > ((Subwindow) o).getLevel()){
+                return 1;
+            }
+            else if ( this.getLevel() == ((Subwindow) o).getLevel()){
+                return 0;
+            }
+            else if ( this.getLevel() < ((Subwindow) o).getLevel()){
+                return -1;
+            }
+        }
     }
 }

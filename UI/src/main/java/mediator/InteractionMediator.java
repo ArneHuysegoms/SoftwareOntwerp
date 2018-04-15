@@ -31,7 +31,7 @@ public class InteractionMediator {
         of 1 keer domain aanpassen en alle subwindows laten refreshen..?
          */
         for(Subwindow s : getSubwindows()){
-            s.getFacade().getActiveRepo().getPartyRepo().;
+            s.getFacade().getActiveRepo().getPartyRepo();
         }
 
     }
