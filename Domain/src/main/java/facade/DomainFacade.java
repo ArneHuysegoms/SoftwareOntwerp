@@ -33,6 +33,13 @@ public class DomainFacade {
         this(new Diagram(), new SequenceRepo(), new CommunicationRepo());
     }
 
+    /**
+     * Constructs a domainfacade with the given diagram, sequencerepo and communicationrepo
+     *
+     * @param diagram the diagram or this domainfacade
+     * @param sequenceRepo the sequencerepo for this domainfacade
+     * @param communicationRepo the communicationrepo for this domainfacade
+     */
     public DomainFacade(Diagram diagram, DiagramRepo sequenceRepo, DiagramRepo communicationRepo){
         this.setDiagram(diagram);
         this.setSequenceRepo(sequenceRepo);
@@ -40,11 +47,19 @@ public class DomainFacade {
         this.setActiveRepo(sequenceRepo);
     }
 
+    /**
+     * gives the repo detailing the current state of the diagram
+     * @return a diagramrepo containing the current state of the diagram
+     */
     public DiagramRepo getActiveRepo() {
         return activeRepo;
     }
 
-    public void setActiveRepo(DiagramRepo activeRepo) {
+    /**
+     * sets the repo that contains the active state of the diagram
+     * @param activeRepo the state of the diagram we want to be the current one
+     */
+    private void setActiveRepo(DiagramRepo activeRepo) {
         this.activeRepo = activeRepo;
     }
 
@@ -61,18 +76,32 @@ public class DomainFacade {
      */
     private void setDiagram(Diagram diagram){ this.diagram = diagram;}
 
+    /**
+     * @return the sequencerepo of this facade
+     */
     public DiagramRepo getSequenceRepo() {
         return sequenceRepo;
     }
 
+    /**
+     * sets the sequencerepo for this domainfacade
+     * @param sequenceRepo the sequencerepo for the domainfacade
+     */
     private void setSequenceRepo(DiagramRepo sequenceRepo) {
         this.sequenceRepo = sequenceRepo;
     }
 
+    /**
+     * @return the communicationrepo of this domainfacade
+     */
     public DiagramRepo getCommunicationRepo() {
         return communicationRepo;
     }
 
+    /**
+     * sets the communicationRepo for this domainfacade
+     * @param communicationRepo the Communicationrepo for this domainfacade
+     */
     private void setCommunicationRepo(DiagramRepo communicationRepo) {
         this.communicationRepo = communicationRepo;
     }
@@ -85,7 +114,7 @@ public class DomainFacade {
     }
 
     /**
-     * adds a new party on the given location of the type Object
+     * adds a new party of the type Object on the given location
      *
      * @param location the location of the new Party
      */
@@ -107,6 +136,11 @@ public class DomainFacade {
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
     }
 
+    /**
+     * returns the repo that is currently not the active repo
+     *
+     * @return the non-active repository
+     */
     public DiagramRepo getOtherRepo(){
         if(activeRepo.equals(communicationRepo)){
             return sequenceRepo;
@@ -147,12 +181,20 @@ public class DomainFacade {
         }
     }
 
+    /**
+     * deletes the given message in both repos
+     * @param message the message to be deleted
+     */
     private void deleteMessageInRepos(Message message){
         Message firstMessage = diagram.getFirstMessage();
         activeRepo.deleteMessageInRepos(message, firstMessage);
         getOtherRepo().deleteMessageInRepos(message, firstMessage);
     }
 
+    /**
+     * deletes the given party in both repos, with cascading effect
+     * @param party the party to be deleted
+     */
     private void deletePartyInRepos(Party party) {
         this.getActiveRepo().getPartyRepo().removeParty(party);
         this.getActiveRepo().getLabelRepo().removeLabel(party.getLabel());

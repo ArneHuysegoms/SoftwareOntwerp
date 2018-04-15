@@ -12,22 +12,39 @@ import repo.party.PartyRepo;
 import java.awt.geom.Point2D;
 import java.util.Set;
 
+/**
+ * abstract superclass for all types of diagramrepos, contains all logic for maintaining the state of the diagram
+ */
 public abstract class DiagramRepo {
 
     private LabelRepo labelRepo;
     private PartyRepo partyRepo;
     private MessageRepo messageRepo;
 
+    /**
+     * constructs a new DiagramRepo
+     * @param labelRepo the labelrepo for this diagramrepo
+     * @param partyRepo the partyrepo for this diagramrepo
+     * @param messageRepo the messagerepo for this diagramrepo
+     */
     public DiagramRepo(LabelRepo labelRepo, PartyRepo partyRepo, MessageRepo messageRepo) {
         this.setLabelRepo(labelRepo);
         this.setPartyRepo(partyRepo);
         this.setMessageRepo(messageRepo);
     }
 
+    /**
+     * @return the labelrepo of this diagramrepo
+     */
     public LabelRepo getLabelRepo() {
         return labelRepo;
     }
 
+    /**
+     * sets the labelrepo for this diagramrepo to the given labelrepo
+     * @param labelRepo the labelrepo for this diagramrepo
+     * @throws IllegalArgumentException if the provided labelrepo is null
+     */
     private void setLabelRepo(LabelRepo labelRepo) throws IllegalArgumentException {
         if (labelRepo == null) {
             throw new IllegalArgumentException("labelRepo may not be null");
@@ -35,10 +52,18 @@ public abstract class DiagramRepo {
         this.labelRepo = labelRepo;
     }
 
+    /**
+     * @return the partyrepo of this diagramrepo
+     */
     public PartyRepo getPartyRepo() {
         return partyRepo;
     }
 
+    /**
+     * sets the partyrepo for this diagramrepo to the given diagramrepo
+     * @param partyRepo the partyrepo for this diagramrepo
+     * @throws IllegalArgumentException if the provided partyrepo is null
+     */
     private void setPartyRepo(PartyRepo partyRepo) throws IllegalArgumentException {
         if (partyRepo == null) {
             throw new IllegalArgumentException("partyRepo may not be null");
@@ -46,11 +71,20 @@ public abstract class DiagramRepo {
         this.partyRepo = partyRepo;
     }
 
+    /**
+     * @return the messagerepo of this diagram
+     */
     public MessageRepo getMessageRepo() {
         return messageRepo;
     }
 
-    private void setMessageRepo(MessageRepo messageRepo) {
+    /**
+     * sets the message of this diagramrepo to the provided messagerepo
+     *
+     * @param messageRepo the messagerepo for this diagramrepo
+     * @throws IllegalArgumentException if the provided messagerepo is null
+     */
+    private void setMessageRepo(MessageRepo messageRepo) throws IllegalArgumentException{
         if (messageRepo == null) {
             throw new IllegalArgumentException("messageRepo may not be null");
         }
@@ -108,6 +142,11 @@ public abstract class DiagramRepo {
         return selected;
     }
 
+    /**
+     * adds the given party to the repos, with cascading effet
+     * @param newParty the new Party to add
+     * @param location the location of the new party
+     */
     public void addNewPartyToRepos(Party newParty, Point2D location) {
         Point2D correctPartyLocation = getValidPartyLocation(location);
         if (newParty != null) {
@@ -118,6 +157,13 @@ public abstract class DiagramRepo {
         }
     }
 
+    /**
+     * changes the type of the oldParty to that of the newParty in all repos, with cascading effet
+     *
+     * @param oldParty the old party
+     * @param newParty the new party
+     * @throws DomainException if the old party can`t be found or removed
+     */
     public void changePartyTypeInRepos(Party oldParty, Party newParty) throws DomainException {
         Point2D location = getPartyRepo().getLocationOfParty(oldParty);
         Point2D labelLocation = getLabelRepo().getLocationOfLabel(oldParty.getLabel());
@@ -130,6 +176,13 @@ public abstract class DiagramRepo {
         getLabelRepo().addLabelWithLocation(newParty.getLabel(), labelPosition);
     }
 
+    /**
+     * deletes the given message from the repos with cascading effect and restores the location of the other messages
+     * based on the provided firstmessage
+     *
+     * @param message the message to remove from the repos
+     * @param firstMessage the first message of the diagram
+     */
     public void deleteMessageInRepos(Message message, Message firstMessage) {
         getMessageRepo().removeMessage(message);
         getLabelRepo().removeLabel(message.getLabel());
@@ -138,7 +191,7 @@ public abstract class DiagramRepo {
 
     /**
      * Checks whether the location of the UIEvent is a valid location to trigger a new Party instantiation
-     * <p>
+     *
      * Has to be implemented in subclass
      *
      * @param point2D the position of the UIEvent
@@ -148,7 +201,7 @@ public abstract class DiagramRepo {
 
     /**
      * Returns a valid location for the position of a party based on the provided location of the UIEvent
-     * <p>
+     *
      * Has to implemented in subclasses
      *
      * @param point2D the original position of the UIEvent

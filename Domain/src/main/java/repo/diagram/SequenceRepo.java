@@ -6,15 +6,28 @@ import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 
+/**
+ * subclass of DiagramRepo for the state/description of a sequencerepo
+ */
 public class SequenceRepo extends DiagramRepo {
 
     private static final int MINY = 50;
     private static final int MAXY = 100;
 
+    /**
+     * constructs a new empty sequencerepo
+     */
     public SequenceRepo(){
         this(new LabelRepo(), new PartyRepo(), new SequenceMessageRepo());
     }
 
+    /**
+     * constructs a new sequencerepo of which the state is equal to the state of the provided repos
+     *
+     * @param labelRepo the labelrepo containing the state of the labels
+     * @param partyRepo the partyrepo containing the state of the parties
+     * @param messageRepo the messagerepo containing the state of the messages
+     */
     public SequenceRepo(LabelRepo labelRepo, PartyRepo partyRepo, SequenceMessageRepo messageRepo){
         super(labelRepo, partyRepo, messageRepo);
     }

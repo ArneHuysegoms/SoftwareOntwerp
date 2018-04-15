@@ -2,6 +2,9 @@ package diagram.label;
 
 import exceptions.DomainException;
 
+/**
+ * Label subtype for labels belonging to parties
+ */
 public class PartyLabel extends Label {
 
     /**
