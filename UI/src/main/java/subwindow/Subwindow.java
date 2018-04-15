@@ -9,7 +9,7 @@ import mediator.InteractionMediator;
 
 import java.awt.geom.Point2D;
 
-public class Subwindow implements Comparable{
+public class Subwindow implements Comparable<Subwindow>{
     private int width;
     private int height;
     private Point2D position;
@@ -115,17 +115,14 @@ public class Subwindow implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        if(o instanceof Subwindow){
-            if ( this.getLevel() > ((Subwindow) o).getLevel()){
-                return 1;
-            }
-            else if ( this.getLevel() == ((Subwindow) o).getLevel()){
-                return 0;
-            }
-            else if ( this.getLevel() < ((Subwindow) o).getLevel()){
-                return -1;
-            }
+    public int compareTo(Subwindow o) {
+        // 0 moet helemaal achteraan staan, dus 0 is het grootste
+        if (this.getLevel() > o.getLevel()) {
+            return -1;
+        } else if (this.getLevel() == o.getLevel()) {
+            return 0;
+        } else if (this.getLevel() < o.getLevel()) {
+            return 1;
         }
     }
 }
