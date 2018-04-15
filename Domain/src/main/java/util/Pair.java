@@ -37,23 +37,4 @@ public class Pair<A,B> {
     public B getB(){
         return second;
     }
-
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof Pair){
-            Pair p = (Pair) o;
-            return p.getA().equals(this.getA()) && p.getB().equals(this.getB());
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode(){
-        return (this.getA().hashCode() + this.getB().hashCode()) %37;
-    }
-
-    @Override
-    public String toString(){
-        return "First: " + this.getA().toString() + " Second: " + this.getB().toString();
-    }
 }

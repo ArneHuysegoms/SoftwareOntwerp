@@ -36,13 +36,13 @@ public class LabelRepo {
         return this.labelPoint2DMap;
     }
 
-    public Label getLabelAtPosition(Point2D location) throws DomainException{
+    public Label getLabelAtPosition(Point2D location){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().equals(location))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElseThrow(DomainException::new);
+                .orElse(null);
     }
 
     public void updateLabelPosition(Point2D newPosition, Label label){

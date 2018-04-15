@@ -3,10 +3,16 @@ package diagram.party;
 import diagram.DiagramElement;
 import diagram.label.Label;
 
+/**
+ * abstract superclass for parties of he diagram
+ */
 public abstract class Party extends DiagramElement {
 
     private Label label;
 
+    /**
+     * default constructor
+     */
     public Party(){
 
     }

@@ -18,31 +18,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Superclass of diagrams, contains most of the business logic in changing the diagram
+ * Class describing a diagram, consists of parties and messages
  */
 public class Diagram {
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  variables
-    ////////////////////////////////////
 
     private List<Party> parties;
 
     private Message firstMessage;
 
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  constructors
-    ////////////////////////////////////
-
     /**
      * create a new blank diagram
      */
     public Diagram() {
-        this(new ArrayList<Party>(), null);
+        this(new ArrayList<>(), null);
     }
 
     /**
@@ -56,12 +44,6 @@ public class Diagram {
         this.setFirstMessage(firstMessage);
         this.setMessageNumbers();
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  setters and getters
-    ////////////////////////////////////
 
     /**
      * sets the first message of the message stack
@@ -116,12 +98,6 @@ public class Diagram {
     private void removeParty(Party party) {
         this.getParties().remove(party);
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  main part of business logic
-    ////////////////////////////////////
 
     /**
      * Adds a new party in the form of an object
@@ -184,6 +160,12 @@ public class Diagram {
         return deletedElements;
     }
 
+    /**
+     * finds the element corresponding which contains the given label
+     *
+     * @param label the label of the diagramelement to find
+     * @return the diagramelement that has the provided label
+     */
     private DiagramElement findParentElement(Label label) {
         for (Party p : parties) {
             if (p.getLabel().equals(label)) {
@@ -353,6 +335,12 @@ public class Diagram {
         return deletedElements;
     }
 
+    /**
+     * finds the message that precedes the given message in the callstack
+     *
+     * @param message the message we want to find the preceding message of
+     * @return the message preceding the given message
+     */
     private Message findPreviousMessage(Message message){
         if(message.equals(this.getFirstMessage())){
             return null;

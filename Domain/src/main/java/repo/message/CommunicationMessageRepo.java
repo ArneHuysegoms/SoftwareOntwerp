@@ -5,10 +5,8 @@ import diagram.message.Message;
 import diagram.party.Party;
 import repo.label.LabelRepo;
 import repo.party.PartyRepo;
-import util.Pair;
 import util.PartyPair;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,18 @@ public class CommunicationMessageRepo extends MessageRepo {
     private List<PartyPair> pairs;
 
     public CommunicationMessageRepo(){
-        pairs = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+
+    public CommunicationMessageRepo(List<PartyPair> partyPairs){
+        this.setPartyPairs(partyPairs);
+    }
+
+    private void setPartyPairs(List<PartyPair> partyPairs){
+        if(partyPairs == null){
+            throw new IllegalArgumentException("Map may not be null");
+        }
+        this.pairs = partyPairs;
     }
 
     public List<PartyPair> getMap(){
@@ -31,13 +40,15 @@ public class CommunicationMessageRepo extends MessageRepo {
     public void resetMessagePositions(Message firstMessage, PartyRepo partyRepo, LabelRepo labelRepo) {
         pairs = new ArrayList<>();
         traverserMessages(firstMessage);
-        for(PartyPair p : pairs){
-            p.updateLabelPosition(partyRepo, labelRepo);
-        }
+        setLabelPositions(labelRepo, partyRepo);
     }
 
     @Override
     public void resetLabelPositionsForMovedParty(LabelRepo labelRepo, PartyRepo partyRepo, Party movedParty) {
+        setLabelPositions(labelRepo, partyRepo);
+    }
+
+    private void setLabelPositions(LabelRepo labelRepo, PartyRepo partyRepo){
         for(PartyPair p : pairs){
             p.updateLabelPosition(partyRepo, labelRepo);
         }
@@ -55,6 +66,15 @@ public class CommunicationMessageRepo extends MessageRepo {
         for(PartyPair p : pairs){
             p.updateLabelPosition(partyRepo, labelRepo);
         }
+    }
+
+    public PartyPair findPartyPairByParties(Party sender, Party receiver){
+        for(PartyPair p : pairs){
+            if(p.equalPair(sender, receiver)){
+                return p;
+            }
+        }
+        return null;
     }
 
     /**

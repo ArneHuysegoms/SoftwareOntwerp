@@ -1,25 +1,16 @@
 package suite;
 
-import diagram.diagram.DiagramTest;
-import diagram.label.MessageLabelTest;
-import diagram.label.PartyLabelTest;
-import diagram.message.InvocationMessageTest;
-import diagram.message.ResultMessageTest;
+import diagram.suite.DiagramTestSuite;
+import facade.FacadeSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import repo.label.LabelRepoTest;
-import repo.party.PartyRepoTest;
+import repo.suite.RepoTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        PartyRepoTest.class,
-        LabelRepoTest.class,
-        MessageLabelTest.class,
-        PartyLabelTest.class,
-        InvocationMessageTest.class,
-        ResultMessageTest.class,
-        DiagramTest.class
+        DiagramTestSuite.class,
+        RepoTestSuite.class,
+        FacadeSuite.class
 })
-
 public class DomainTestSuite {
 }

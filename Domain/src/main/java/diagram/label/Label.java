@@ -2,14 +2,26 @@ package diagram.label;
 
 import diagram.DiagramElement;
 
+/**
+ * abstract superclass for labels
+ */
 public abstract class Label extends DiagramElement {
 
     protected String label;
 
+    /**
+     * create a completely empty label
+     */
     public Label(){
 
     }
 
+    /**
+     * checks if the given string is a valid string
+     *
+     * @param label the contents of this label
+     * @return whether the given label is valid
+     */
     public abstract boolean isValidLabel(String label);
 
 
@@ -20,21 +32,15 @@ public abstract class Label extends DiagramElement {
         return label;
     }
 
+    /**
+     * checks of the given char is a valid char for this label
+     *
+     * only alfabetical chars, spaces and colons are allowed
+     *
+     * @param charToAdd
+     * @return
+     */
     public static boolean isCorrectCharForLabel(char charToAdd){
         return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':' || charToAdd == ' ';
-    }
-
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof Label){
-            Label l = (Label) o;
-            return this.label.equals(l.getLabel());
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode(){
-        return this.label.hashCode();
     }
 }

@@ -4,6 +4,9 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
+/**
+ * Message subclass for invocation messages
+ */
 public class InvocationMessage extends Message{
 
     private String messageNumber;
@@ -84,6 +87,11 @@ public class InvocationMessage extends Message{
         return this.getMessageNumber() + " " + this.getLabel().getLabel();
     }
 
+    /**
+     *
+     * @param o other Object
+     * @return wether or not the given object is equal to this
+     */
     @Override
     public boolean equals(Object o){
         if(o instanceof InvocationMessage){
@@ -93,6 +101,10 @@ public class InvocationMessage extends Message{
         return false;
     }
 
+    /**
+     *
+     * @return a hashcode of this message, modulo 17
+     */
     @Override
     public int hashCode(){
         return (super.hashCode() + this.getMessageNumber().hashCode()) % 17;

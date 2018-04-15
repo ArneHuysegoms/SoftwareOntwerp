@@ -5,6 +5,9 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
+/**
+ * abstract superclass for messages of a diagram
+ */
 public abstract class Message extends DiagramElement {
 
     private Message nextMessage;
@@ -12,6 +15,9 @@ public abstract class Message extends DiagramElement {
     private Party receiver;
     private Party sender;
 
+    /**
+     * required default constructor
+     */
     public Message(){
 
     }
@@ -122,9 +128,18 @@ public abstract class Message extends DiagramElement {
         this.sender = sender;
     }
 
+    /**
+     *
+     * @return a string description of this message
+     */
     @Override
     public abstract String toString();
 
+    /**
+     *
+     * @param o other Object
+     * @return whether or not the given Object is the same as this
+     */
     @Override
     public boolean equals(Object o){
         if(o instanceof Message){
@@ -135,6 +150,10 @@ public abstract class Message extends DiagramElement {
         return false;
     }
 
+    /**
+     *
+     * @return a hashcode of this message, divided modulo 17
+     */
     @Override
     public int hashCode(){
         return (this.getLabel().hashCode() + this.getSender().hashCode() + this.getReceiver().hashCode()) % 17;

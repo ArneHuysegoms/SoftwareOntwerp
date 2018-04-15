@@ -40,13 +40,13 @@ public class PartyRepo {
         return this.partyPoint2DMap;
     }
 
-    public Party getPartyAtPosition(Point2D location) throws DomainException{
+    public Party getPartyAtPosition(Point2D location){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().equals(location))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElseThrow(DomainException::new);
+                .orElse(null);
     }
 
     public Point2D getLocationOfParty(Party party){
@@ -90,7 +90,7 @@ public class PartyRepo {
      */
     public Point2D getCorrectLabelPosition(Party party){
         if(party instanceof Object){
-            return new Point2D.Double(this.getLocationOfParty(party).getX() + 5,
+            return new Point2D.Double(this.getLocationOfParty(party).getX() + 10,
                     this.getLocationOfParty(party).getY() + 25);
         }
         else{

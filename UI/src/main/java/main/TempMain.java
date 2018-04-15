@@ -32,7 +32,7 @@ class Cvw extends CanvasWindow {
 
     public void paint(Graphics g) {
         new CloseButton(100, 100).draw(g);
-        new SubwindowFigure(new Point2D.Double(50, 50), 300, 300).draw(g);
+        new SubwindowFigure(new Point2D.Double(50, 50), new Point2D.Double(350, 350)).draw(g);
     }
 
     @Override

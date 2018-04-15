@@ -1,9 +1,6 @@
 package diagram.party;
 
 import diagram.label.Label;
-import exceptions.DomainException;
-
-import java.awt.geom.Point2D;
 
 public class Object extends Party {
 
