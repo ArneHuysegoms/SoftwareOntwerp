@@ -15,13 +15,13 @@ public class InteractionMediator {
         // update de labels die overeenkomen met dit label
         // hoe de overeenkomstige labels vinden?
         for(Subwindow s : this.subwindows){
-            s.
+            s.setLabel(label);
         }
     }
 
     public void updatePartyType(Party party){
         for(Subwindow s : getSubwindows()){
-            s.getFacade().changePartyType(party.getCoordinate());
+            //
         }
     }
 
@@ -31,7 +31,7 @@ public class InteractionMediator {
         of 1 keer domain aanpassen en alle subwindows laten refreshen..?
          */
         for(Subwindow s : getSubwindows()){
-            s.getFacade().addNewParty(party.getCoordinate());
+            s.getFacade().getActiveRepo().getPartyRepo().;
         }
 
     }

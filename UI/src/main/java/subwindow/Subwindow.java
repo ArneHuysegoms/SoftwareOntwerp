@@ -1,6 +1,5 @@
 package subwindow;
 
-import diagram.Clickable;
 import diagram.label.Label;
 import exceptions.DomainException;
 import facade.DomainFacade;
@@ -28,11 +27,6 @@ public class Subwindow {
         setFacade(facade);
     }
 
-    public Clickable getSelectedElement(Point2D point){
-        //change to relative coordinates happens in controller
-        return this.facade.findSelectedElement(point);
-    }
-
     public void updateLabels(char c){
         // probeer het label up te daten
         // zo ja:
@@ -40,6 +34,7 @@ public class Subwindow {
         // zo niet:
         //      doe niks
         try {
+            this.getFacade().getActiveRepo().getLabelRepo().
             this.label.setLabel(label.getLabel() + c);
             this.mediator.updateLabel(this.label);
         }
