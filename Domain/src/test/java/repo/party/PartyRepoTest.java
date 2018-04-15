@@ -87,20 +87,20 @@ public class PartyRepoTest {
         }
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_no_party_at_invalid_location() throws DomainException{
+    @Test
+    public void Test_no_party_at_invalid_location(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(actor1, validPoint1);
-        p.getPartyAtPosition(INVALID_EMPTY_POINT);
+        assertNull(p.getPartyAtPosition(INVALID_EMPTY_POINT));
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_updatePartyPosition_changes_party_position() throws DomainException{
+    @Test
+    public void Test_updatePartyPosition_changes_party_position(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(actor1, validPoint1);
         p.updatePartyPosition(validPoint2, actor1);
         assertEquals(p.getPartyAtPosition(validPoint2), actor1);
-        p.getPartyAtPosition(validPoint1);
+        assertNull(p.getPartyAtPosition(validPoint1));
     }
 
     @Test

@@ -30,13 +30,13 @@ public class SequenceMessageRepo extends MessageRepo{
         return this.messageYLocationMap;
     }
 
-    public Message getMessageAtPosition(int yLocation) throws DomainException {
+    public Message getMessageAtPosition(int yLocation){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().equals(yLocation))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElseThrow(DomainException::new);
+                .orElse(null);
     }
 
     public int getLocationOfMessage(Message message){

@@ -156,4 +156,10 @@ public class SequenceRepoTest{
         assertFalse(sequenceRepo.isLifeLine(new Point2D.Double(20,60),10));
         assertTrue(sequenceRepo.isLifeLine(new Point2D.Double(20,120),10));
     }
+
+    @Test
+    public void Test_addNewParty_invalid_point_gets_corrected(){
+        sequenceRepo.addNewPartyToRepos(actor1, notValidPoint);
+        assertEquals(actor1, sequenceRepo.getPartyRepo().getPartyAtPosition(sequenceRepo.getValidPartyLocation(notValidPoint)));
+    }
 }

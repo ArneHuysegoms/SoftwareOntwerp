@@ -63,7 +63,7 @@ public class LabelRepoTest {
     }
 
     @Test
-    public void Test_getLabelAtPosition_works() throws DomainException {
+    public void Test_getLabelAtPosition_works(){
         LabelRepo r = new LabelRepo();
         assertTrue(r.getMap().size() == 0);
         r.addLabelWithLocation(label1, validPoint1);
@@ -71,22 +71,22 @@ public class LabelRepoTest {
         assertEquals(label1, r.getLabelAtPosition(validPoint1));
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_getLabelAtPosition_throws_exception_if_no_label_at_position() throws DomainException {
+    @Test
+    public void Test_getLabelAtPosition_returns_Null_if_no_label_at_position(){
         LabelRepo r = new LabelRepo();
         assertTrue(r.getMap().size() == 0);
         r.addLabelWithLocation(label1, validPoint1);
         assertTrue(r.getMap().size() == 1);
-        r.getLabelAtPosition(INVALID_EMPTY_POINT);
+        assertNull(r.getLabelAtPosition(INVALID_EMPTY_POINT));
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_updatePartyPosition_changes_party_position() throws DomainException{
+    @Test
+    public void Test_updatePartyPosition_changes_party_position(){
         LabelRepo r = new LabelRepo();
         r.addLabelWithLocation(label1, validPoint1);
         r.updateLabelPosition(validPoint2, label1);
         assertEquals(r.getLabelAtPosition(validPoint2), label1);
-        r.getLabelAtPosition(validPoint1);
+        assertNull(r.getLabelAtPosition(validPoint1));
     }
 
     @Test

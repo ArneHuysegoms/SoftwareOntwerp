@@ -40,13 +40,13 @@ public class PartyRepo {
         return this.partyPoint2DMap;
     }
 
-    public Party getPartyAtPosition(Point2D location) throws DomainException{
+    public Party getPartyAtPosition(Point2D location){
         return this.getMap().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().equals(location))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElseThrow(DomainException::new);
+                .orElse(null);
     }
 
     public Point2D getLocationOfParty(Party party){

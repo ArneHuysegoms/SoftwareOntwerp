@@ -107,7 +107,7 @@ public class DomainFacade {
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
     }
 
-    private DiagramRepo getOtherRepo(){
+    public DiagramRepo getOtherRepo(){
         if(activeRepo.equals(communicationRepo)){
             return sequenceRepo;
         }
@@ -124,7 +124,7 @@ public class DomainFacade {
      * @param location the location to find an element on
      * @return the element on the provided location, null if no such element exist
      */
-    public DiagramElement findSelectedElement(Point2D location) throws DomainException{
+    public DiagramElement findSelectedElement(Point2D location){
         return this.getActiveRepo().getSelectedDiagramElement(location);
     }
 
@@ -172,6 +172,7 @@ public class DomainFacade {
     public void changePartyPosition(Point2D newLocation, Party party){
         Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
         this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
+        this.getActiveRepo().getLabelRepo().updateLabelPosition(getActiveRepo().getPartyRepo().getCorrectLabelPosition(party), party.getLabel());
         this.getActiveRepo().getMessageRepo().resetLabelPositionsForMovedParty(getActiveRepo().getLabelRepo(), getActiveRepo().getPartyRepo(), party);
     }
 

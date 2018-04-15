@@ -141,13 +141,13 @@ public class SequenceMessageRepoTest {
     }
 
     @Test
-    public void Test_getMessageAtPosition_works() throws DomainException {
+    public void Test_getMessageAtPosition_works(){
         assertEquals(inv1, smrepo.getMessageAtPosition(120));
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_getMessageAtPosition_with_empty_location_throws_exception() throws DomainException{
-        smrepo.getMessageAtPosition(50);
+    @Test
+    public void Test_getMessageAtPosition_with_empty_location_returns_null(){
+        assertNull(smrepo.getMessageAtPosition(50));
     }
 
     @Test
