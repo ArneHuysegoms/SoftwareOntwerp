@@ -73,8 +73,14 @@ public class DomainFacade {
      * sets the diagram to the provided diagram
      *
      * @param diagram the new active diagram
+     *
+     * @throws IllegalArgumentException if the diagram is null
      */
-    private void setDiagram(Diagram diagram){ this.diagram = diagram;}
+    private void setDiagram(Diagram diagram) throws IllegalArgumentException{
+        if(diagram == null){
+            throw new IllegalArgumentException("diagram may not be null");
+        }
+        this.diagram = diagram;}
 
     /**
      * @return the sequencerepo of this facade
@@ -86,8 +92,12 @@ public class DomainFacade {
     /**
      * sets the sequencerepo for this domainfacade
      * @param sequenceRepo the sequencerepo for the domainfacade
+     * @throws IllegalArgumentException if the provided repo is null
      */
-    private void setSequenceRepo(DiagramRepo sequenceRepo) {
+    private void setSequenceRepo(DiagramRepo sequenceRepo) throws IllegalArgumentException{
+        if(sequenceRepo == null){
+            throw new IllegalArgumentException("sequencerepo may not be null");
+        }
         this.sequenceRepo = sequenceRepo;
     }
 
@@ -101,8 +111,12 @@ public class DomainFacade {
     /**
      * sets the communicationRepo for this domainfacade
      * @param communicationRepo the Communicationrepo for this domainfacade
+     * @throws IllegalArgumentException if the communicationrepo is null
      */
-    private void setCommunicationRepo(DiagramRepo communicationRepo) {
+    private void setCommunicationRepo(DiagramRepo communicationRepo) throws IllegalArgumentException {
+        if(communicationRepo == null){
+            throw new IllegalArgumentException("communication repo may not be null");
+        }
         this.communicationRepo = communicationRepo;
     }
 

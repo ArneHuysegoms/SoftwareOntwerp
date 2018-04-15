@@ -3,10 +3,12 @@ package diagram.party;
 import diagram.DiagramElement;
 import diagram.label.Label;
 
+import java.io.Serializable;
+
 /**
  * abstract superclass for parties of he diagram
  */
-public abstract class Party extends DiagramElement {
+public abstract class Party extends DiagramElement implements Serializable {
 
     private Label label;
 

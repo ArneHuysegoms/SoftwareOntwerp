@@ -2,10 +2,12 @@ package diagram.label;
 
 import exceptions.DomainException;
 
+import java.io.Serializable;
+
 /**
  * Label subtype for labels belonging to parties
  */
-public class PartyLabel extends Label {
+public class PartyLabel extends Label implements Serializable {
 
     /**
      * @param label

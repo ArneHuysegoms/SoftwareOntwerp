@@ -2,10 +2,12 @@ package diagram.label;
 
 import diagram.DiagramElement;
 
+import java.io.Serializable;
+
 /**
  * abstract superclass for labels
  */
-public abstract class Label extends DiagramElement {
+public abstract class Label extends DiagramElement implements Serializable {
 
     protected String label;
 

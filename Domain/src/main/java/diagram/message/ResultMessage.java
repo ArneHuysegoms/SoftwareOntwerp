@@ -4,7 +4,9 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public class ResultMessage extends Message {
+import java.io.Serializable;
+
+public class ResultMessage extends Message implements Serializable {
 
     /**
      * @param message

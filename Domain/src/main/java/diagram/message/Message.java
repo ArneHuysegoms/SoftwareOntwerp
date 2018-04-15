@@ -5,10 +5,12 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
+import java.io.Serializable;
+
 /**
  * abstract superclass for messages of a diagram
  */
-public abstract class Message extends DiagramElement {
+public abstract class Message extends DiagramElement  implements Serializable {
 
     private Message nextMessage;
     private Label label;

@@ -2,7 +2,9 @@ package diagram.party;
 
 import diagram.label.Label;
 
-public class Object extends Party {
+import java.io.Serializable;
+
+public class Object extends Party implements Serializable {
 
     /**
      * @param label

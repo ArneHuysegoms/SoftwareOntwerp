@@ -2,10 +2,12 @@ package diagram.label;
 
 import exceptions.DomainException;
 
+import java.io.Serializable;
+
 /**
  * Label subtype for labels belonging to messages
  */
-public class MessageLabel extends Label {
+public class MessageLabel extends Label implements Serializable {
 
     /**
      * @param label
