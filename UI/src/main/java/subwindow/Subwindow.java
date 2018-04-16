@@ -17,9 +17,10 @@ public class Subwindow implements Comparable<Subwindow>{
     private boolean labelMode;
     private Label label;
     private DomainFacade facade;
+    private String labelContainer;
     private InteractionMediator mediator;
 
-    public Subwindow(int width, int height, Point2D pos, int level, boolean labelMode, Label label, DomainFacade facade){
+    public Subwindow(int width, int height, Point2D pos, int level, boolean labelMode, Label label, DomainFacade facade, String labelContainer){
         setWidth(width);
         setHeight(height);
         setPosition(pos);
@@ -27,6 +28,7 @@ public class Subwindow implements Comparable<Subwindow>{
         setLabelMode(labelMode);
         setLabel(label);
         setFacade(facade);
+        setLabelContainer(labelContainer);
     }
 
     public void updateLabels(char c){
@@ -36,22 +38,11 @@ public class Subwindow implements Comparable<Subwindow>{
         // zo niet:
         //      doe niks
 
-        try {
-            if(this.getLabel() instanceof MessageLabel){
-                MessageLabel l = (MessageLabel) this.getFacade().getActiveRepo().getLabelRepo().getLabelAtPosition(this.getPosition());
-                l.setLabel(this.getLabel().getLabel() + c);
-            }
-            else if(this.getLabel() instanceof MessageLabel){
-                PartyLabel l = (PartyLabel) this.getFacade().getActiveRepo().getLabelRepo().getLabelAtPosition(this.getPosition());
-                l.setLabel(this.getLabel().getLabel() + c);
-            }
-
-        }
-        catch (DomainException e){
-            System.out.println(e.getMessage());
-        }
     }
 
+    public void updateLabelContainer(char c){
+        setLabelContainer(labelContainer + c);
+    }
 
 
     public boolean isInLabelMode(){
@@ -114,6 +105,14 @@ public class Subwindow implements Comparable<Subwindow>{
         this.facade = facade;
     }
 
+    public String getLabelContainer() {
+        return labelContainer;
+    }
+
+    public void setLabelContainer(String labelContainer) {
+        this.labelContainer = labelContainer;
+    }
+
     @Override
     public int compareTo(Subwindow o) {
         // 0 moet helemaal achteraan staan, dus 0 is het grootste
@@ -121,7 +120,7 @@ public class Subwindow implements Comparable<Subwindow>{
             return -1;
         } else if (this.getLevel() == o.getLevel()) {
             return 0;
-        } else if (this.getLevel() < o.getLevel()) {
+        } else {
             return 1;
         }
     }
