@@ -35,11 +35,7 @@ import java.util.List;
 public class FigureConverter {
 
     //TODO Die lijn waar parties mogen in een sequence diagram
-    //TODO Sequence helper voor activation bar met secuenceMessageRepo late werke om juist x te berekenen.
-    //TODO (wrs) Draw selection box
-    //TODO fix dat eerst subwindow getekend wordt en dan de diagram, repeat
-
-    //private boolean activeDiagramIsSequence, activeDiagramIsCommunication;
+    //TODO ooit: Sequence helper voor activation bar op een manier verplaatsen naar domain(?).
 
     private SequenceFigureConverter sequenceFC;
     private CommunicationFigureConverter communicationFC;
@@ -57,14 +53,14 @@ public class FigureConverter {
 
 
     /**
-     * upper draw function
+     * main draw function
      *
      * @param graphics   object used to draw on the program's window
      * @param subwindows the subwindows to be drawn on the canvas
      */
     public void draw(Graphics graphics, List<Subwindow> subwindows) {
 
-        //Collections.sort(subwindows);
+        Collections.sort(subwindows);
 
         for (Subwindow sub : subwindows) {
 
@@ -78,6 +74,14 @@ public class FigureConverter {
         }
     }
 
+    /**
+     * method that draws a subwindow
+     *
+     * @param graphics object used to draw on the program's window
+     * @param position coordinate of the top-left point of the subwindow
+     * @param width the subwindow's width
+     * @param height the subwindow's height
+     */
     private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
         subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null);
     }

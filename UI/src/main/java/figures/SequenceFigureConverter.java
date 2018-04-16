@@ -1,6 +1,7 @@
 package figures;
 
 import diagram.Diagram;
+import diagram.DiagramElement;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Party;
@@ -20,6 +21,8 @@ import java.util.Map;
 
 public class SequenceFigureConverter extends Converter{
 
+    //TODO (wrs) Draw selection box
+
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             invokeMessageDrawingStrategy,
@@ -34,15 +37,30 @@ public class SequenceFigureConverter extends Converter{
         responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
     }
 
+    /**
+     * draw method for sequence diagrams
+     * @param graphics object used to draw on the program's window
+     * @param repo
+     *      repository containing all the coordinates of a diagram
+     * @param diagram
+     *      the diagram that will be drawn
+     */
     @Override
-    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram) {
+    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
         drawLabels(graphics, repo.getLabelRepo());
         drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo)repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
-        //drawSelectionBox( ... );
+        drawSelectionBox(graphics, selectedElement, repo);
     }
 
+    /**
+     *
+     * @param graphics object used to draw on the program's window
+     * @param messageRepo
+     * @param partyMap
+     * @param firstMessage
+     */
     @Override
     protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
         SequenceActivationBarAndMessageHelper helper;

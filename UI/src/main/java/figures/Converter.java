@@ -1,9 +1,11 @@
 package figures;
 
 import diagram.Diagram;
+import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Actor;
+import diagram.party.Object;
 import diagram.party.Party;
 import figures.Drawer.BoxDrawer;
 import figures.Drawer.Drawer;
@@ -11,11 +13,15 @@ import figures.Drawer.LabelDrawer;
 import figures.Drawer.SelectionBoxDrawer;
 import repo.diagram.DiagramRepo;
 import repo.label.LabelRepo;
+import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
+import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import util.PartyPair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Converter {
@@ -29,7 +35,7 @@ public abstract class Converter {
         labelDrawingStrategy = new LabelDrawer();
     }
 
-    public abstract void draw(Graphics graphics, DiagramRepo activeRepo, Diagram diagram);
+    public abstract void draw(Graphics graphics, DiagramRepo activeRepo, Diagram diagram, DiagramElement selectedElement);
 
     protected void drawParties(Graphics graphics, PartyRepo partyRepo, Drawer actorDrawer, Drawer objectDrawer) {
         Map<Party, Point2D> partyMap = partyRepo.getMap();
@@ -66,33 +72,44 @@ public abstract class Converter {
      * method that uses the selection box drawer to draw a box around the currently selected selectable parts of the diagram
      *
      * @param graphics object used to draw on the program's window
-     * @param diagram  the diagram object to be drawn on the canvas
+     * @param selectedElement  the subwindow's selected element
      */
-    /*
-    private void drawSelectionBox(Graphics graphics, Diagram diagram) {
-        Clickable c = diagram.getSelectedElement();
 
-        if (diagram.selectedElementIsActor()) {
-            Actor a = (Actor) c;
-            Point2D start = new Point2D.Double(a.getCoordinate().getX() - (Actor.WIDTH / 2), a.getCoordinate().getY()),
-                    end = new Point2D.Double(a.getCoordinate().getX() + (Actor.WIDTH / 2), a.getCoordinate().getY() + Actor.WIDTH);
+    protected void drawSelectionBox(Graphics graphics, DiagramElement selectedElement, DiagramRepo repo) {
+
+        if (selectedElement instanceof Actor) {
+            Actor a = (Actor) selectedElement;
+            Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
+            Point2D start = new Point2D.Double(partyMap.get(a).getX() - (PartyRepo.ACTORWIDTH/ 2), partyMap.get(a).getY()),
+                    end = new Point2D.Double(partyMap.get(a).getX() + (PartyRepo.ACTORWIDTH / 2), partyMap.get(a).getY() + PartyRepo.ACTORWIDTH);
             selectionBoxDrawingStrategy.draw(graphics, start, end, "");
-        } else if (diagram.selectedElementIsLabel()) {
-            Label l = (Label) c;
-            Point2D start = l.getCoordinate();
-            selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + Label.width, start.getY() + Label.height), "");
-        } else if (diagram.selectedElementIsObject()) {
-            Object object = (Object) c;
+        } else if (selectedElement instanceof  Label) {
+            Label l = (Label) selectedElement;
+            Point2D start = repo.getLabelRepo().getLocationOfLabel(l);
+            selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + LabelRepo.WIDTH, start.getY() + LabelRepo.HEIGHT), "");
+        } else if (selectedElement instanceof Object) {
+            Object o = (Object) selectedElement;
+            Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
             int selectionBoxSize = 5;
-            Point2D start = new Point2D.Double(object.getCoordinate().getX() - selectionBoxSize, object.getCoordinate().getY() - selectionBoxSize);
-            Point2D end = new Point2D.Double(object.getCoordinate().getX() + Object.WIDTH + selectionBoxSize, object.getCoordinate().getY() + Object.HEIGHT + selectionBoxSize);
+            Point2D start = new Point2D.Double(partyMap.get(o).getX() - selectionBoxSize, partyMap.get(o).getY() - selectionBoxSize);
+            Point2D end = new Point2D.Double(partyMap.get(o).getX() + PartyRepo.OBJECTWIDTH + selectionBoxSize, partyMap.get(o).getY() + PartyRepo.OBJECTHEIGHT + selectionBoxSize);
             selectionBoxDrawingStrategy.draw(graphics, start, end, "");
-        } else if (diagram.selectedElementIsMessage()) {
-            Message m = (Message) c;
-            Point2D start = new Point2D.Double(m.getSender().getXLocationOfLifeline(), m.getyLocation() - (Message.HEIGHT / 2));
-            Point2D end = new Point2D.Double(m.getReceiver().getXLocationOfLifeline(), m.getyLocation() + (Message.HEIGHT / 2));
-            selectionBoxDrawingStrategy.draw(graphics, start, end, "");
+        } else if (selectedElement instanceof Message) {
+            Point2D start;
+            Point2D end;
+            Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
+            if(repo.getMessageRepo() instanceof CommunicationMessageRepo){
+               /* List<PartyPair> pairs = ((CommunicationMessageRepo) repo.getMessageRepo()).getMap();
+                start = new Point2D.Double(partyMap.get(m.getSender()).getX(), m.getyLocation() - (MessageRepo.HEIGHT / 2));
+                end = new Point2D.Double(partyMap.get(m.getReceiver()).getX(), m.getyLocation() + (MessageRepo.HEIGHT / 2));
+                selectionBoxDrawingStrategy.draw(graphics, start, end, "");*/
+            }
+            else if (repo.getMessageRepo() instanceof SequenceMessageRepo){
+                Map<Message, Integer> msgMap = ((SequenceMessageRepo) repo.getMessageRepo()).getMap();
+                start = new Point2D.Double(partyMap.get(m.getSender()).getX(), msgMap.get(m) - (MessageRepo.HEIGHT / 2));
+                end = new Point2D.Double(partyMap.get(m.getReceiver()).getX(), msgMap.get(m) + (MessageRepo.HEIGHT / 2));
+                selectionBoxDrawingStrategy.draw(graphics, start, end, "");
+            }
         }
     }
-    */
 }
