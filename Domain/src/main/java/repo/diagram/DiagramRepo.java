@@ -1,5 +1,6 @@
 package repo.diagram;
 
+import diagram.Diagram;
 import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
@@ -10,12 +11,13 @@ import repo.message.MessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
+import java.io.*;
 import java.util.Set;
 
 /**
  * abstract superclass for all types of diagramrepos, contains all logic for maintaining the state of the diagram
  */
-public abstract class DiagramRepo {
+public abstract class DiagramRepo implements Serializable {
 
     private LabelRepo labelRepo;
     private PartyRepo partyRepo;
@@ -231,6 +233,31 @@ public abstract class DiagramRepo {
             }
         }
         return null;
+    }
+
+    /**
+     * returns a deep copy of the provided original diagramRepo
+     * @param orig the original diagram repo
+     * @return the deep copy of the provided original
+     */
+    public static DiagramRepo copy(DiagramRepo orig) {
+        Object obj = null;
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(orig);
+            out.flush();
+            out.close();
+            ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+            obj = in.readObject();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        }
+        return (DiagramRepo) obj;
     }
 
     /**

@@ -12,6 +12,7 @@ import diagram.party.Party;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Set;
 /**
  * Class describing a diagram, consists of parties and messages
  */
-public class Diagram {
+public class Diagram implements Serializable {
 
     private List<Party> parties;
 

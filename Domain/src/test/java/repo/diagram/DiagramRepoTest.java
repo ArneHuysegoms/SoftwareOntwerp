@@ -176,7 +176,7 @@ public class DiagramRepoTest {
     }
 
     @Test
-    public void Test_getSelectedDiagramElement() throws DomainException{
+    public void Test_getSelectedDiagramElement(){
         diagramRepo.addNewPartyToRepos(actor1, validPoint1);
         diagramRepo.addNewPartyToRepos(object2, validPoint2);
         diagramRepo.addNewPartyToRepos(actor3, validPoint3);
@@ -184,5 +184,19 @@ public class DiagramRepoTest {
         assertEquals(actor3, diagramRepo.getSelectedDiagramElement(validPoint3));
         assertEquals(label2, diagramRepo.getSelectedDiagramElement(new Point2D.Double(160,75)));
         assertTrue(diagramRepo.getSelectedDiagramElement(new Point2D.Double(60, 170)) instanceof DiagramRepo.MessageStart);
+    }
+
+    @Test
+    public void Test_copy(){
+        diagramRepo.addNewPartyToRepos(actor1, validPoint1);
+        diagramRepo.addNewPartyToRepos(object2, validPoint2);
+        diagramRepo.addNewPartyToRepos(actor3, validPoint3);
+        diagramRepo.getMessageRepo().addMessages(messages, inv1, diagramRepo.getPartyRepo(), diagramRepo.getLabelRepo());
+        DiagramRepo copy = DiagramRepo.copy(diagramRepo);
+        assertTrue(copy instanceof SequenceRepo);
+        assertTrue(copy.getPartyRepo().getAllParties().size() == diagramRepo.getPartyRepo().getAllParties().size());
+        assertFalse(copy.getPartyRepo() == diagramRepo.getPartyRepo());
+        assertTrue(copy.getLabelRepo().getMap().size() == diagramRepo.getLabelRepo().getMap().size());
+        assertFalse(copy.getLabelRepo() == diagramRepo.getLabelRepo());
     }
 }

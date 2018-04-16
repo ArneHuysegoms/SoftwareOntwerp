@@ -7,35 +7,65 @@ import repo.label.LabelRepo;
 import repo.party.PartyRepo;
 import util.PartyPair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunicationMessageRepo extends MessageRepo {
+/**
+ * a subclass of messagerepo, contains the state of the messages of the communication diagram
+ */
+public class CommunicationMessageRepo extends MessageRepo  implements Serializable {
 
     private List<PartyPair> pairs;
 
+    /**
+     * constructs a new empty communication message repo
+     */
     public CommunicationMessageRepo(){
         this(new ArrayList<>());
     }
 
+    /**
+     * constructs a new communication message repo of which the state is equal to the state of the provided list
+     * @param partyPairs the list containing the state we want to set
+     */
     public CommunicationMessageRepo(List<PartyPair> partyPairs){
         this.setPartyPairs(partyPairs);
     }
 
-    private void setPartyPairs(List<PartyPair> partyPairs){
+    /**
+     /**
+     * sets the list which contains the state to the given state
+     * @param partyPairs the list containing the state for the repo
+     * @throws IllegalArgumentException if the given state is null
+     */
+    private void setPartyPairs(List<PartyPair> partyPairs) throws IllegalArgumentException{
         if(partyPairs == null){
             throw new IllegalArgumentException("Map may not be null");
         }
         this.pairs = partyPairs;
     }
 
+    /**
+     * @return the list containing the state of the repo
+     */
     public List<PartyPair> getMap(){
         return this.pairs;
     }
 
+    /**
+     * removes a message form the repo
+     * @param message  the message to delete
+     */
     @Override
     public void removeMessage(Message message) {}
 
+    /**
+     * resets the position of the messages if a change occurs
+     * @param firstMessage the firstmessage of the diagram
+     * @param partyRepo the repo containing all detail of the parties
+     * @param labelRepo the repo containing all details of the labels
+     */
     @Override
     public void resetMessagePositions(Message firstMessage, PartyRepo partyRepo, LabelRepo labelRepo) {
         pairs = new ArrayList<>();
@@ -48,12 +78,23 @@ public class CommunicationMessageRepo extends MessageRepo {
         setLabelPositions(labelRepo, partyRepo);
     }
 
+    /**
+     * sets the positon of the label for the messages in this repo
+     * @param labelRepo the repo containing all details of the labels
+     * @param partyRepo the repo containing all detail of the parties
+     */
     private void setLabelPositions(LabelRepo labelRepo, PartyRepo partyRepo){
         for(PartyPair p : pairs){
             p.updateLabelPosition(partyRepo, labelRepo);
         }
     }
 
+    /**
+     * finds the message preceding the give location
+     * @param yLocation the location we want the preceding message of
+     * @param firstMessage the firstmessage of the diagram
+     * @return the message that is directly preceding the given location
+     */
     @Override
     public Message findPreviousMessage(int yLocation, Message firstMessage) throws IllegalStateException{
         throw new IllegalStateException("This operation should never happen, you have the wrong kind of repo");

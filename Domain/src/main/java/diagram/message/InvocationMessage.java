@@ -4,10 +4,12 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
+import java.io.Serializable;
+
 /**
  * Message subclass for invocation messages
  */
-public class InvocationMessage extends Message{
+public class InvocationMessage extends Message implements Serializable {
 
     private String messageNumber;
 

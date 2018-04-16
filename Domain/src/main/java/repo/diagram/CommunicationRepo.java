@@ -5,11 +5,12 @@ import repo.message.CommunicationMessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 /**
  * subclass of DiagramRepo for the state/description of a communicationdiagram
  */
-public class CommunicationRepo extends DiagramRepo {
+public class CommunicationRepo extends DiagramRepo implements Serializable {
 
     /**
      * constructs a new empty communicationrepo

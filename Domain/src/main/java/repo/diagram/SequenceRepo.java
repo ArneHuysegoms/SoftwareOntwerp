@@ -5,11 +5,12 @@ import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 /**
  * subclass of DiagramRepo for the state/description of a sequencerepo
  */
-public class SequenceRepo extends DiagramRepo {
+public class SequenceRepo extends DiagramRepo implements Serializable {
 
     private static final int MINY = 50;
     private static final int MAXY = 100;
