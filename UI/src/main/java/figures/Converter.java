@@ -66,7 +66,7 @@ public abstract class Converter {
      * method that uses the selection box drawer to draw a box around the currently selected selectable parts of the diagram
      *
      * @param graphics object used to draw on the program's window
-     * @param diagram  the diagram object to be drawn on the canvas
+     * @param diagram  the diagram object to be drawn on the controller
      */
     /*
     private void drawSelectionBox(Graphics graphics, Diagram diagram) {

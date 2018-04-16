@@ -1,6 +1,6 @@
 package canvaswindow;
 
-import canvas.CanvasController;
+import controller.CanvasController;
 import figures.FigureConverter;
 import uievents.KeyEvent;
 import uievents.KeyEventFactory;
@@ -9,6 +9,7 @@ import uievents.MouseEventFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Collections;
 
 public class InteractrCanvas extends CanvasWindow {
     /**
@@ -31,7 +32,7 @@ public class InteractrCanvas extends CanvasWindow {
     }
 
     public void paint(Graphics g){
-        figureConverter.draw(g, canvasController.getSubwindows());
+        figureConverter.draw(g, Collections.sort(canvasController.getSubwindows()));
     }
 
     @Override

@@ -190,9 +190,19 @@ public class DomainFacade {
      * deletes the element of the diagram whom the given label belongs to
      *
      * @param label the label of the element to delete
+     * @return a set of elements that was deleted by deleting the diagramelement with the given label in the diagram
      */
-    public void deleteElementByLabel(Label label){
+    public Set<DiagramElement> deleteElementByLabel(Label label){
         Set<DiagramElement> deletedElements = this.getDiagram().deleteElementByLabel(label);
+        deleteElementsInRepos(deletedElements);
+        return deletedElements;
+    }
+
+    /**
+     * deletes the given diagramelements in the repos
+     * @param deletedElements the elements to remove
+     */
+    public void deleteElementsInRepos(Set<DiagramElement> deletedElements){
         for(DiagramElement d : deletedElements){
             if(d instanceof Party){
                 Party p = (Party) d;

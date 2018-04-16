@@ -2,7 +2,7 @@ import figures.basicShapes.*;
 import figures.diagramFigures.*;
 import figures.helperClasses.*;
 import uievents.*;
-import canvas.*;
+import controller.*;
 import canvaswindow.*;
 
 import org.junit.runner.RunWith;
