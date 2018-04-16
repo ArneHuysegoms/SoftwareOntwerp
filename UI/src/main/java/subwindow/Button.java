@@ -4,24 +4,24 @@ import controller.CanvasController;
 
 import java.awt.geom.Point2D;
 
-public abstract class Button {
+public abstract class Button implements Clickable{
 
     private CanvasController controller;
     private Subwindow subwindow;
 
-    private Point2D location;
+    private Point2D position;
 
     private int width;
     private int height;
 
     public Button(){
-        this.width = 50;
-        this.height = 50;
+        this.width = 30;
+        this.height = 30;
     }
 
     public Button(CanvasController controller){
-        this.width = 50;
-        this.height = 50;
+        this.width = 30;
+        this.height = 30;
         this.setController(controller);
     }
 
@@ -30,6 +30,10 @@ public abstract class Button {
             throw  new IllegalArgumentException("Canvascontroller may not be null");
         }
         this.controller = controller;
+    }
+
+    public void setPosition(Point2D position){
+        position = position;
     }
 
     public CanvasController getController(){
@@ -45,4 +49,13 @@ public abstract class Button {
     }
 
     public abstract void performAction();
+
+    @Override
+    public boolean isClicked(Point2D location) {
+        double startX = position.getX();
+        double endX = position.getX() + width;
+        double startY = position.getY() ;
+        double endY = position.getY() + height;
+        return (startX <= position.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+    }
 }

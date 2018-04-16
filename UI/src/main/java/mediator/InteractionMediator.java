@@ -16,7 +16,7 @@ public class InteractionMediator {
     private List<Subwindow> subwindows;
 
 
-    public void addPartyInRepos(Party party, Point2D location, Subwindow subwindow){
+    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
         for(Subwindow s : subwindows){
             if(! s.equals(subwindow)) {
                 s.getFacade().addPartyToRepo(party, location);
@@ -41,5 +41,13 @@ public class InteractionMediator {
 
     public void removeSubwindow(Subwindow subwindow){
         subwindows.remove(subwindow);
+    }
+
+    public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, Subwindow subwindow) {
+        for(Subwindow s : subwindows){
+            if( ! s.equals(subwindow)){
+                s.getFacade().addMessagesToRepos(newMessages);
+            }
+        }
     }
 }

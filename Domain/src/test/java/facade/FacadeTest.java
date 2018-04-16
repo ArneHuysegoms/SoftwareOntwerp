@@ -3,6 +3,7 @@ package facade;
 import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.label.MessageLabel;
+import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -16,6 +17,7 @@ import repo.message.CommunicationMessageRepo;
 import repo.message.SequenceMessageRepo;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -49,7 +51,7 @@ public class FacadeTest {
     @Test
     public void Test_addNewParty() {
         DomainFacade  f = new DomainFacade();
-        Label label = f.addNewParty(new Point2D.Double(50,120));
+        f.addNewParty(new Point2D.Double(50,120));
         assertTrue(f.getActiveRepo().getPartyRepo().getAllParties().size() == 1);
         assertTrue(f.getActiveRepo().getLabelRepo().getMap().size() == 1);
         assertTrue(f.getOtherRepo().getPartyRepo().getAllParties().size() == 1);
@@ -98,8 +100,8 @@ public class FacadeTest {
     @Test
     public void Test_deleteElementByLabel_for_label_belonging_to_party(){
         DomainFacade f = new DomainFacade();
-        Label label = f.addNewParty(standardPoint);
-        f.deleteElementByLabel(label);
+        Party newParty= f.addNewParty(standardPoint);
+        f.deleteElementByLabel(newParty.getLabel());
         assertTrue(f.getDiagram().getParties().size() == 0);
         assertTrue(f.getActiveRepo().getPartyRepo().getAllParties().size() == 0);
         assertTrue(f.getActiveRepo().getLabelRepo().getMap().size() == 0);
@@ -128,9 +130,9 @@ public class FacadeTest {
         DiagramElement element = f.findSelectedElement(new Point2D.Double(75, 150));
         assertTrue(element instanceof DiagramRepo.MessageStart);
         DiagramRepo.MessageStart messageStart = (DiagramRepo.MessageStart) element;
-        Label label = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
+        List<Message> addNewMessage = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
         assertNotNull(f.getDiagram().getFirstMessage());
-        assertEquals(label, f.getDiagram().getFirstMessage().getLabel());
+        assertEquals(addNewMessage.get(0).getLabel(), f.getDiagram().getFirstMessage().getLabel());
         assertTrue(f.getActiveRepo().getLabelRepo().getMap().size() == 4);
         assertTrue(f.getOtherRepo().getLabelRepo().getMap().size() == 3);
         SequenceMessageRepo sequenceMessageRepo = (SequenceMessageRepo) f.getActiveRepo().getMessageRepo();
@@ -147,8 +149,8 @@ public class FacadeTest {
         DiagramElement element = f.findSelectedElement(new Point2D.Double(75, 150));
         assertTrue(element instanceof DiagramRepo.MessageStart);
         DiagramRepo.MessageStart messageStart = (DiagramRepo.MessageStart) element;
-        Label label = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
-        f.deleteElementByLabel(label);
+        List<Message> addNewMessage = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
+        f.deleteElementByLabel(addNewMessage.get(0).getLabel());
         assertNull(f.getDiagram().getFirstMessage());
         assertTrue(f.getActiveRepo().getLabelRepo().getMap().size() == 2);
         assertTrue(f.getOtherRepo().getLabelRepo().getMap().size() == 2);

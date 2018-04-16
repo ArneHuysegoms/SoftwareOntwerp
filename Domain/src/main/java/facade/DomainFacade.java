@@ -270,8 +270,7 @@ public class DomainFacade {
                 int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
                 Message previous = sequenceRepo.getMessageRepo().findPreviousMessage(yLocation, diagram.getFirstMessage());
                 List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
-                getActiveRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
-                this.getOtherRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
+                addMessagesToRepos(addedMessages);
                 if(addedMessages.size() == 2){
                     return addedMessages;
                 }
@@ -281,6 +280,11 @@ public class DomainFacade {
             }
         }
         return null;
+    }
+
+    public void addMessagesToRepos(List<Message> messages){
+        getActiveRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
+        this.getOtherRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
     }
 
    /* *//*

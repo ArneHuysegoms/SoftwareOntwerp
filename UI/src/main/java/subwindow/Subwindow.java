@@ -10,8 +10,13 @@ import mediator.InteractionMediator;
 import repo.diagram.DiagramRepo;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import windowElements.SubwindowFrame;
+import windowElements.SubwindowFrameCorner;
+import windowElements.TitleBar;
+import windowElements.TitleBarClick;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +30,15 @@ public class Subwindow {
     private String labelContainer = "";
     private InteractionMediator mediator;
     private Button button;
-    private DiagramElement selected;
 
-    //TODO add mediator to constructors
+    private DiagramElement selected;
+    private Clickable frameElement;
+
+    private List<SubwindowFrameCorner> corners;
+    private SubwindowFrame frame;
+    private TitleBar titleBar;
+
+    //TODO button positioning
     public Subwindow(Point2D pos, Button button, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
@@ -37,9 +48,11 @@ public class Subwindow {
         this.setButton(button);
         this.setMediator(mediator);
 
+        createFrame();
+
         button.setSubwindow(this);
         mediator.addSubwindow(this);
-    }
+        }
 
     public Subwindow(Point2D pos, Button button, DomainFacade facade, InteractionMediator mediator) {
         setWidth(600);
@@ -50,8 +63,25 @@ public class Subwindow {
         this.setButton(button);
         this.setMediator(mediator);
 
+        createFrame();
+
         button.setSubwindow(this);
         mediator.addSubwindow(this);
+    }
+
+    //TODO also works fot updating frame
+    private void createFrame(){
+        corners = new ArrayList<>();
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX(), position.getY())));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX() + width, position.getY())));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX(), position.getY() + height)));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX() + width, position.getY() + height)));
+
+        frame = new SubwindowFrame(position, width, height);
+
+        titleBar = new TitleBar(position, width - 30);
+
+        button.setPosition(new Point2D.Double(position.getX() + width - 30, position.getY()));
     }
 
     public void updateLabels(char c) {
@@ -224,7 +254,7 @@ public class Subwindow {
                     if (this.selected instanceof DiagramRepo.MessageStart) {
                         DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
                         List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
-                        mediator.addNewMessagesToOtherSubwindows(newMessages, this);
+                        mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
                     }
                     break;
                 case LEFTCLICK:
@@ -237,7 +267,7 @@ public class Subwindow {
                     }
                     if (this.selected == null) {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
-                        mediator.addNewPartyToOtherSubwindows(newParty, this);
+                        mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
                 default:
@@ -252,13 +282,25 @@ public class Subwindow {
      * @param mouseEvent the MouseEvent containing the information of the event
      */
     private void handleLeftClick(MouseEvent mouseEvent) {
-        /*DiagramElement oldSelected = this.selected;
-        DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-        if(selected != null) {
-            if (selected.equals(newSelected) && oldSelected instanceof Label) {
-                this.getFacade().startEditingLabel();
+        if(frameElement != null){
+            if(frameElement instanceof CloseButton){
+                CloseButton c = (CloseButton) frameElement;
+                c.performAction();
             }
-        }*/
+            else if(frameElement instanceof SubwindowFrameCorner){
+                SubwindowFrameCorner corner = (SubwindowFrameCorner) frameElement;
+                resizeByCorner(corner, mouseEvent.getPoint());
+            }
+            else if(frameElement instanceof SubwindowFrame.SubwindowFrameRectangle){
+                SubwindowFrame.SubwindowFrameRectangle frameRectangle = (SubwindowFrame.SubwindowFrameRectangle) frameElement;
+                resizeByFrameRectangle(frameRectangle, mouseEvent.getPoint());
+            }
+            else if(frameElement instanceof TitleBarClick){
+                TitleBarClick titleBarClick = (TitleBarClick) frameElement;
+                moveSubwindow(titleBarClick, mouseEvent.getPoint());
+
+            }
+        }
     }
 
     /**
@@ -266,17 +308,45 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent) {
-        DiagramElement oldSelected = this.selected;
-        DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-        if (newSelected != null) {
-            if (!(selected instanceof Label)) {
-                this.selected = newSelected;
-            }
-            if (selected.equals(newSelected) && oldSelected instanceof Label) {
-                this.getFacade().startEditingLabel();
+    private void handleMousePressed(MouseEvent mouseEvent){
+        frameElement = findClickedElementOfFrame(mouseEvent.getPoint());
+        if(frameElement == null) {
+            DiagramElement oldSelected = this.selected;
+            DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
+            if (newSelected != null) {
+                if (oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+                    selected = newSelected;
+                    this.startEditingLabel();
+                } else {
+                    selected = newSelected;
+                }
             }
         }
+    }
+
+    private Clickable findClickedElementOfFrame(Point2D clickLocation){
+        for(SubwindowFrameCorner corner : corners){
+            if(corner.isClicked(clickLocation)){
+                return corner;
+            }
+        }
+        for(SubwindowFrame.SubwindowFrameRectangle rectangle : frame.getRectangles()){
+            if(rectangle.isClicked(clickLocation)){
+                return rectangle;
+            }
+        }
+        if(titleBar.isClicked(clickLocation)){
+            return new TitleBarClick(titleBar, clickLocation);
+        }
+        if(button.isClicked(clickLocation)){
+            return button;
+        }
+        return null;
+    }
+
+    private void startEditingLabel(){
+        Label labelInEdit = (Label) selected;
+        labelContainer = labelInEdit.getLabel() + "I";
     }
 
     private void deleteElement() {
@@ -325,7 +395,6 @@ public class Subwindow {
         }
         return true;
     }
-}
 
     /*
      * Reads a key event and alters the active diagram based on it
@@ -417,5 +486,5 @@ public class Subwindow {
      *//*
     private boolean checkIfValidLable(){
         return this.getFacade().checkIfValidLable();
-    }
+    }*/
 }

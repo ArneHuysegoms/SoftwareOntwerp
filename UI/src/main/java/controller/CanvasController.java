@@ -52,7 +52,7 @@ public class CanvasController {
 
     public void removeSubwindow(Subwindow subwindow){
         this.subwindows.remove(subwindow);
-        this.setSubwindowLevels();
+        //this.setSubwindowLevels();
     }
 
     public void addSubwindow(Subwindow subwindow, int level){
@@ -67,9 +67,7 @@ public class CanvasController {
      * set the correct level for all subwindows
      * TODO
      */
-    public void setSubwindowLevels(){
-
-    }
+    //public void setSubwindowLevels(){ }
 
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch(keyEvent.getKeyEventType()){
@@ -81,7 +79,7 @@ public class CanvasController {
                 break;
             default:
                 activeSubwindow.handleKeyEvent(keyEvent);
-                setSubwindowLevels();
+                //setSubwindowLevels();
                 break;
         }
     }
@@ -92,12 +90,26 @@ public class CanvasController {
         if(! subwindow.equals(getActiveSubwindow())){
             changeActiveSubwindow(activeSubwindow);
         }
-        subwindow.handleMouseEvent(mouseEvent);
+        try {
+            subwindow.handleMouseEvent(mouseEvent);
+        }
+        catch (DomainException exc){
+            exc.printStackTrace();
+        }
     }
 
     private void changeActiveSubwindow(Subwindow newActiveSubWindow){
         this.setActiveSubwindow(newActiveSubWindow);
-        this.setSubwindowLevels();
+        changeLevelForActiveSubWindow();
+        //this.setSubwindowLevels();
+    }
+
+    private void changeLevelForActiveSubWindow(){
+        for(SubWindowLevel s : subwindows){
+            if(s.equals(getActiveSubwindow())){
+                s.setLevel(getCorrectLevel());
+            }
+        }
     }
 
     private void createNewSubwindow(){
@@ -114,6 +126,16 @@ public class CanvasController {
             addSubwindow(subwindow, level);
             this.setActiveSubwindow(subwindow);
         }
+    }
+
+    private int getCorrectLevel(){
+        int level = -1;
+        for(SubWindowLevel s : subwindows){
+            if(s.getLevel() > level){
+                level = s.getLevel();
+            }
+        }
+        return level++;
     }
 
     private Point2D getRelativePoint(Subwindow subwindow, Point2D location){
