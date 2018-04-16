@@ -2,6 +2,8 @@ package subwindow;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
+import diagram.message.Message;
+import diagram.party.Party;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
@@ -10,6 +12,7 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Set;
 
 public class Subwindow {
@@ -25,7 +28,7 @@ public class Subwindow {
     private DiagramElement selected;
 
     //TODO add mediator to constructors
-    public Subwindow(Point2D pos, Button button, InteractionMediator mediator){
+    public Subwindow(Point2D pos, Button button, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
@@ -38,7 +41,7 @@ public class Subwindow {
         mediator.addSubwindow(this);
     }
 
-    public Subwindow(Point2D pos, Button button, DomainFacade facade, InteractionMediator mediator){
+    public Subwindow(Point2D pos, Button button, DomainFacade facade, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
@@ -51,7 +54,7 @@ public class Subwindow {
         mediator.addSubwindow(this);
     }
 
-    public void updateLabels(char c){
+    public void updateLabels(char c) {
         // probeer het label up te daten
         // zo ja:
         //      stuur naar mediator -> past alle andere subwindows aan
@@ -64,22 +67,22 @@ public class Subwindow {
         return mediator;
     }
 
-    public void setMediator(InteractionMediator mediator) throws IllegalArgumentException{
-        if(mediator == null){
+    public void setMediator(InteractionMediator mediator) throws IllegalArgumentException {
+        if (mediator == null) {
             throw new IllegalArgumentException("mediator may not be null");
         }
         this.mediator = mediator;
     }
 
-    public DomainFacade getCopyOfFacade(){
+    public DomainFacade getCopyOfFacade() {
         return new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
     }
 
-    public Point2D getAbsolutePosition(Point2D relativePoint){
+    public Point2D getAbsolutePosition(Point2D relativePoint) {
         return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
     }
 
-    public boolean isClicked(Point2D position){
+    public boolean isClicked(Point2D position) {
         double startX = this.getPosition().getX();
         double endX = this.getPosition().getX() + this.getWidth();
         double startY = this.getPosition().getY();
@@ -92,18 +95,18 @@ public class Subwindow {
     }
 
     private void setButton(Button button) {
-        if(button == null){
+        if (button == null) {
             throw new IllegalArgumentException("Button may not be null");
         }
         this.button = button;
     }
 
-    public void updateLabelContainer(char c){
+    public void updateLabelContainer(char c) {
         setLabelContainer(labelContainer + c);
     }
 
 
-    public boolean isInLabelMode(){
+    public boolean isInLabelMode() {
         return this.labelMode;
     }
 
@@ -165,9 +168,9 @@ public class Subwindow {
 
 
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
-        if(! labelMode){
+        if (!labelMode) {
             this.stopEditingLabel();
-            switch (keyEvent.getKeyEventType()){
+            switch (keyEvent.getKeyEventType()) {
                 case TAB:
                     this.getFacade().changeActiveDiagram();
                     break;
@@ -183,9 +186,8 @@ public class Subwindow {
                 default:
                     break;
             }
-        }
-        else{
-            switch (keyEvent.getKeyEventType()){
+        } else {
+            switch (keyEvent.getKeyEventType()) {
                 case CHAR:
                     this.addCharToLabel(keyEvent.getKeyChar());
                     break;
@@ -203,34 +205,39 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
      */
-    public void handleMouseEvent(MouseEvent mouseEvent){
-        if(! labelMode){
-            if(this.getFacade().getSelectedElement() != null && !this.getFacade().selectedElementIsLabel()){
-                this.getFacade().stopEditingLabel();
+    public void handleMouseEvent(MouseEvent mouseEvent) throws DomainException {
+        if (!labelMode) {
+            if (this.selected != null && !(this.selected instanceof Label)) {
+                this.stopEditingLabel();
             }
-            switch (mouseEvent.getMouseEventType()){
+            switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
-                    if(this.getFacade().selectedElementIsParty()){
-                        this.getFacade().changePartyPosition(mouseEvent.getPoint());
+                    if (this.selected instanceof Party) {
+                        Party p = (Party) selected;
+                        this.getFacade().changePartyPosition(mouseEvent.getPoint(), p);
                     }
                     break;
                 case PRESSED:
                     handleMousePressed(mouseEvent);
                     break;
                 case RELEASE:
-                    if(this.getFacade().selectedElementIsMessageStart()){
-                        this.getFacade().addNewMessage(mouseEvent.getPoint());
+                    if (this.selected instanceof DiagramRepo.MessageStart) {
+                        DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
+                        List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
+                        mediator.addNewMessagesToOtherSubwindows(newMessages, this);
                     }
                     break;
                 case LEFTCLICK:
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    if(this.getFacade().selectedElementIsParty()){
-                        this.getFacade().changePartyType(mouseEvent.getPoint());
+                    if (this.selected instanceof Party) {
+                        Party p = (Party) selected;
+                        this.getFacade().changePartyType(p);
                     }
-                    if(this.getFacade().getSelectedElement() == null){
-                        this.getFacade().addNewParty(mouseEvent.getPoint());
+                    if (this.selected == null) {
+                        Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
+                        mediator.addNewPartyToOtherSubwindows(newParty, this);
                     }
                     break;
                 default:
@@ -244,14 +251,14 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent containing the information of the event
      */
-    private void handleLeftClick(MouseEvent mouseEvent){
-        Clickable selected = this.getFacade().getSelectedElement();
-        Clickable newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
+    private void handleLeftClick(MouseEvent mouseEvent) {
+        /*DiagramElement oldSelected = this.selected;
+        DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if(selected != null) {
-            if (selected.equals(newSelected) && this.getFacade().selectedElementIsLabel()) {
-                this.getFacade().editLabel();
+            if (selected.equals(newSelected) && oldSelected instanceof Label) {
+                this.getFacade().startEditingLabel();
             }
-        }
+        }*/
     }
 
     /**
@@ -259,60 +266,66 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent){
-        Clickable wouldBe = this.getFacade().wouldBeSelectedElement(mouseEvent.getPoint());
-        if(! this.getFacade().isLabel(wouldBe)){
-            this.getFacade().setSelectedElement(wouldBe);
+    private void handleMousePressed(MouseEvent mouseEvent) {
+        DiagramElement oldSelected = this.selected;
+        DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
+        if (newSelected != null) {
+            if (!(selected instanceof Label)) {
+                this.selected = newSelected;
+            }
+            if (selected.equals(newSelected) && oldSelected instanceof Label) {
+                this.getFacade().startEditingLabel();
+            }
         }
     }
 
-    private void deleteElement(){
-        if(selected instanceof Label){
+    private void deleteElement() {
+        if (selected instanceof Label) {
             Label l = (Label) selected;
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             mediator.removeInReposInOtherSubwindows(deletedElements, this);
         }
     }
 
-    private void stopEditingLabel(){
+    private void stopEditingLabel() {
         selected = null;
         labelContainer = "";
     }
 
-    private void addCharToLabel(char c) throws DomainException{
-        String l = labelContainer.substring(0, getLabelContainer().length()-1);
+    private void addCharToLabel(char c) throws DomainException {
+        String l = labelContainer.substring(0, getLabelContainer().length() - 1);
         l += c;
         l += "I";
         labelContainer = l;
         handleChangeInLabel();
     }
 
-    private void removeLastCharFromLabel() throws DomainException{
-        String l = labelContainer.substring(0, getLabelContainer().length()-2);
+    private void removeLastCharFromLabel() throws DomainException {
+        String l = labelContainer.substring(0, getLabelContainer().length() - 2);
         l += "I";
         labelContainer = l;
-        labelMode = ! checkIfValidLable();
+        labelMode = !checkIfValidLable();
         handleChangeInLabel();
     }
 
-    private void handleChangeInLabel() throws DomainException{
-        if(checkIfValidLable()){
+    private void handleChangeInLabel() throws DomainException {
+        if (checkIfValidLable()) {
             labelMode = false;
             Label selectedLabel = (Label) selected;
-            selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length()-1));
-        }
-        else{
+            selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
+        } else {
             labelMode = true;
         }
     }
 
-    private boolean checkIfValidLable(){
-        if(selected instanceof Label){
+    private boolean checkIfValidLable() {
+        if (selected instanceof Label) {
             Label l = (Label) selected;
-            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length()-1));
+            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1));
         }
         return true;
     }
+}
 
     /*
      * Reads a key event and alters the active diagram based on it
