@@ -140,6 +140,16 @@ public class DomainFacade {
     }
 
     /**
+     * puts a party in the repos with the given location without inserting a new one in the diagram
+     * @param party the party to add
+     * @param location the location of the party
+     */
+    public void addPartyToRepo(Party party, Point2D location){
+        activeRepo.addNewPartyToRepos(party, location);
+        getOtherRepo().addNewPartyToRepos(party, location);
+    }
+
+    /**
      * Changes the type of the party on the given location to the type of the opposite type
      *
      * @param oldParty the party to change the type of
