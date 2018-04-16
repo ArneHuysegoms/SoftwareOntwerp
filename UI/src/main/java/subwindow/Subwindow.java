@@ -379,7 +379,9 @@ public class Subwindow {
     }
 
     public void moveSubwindow(TitleBarClick titleBarClick, Point2D point){
-
+        double x = titleBarClick.getInitialClickPosition().getX() - this.getPosition().getX();
+        double y = titleBarClick.getInitialClickPosition().getY() - this.getPosition().getY();
+        setPosition(new Point2D.Double(point.getX() + x, point.getY() + y));
     }
 
     /**
