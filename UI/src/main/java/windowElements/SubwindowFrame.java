@@ -46,9 +46,9 @@ public class SubwindowFrame{
 
     public class SubwindowFrameRectangle implements Clickable {
 
-        Point2D position;
-        int height;
-        int width;
+        private Point2D position;
+        private int height;
+        private int width;
 
         public SubwindowFrameRectangle(Point2D position, int height, int width){
             this.position = position;
@@ -63,6 +63,30 @@ public class SubwindowFrame{
             double startY = position.getY();
             double endY = position.getY() + height;
             return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+        }
+
+        public Point2D getPosition() {
+            return position;
+        }
+
+        private void setPosition(Point2D position) {
+            this.position = position;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        private void setHeight(int height) {
+            this.height = height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        private void setWidth(int width) {
+            this.width = width;
         }
     }
 }

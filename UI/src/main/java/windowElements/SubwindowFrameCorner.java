@@ -8,10 +8,19 @@ public class SubwindowFrameCorner implements Clickable {
 
     private final int OFFSET = 5;
 
-    private Point2D center;
+    public Point2D center;
 
     public SubwindowFrameCorner(Point2D centerPoint){
         this.center = centerPoint;
+    }
+
+
+    public Point2D getCenter() {
+        return center;
+    }
+
+    private void setCenter(Point2D center) {
+        this.center = center;
     }
 
     @Override

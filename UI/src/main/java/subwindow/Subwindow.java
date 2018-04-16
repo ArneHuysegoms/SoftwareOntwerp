@@ -145,6 +145,9 @@ public class Subwindow {
     }
 
     public void setWidth(int width) {
+        if(width < 0){
+            throw new IllegalArgumentException("Width can't be less than zero");
+        }
         this.width = width;
     }
 
@@ -153,6 +156,9 @@ public class Subwindow {
     }
 
     public void setHeight(int height) {
+        if(height < 0){
+            throw new IllegalArgumentException("Height can't be less than zero");
+        }
         this.height = height;
     }
 
@@ -251,11 +257,7 @@ public class Subwindow {
                     handleMousePressed(mouseEvent);
                     break;
                 case RELEASE:
-                    if (this.selected instanceof DiagramRepo.MessageStart) {
-                        DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
-                        List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
-                        mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
-                    }
+                    handleReleaseClick(mouseEvent);
                     break;
                 case LEFTCLICK:
                     handleLeftClick(mouseEvent);
@@ -267,6 +269,7 @@ public class Subwindow {
                     }
                     if (this.selected == null) {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
+                        selected = newParty.getLabel();
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -281,8 +284,15 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent containing the information of the event
      */
-    private void handleLeftClick(MouseEvent mouseEvent) {
-        if(frameElement != null){
+    private void handleReleaseClick(MouseEvent mouseEvent) {
+        if (this.selected instanceof DiagramRepo.MessageStart) {
+            DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
+            List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
+            selected = newMessages.get(0).getLabel();
+            mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
+        }
+
+        else if(frameElement != null){
             if(frameElement instanceof CloseButton){
                 CloseButton c = (CloseButton) frameElement;
                 c.performAction();
@@ -301,6 +311,75 @@ public class Subwindow {
 
             }
         }
+    }
+
+    private void handleLeftClick(MouseEvent mouseEvent){
+
+    }
+
+    public void resizeByCorner(SubwindowFrameCorner corner, Point2D point){
+
+        Point2D originalPosition = this.getPosition();
+        int originalWidth = this.width;
+        int originalHeight = this.height;
+        if(Math.abs(corner.getCenter().getX() - this.getPosition().getX()) <= 10){
+            if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
+                //TOP LEFT
+                this.setPosition(point);
+                this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+                this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
+            }
+            else{
+                //BOTTOM LEFT
+                this.setPosition(new Point2D.Double(point.getY(), this.getPosition().getY()));
+                this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+                this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
+            }
+        }
+        else {
+            if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
+                //TOP RIGHT
+                this.setPosition(new Point2D.Double(this.getPosition().getX(), point.getY()));
+                this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+                this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
+            }
+            else{
+                //BOTTOM RIGHT
+                this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+                this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
+            }
+
+        }
+    }
+
+    public void resizeByFrameRectangle(SubwindowFrame.SubwindowFrameRectangle rectangle, Point2D point){
+        Point2D originalPosition = this.getPosition();
+        int originalWidth = this.width;
+        int originalHeight = this.height;
+        if(Math.abs(rectangle.getPosition().getX() - this.getPosition().getX()) <= 10){
+            // LEFT
+            setPosition(new Point2D.Double(point.getX(),originalPosition.getY()));
+            this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+        }
+        else if(Math.abs(rectangle.getPosition().getX() - (this.getPosition().getX() + originalWidth)) <= 10){
+            // RIGHT
+            setPosition(new Point2D.Double(point.getX(),originalPosition.getY()));
+            this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+        }
+        else if(Math.abs(rectangle.getPosition().getY() - this.getPosition().getY()) <= 10){
+            // TOP
+            setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
+            this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
+        }
+        else if(Math.abs(rectangle.getPosition().getY() - (this.getPosition().getY() + originalHeight)) <= 10){
+            // BOTTOM
+            setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
+            this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
+        }
+    }
+
+    public void moveSubwindow(TitleBarClick titleBarClick, Point2D point){
+
     }
 
     /**
