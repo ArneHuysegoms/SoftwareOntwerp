@@ -2,7 +2,9 @@ package facade;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
+import diagram.label.MessageLabel;
 import diagram.party.Actor;
+import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.Before;
@@ -154,5 +156,17 @@ public class FacadeTest {
         assertTrue(sequenceMessageRepo.getAllMessages().size() == 0);
         CommunicationMessageRepo communicationMessageRepo = (CommunicationMessageRepo) f.getOtherRepo().getMessageRepo();
         assertTrue(communicationMessageRepo.getMap().size() == 0);
+    }
+
+    @Test
+    public void Test_addPartyToRepos() throws DomainException{
+        DomainFacade f = new DomainFacade();
+        Party party = new Object(new MessageLabel("a:A"));
+        f.addPartyToRepo(party, standardPoint);
+        assertTrue(f.getActiveRepo().getPartyRepo().getAllParties().size() == 1);
+        assertTrue(f.getActiveRepo().getLabelRepo().getMap().size() == 1);
+        assertTrue(f.getOtherRepo().getPartyRepo().getAllParties().size() == 1);
+        assertTrue(f.getOtherRepo().getLabelRepo().getMap().size() == 1);
+        assertTrue(f.getDiagram().getParties().size() == 0);
     }
 }
