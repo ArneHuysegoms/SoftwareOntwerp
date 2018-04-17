@@ -56,10 +56,6 @@ public class SubwindowTest {
         assertTrue(subwindow.getMediator().equals(interactionMediator));
     }
     @Test
-    public void test_button_subwindow(){
-        assertTrue(subwindow.getButton().getSubwindow().equals(subwindow));
-    }
-    @Test
     public void test_mediator_subwindow(){
         assertTrue(subwindow.getMediator().getSubwindows().contains(subwindow));
     }
@@ -201,13 +197,11 @@ public class SubwindowTest {
             System.out.println(d.getMessage());
         }
         assertFalse(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
-        assertFalse(subwindow2.getFacade().getActiveRepo().getLabelRepo().getMap().isEmpty());
-
     }
 
     @Test
     public void test_subwindow2_frame_has_4_corners(){
-        assertTrue(subwindow2.getCorners().size() == 4);
+        assertTrue(subwindow2.getFrame().getCorners().size() == 4);
     }
     @Test
     public void test_subwindow2_frame_has_TL_corner(){
@@ -215,8 +209,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow2.getCorners().get(0).getCenter().getX() == 200);
-        assertTrue(subwindow2.getCorners().get(0).getCenter().getY() == 200);
+        assertTrue(subwindow2.getFrame().getCorners().get(0).getCenter().getX() == 200);
+        assertTrue(subwindow2.getFrame().getCorners().get(0).getCenter().getY() == 200);
     }
     @Test
     public void test_subwindow2_frame_has_TR_corner(){
@@ -224,8 +218,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow2.getCorners().get(1).getCenter().getX() == 800);
-        assertTrue(subwindow2.getCorners().get(1).getCenter().getY() == 200);
+        assertTrue(subwindow2.getFrame().getCorners().get(1).getCenter().getX() == 800);
+        assertTrue(subwindow2.getFrame().getCorners().get(1).getCenter().getY() == 200);
     }
     @Test
     public void test_subwindow2_frame_has_BL_corner(){
@@ -233,8 +227,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow2.getCorners().get(2).getCenter().getX() == 200);
-        assertTrue(subwindow2.getCorners().get(2).getCenter().getY() == 800);
+        assertTrue(subwindow2.getFrame().getCorners().get(2).getCenter().getX() == 200);
+        assertTrue(subwindow2.getFrame().getCorners().get(2).getCenter().getY() == 800);
     }
     @Test
     public void test_subwindow2_frame_has_BR_corner(){
@@ -242,8 +236,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow2.getCorners().get(3).getCenter().getX() == 800);
-        assertTrue(subwindow2.getCorners().get(3).getCenter().getY() == 800);
+        assertTrue(subwindow2.getFrame().getCorners().get(3).getCenter().getX() == 800);
+        assertTrue(subwindow2.getFrame().getCorners().get(3).getCenter().getY() == 800);
     }
 
     @Test
