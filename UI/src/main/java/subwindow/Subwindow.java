@@ -305,6 +305,22 @@ public class Subwindow {
         this.selected = selected;
     }
 
+    public List<SubwindowFrameCorner> getCorners() {
+        return corners;
+    }
+
+    private void setCorners(List<SubwindowFrameCorner> corners) {
+        this.corners = corners;
+    }
+
+    public SubwindowFrame getFrame() {
+        return frame;
+    }
+
+    private void setFrame(SubwindowFrame frame) {
+        this.frame = frame;
+    }
+
     /**
      * handle the given keyevent accordingly
      * @param keyEvent
