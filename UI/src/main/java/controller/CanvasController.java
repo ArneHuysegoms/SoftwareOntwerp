@@ -156,13 +156,12 @@ public class CanvasController {
 
     private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
         this.setActiveSubwindow(newActiveSubWindow);
-        changeLevelForActiveSubWindow();
-        //this.setSubwindowLevels();
+        this.changeLevelForActiveSubWindow();
     }
 
     private void changeLevelForActiveSubWindow() {
         for (SubWindowLevel s : subwindows) {
-            if (s.equals(getActiveSubwindow())) {
+            if (s.getSubwindow().equals(getActiveSubwindow())) {
                 s.setLevel(getCorrectLevel());
             }
         }
@@ -172,7 +171,7 @@ public class CanvasController {
         Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), new InteractionMediator());
         int level = getCorrectLevel();
         addSubwindow(subwindow, level);
-        this.setActiveSubwindow(subwindow);
+        this.changeActiveSubwindow(subwindow);
     }
 
     private void copyActiveSubWindow() {
@@ -180,7 +179,7 @@ public class CanvasController {
             Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
             int level = getCorrectLevel();
             addSubwindow(subwindow, level);
-            this.setActiveSubwindow(subwindow);
+            this.changeActiveSubwindow(subwindow);
         }
     }
 
