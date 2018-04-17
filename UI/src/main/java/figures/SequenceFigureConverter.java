@@ -123,8 +123,8 @@ public class SequenceFigureConverter extends Converter {
             for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {
                 Point2D point = getSubwindow().getAbsolutePosition(entry.getValue());
                 if (entry.getKey() instanceof Actor) {
-                    start = new Point2D.Double(point.getX(), point.getY() + MessageRepo.HEIGHT);
-                    end = new Point2D.Double(point.getX(), point.getY() + PartyRepo.OBJECTHEIGHT + MessageRepo.HEIGHT * 4);
+                    start = new Point2D.Double(point.getX(), point.getY() + PartyRepo.OBJECTHEIGHT);
+                    end = new Point2D.Double(point.getX(), point.getY() + point.getY() + PartyRepo.OBJECTHEIGHT * 4);
                     lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 } else {
                     start = new Point2D.Double(point.getX() + (PartyRepo.OBJECTWIDTH / 2), point.getY() + PartyRepo.OBJECTHEIGHT);
