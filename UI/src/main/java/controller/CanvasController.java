@@ -56,7 +56,25 @@ public class CanvasController {
                 this.subwindows.remove(s);
             }
         }
+        setNewActiveSubWindow();
         //this.setSubwindowLevels();
+    }
+
+    public void setNewActiveSubWindow(){
+        SubWindowLevel s = findHighestSubwindowLevel();
+        activeSubwindow = s.getSubwindow();
+    }
+
+    public SubWindowLevel findHighestSubwindowLevel(){
+        int level = -1;
+        SubWindowLevel chosen = null;
+        for(SubWindowLevel s : subwindows){
+            if(s.getLevel() > level){
+                chosen = s;
+                level = s.getLevel();
+            }
+        }
+        return chosen;
     }
 
     public void addSubwindow(Subwindow subwindow, int level){
