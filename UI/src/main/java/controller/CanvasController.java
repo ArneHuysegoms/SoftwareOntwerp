@@ -146,7 +146,7 @@ public class CanvasController {
     private boolean checkFordragging(MouseEvent mouseEvent) {
         for (SubWindowLevel subwindow : subwindows) {
             if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                this.activeSubwindow = subwindow.getSubwindow();
+                changeActiveSubwindow(subwindow.getSubwindow());
                 return true;
             }
         }
