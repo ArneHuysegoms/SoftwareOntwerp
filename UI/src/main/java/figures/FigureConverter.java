@@ -61,7 +61,7 @@ public class FigureConverter {
         Subwindow sub;
         for (CanvasController.SubWindowLevel subLvl : subwindows) {
             sub = subLvl.getSubwindow();
-            setConverters(sub.getPosition(), sub.getWidth(), sub.getHeight());
+            setConverters(sub);
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
@@ -83,16 +83,16 @@ public class FigureConverter {
      *
      * @param graphics object used to draw on the program's window
      * @param position coordinate of the top-left point of the subwindow
-     * @param width the subwindow's width
-     * @param height the subwindow's height
+     * @param width    the subwindow's width
+     * @param height   the subwindow's height
      */
     private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
-        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null,0,0,2000,2000);
+        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null, 0, 0, 2000, 2000);
     }
 
-    public void setConverters(Point2D subStart, int width, int height) {
-        sequenceFC = new SequenceFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
-        communicationFC = new CommunicationFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
+    public void setConverters(Subwindow sub) {
+        sequenceFC = new SequenceFigureConverter(sub);
+        communicationFC = new CommunicationFigureConverter(sub);
     }
 
     /*
