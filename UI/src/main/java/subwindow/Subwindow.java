@@ -85,7 +85,7 @@ public class Subwindow {
     //TODO also works for updating frame
     private void createFrame(Button button) {
 
-        frame = new SubwindowFrame(position, width, height, button);
+        frame = new SubwindowFrame(position, height, width, button);
 
     }
 
@@ -472,16 +472,16 @@ public class Subwindow {
                 this.setWidth(new Double(getWidth() + deltaToprightX).intValue());
                 break;
             case BOTTOMLEFT:
-                double deltaBottomleftX = corner.getCenter().getX() - point.getX();
+                double deltaBottomleftX = - (corner.getCenter().getX() - point.getX());
                 double deltaBottomleftY = - (corner.getCenter().getY() - point.getY());
-                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY() + deltaBottomleftY));
+                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY()));
                 this.setHeight(new Double(getHeight() + deltaBottomleftY).intValue());
-                this.setWidth(new Double(getWidth() + deltaBottomleftX).intValue());
+                this.setWidth(new Double(getWidth() - deltaBottomleftX).intValue());
                 break;
             case BOTTOMRIGHT:
                 double deltaBottomrightX = - (corner.getCenter().getX() - point.getX());
                 double deltaBottomrightY = - (corner.getCenter().getY() - point.getY());
-                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
+                //this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
                 this.setHeight(new Double(getHeight() + deltaBottomrightY).intValue());
                 this.setWidth(new Double(getWidth() + deltaBottomrightX).intValue());
                 break;
