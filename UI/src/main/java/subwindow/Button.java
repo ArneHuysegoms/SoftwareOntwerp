@@ -54,7 +54,7 @@ public abstract class Button implements Clickable{
      * @return controller for this button
      */
     public CanvasController getController(){
-        return this.getController();
+        return this.controller;
     }
 
     public void setSubwindow(Subwindow subwindow){

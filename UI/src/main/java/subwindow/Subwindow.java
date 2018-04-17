@@ -398,6 +398,8 @@ public class Subwindow {
                         this.getFacade().changePartyType(p);
                     }
                     if (this.selected == null) {
+                        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
+                        mouseEvent.setPoint(relativePoint);
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
                         selected = newParty.getLabel();
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
@@ -416,6 +418,8 @@ public class Subwindow {
      */
     private void handleReleaseClick(MouseEvent mouseEvent) {
         if (this.selected instanceof DiagramRepo.MessageStart) {
+            Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
+            mouseEvent.setPoint(relativePoint);
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
@@ -540,6 +544,8 @@ public class Subwindow {
     private void handleMousePressed(MouseEvent mouseEvent){
         frameElement = findClickedElementOfFrame(mouseEvent.getPoint());
         if(frameElement == null) {
+            Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
+            mouseEvent.setPoint(relativePoint);
             DiagramElement oldSelected = this.selected;
             DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
             if (newSelected != null) {
@@ -551,6 +557,10 @@ public class Subwindow {
                 }
             }
         }
+    }
+
+    private Point2D getRelativePoint( Point2D location){
+        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY()  - this.getPosition().getY());
     }
 
     /**
