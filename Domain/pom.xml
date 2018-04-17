@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Domain</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>Interactr</groupId>
+            <artifactId>UI</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

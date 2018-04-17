@@ -78,23 +78,27 @@ public class CanvasController {
                 createNewSubwindow();
                 break;
             default:
-                activeSubwindow.handleKeyEvent(keyEvent);
-                //setSubwindowLevels();
+                if(this.getActiveSubwindow() != null) {
+                    activeSubwindow.handleKeyEvent(keyEvent);
+                    //setSubwindowLevels();
+                }
                 break;
         }
     }
 
     public void handleMouseEvent(MouseEvent mouseEvent){
         Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-        Point2D relativePoint = getRelativePoint(subwindow, mouseEvent.getPoint());
-        if(! subwindow.equals(getActiveSubwindow())){
-            changeActiveSubwindow(activeSubwindow);
-        }
-        try {
-            subwindow.handleMouseEvent(mouseEvent);
-        }
-        catch (DomainException exc){
-            exc.printStackTrace();
+        if(subwindow != null) {
+            Point2D relativePoint = getRelativePoint(subwindow, mouseEvent.getPoint());
+            mouseEvent.setPoint(relativePoint);
+            if (!subwindow.equals(getActiveSubwindow())) {
+                changeActiveSubwindow(activeSubwindow);
+            }
+            try {
+                subwindow.handleMouseEvent(mouseEvent);
+            } catch (DomainException exc) {
+                exc.printStackTrace();
+            }
         }
     }
 
