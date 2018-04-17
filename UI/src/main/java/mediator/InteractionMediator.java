@@ -48,6 +48,9 @@ public class InteractionMediator {
         for(Subwindow s : subwindows){
             if(! s.equals(subwindow)) {
                 s.getFacade().deleteElementsInRepos(deletedElements);
+                if(deletedElements.contains(s.getSelected())){
+                    s.setSelected(null);
+                }
             }
         }
     }
