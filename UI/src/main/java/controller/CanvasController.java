@@ -158,7 +158,7 @@ public class CanvasController {
         return highest;
     }
 
-    private class SubWindowLevel implements Comparable<SubWindowLevel> {
+    public class SubWindowLevel implements Comparable<SubWindowLevel> {
 
         private Subwindow subwindow;
         private int level;
