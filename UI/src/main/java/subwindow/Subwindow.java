@@ -10,10 +10,7 @@ import mediator.InteractionMediator;
 import repo.diagram.DiagramRepo;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import windowElements.SubwindowFrame;
-import windowElements.SubwindowFrameCorner;
-import windowElements.TitleBar;
-import windowElements.TitleBarClick;
+import windowElements.*;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -34,12 +31,11 @@ public class Subwindow {
     private DiagramElement selected;
     private Clickable frameElement;
 
-    private List<SubwindowFrameCorner> corners;
     private SubwindowFrame frame;
-    private TitleBar titleBar;
 
     /**
      * default contructor for subwindow with default width and height
+     *
      * @param pos
      * @param button
      * @param mediator
@@ -54,14 +50,15 @@ public class Subwindow {
         this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame();
+        createFrame(button);
 
         button.setSubwindow(this);
         mediator.addSubwindow(this);
-        }
+    }
 
     /**
      * contructor for subwindow with default width and height
+     *
      * @param pos
      * @param button
      * @param facade
@@ -76,7 +73,7 @@ public class Subwindow {
         this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame();
+        createFrame(button);
 
         button.setSubwindow(this);
         mediator.addSubwindow(this);
@@ -85,19 +82,11 @@ public class Subwindow {
     /**
      * creates the frame with corners for resizing, titlebar and close button
      */
-    //TODO also works fot updating frame
-    private void createFrame(){
-        corners = new ArrayList<>();
-        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX(), position.getY())));
-        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX() + width, position.getY())));
-        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX(), position.getY() + height)));
-        corners.add(new SubwindowFrameCorner(new Point2D.Double(position.getX() + width, position.getY() + height)));
+    //TODO also works for updating frame
+    private void createFrame(Button button) {
 
-        frame = new SubwindowFrame(position, width, height);
+        frame = new SubwindowFrame(position, width, height, button);
 
-        titleBar = new TitleBar(position, width - 30);
-
-        button.setPosition(new Point2D.Double(position.getX() + width - 30, position.getY()));
     }
 
     public void updateLabels(char c) {
@@ -118,6 +107,7 @@ public class Subwindow {
 
     /**
      * sets the mediator for this subwindow
+     *
      * @param mediator
      */
     public void setMediator(InteractionMediator mediator) throws IllegalArgumentException {
@@ -143,6 +133,7 @@ public class Subwindow {
 
     /**
      * checks if this button is clicked
+     *
      * @param position
      */
     public boolean isClicked(Point2D position) {
@@ -162,6 +153,7 @@ public class Subwindow {
 
     /**
      * sets the close button for this subwindow
+     *
      * @param button
      */
     private void setButton(Button button) {
@@ -173,6 +165,7 @@ public class Subwindow {
 
     /**
      * update the container with the label
+     *
      * @param c
      */
     public void updateLabelContainer(char c) {
@@ -195,10 +188,11 @@ public class Subwindow {
 
     /**
      * sets the width of this subwindow
+     *
      * @param width
      */
     public void setWidth(int width) {
-        if(width < 0){
+        if (width < 0) {
             throw new IllegalArgumentException("Width can't be less than zero");
         }
         this.width = width;
@@ -213,10 +207,11 @@ public class Subwindow {
 
     /**
      * sets the height of this subwindow
+     *
      * @param height
      */
     public void setHeight(int height) {
-        if(height < 0){
+        if (height < 0) {
             throw new IllegalArgumentException("Height can't be less than zero");
         }
         this.height = height;
@@ -231,6 +226,7 @@ public class Subwindow {
 
     /**
      * sets the position of the upper left corner for this subwindow
+     *
      * @param position2D
      */
     public void setPosition(Point2D position2D) {
@@ -246,6 +242,7 @@ public class Subwindow {
 
     /**
      * sets the subwindow in the given labelmode
+     *
      * @param labelMode
      */
     public void setLabelMode(boolean labelMode) {
@@ -261,6 +258,7 @@ public class Subwindow {
 
     /**
      * sets the active label
+     *
      * @param label
      */
     public void setLabel(Label label) {
@@ -276,6 +274,7 @@ public class Subwindow {
 
     /**
      * sets the facade for this subwindow
+     *
      * @param facade
      */
     public void setFacade(DomainFacade facade) {
@@ -291,6 +290,7 @@ public class Subwindow {
 
     /**
      * sets the labelcontainer for the active label
+     *
      * @param labelContainer
      */
     public void setLabelContainer(String labelContainer) {
@@ -305,14 +305,6 @@ public class Subwindow {
         this.selected = selected;
     }
 
-    public List<SubwindowFrameCorner> getCorners() {
-        return corners;
-    }
-
-    private void setCorners(List<SubwindowFrameCorner> corners) {
-        this.corners = corners;
-    }
-
     public SubwindowFrame getFrame() {
         return frame;
     }
@@ -323,6 +315,7 @@ public class Subwindow {
 
     /**
      * handle the given keyevent accordingly
+     *
      * @param keyEvent
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
@@ -336,12 +329,12 @@ public class Subwindow {
                     this.deleteElement();
                     break;
                 case CHAR:
-                    if(selected instanceof Label) {
+                    if (selected instanceof Label) {
                         this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    if(selected instanceof Label) {
+                    if (selected instanceof Label) {
                         this.removeLastCharFromLabel();
                     }
                     break;
@@ -351,12 +344,12 @@ public class Subwindow {
         } else {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
-                    if(selected instanceof Label) {
+                    if (selected instanceof Label) {
                         this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    if(selected instanceof Label) {
+                    if (selected instanceof Label) {
                         this.removeLastCharFromLabel();
                     }
                     break;
@@ -418,119 +411,167 @@ public class Subwindow {
      */
     private void handleReleaseClick(MouseEvent mouseEvent) {
         if (this.selected instanceof DiagramRepo.MessageStart) {
-            Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-            mouseEvent.setPoint(relativePoint);
+            /*Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
+            mouseEvent.setPoint(relativePoint);*/
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
             mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
+    }
 
-        else if(frameElement != null){
-            if(frameElement instanceof CloseButton){
+    public void handleMovement(Point2D movedLocation) {
+        if (frameElement != null) {
+            if (frameElement instanceof CloseButton) {
                 CloseButton c = (CloseButton) frameElement;
                 c.performAction();
-            }
-            else if(frameElement instanceof SubwindowFrameCorner){
+            } else if (frameElement instanceof SubwindowFrameCorner) {
                 SubwindowFrameCorner corner = (SubwindowFrameCorner) frameElement;
-                resizeByCorner(corner, mouseEvent.getPoint());
-                createFrame();
-            }
-            else if(frameElement instanceof SubwindowFrame.SubwindowFrameRectangle){
-                SubwindowFrame.SubwindowFrameRectangle frameRectangle = (SubwindowFrame.SubwindowFrameRectangle) frameElement;
-                resizeByFrameRectangle(frameRectangle, mouseEvent.getPoint());
-                createFrame();
-            }
-            else if(frameElement instanceof TitleBarClick){
+                resizeByCorner(corner, movedLocation);
+                createFrame(frame.getButton());
+            } else if (frameElement instanceof SubwindowFrameRectangle) {
+                SubwindowFrameRectangle frameRectangle = (SubwindowFrameRectangle) frameElement;
+                resizeByFrameRectangle(frameRectangle, movedLocation);
+                createFrame(frame.getButton());
+            } else if (frameElement instanceof TitleBarClick) {
                 TitleBarClick titleBarClick = (TitleBarClick) frameElement;
-                moveSubwindow(titleBarClick, mouseEvent.getPoint());
-                createFrame();
+                moveSubwindow(titleBarClick, movedLocation);
+                createFrame(frame.getButton());
             }
-
         }
     }
 
-    private void handleLeftClick(MouseEvent mouseEvent){
+    private void handleLeftClick(MouseEvent mouseEvent) {
 
     }
 
     /**
      * resize the subwindow when the user drags by the corner
+     *
      * @param corner
      * @param point
      */
-    public void resizeByCorner(SubwindowFrameCorner corner, Point2D point){
+    public void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
 
-        Point2D originalPosition = this.getPosition();
+        Point2D ogPos = this.getPosition();
         int originalWidth = this.width;
         int originalHeight = this.height;
-        if(Math.abs(corner.getCenter().getX() - this.getPosition().getX()) <= 10){
+        switch (corner.getType()){
+            case TOPLEFT:
+                double deltaTopleftX = - (corner.getCenter().getX() - point.getX());
+                double deltaTopleftY = - (corner.getCenter().getY() - point.getY());
+                this.setPosition(new Point2D.Double(ogPos.getX() + deltaTopleftX, ogPos.getY() + deltaTopleftY));
+                this.setHeight(new Double(getHeight() - deltaTopleftY).intValue());
+                this.setWidth(new Double(getWidth() - deltaTopleftX).intValue());
+                break;
+            case TOPRIGHT:
+                double deltaToprightX =  - (corner.getCenter().getX() - point.getX());
+                double deltaToprightY =  - (corner.getCenter().getY() - point.getY());
+                this.setPosition(new Point2D.Double(ogPos.getX(), ogPos.getY() + deltaToprightY));
+                this.setHeight(new Double(getHeight() - deltaToprightY).intValue());
+                this.setWidth(new Double(getWidth() + deltaToprightX).intValue());
+                break;
+            case BOTTOMLEFT:
+                double deltaBottomleftX = corner.getCenter().getX() - point.getX();
+                double deltaBottomleftY = - (corner.getCenter().getY() - point.getY());
+                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY() + deltaBottomleftY));
+                this.setHeight(new Double(getHeight() + deltaBottomleftY).intValue());
+                this.setWidth(new Double(getWidth() + deltaBottomleftX).intValue());
+                break;
+            case BOTTOMRIGHT:
+                double deltaBottomrightX = - (corner.getCenter().getX() - point.getX());
+                double deltaBottomrightY = - (corner.getCenter().getY() - point.getY());
+                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
+                this.setHeight(new Double(getHeight() + deltaBottomrightY).intValue());
+                this.setWidth(new Double(getWidth() + deltaBottomrightX).intValue());
+                break;
+            default:
+                break;
+        }
+        createFrame(getButton());
+        /*if (Math.abs(corner.getCenter().getX() - this.getPosition().getX()) <= 10) {
             if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
                 //TOP LEFT
                 this.setPosition(point);
-                this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+                this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
                 this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-            }
-            else{
+            } else {
                 //BOTTOM LEFT
                 this.setPosition(new Point2D.Double(point.getY(), this.getPosition().getY()));
-                this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+                this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
                 this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
             }
-        }
-        else {
+        } else {
             if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
                 //TOP RIGHT
                 this.setPosition(new Point2D.Double(this.getPosition().getX(), point.getY()));
-                this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+                this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
                 this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-            }
-            else{
+            } else {
                 //BOTTOM RIGHT
-                this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+                this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
                 this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
             }
 
-        }
+        }*/
     }
 
     /**
      * resize the subwindow when the user drags by one of the borders
+     *
      * @param rectangle
      * @param point
      */
-    public void resizeByFrameRectangle(SubwindowFrame.SubwindowFrameRectangle rectangle, Point2D point){
-        Point2D originalPosition = this.getPosition();
-        int originalWidth = this.width;
-        int originalHeight = this.height;
-        if(Math.abs(rectangle.getPosition().getX() - this.getPosition().getX()) <= 10){
+    public void resizeByFrameRectangle(SubwindowFrameRectangle rectangle, Point2D point) {
+        switch (rectangle.getType()) {
+            case TOP:
+                double topDelta = this.getPosition().getY() - point.getY();
+                this.setPosition(new Point2D.Double(position.getX(), position.getY() - topDelta));
+                this.setHeight(new Double(getHeight() + topDelta).intValue());
+                break;
+            case LEFT:
+                double leftDelta = this.getPosition().getX() - point.getX();
+                this.setPosition(new Point2D.Double(position.getX() - leftDelta, position.getY()));
+                this.setWidth(new Double(getWidth() + leftDelta).intValue());
+                break;
+            case RIGHT:
+                double rightDelta = - (this.getPosition().getX() + width - point.getX());
+                this.setWidth(new Double(getWidth() + rightDelta).intValue());
+                break;
+            case BOTTOM:
+                double bottomDelta = - (this.getPosition().getY() + height - point.getY());
+                this.setHeight(new Double(getHeight() + bottomDelta).intValue());
+                break;
+            default:
+                break;
+        }
+        createFrame(frame.getButton());
+        /*if (Math.abs(rectangle.getPosition().getX() - this.getPosition().getX()) <= 10) {
             // LEFT
-            setPosition(new Point2D.Double(point.getX(),originalPosition.getY()));
-            this.setWidth( new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
-        }
-        else if(Math.abs(rectangle.getPosition().getX() - (this.getPosition().getX() + originalWidth)) <= 10){
+            setPosition(new Point2D.Double(point.getX(), originalPosition.getY()));
+            this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
+        } else if (Math.abs(rectangle.getPosition().getX() - (this.getPosition().getX() + originalWidth)) <= 10) {
             // RIGHT
-            setPosition(new Point2D.Double(point.getX(),originalPosition.getY()));
-            this.setWidth( new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
-        }
-        else if(Math.abs(rectangle.getPosition().getY() - this.getPosition().getY()) <= 10){
+            setPosition(new Point2D.Double(point.getX(), originalPosition.getY()));
+            this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
+        } else if (Math.abs(rectangle.getPosition().getY() - this.getPosition().getY()) <= 10) {
             // TOP
             setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
             this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-        }
-        else if(Math.abs(rectangle.getPosition().getY() - (this.getPosition().getY() + originalHeight)) <= 10){
+        } else if (Math.abs(rectangle.getPosition().getY() - (this.getPosition().getY() + originalHeight)) <= 10) {
             // BOTTOM
             setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
             this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
-        }
+        }*/
     }
 
     /**
      * move the subwindow when the user drags by the titlebar
+     *
      * @param titleBarClick
      * @param point
      */
-    public void moveSubwindow(TitleBarClick titleBarClick, Point2D point){
+    public void moveSubwindow(TitleBarClick titleBarClick, Point2D point) {
         double x = titleBarClick.getInitialClickPosition().getX() - this.getPosition().getX();
         double y = titleBarClick.getInitialClickPosition().getY() - this.getPosition().getY();
         setPosition(new Point2D.Double(point.getX() + x, point.getY() + y));
@@ -541,34 +582,31 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent){
-        frameElement = findClickedElementOfFrame(mouseEvent.getPoint());
-        if(frameElement == null) {
-            Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-            mouseEvent.setPoint(relativePoint);
-            DiagramElement oldSelected = this.selected;
-            DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-            if (newSelected != null) {
-                if (oldSelected.equals(newSelected) && oldSelected instanceof Label) {
-                    selected = newSelected;
-                    this.startEditingLabel();
-                } else {
-                    selected = newSelected;
-                }
+    private void handleMousePressed(MouseEvent mouseEvent) {
+        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
+        mouseEvent.setPoint(relativePoint);
+        DiagramElement oldSelected = this.selected;
+        DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
+        if (newSelected != null) {
+            if (oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+                selected = newSelected;
+                this.startEditingLabel();
+            } else {
+                selected = newSelected;
             }
         }
     }
 
-    private Point2D getRelativePoint( Point2D location){
-        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY()  - this.getPosition().getY());
+    private Point2D getRelativePoint(Point2D location) {
+        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
-    /**
+    /*
      * returns the element clicked by the user
      * @param clickLocation
      * @return the clicked element
-     */
-    private Clickable findClickedElementOfFrame(Point2D clickLocation){
+     *//*
+    public Clickable findClickedElementOfFrame(Point2D clickLocation){
         for(SubwindowFrameCorner corner : corners){
             if(corner.isClicked(clickLocation)){
                 return corner;
@@ -586,12 +624,17 @@ public class Subwindow {
             return button;
         }
         return null;
+    }*/
+
+    public boolean frameIsClicked(Point2D clickLocation) {
+        frameElement = frame.getFrameElement(clickLocation);
+        return this.frame.isClicked(clickLocation);
     }
 
     /**
      * start editing a label in the subwindow
      */
-    private void startEditingLabel(){
+    private void startEditingLabel() {
         Label labelInEdit = (Label) selected;
         labelContainer = labelInEdit.getLabel() + "I";
     }
@@ -617,6 +660,7 @@ public class Subwindow {
 
     /**
      * adds the given char to the active label
+     *
      * @param c
      */
     private void addCharToLabel(char c) throws DomainException {
@@ -640,7 +684,6 @@ public class Subwindow {
 
     /**
      * handle a change in the active label
-     *
      */
     private void handleChangeInLabel() throws DomainException {
         if (checkIfValidLable()) {
@@ -654,6 +697,7 @@ public class Subwindow {
 
     /**
      * check if the active label is valid
+     *
      * @return true if the label is valid
      */
     private boolean checkIfValidLable() {

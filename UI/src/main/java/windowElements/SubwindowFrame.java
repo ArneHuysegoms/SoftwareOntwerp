@@ -1,5 +1,6 @@
 package windowElements;
 
+import subwindow.Button;
 import subwindow.Clickable;
 
 import java.awt.geom.Point2D;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * subwindow frame, consists of subwindowframe rectangles for ease of use
  */
-public class SubwindowFrame{
+public class SubwindowFrame implements Clickable{
 
     private final int FRAMEHOFFSET = 5;
 
@@ -17,7 +18,10 @@ public class SubwindowFrame{
     int subwindowHeight;
     int subwindowWidth;
 
-    private List<SubwindowFrame.SubwindowFrameRectangle> rectangles;
+    private List<SubwindowFrameRectangle> rectangles;
+    private List<SubwindowFrameCorner> corners;
+    private TitleBar titleBar;
+    private Button button;
 
     /**
      * create a new subwindowframe based on the given properties
@@ -25,15 +29,26 @@ public class SubwindowFrame{
      * @param subwindowHeight the height of the subwindow
      * @param subwindowWidth the width of the subwindow
      */
-    public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth){
+    public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth, Button button){
         this.setSubwindowPoint(subWindowPoint);
         this.setSubwindowHeight(subwindowHeight);
         this.setSubwindowWidth(subwindowWidth);
         rectangles = new ArrayList<>();
-        rectangles.add(new SubwindowFrame.SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() + FRAMEHOFFSET, subWindowPoint.getY() - FRAMEHOFFSET), 10, subwindowWidth - 10));
-        rectangles.add(new SubwindowFrame.SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() - FRAMEHOFFSET, subWindowPoint.getY() + FRAMEHOFFSET), subwindowHeight - 10, 10));
-        rectangles.add(new SubwindowFrame.SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() + FRAMEHOFFSET, subWindowPoint.getY() - FRAMEHOFFSET + subwindowHeight), 10, subwindowWidth - 10));
-        rectangles.add(new SubwindowFrame.SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() - FRAMEHOFFSET + subwindowWidth, subWindowPoint.getY() + FRAMEHOFFSET), subwindowHeight - 10, 10));
+        rectangles.add(new SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() + FRAMEHOFFSET, subWindowPoint.getY() - FRAMEHOFFSET), 10, subwindowWidth - 10, RectangleType.TOP));
+        rectangles.add(new SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() - FRAMEHOFFSET, subWindowPoint.getY() + FRAMEHOFFSET), subwindowHeight - 10, 10, RectangleType.LEFT));
+        rectangles.add(new SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() + FRAMEHOFFSET, subWindowPoint.getY() - FRAMEHOFFSET + subwindowHeight), 10, subwindowWidth - 10, RectangleType.BOTTOM));
+        rectangles.add(new SubwindowFrameRectangle(new Point2D.Double(subwindowPoint.getX() - FRAMEHOFFSET + subwindowWidth, subWindowPoint.getY() + FRAMEHOFFSET), subwindowHeight - 10, 10, RectangleType.RIGHT));
+
+        corners = new ArrayList<>();
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX(), subWindowPoint.getY()), CornerType.TOPLEFT));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX() + subwindowWidth, subWindowPoint.getY()), CornerType.TOPRIGHT));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX(), subWindowPoint.getY() + subwindowHeight), CornerType.BOTTOMLEFT));
+        corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX() + subwindowWidth, subWindowPoint.getY() + subwindowHeight), CornerType.BOTTOMRIGHT));
+
+        titleBar = new TitleBar(subWindowPoint, subwindowWidth - 30);
+
+        this.button = button;
+        this.button.setPosition(new Point2D.Double(subWindowPoint.getX() + subwindowWidth - 30, subWindowPoint.getY()));
     }
 
     /**
@@ -67,63 +82,48 @@ public class SubwindowFrame{
         return this.rectangles;
     }
 
-    /**
-     * helper class to build a frame off
-     */
-    public class SubwindowFrameRectangle implements Clickable {
+    public List<SubwindowFrameCorner> getCorners() { return this.corners;}
 
-        private Point2D position;
-        private int height;
-        private int width;
+    public Button getButton() { return button; }
 
-        /**
-         * constructs a new subwindowframerectangle with the given properties
-         * @param position the position of this rectangle
-         * @param height the height of this rectangle
-         * @param width the width of this rectangle
-         */
-        public SubwindowFrameRectangle(Point2D position, int height, int width){
-            this.position = position;
-            this.height = height;
-            this.width = width;
+    @Override
+    public boolean isClicked(Point2D location) {
+        for (SubwindowFrameCorner corner : corners) {
+            if (corner.isClicked(location)) {
+                return true;
+            }
         }
-
-        /**
-         * checks if the rectangle was clicked on
-         *
-         * @param location the location of the click
-         * @return true if the rectangle was clicked on by a click on the given location, false otherwise
-         */
-        @Override
-        public boolean isClicked(Point2D location) {
-            double startX = position.getX();
-            double endX = position.getX() + width;
-            double startY = position.getY();
-            double endY = position.getY() + height;
-            return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+        for (SubwindowFrameRectangle rectangle : getRectangles()) {
+            if (rectangle.isClicked(location)) {
+                return true;
+            }
         }
-
-        /**
-         * @return the point of this rectangle
-         */
-        public Point2D getPosition() {
-            return position;
+        if (titleBar.isClicked(location)) {
+            return true;
         }
-
-        /**
-         *
-         * @return the height of this rectangle
-         */
-        public int getHeight() {
-            return height;
+        if (button.isClicked(location)) {
+            return true;
         }
+        return false;
+    }
 
-        /**
-         *
-         * @return the width of this rectangle
-         */
-        public int getWidth() {
-            return width;
+    public Clickable getFrameElement(Point2D location){
+        for (SubwindowFrameCorner corner : corners) {
+            if (corner.isClicked(location)) {
+                return corner;
+            }
         }
+        for (SubwindowFrameRectangle rectangle : getRectangles()) {
+            if (rectangle.isClicked(location)) {
+                return rectangle;
+            }
+        }
+        if (titleBar.isClicked(location)) {
+            return new TitleBarClick(titleBar, location);
+        }
+        if (button.isClicked(location)) {
+            return button;
+        }
+        return null;
     }
 }
