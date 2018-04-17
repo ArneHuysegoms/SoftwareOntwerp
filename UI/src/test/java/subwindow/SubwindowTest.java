@@ -1,7 +1,6 @@
 package subwindow;
 
 import controller.CanvasController;
-import figures.basicShapes.Circle;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,16 +9,13 @@ import java.awt.geom.Point2D;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ButtonTest {
-    private Button button1;
-    private Button button2;
-    private CanvasController canvasController;
+public class SubwindowTest {
+    private Subwindow subwindow;
 
-    @Before
+    /*@Before
     public void setUp(){
-        button1 = new CloseButton();
-        canvasController = new CanvasController();
-        button2 = new CloseButton(canvasController);
+        Point2D point =
+        subwindow = new Subwindow()
     }
 
     @Test
