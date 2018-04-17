@@ -58,7 +58,7 @@ public class FigureConverter {
      * @param graphics   object used to draw on the program's window
      * @param subwindows the subwindows to be drawn on the controller
      */
-    public void draw(Graphics graphics, List<Subwindow> subwindows) {
+    public void draw(Graphics graphics, List<Subwind> subwindows) {
 
         //SubwindowLevel, klasse met een subwindow en een level. Deze draw krijgt een lijst van
         //SubwindowLevels ipv Subwindows en itereer hierover in de foreach en doe nekeer getSub (that's probably it).
@@ -83,7 +83,7 @@ public class FigureConverter {
      * @param height the subwindow's height
      */
     private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
-        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null);
+        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null,0,0,2000,2000);
     }
 
     /*
