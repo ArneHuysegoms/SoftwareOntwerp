@@ -41,7 +41,7 @@ public class KeyEventFactory {
                     return new KeyEvent(KeyEventType.CTRLN);
                 }
             }
-        } else if (id == java.awt.event.KeyEvent.KEY_TYPED) {
+        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b') {
             if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {
