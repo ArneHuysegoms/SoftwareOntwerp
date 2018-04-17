@@ -5,13 +5,21 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public abstract class Message extends DiagramElement {
+import java.io.Serializable;
+
+/**
+ * abstract superclass for messages of a diagram
+ */
+public abstract class Message extends DiagramElement  implements Serializable {
 
     private Message nextMessage;
     private Label label;
     private Party receiver;
     private Party sender;
 
+    /**
+     * required default constructor
+     */
     public Message(){
 
     }
@@ -35,8 +43,6 @@ public abstract class Message extends DiagramElement {
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public Message(Message nextMessage, Label label, Party receiver, Party sender) throws DomainException{
         this.setNextMessage(nextMessage);
@@ -92,9 +98,12 @@ public abstract class Message extends DiagramElement {
      *        The receiving party
      * @post  The new receiver of this message is equal to the given receiver
      *        | new.getReceiver == receiver
-     *
+     * @throws DomainException if the receiver is invalid
      */
-    public void setReceiver(Party receiver) {
+    public void setReceiver(Party receiver) throws DomainException {
+        if(receiver == null){
+            throw new DomainException("Receiver of message can't be null");
+        }
         this.receiver = receiver;
     }
 
@@ -121,9 +130,18 @@ public abstract class Message extends DiagramElement {
         this.sender = sender;
     }
 
+    /**
+     *
+     * @return a string description of this message
+     */
     @Override
     public abstract String toString();
 
+    /**
+     *
+     * @param o other Object
+     * @return whether or not the given Object is the same as this
+     */
     @Override
     public boolean equals(Object o){
         if(o instanceof Message){
@@ -134,6 +152,10 @@ public abstract class Message extends DiagramElement {
         return false;
     }
 
+    /**
+     *
+     * @return a hashcode of this message, divided modulo 17
+     */
     @Override
     public int hashCode(){
         return (this.getLabel().hashCode() + this.getSender().hashCode() + this.getReceiver().hashCode()) % 17;

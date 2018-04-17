@@ -1,13 +1,16 @@
 package suite;
 
+import diagram.suite.DiagramTestSuite;
+import facade.FacadeSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import repo.PartyRepoTest;
+import repo.suite.RepoTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        PartyRepoTest.class
+        DiagramTestSuite.class,
+        RepoTestSuite.class,
+        FacadeSuite.class
 })
-
 public class DomainTestSuite {
 }

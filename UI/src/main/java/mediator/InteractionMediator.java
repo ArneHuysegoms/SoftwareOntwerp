@@ -1,5 +1,6 @@
 package mediator;
 
+import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
@@ -7,58 +8,46 @@ import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class InteractionMediator {
-    private ArrayList<Subwindow> subwindows;
 
-    public void updateLabel(char c){
-        /*
-        Check if label correct
-        juist -> alles aangepast
-        fout -> enkel
-         */
-        for(Subwindow s : getSubwindows()){
-            s.getFacade().addCharToLabel(c);
-        }
-    }
+    private List<Subwindow> subwindows;
 
-    public void updatePartyType(Party party){
-        for(Subwindow s : getSubwindows()){
-            s.getFacade().changePartyType(party.getCoordinate());
-        }
-    }
 
-    public void addParty(Party party){
-        /*
-        Alle subwindows afgaan en domainfacade laten updaten?
-        of 1 keer domain aanpassen en alle subwindows laten refreshen..?
-         */
-        for(Subwindow s : getSubwindows()){
-            s.getFacade().addNewParty(party.getCoordinate());
+    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
+        for(Subwindow s : subwindows){
+            if(! s.equals(subwindow)) {
+                s.getFacade().addPartyToRepo(party, location);
+            }
         }
 
     }
 
-    public void addMessage(Message message){
-        /*for(Subwindow s : getSubwindows()){
-            s.getFacade().addNewMessage(new Point2D( ,message.getyLocation()));
-        }*/
-        // Hoe geraak ik aan x-coordinaat? Key-Event?
+    public void removeInReposInOtherSubwindows(Set<DiagramElement> deletedElements, Subwindow subwindow){
+        for(Subwindow s : subwindows){
+            if(! s.equals(subwindow)) {
+                s.getFacade().deleteElementsInRepos(deletedElements);
+            }
+        }
     }
 
     public void addSubwindow(Subwindow subwindow){
-        if(!this.getSubwindows().contains(subwindow)){
+        if(! subwindows.contains(subwindow)){
             this.subwindows.add(subwindow);
         }
     }
 
-    public void updateSubwindow(Subwindow subwindow){
-        /*
-        ?
-         */
+    public void removeSubwindow(Subwindow subwindow){
+        subwindows.remove(subwindow);
     }
 
-    public ArrayList<Subwindow> getSubwindows() {
-        return subwindows;
+    public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, Subwindow subwindow) {
+        for(Subwindow s : subwindows){
+            if( ! s.equals(subwindow)){
+                s.getFacade().addMessagesToRepos(newMessages);
+            }
+        }
     }
 }

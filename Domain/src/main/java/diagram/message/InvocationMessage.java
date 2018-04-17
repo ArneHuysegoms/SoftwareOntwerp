@@ -4,13 +4,15 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public class InvocationMessage extends Message{
+import java.io.Serializable;
+
+/**
+ * Message subclass for invocation messages
+ */
+public class InvocationMessage extends Message implements Serializable {
 
     private String messageNumber;
 
-    public InvocationMessage(){
-
-    }
     /**
      * @param message
      *        The next message on the callstack
@@ -21,7 +23,7 @@ public class InvocationMessage extends Message{
      * @param sender
      *        The party which sends this message
      * @throws DomainException
-     *        The sender cannot be null
+     *        The sender or receiver cannot be null
      * @post  The new message of this message is equal to the given message
      *        | new.getMessage == Message;
      * @post  The new label of this message is equal to the given label
@@ -30,8 +32,6 @@ public class InvocationMessage extends Message{
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender) throws DomainException{
         this(message, label, receiver, sender, "");
@@ -49,7 +49,7 @@ public class InvocationMessage extends Message{
      * @param messageNumber
      *        The messageNumber used in the communication Diagram
      * @throws DomainException
-     *        The sender cannot be null
+     *        The sender or receiver cannot be null
      * @post  The new message of this message is equal to the given message
      *        | new.getMessage == Message;
      * @post  The new label of this message is equal to the given label
@@ -58,8 +58,6 @@ public class InvocationMessage extends Message{
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender, String messageNumber) throws DomainException{
         super(message, label, receiver, sender);
@@ -91,6 +89,11 @@ public class InvocationMessage extends Message{
         return this.getMessageNumber() + " " + this.getLabel().getLabel();
     }
 
+    /**
+     *
+     * @param o other Object
+     * @return wether or not the given object is equal to this
+     */
     @Override
     public boolean equals(Object o){
         if(o instanceof InvocationMessage){
@@ -100,6 +103,10 @@ public class InvocationMessage extends Message{
         return false;
     }
 
+    /**
+     *
+     * @return a hashcode of this message, modulo 17
+     */
     @Override
     public int hashCode(){
         return (super.hashCode() + this.getMessageNumber().hashCode()) % 17;

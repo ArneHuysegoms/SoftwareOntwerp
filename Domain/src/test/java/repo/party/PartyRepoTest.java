@@ -1,4 +1,4 @@
-package repo;
+package repo.party;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
@@ -8,7 +8,6 @@ import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.*;
-import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -56,8 +55,8 @@ public class PartyRepoTest {
     @Test
     public void Test_Default_Constructor_works(){
         PartyRepo p = new PartyRepo();
-        assertNotNull(p.getPartyPoint2DMap());
-        assertEquals(0, p.getPartyPoint2DMap().size());
+        assertNotNull(p.getMap());
+        assertEquals(0, p.getMap().size());
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -68,9 +67,9 @@ public class PartyRepoTest {
     @Test
     public void Test_Add_party_works_with_good_arguments(){
         PartyRepo p = new PartyRepo();
-        assertEquals(0, p.getPartyPoint2DMap().size());
+        assertEquals(0, p.getMap().size());
         p.addPartyWithLocation(actor1, validPoint1);
-        assertEquals(1, p.getPartyPoint2DMap().size());
+        assertEquals(1, p.getMap().size());
         assertTrue(p.getAllParties().contains(actor1));
     }
 
@@ -88,20 +87,20 @@ public class PartyRepoTest {
         }
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_no_party_at_invalid_location() throws DomainException{
+    @Test
+    public void Test_no_party_at_invalid_location(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(actor1, validPoint1);
-        p.getPartyAtPosition(INVALID_EMPTY_POINT);
+        assertNull(p.getPartyAtPosition(INVALID_EMPTY_POINT));
     }
 
-    @Test (expected = DomainException.class)
-    public void Test_updatePartyPosition_changes_party_position() throws DomainException{
+    @Test
+    public void Test_updatePartyPosition_changes_party_position(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(actor1, validPoint1);
         p.updatePartyPosition(validPoint2, actor1);
         assertEquals(p.getPartyAtPosition(validPoint2), actor1);
-        p.getPartyAtPosition(validPoint1);
+        assertNull(p.getPartyAtPosition(validPoint1));
     }
 
     @Test
@@ -150,7 +149,7 @@ public class PartyRepoTest {
     public void Test_getCorrectLabelPosition_for_object_works(){
         PartyRepo p = new PartyRepo();
         p.addPartyWithLocation(object1, validPoint2);
-        assertEquals(new Point2D.Double(105,125), p.getCorrectLabelPosition(object1));
+        assertEquals(new Point2D.Double(110,125), p.getCorrectLabelPosition(object1));
     }
 
     @Test
@@ -160,5 +159,15 @@ public class PartyRepoTest {
         p.addPartyWithLocation(object1, validPoint2);
         Set<DiagramElement> clickeds = p.getClickedParties(new Point2D.Double(50,60));
         assertEquals(clickeds.size(),1);
+        assertTrue(clickeds.contains(actor1));
+    }
+
+    @Test
+    public void Test_getXLocationOfLifeline(){
+        PartyRepo p = new PartyRepo();
+        p.addPartyWithLocation(actor1, validPoint1);
+        p.addPartyWithLocation(object1, validPoint2);
+        assertTrue(validPoint1.getX() == p.getXLocationOfLifeline(actor1));
+        assertTrue(validPoint2.getX() + PartyRepo.OBJECTWIDTH/2 == p.getXLocationOfLifeline(object1));
     }
 }

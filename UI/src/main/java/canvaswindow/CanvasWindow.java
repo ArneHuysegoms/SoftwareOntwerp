@@ -249,7 +249,7 @@ public class CanvasWindow {
     }
 
     /**
-     * Call this method if the canvas is out of date and needs to be repainted.
+     * Call this method if the controller is out of date and needs to be repainted.
      * This will cause method {@link #paint(Graphics)} to be called after the current call of method handleMouseEvent or handleKeyEvent finishes.
      */
     protected final void repaint() {
@@ -258,11 +258,11 @@ public class CanvasWindow {
     }
 
     /**
-     * Called to allow you to paint on the canvas.
+     * Called to allow you to paint on the controller.
      *
      * You should not use the Graphics object after you return from this method.
      *
-     * @param g This object offers the methods that allow you to paint on the canvas.
+     * @param g This object offers the methods that allow you to paint on the controller.
      */
     protected void paint(Graphics g) {
     }

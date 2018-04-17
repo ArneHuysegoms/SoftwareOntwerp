@@ -2,13 +2,19 @@ package diagram.party;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
-import exceptions.DomainException;
 
-public abstract class Party extends DiagramElement {
+import java.io.Serializable;
+
+/**
+ * abstract superclass for parties of he diagram
+ */
+public abstract class Party extends DiagramElement implements Serializable {
 
     private Label label;
 
-
+    /**
+     * default constructor
+     */
     public Party(){
 
     }
@@ -16,10 +22,8 @@ public abstract class Party extends DiagramElement {
     /**
      * @param label
      *        The label belonging with this actor
-     * @throws DomainException
-     *         This Actor cannot have the given instanceName, className, positionInSequenceDiagram, coordinate or label
      */
-    public Party(Label label) throws DomainException{
+    public Party(Label label){
         this.setLabel(label);
     }
 

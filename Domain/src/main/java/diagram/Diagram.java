@@ -12,37 +12,26 @@ import diagram.party.Party;
 import exceptions.DomainException;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Superclass of diagrams, contains most of the business logic in changing the diagram
+ * Class describing a diagram, consists of parties and messages
  */
-public class Diagram {
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  variables
-    ////////////////////////////////////
+public class Diagram implements Serializable {
 
     private List<Party> parties;
 
     private Message firstMessage;
 
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  constructors
-    ////////////////////////////////////
-
     /**
      * create a new blank diagram
      */
     public Diagram() {
-        this(new ArrayList<Party>(), null);
+        this(new ArrayList<>(), null);
     }
 
     /**
@@ -56,12 +45,6 @@ public class Diagram {
         this.setFirstMessage(firstMessage);
         this.setMessageNumbers();
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  setters and getters
-    ////////////////////////////////////
 
     /**
      * sets the first message of the message stack
@@ -104,7 +87,7 @@ public class Diagram {
      *
      * @param party the party to be added
      */
-    public void addParty(Party party) {
+    private void addParty(Party party) {
         this.getParties().add(party);
     }
 
@@ -113,15 +96,9 @@ public class Diagram {
      *
      * @param party the party to be removed
      */
-    public void removeParty(Party party) {
+    private void removeParty(Party party) {
         this.getParties().remove(party);
     }
-
-    /**********************************************************************************************************/
-
-    ////////////////////////////////////
-    //  main part of business logic
-    ////////////////////////////////////
 
     /**
      * Adds a new party in the form of an object
@@ -132,7 +109,7 @@ public class Diagram {
         PartyLabel label;
         Party object = null;
         try {
-            label = new PartyLabel("|");
+            label = new PartyLabel("");
             object = new Object(label);
             this.addParty(object);
         } catch (Exception e) {
@@ -148,27 +125,19 @@ public class Diagram {
      * @return the newly created party
      */
     public Party changePartyType(Party oldParty) {
-        Party newParty = null;
+        Party newParty;
         if (oldParty instanceof Object) {
             Object o = (Object) oldParty;
-            try {
-                newParty = new Actor(o.getLabel());
-                this.updateMessagesForChangedParty(o, newParty);
-                this.removeParty(o);
-                this.addParty(newParty);
-            } catch (DomainException exception) {
-                System.out.println(exception.getMessage());
-            }
+            newParty = new Actor(o.getLabel());
+            this.updateMessagesForChangedParty(o, newParty);
+            this.removeParty(o);
+            this.addParty(newParty);
         } else {
             Actor a = (Actor) oldParty;
-            try {
-                newParty = new Object(a.getLabel());
-                this.updateMessagesForChangedParty(a, newParty);
-                this.removeParty(a);
-                this.addParty(newParty);
-            } catch (DomainException exception) {
-                System.out.println(exception.getMessage());
-            }
+            newParty = new Object(a.getLabel());
+            this.updateMessagesForChangedParty(a, newParty);
+            this.removeParty(a);
+            this.addParty(newParty);
         }
         return newParty;
     }
@@ -192,6 +161,12 @@ public class Diagram {
         return deletedElements;
     }
 
+    /**
+     * finds the element corresponding which contains the given label
+     *
+     * @param label the label of the diagramelement to find
+     * @return the diagramelement that has the provided label
+     */
     private DiagramElement findParentElement(Label label) {
         for (Party p : parties) {
             if (p.getLabel().equals(label)) {
@@ -204,6 +179,7 @@ public class Diagram {
                 if (message.getLabel().equals(label)) {
                     return message;
                 }
+                message = message.getNextMessage();
             }
         }
         return null;
@@ -218,33 +194,33 @@ public class Diagram {
     private Set<DiagramElement> rearrangeMessageTreeByParty(Party party) {
         Set<DiagramElement> deletedElements = new HashSet<>();
         deletedElements.add(party);
-        if (this.getFirstMessage() != null) {
-            Message previous = getFirstMessage();
-            if (getFirstMessage().getSender().equals(party) || getFirstMessage().getReceiver().equals(party)) {
-                deletedElements.add(getFirstMessage());
-                firstMessage = null;
-            } else {
-                Message message = previous.getNextMessage();
-                while (message != null) {
-                    if (message.getSender().equals(party) || message.getReceiver().equals(party)) {
-                        deletedElements.add(message);
-                        List<Message> dependentMessages = skipOverDependentMessages(message, -1);
-                        if (dependentMessages.size() > 1) {
-                            message = dependentMessages.get(dependentMessages.size() - 1);
-                            deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
-                            if (previous != null) {
-                                previous.setNextMessage(message);
-                                previous = message.getNextMessage();
-                            }
-                        } else if (dependentMessages.size() == 1) {
-                            message = dependentMessages.get(dependentMessages.size() - 1);
-                            if (previous != null) {
-                                previous.setNextMessage(message);
-                                previous = message.getNextMessage();
-                            }
-                        }
+        Message previous;
+        Message next = null;
+        Message fine = this.getFirstMessage();
+        boolean moved;
+        if(this.getFirstMessage() != null){
+            previous = this.getFirstMessage();
+            while(previous != null) {
+                moved = false;
+                if (previous.getSender().equals(party) || previous.getReceiver().equals(party)) {
+                    if(! deletedElements.contains(previous)) {
+                        deletedElements.add(previous);
                     }
-                    message = message.getNextMessage();
+                    List<Message> dependentMessages = skipOverDependentMessages(previous);
+                    next = dependentMessages.get(dependentMessages.size() - 1);
+                    deletedElements.addAll(dependentMessages.subList(0,dependentMessages.size()-1));
+                    if(previous.equals(this.getFirstMessage())){
+                        this.setFirstMessage(next);
+                    }
+                    fine.setNextMessage(next);
+                    moved = true;
+                }
+                fine = previous;
+                if(moved) {
+                    previous = next;
+                }
+                else{
+                    previous = previous.getNextMessage();
                 }
             }
         }
@@ -256,28 +232,29 @@ public class Diagram {
      * Finds the first message that doesn't directly or indirectly depend on the provided Message
      *
      * @param message the message of which the next not depending descendant message must be found
-     * @param stack   integer counting the stack of the messages
      * @return the message that are between the provided message and the next not dependent message, with t he next
      * not dependent message included at the last position
      */
-    private List<Message> skipOverDependentMessages(Message message, int stack) {
+    private List<Message> skipOverDependentMessages(Message message) {
         List<Message> dependentMessages = new ArrayList<>();
+        int stack = -1;
         while (stack < 0) {
             message = message.getNextMessage();
             if (message != null) {
                 if (message instanceof InvocationMessage) {
-                    stack--;
                     if (stack < 0) {
+                        stack--;
                         dependentMessages.add(message);
                     }
                 } else {
-                    stack++;
                     if (stack < 0) {
+                        stack++;
                         dependentMessages.add(message);
                     }
                 }
-            } else {
-                return null;
+            }
+            else {
+                dependentMessages.add(null);
             }
         }
         dependentMessages.add(message.getNextMessage());
@@ -341,37 +318,42 @@ public class Diagram {
      */
     private Set<DiagramElement> deleteMessage(Message message) {
         Set<DiagramElement> deletedElements = new HashSet<>();
-        if (message instanceof InvocationMessage) {
-            if (!message.equals(this.getFirstMessage())) {
-                Message iter = this.getFirstMessage();
-                Message previous;
-                while (iter.getNextMessage() != null && !iter.getNextMessage().equals(message)) {
-                    iter = iter.getNextMessage();
-                }
-                previous = iter;
-                List<Message> dependentMessages = skipOverDependentMessages(message, -1);
-                Message next;
-                if (dependentMessages.size() > 1) {
-                    next = dependentMessages.get(dependentMessages.size() - 1);
-                    deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
-                    if (previous != null) {
-                        previous.setNextMessage(next);
-                    }
-                } else if (dependentMessages.size() == 1) {
-                    next = dependentMessages.get(dependentMessages.size() - 1);
-                    if (previous != null) {
-                        previous.setNextMessage(next);
-                    }
-                }
-            } else {
-                List<Message> dependentMessages = skipOverDependentMessages(message, -1);
-                this.setFirstMessage(dependentMessages.get(dependentMessages.size() - 1));
-                if (deletedElements.size() > 1) {
-                    deletedElements.addAll(dependentMessages.subList(0, dependentMessages.size() - 1));
-                }
+        if(message instanceof InvocationMessage){
+            deletedElements.add(message);
+            Message previous = this.findPreviousMessage(message);
+            if(previous == null){
+                List<Message> dependents = skipOverDependentMessages(message);
+                deletedElements.addAll(dependents.subList(0, dependents.size() -1));
+                this.setFirstMessage(dependents.get(dependents.size() -1));
+            }
+            else{
+                List<Message> dependents = skipOverDependentMessages(message);
+                deletedElements.addAll(dependents.subList(0, dependents.size() -1));
+                previous.setNextMessage(dependents.get(dependents.size() -1));
             }
         }
+        setMessageNumbers();
         return deletedElements;
+    }
+
+    /**
+     * finds the message that precedes the given message in the callstack
+     *
+     * @param message the message we want to find the preceding message of
+     * @return the message preceding the given message
+     */
+    private Message findPreviousMessage(Message message){
+        if(message.equals(this.getFirstMessage())){
+            return null;
+        }
+        Message iter = this.getFirstMessage();
+        while(iter != null){
+            if(iter.getNextMessage().equals(message)){
+                return iter;
+            }
+            iter = iter.getNextMessage();
+        }
+        return null;
     }
 
     /**
@@ -405,7 +387,11 @@ public class Diagram {
         Message message = firstMessage;
         while (message != null) {
             if (message.getReceiver().equals(old)) {
-                message.setReceiver(newParty);
+                try {
+                    message.setReceiver(newParty);
+                } catch (DomainException exc) {
+                    System.out.println(exc.getMessage());
+                }
             }
             if (message.getSender().equals(old)) {
                 try {
@@ -439,7 +425,7 @@ public class Diagram {
                         next = previousMessage.getNextMessage();
                     }
                     Message resultMessage = new ResultMessage(next, new MessageLabel(""), sender, receiver);
-                    MessageLabel messageLabel = new MessageLabel("|");
+                    MessageLabel messageLabel = new MessageLabel("");
                     Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender);
                     if (previousMessage != null) {
                         previousMessage.setNextMessage(invocation);

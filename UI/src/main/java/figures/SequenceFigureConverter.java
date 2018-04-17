@@ -78,7 +78,7 @@ public class SequenceFigureConverter extends Converter{
      * method that determines the lengths of the longest lifeline and draws these for every party
      *
      * @param graphics object used to draw on the program's window
-     * @param partyMap the diagram object to be drawn on the canvas
+     * @param partyMap the diagram object to be drawn on the controller
      */
     private void drawLifeline(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap, Message firstMessage) {
         Message m = firstMessage;

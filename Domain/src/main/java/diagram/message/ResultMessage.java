@@ -4,11 +4,9 @@ import diagram.party.Party;
 import diagram.label.Label;
 import exceptions.DomainException;
 
-public class ResultMessage extends Message {
+import java.io.Serializable;
 
-     public ResultMessage(){
-
-     }
+public class ResultMessage extends Message implements Serializable {
 
     /**
      * @param message
@@ -29,8 +27,6 @@ public class ResultMessage extends Message {
      *        | new.getReceiver == receiver
      * @post  The new sender of this message is equal to the given sender
      *        | new.getsender == sender
-     * @post  The new yLocation of this message is equal to the given yLocation
-     *        | new.getyLocation == yLocation
      */
      public ResultMessage(Message message, Label label, Party receiver, Party sender) throws DomainException {
          super(message, label, receiver, sender);

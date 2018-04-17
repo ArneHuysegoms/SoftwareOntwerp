@@ -2,13 +2,12 @@ package diagram.label;
 
 import exceptions.DomainException;
 
-public class PartyLabel extends Label {
+import java.io.Serializable;
 
-    private String label;
-
-    public PartyLabel(){
-        super();
-    }
+/**
+ * Label subtype for labels belonging to parties
+ */
+public class PartyLabel extends Label implements Serializable {
 
     /**
      * @param label
@@ -24,23 +23,6 @@ public class PartyLabel extends Label {
         this.setLabel(label);
     }
 
-
-    /**
-     * @return
-     *        returns the text in this label
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @param label
-     *        the text to set in this label
-     */
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     /**
      * @param label
      *        The text this label should be set to
@@ -48,6 +30,19 @@ public class PartyLabel extends Label {
      *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
     public boolean isValidLabel(String label){
-        return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*.");
+        return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*\\w*");
+    }
+
+    /**
+     * @param label
+     *        The text to set the label to
+     * @throws DomainException
+     *         The label has to start with a lowercase character
+     */
+    public void setLabel(String label) throws DomainException {
+        if (!isValidLabel(label)) {
+            throw new DomainException("a message label has to start with a lowercase character");
+        }
+        super.label = label;
     }
 }

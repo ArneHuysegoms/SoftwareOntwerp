@@ -1,17 +1,17 @@
 package util;
 
-import diagram.message.InvocationMessage;
 import diagram.message.Message;
-import diagram.party.Object;
 import diagram.party.Party;
 import repo.label.LabelRepo;
 import repo.party.PartyRepo;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class used as a couple of Parties, contains the messages the sender has send to the receiver
+ */
 public class PartyPair extends Pair {
     private List<Message> messages;
 
@@ -24,6 +24,15 @@ public class PartyPair extends Pair {
         super(first, second);
         messages = new ArrayList<>();
         messages.add(m);
+    }
+
+    /**
+     * returns all messages this partypair has between them
+     *
+     * @return all messages between this partypair
+     */
+    public List<Message> getMessages(){
+        return messages;
     }
 
     /**
@@ -106,7 +115,7 @@ public class PartyPair extends Pair {
     }
 
     /**
-     * methos that calculates the label's start position
+     * method that calculates the label's start position
      * @param start
      *      start possition of the message that the label belongs tho
      * @param end
@@ -121,6 +130,10 @@ public class PartyPair extends Pair {
         return new Point2D.Double(x, y);
     }
 
+    /**
+     * inspector for the number of messages this partypair has between them
+     * @return int the number of messages this partypair has between them
+     */
     public int getNumberOfMessages(){
         return messages.size();
     }
