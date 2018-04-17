@@ -33,8 +33,8 @@ public class InteractrCanvas extends CanvasWindow {
     }
 
     public void paint(Graphics g){
-        Collections.sort(canvasController.getSubwindows();
-        figureConverter.draw(g, canvasController.getSubwindows());
+        Collections.sort(canvasController.getSubwindows());
+        //figureConverter.draw(g, canvasController.getSubwindows());
     }
 
     @Override
