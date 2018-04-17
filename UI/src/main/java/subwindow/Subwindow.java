@@ -89,15 +89,6 @@ public class Subwindow {
 
     }
 
-    public void updateLabels(char c) {
-        // probeer het label up te daten
-        // zo ja:
-        //      stuur naar mediator -> past alle andere subwindows aan
-        // zo niet:
-        //      doe niks
-
-    }
-
     /**
      * @return mediator for this subwindow
      */
@@ -366,9 +357,6 @@ public class Subwindow {
      */
     public void handleMouseEvent(MouseEvent mouseEvent) throws DomainException {
         if (!labelMode) {
-            if (this.selected != null && !(this.selected instanceof Label)) {
-                this.stopEditingLabel();
-            }
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
                     if (this.selected instanceof Party) {
@@ -391,10 +379,9 @@ public class Subwindow {
                         this.getFacade().changePartyType(p);
                     }
                     if (this.selected == null) {
-                        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-                        mouseEvent.setPoint(relativePoint);
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
                         selected = newParty.getLabel();
+                        startEditingLabel();
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -411,11 +398,10 @@ public class Subwindow {
      */
     private void handleReleaseClick(MouseEvent mouseEvent) {
         if (this.selected instanceof DiagramRepo.MessageStart) {
-            /*Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-            mouseEvent.setPoint(relativePoint);*/
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
+            startEditingLabel();
             mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
     }
@@ -454,8 +440,6 @@ public class Subwindow {
     public void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
 
         Point2D ogPos = this.getPosition();
-        int originalWidth = this.width;
-        int originalHeight = this.height;
         switch (corner.getType()){
             case TOPLEFT:
                 double deltaTopleftX = - (corner.getCenter().getX() - point.getX());
@@ -489,31 +473,6 @@ public class Subwindow {
                 break;
         }
         createFrame(getButton());
-        /*if (Math.abs(corner.getCenter().getX() - this.getPosition().getX()) <= 10) {
-            if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
-                //TOP LEFT
-                this.setPosition(point);
-                this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
-                this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-            } else {
-                //BOTTOM LEFT
-                this.setPosition(new Point2D.Double(point.getY(), this.getPosition().getY()));
-                this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
-                this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
-            }
-        } else {
-            if (Math.abs(corner.getCenter().getY() - this.getPosition().getY()) <= 10) {
-                //TOP RIGHT
-                this.setPosition(new Point2D.Double(this.getPosition().getX(), point.getY()));
-                this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
-                this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-            } else {
-                //BOTTOM RIGHT
-                this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
-                this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
-            }
-
-        }*/
     }
 
     /**
@@ -546,23 +505,6 @@ public class Subwindow {
                 break;
         }
         createFrame(frame.getButton());
-        /*if (Math.abs(rectangle.getPosition().getX() - this.getPosition().getX()) <= 10) {
-            // LEFT
-            setPosition(new Point2D.Double(point.getX(), originalPosition.getY()));
-            this.setWidth(new Double(originalPosition.getX() - point.getX()).intValue() + originalWidth);
-        } else if (Math.abs(rectangle.getPosition().getX() - (this.getPosition().getX() + originalWidth)) <= 10) {
-            // RIGHT
-            setPosition(new Point2D.Double(point.getX(), originalPosition.getY()));
-            this.setWidth(new Double(point.getX() - originalPosition.getX()).intValue() + originalWidth);
-        } else if (Math.abs(rectangle.getPosition().getY() - this.getPosition().getY()) <= 10) {
-            // TOP
-            setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
-            this.setHeight(new Double(originalPosition.getY() - point.getY()).intValue() + originalHeight);
-        } else if (Math.abs(rectangle.getPosition().getY() - (this.getPosition().getY() + originalHeight)) <= 10) {
-            // BOTTOM
-            setPosition(new Point2D.Double(originalPosition.getX(), point.getY()));
-            this.setHeight(new Double(point.getY() - originalPosition.getY()).intValue() + originalHeight);
-        }*/
     }
 
     /**
@@ -584,48 +526,20 @@ public class Subwindow {
      * @param mouseEvent the event to handle
      */
     private void handleMousePressed(MouseEvent mouseEvent) {
-        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-        mouseEvent.setPoint(relativePoint);
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-        if (newSelected != null) {
-            if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
-                selected = newSelected;
-                this.startEditingLabel();
-            } else {
-                selected = newSelected;
-            }
+        if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+            selected = newSelected;
+            this.startEditingLabel();
+        } else {
+            stopEditingLabel();
+            selected = newSelected;
         }
     }
 
-    private Point2D getRelativePoint(Point2D location) {
+    public Point2D getRelativePoint(Point2D location) {
         return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
-
-    /*
-     * returns the element clicked by the user
-     * @param clickLocation
-     * @return the clicked element
-     *//*
-    public Clickable findClickedElementOfFrame(Point2D clickLocation){
-        for(SubwindowFrameCorner corner : corners){
-            if(corner.isClicked(clickLocation)){
-                return corner;
-            }
-        }
-        for(SubwindowFrame.SubwindowFrameRectangle rectangle : frame.getRectangles()){
-            if(rectangle.isClicked(clickLocation)){
-                return rectangle;
-            }
-        }
-        if(titleBar.isClicked(clickLocation)){
-            return new TitleBarClick(titleBar, clickLocation);
-        }
-        if(button.isClicked(clickLocation)){
-            return button;
-        }
-        return null;
-    }*/
 
     public boolean frameIsClicked(Point2D clickLocation) {
         frameElement = frame.getFrameElement(clickLocation);
@@ -636,6 +550,7 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     private void startEditingLabel() {
+        labelMode = true;
         Label labelInEdit = (Label) selected;
         labelContainer = labelInEdit.getLabel() + "I";
     }
@@ -708,96 +623,4 @@ public class Subwindow {
         }
         return true;
     }
-
-    /*
-     * Reads a key event and alters the active diagram based on it
-     *
-     * @param keyEvent the KeyEvent that happened in the UI, comes from the InteractrCanvas
-     *//*
-    public void handleKeyEvent(KeyEvent keyEvent){
-        if(checkIfValidLable()){
-            this.getFacade().stopEditingLabel();
-            switch (keyEvent.getKeyEventType()){
-                case TAB:
-                    this.getFacade().changeActiveDiagram();
-                    break;
-                case DEL:
-                    this.getFacade().deleteElement();
-                    break;
-                case CHAR:
-                    if(this.getFacade().selectedElementIsLabel()){
-                        this.getFacade().addCharToLabel(keyEvent.getKeyChar());
-                    }
-                    break;
-                case BACKSPACE:
-                    this.getFacade().removeLastCharFromLabel();
-                    break;
-                default:
-                    break;
-            }
-        }
-        else{
-          switch (keyEvent.getKeyEventType()){
-              case CHAR:
-                  if(this.getFacade().selectedElementIsLabel()){
-                      this.getFacade().addCharToLabel(keyEvent.getKeyChar());
-                  }
-                  break;
-              case BACKSPACE:
-                  this.getFacade().removeLastCharFromLabel();
-                  break;
-              default:
-                  break;
-          }
-        }
-    }
-
-    *//*
-     * Reads a mouse event and alters the active diagram based on it
-     *
-     * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
-     *//*
-    public void handleMouseEvent(MouseEvent mouseEvent){
-        if(checkIfValidLable()){
-            if(this.getFacade().getSelectedElement() != null && !this.getFacade().selectedElementIsLabel()){
-                this.getFacade().stopEditingLabel();
-            }
-            switch (mouseEvent.getMouseEventType()){
-                case DRAG:
-                    if(this.getFacade().selectedElementIsParty()){
-                        this.getFacade().changePartyPosition(mouseEvent.getPoint());
-                    }
-                    break;
-                case PRESSED:
-                    handleMousePressed(mouseEvent);
-                    break;
-                case RELEASE:
-                    if(this.getFacade().selectedElementIsMessageStart()){
-                        this.getFacade().addNewMessage(mouseEvent.getPoint());
-                    }
-                    break;
-                case LEFTCLICK:
-                    handleLeftClick(mouseEvent);
-                    break;
-                case LEFTDOUBLECLICK:
-                    if(this.getFacade().selectedElementIsParty()){
-                        this.getFacade().changePartyType(mouseEvent.getPoint());
-                    }
-                    if(this.getFacade().getSelectedElement() == null){
-                        this.getFacade().addNewParty(mouseEvent.getPoint());
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    *//*
-     *
-     * @return true if the label in edit is valid, false otherwise
-     *//*
-    private boolean checkIfValidLable(){
-        return this.getFacade().checkIfValidLable();
-    }*/
 }

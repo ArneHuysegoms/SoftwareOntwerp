@@ -347,8 +347,7 @@ public class SequenceFigureConverter extends Converter {
                 if (hasParent()) {
                     return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX()+partyObjectExtraOffset;
                 } else {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2)+partyObjectExtraOffset;
-                }
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2)+partyObjectExtraOffset;                }
             }
 
             /**
