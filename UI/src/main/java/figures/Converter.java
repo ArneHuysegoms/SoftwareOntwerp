@@ -17,11 +17,8 @@ import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
-import util.PartyPair;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Converter {
@@ -95,6 +92,7 @@ public abstract class Converter {
             Point2D end = new Point2D.Double(partyMap.get(o).getX() + PartyRepo.OBJECTWIDTH + selectionBoxSize, partyMap.get(o).getY() + PartyRepo.OBJECTHEIGHT + selectionBoxSize);
             selectionBoxDrawingStrategy.draw(graphics, start, end, "");
         } else if (selectedElement instanceof Message) {
+            Message m = (Message)selectedElement;
             Point2D start;
             Point2D end;
             Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();

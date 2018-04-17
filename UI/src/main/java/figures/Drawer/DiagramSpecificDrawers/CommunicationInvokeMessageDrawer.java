@@ -27,7 +27,7 @@ public class CommunicationInvokeMessageDrawer implements Drawer{
      *      empty in this implementation
      */
     @Override
-    public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
-        new Arrow(start, end).draw(graphics);
+    public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {
+        new Arrow(start, end).draw(graphics,minX,minY,maxX,maxY);
     }
 }

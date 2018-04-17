@@ -19,13 +19,14 @@ public class SubwindowFigure extends Figure {
     }
 
     @Override
-    public void draw(Graphics graphics) {
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x1, y1, getWidth(), getHeight());
         graphics.setColor(Color.BLACK);
-        new Rectangle(x1, y1, getWidth(), getHeight());
+        new Rectangle(x1, y1, getWidth(), getHeight()).draw(graphics,minX,minY,maxX,maxY);
         CloseButton closeButton = new CloseButton(x1 + getWidth(), y1);
-        new Line(x1, y1 + closeButton.getHeight(), x1 + getWidth(), y1 + getHeight());
+        closeButton.draw(graphics,minX,minY,maxX,maxY);
+        new Line(x1, y1 + closeButton.getHeight(), x1 + getWidth(), y1 + closeButton.getHeight()).draw(graphics,minX,minY,maxX,maxY);
     }
 
     public int getWidth(){

@@ -28,10 +28,10 @@ public class DashedRectangle extends Rectangle{
      *      object used to draw on the program's window
      */
     @Override
-    public void draw(Graphics graphics){
-        new DashedLine(positionTL, cornerTR).draw(graphics);
-        new DashedLine(cornerTR, cornerBR).draw(graphics);
-        new DashedLine(cornerBR, cornerBL).draw(graphics);
-        new DashedLine(cornerBL, positionTL).draw(graphics);
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY){
+        new DashedLine(positionTL, cornerTR).draw(graphics,minX,minY,maxX,maxY);
+        new DashedLine(cornerTR, cornerBR).draw(graphics,minX,minY,maxX,maxY);
+        new DashedLine(cornerBR, cornerBL).draw(graphics,minX,minY,maxX,maxY);
+        new DashedLine(cornerBL, positionTL).draw(graphics,minX,minY,maxX,maxY);
     }
 }

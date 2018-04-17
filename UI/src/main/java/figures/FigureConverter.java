@@ -60,16 +60,16 @@ public class FigureConverter {
      */
     public void draw(Graphics graphics, List<Subwindow> subwindows) {
 
-        Collections.sort(subwindows);
+        //SubwindowLevel, klasse met een subwindow en een level. Deze draw krijgt een lijst van
+        //SubwindowLevels ipv Subwindows en itereer hierover in de foreach en doe nekeer getSub (that's probably it).
 
         for (Subwindow sub : subwindows) {
-
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram());
+                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelectedElement());
             } else if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram());
+                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelectedElement());
             }
         }
     }
