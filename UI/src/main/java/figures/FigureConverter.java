@@ -60,7 +60,7 @@ public class FigureConverter {
      * upper draw function
      *
      * @param graphics   object used to draw on the program's window
-     * @param subwindows the subwindows to be drawn on the canvas
+     * @param subwindows the subwindows to be drawn on the controller
      */
     public void draw(Graphics graphics, List<Subwindow> subwindows) {
 
@@ -122,7 +122,7 @@ public class FigureConverter {
     }
 
     /**
-     * method that uses the a label drawer to draw the label on the canvas
+     * method that uses the a label drawer to draw the label on the controller
      *
      * @param graphics object used to draw on the program's window
      * @param point    point slightly to the top-left of the label string
@@ -133,11 +133,11 @@ public class FigureConverter {
     }
 
     /**
-     * method that uses the a party drawer to draw a party on the canvas
+     * method that uses the a party drawer to draw a party on the controller
      *
      * @param graphics object used to draw on the program's window
-     * @param diagram  the diagram object to be drawn on the canvas
-     * @param p        party to be drawn on the canvas
+     * @param diagram  the diagram object to be drawn on the controller
+     * @param p        party to be drawn on the controller
 
     private void drawParties(Graphics graphics, Diagram diagram, Party p) {
         Point2D start = p.getCoordinate();
@@ -154,7 +154,7 @@ public class FigureConverter {
      * a method that uses helper classes to destruct data so activation bars and message arrows and labels can be drawn
      *
      * @param graphics object used to draw on the program's window
-     * @param diagram  the diagram object to be drawn on the canvas
+     * @param diagram  the diagram object to be drawn on the controller
 
     private void complexDrawings(Graphics graphics, Diagram diagram) {
         Message m = diagram.getFirstMessage();

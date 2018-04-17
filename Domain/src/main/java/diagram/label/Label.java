@@ -1,6 +1,7 @@
 package diagram.label;
 
 import diagram.DiagramElement;
+import exceptions.DomainException;
 
 import java.io.Serializable;
 
@@ -32,6 +33,20 @@ public abstract class Label extends DiagramElement implements Serializable {
      */
     public String getLabel() {
         return label;
+    }
+
+    /**
+     * sets the label too the provided label
+     * @param label the label
+     * @throws DomainException if the provided label isn't valid
+     */
+    public void setLabel(String label) throws DomainException {
+        if(isValidLabel(label)){
+            this.setLabel(label);
+        }
+        else {
+            throw new DomainException("Label is not valid");
+        }
     }
 
     /**

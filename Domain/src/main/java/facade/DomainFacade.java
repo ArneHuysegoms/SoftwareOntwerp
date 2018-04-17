@@ -131,12 +131,13 @@ public class DomainFacade {
      * adds a new party of the type Object on the given location
      *
      * @param location the location of the new Party
+     * @return party the newly added party
      */
-    public Label addNewParty(Point2D location){
+    public Party addNewParty(Point2D location){
         Party newParty = this.getDiagram().addNewParty();
         activeRepo.addNewPartyToRepos(newParty, location);
         getOtherRepo().addNewPartyToRepos(newParty, location);
-        return newParty.getLabel();
+        return newParty;
     }
 
     /**
@@ -190,9 +191,19 @@ public class DomainFacade {
      * deletes the element of the diagram whom the given label belongs to
      *
      * @param label the label of the element to delete
+     * @return a set of elements that was deleted by deleting the diagramelement with the given label in the diagram
      */
-    public void deleteElementByLabel(Label label){
+    public Set<DiagramElement> deleteElementByLabel(Label label){
         Set<DiagramElement> deletedElements = this.getDiagram().deleteElementByLabel(label);
+        deleteElementsInRepos(deletedElements);
+        return deletedElements;
+    }
+
+    /**
+     * deletes the given diagramelements in the repos
+     * @param deletedElements the elements to remove
+     */
+    public void deleteElementsInRepos(Set<DiagramElement> deletedElements){
         for(DiagramElement d : deletedElements){
             if(d instanceof Party){
                 Party p = (Party) d;
@@ -248,9 +259,9 @@ public class DomainFacade {
      * @param location the location to add a message on
      * @param messageStart the start of the message
      *
-     * @return the label to edit
+     * @return a list containing the newly added messages
      */
-    public Label addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
+    public List<Message> addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
         if(this.getActiveRepo() instanceof SequenceRepo) {
             SequenceRepo sequenceRepo = (SequenceRepo) this.getActiveRepo();
             Party Sender = messageStart.getParty();
@@ -259,10 +270,9 @@ public class DomainFacade {
                 int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
                 Message previous = sequenceRepo.getMessageRepo().findPreviousMessage(yLocation, diagram.getFirstMessage());
                 List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
-                getActiveRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
-                this.getOtherRepo().getMessageRepo().addMessages(addedMessages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
+                addMessagesToRepos(addedMessages);
                 if(addedMessages.size() == 2){
-                    return addedMessages.get(0).getLabel();
+                    return addedMessages;
                 }
                 else{
                     throw new IllegalStateException("New messages weren't added");
@@ -270,6 +280,11 @@ public class DomainFacade {
             }
         }
         return null;
+    }
+
+    public void addMessagesToRepos(List<Message> messages){
+        getActiveRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
+        this.getOtherRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
     }
 
    /* *//*

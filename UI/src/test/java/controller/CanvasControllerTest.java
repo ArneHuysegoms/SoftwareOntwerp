@@ -1,4 +1,4 @@
-package canvas;
+package controller;
 import diagram.Diagram;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
