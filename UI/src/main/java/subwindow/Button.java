@@ -33,7 +33,7 @@ public abstract class Button implements Clickable{
     }
 
     public void setPosition(Point2D position){
-        position = position;
+        this.position = position;
     }
 
     public CanvasController getController(){
@@ -46,6 +46,18 @@ public abstract class Button implements Clickable{
 
     public Subwindow getSubwindow(){
         return this.subwindow;
+    }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public abstract void performAction();

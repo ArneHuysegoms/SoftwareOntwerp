@@ -300,16 +300,19 @@ public class Subwindow {
             else if(frameElement instanceof SubwindowFrameCorner){
                 SubwindowFrameCorner corner = (SubwindowFrameCorner) frameElement;
                 resizeByCorner(corner, mouseEvent.getPoint());
+                createFrame();
             }
             else if(frameElement instanceof SubwindowFrame.SubwindowFrameRectangle){
                 SubwindowFrame.SubwindowFrameRectangle frameRectangle = (SubwindowFrame.SubwindowFrameRectangle) frameElement;
                 resizeByFrameRectangle(frameRectangle, mouseEvent.getPoint());
+                createFrame();
             }
             else if(frameElement instanceof TitleBarClick){
                 TitleBarClick titleBarClick = (TitleBarClick) frameElement;
                 moveSubwindow(titleBarClick, mouseEvent.getPoint());
-
+                createFrame();
             }
+
         }
     }
 
