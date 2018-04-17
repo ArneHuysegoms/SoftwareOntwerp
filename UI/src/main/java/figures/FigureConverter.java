@@ -58,7 +58,6 @@ public class FigureConverter {
         Subwindow sub;
         for (CanvasController.SubWindowLevel subLvl : subwindowLevels) {
             sub = subLvl.getSubwindow();
-            System.out.println(subwindowLevels.size()+" wtf: "+subLvl.getLevel());
             setConverters(sub);
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
