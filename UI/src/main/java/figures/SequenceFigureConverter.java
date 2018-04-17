@@ -7,6 +7,7 @@ import diagram.message.Message;
 import diagram.party.Party;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
+import figures.basicShapes.DashedLine;
 import repo.diagram.DiagramRepo;
 import repo.diagram.SequenceRepo;
 import repo.message.MessageRepo;
@@ -47,11 +48,21 @@ public class SequenceFigureConverter extends Converter{
      */
     @Override
     public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
+        drawPartyAreaMark(graphics);
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
         drawLabels(graphics, repo.getLabelRepo());
         drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo)repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
         drawSelectionBox(graphics, selectedElement, repo);
+    }
+
+    private void drawPartyAreaMark(Graphics graphics) {
+        Point2D start = getSubwindow().getAbsolutePosition(new Point2D.Double(0,50));
+        Point2D end = getSubwindow().getAbsolutePosition(new Point2D.Double(2000,50));
+        Point2D start2 = getSubwindow().getAbsolutePosition(new Point2D.Double(0,100));
+        Point2D end2 = getSubwindow().getAbsolutePosition(new Point2D.Double(2000,100));
+        new DashedLine(start, end).draw(graphics,0,0,getSubwindow().getWidth(),2000);
+        new DashedLine(start2, end2).draw(graphics,0,0,getSubwindow().getWidth(),2000);
     }
 
     /**
@@ -102,7 +113,9 @@ public class SequenceFigureConverter extends Converter{
                 lifeLineDrawer.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
             }
         } else {
+
             for (Point2D point : partyMap.values()) {
+                point = getSubwindow().getAbsolutePosition(point);
                 start = new Point2D.Double(point.getX(), point.getY() + MessageRepo.HEIGHT);
                 end = new Point2D.Double(point.getX(), point.getY() + PartyRepo.OBJECTHEIGHT + MessageRepo.HEIGHT * 4);
                 lifeLineDrawer.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());

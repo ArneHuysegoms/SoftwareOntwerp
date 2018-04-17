@@ -74,7 +74,7 @@ public class FigureConverter {
 
     private void drawBackGroundColor(Graphics graphics) {
         graphics.setColor(Color.GRAY);
-        graphics.fillRect(0, 0, 1000, 1000);
+        graphics.fillRect(0, 0, 2000, 1000);
         graphics.setColor(Color.BLACK);
     }
 
