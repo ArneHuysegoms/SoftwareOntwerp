@@ -46,24 +46,28 @@ public class CanvasController {
     }
 
     private void setActiveSubwindow(Subwindow activeSubwindow) throws IllegalArgumentException {
-        if (activeSubwindow == null) {
-            throw new IllegalArgumentException("Active subwindow may not be null");
-        }
         this.activeSubwindow = activeSubwindow;
     }
 
     public void removeSubwindow(Subwindow subwindow) {
+       SubWindowLevel toRemove = null;
         for (SubWindowLevel s : subwindows) {
             if (s.getSubwindow().equals(subwindow)) {
-                this.subwindows.remove(s);
+                toRemove = s;
             }
         }
+        this.getSubwindows().remove(toRemove);
         setNewActiveSubWindow();
      }
 
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
-        changeActiveSubwindow(s.getSubwindow());
+        if(s != null) {
+            changeActiveSubwindow(s.getSubwindow());
+        }
+        else {
+            changeActiveSubwindow(null);
+        }
     }
 
     public SubWindowLevel findHighestSubwindowLevel() {
@@ -134,6 +138,8 @@ public class CanvasController {
                         changeActiveSubwindow(subwindow);
                     }
                     try {
+                        Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
+                        mouseEvent.setPoint(relativePoint);
                         subwindow.handleMouseEvent(mouseEvent);
                     } catch (DomainException exc) {
                         exc.printStackTrace();
@@ -159,9 +165,11 @@ public class CanvasController {
     }
 
     private void changeLevelForActiveSubWindow() {
-        for (SubWindowLevel s : subwindows) {
-            if (s.getSubwindow().equals(getActiveSubwindow())) {
-                s.setLevel(getCorrectLevel());
+        if(activeSubwindow != null) {
+            for (SubWindowLevel s : subwindows) {
+                if (s.getSubwindow().equals(getActiveSubwindow())) {
+                    s.setLevel(getCorrectLevel());
+                }
             }
         }
     }

@@ -391,10 +391,9 @@ public class Subwindow {
                         this.getFacade().changePartyType(p);
                     }
                     if (this.selected == null) {
-                        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-                        mouseEvent.setPoint(relativePoint);
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
                         selected = newParty.getLabel();
+                        startEditingLabel();
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -598,7 +597,7 @@ public class Subwindow {
         }
     }
 
-    private Point2D getRelativePoint(Point2D location) {
+    public Point2D getRelativePoint(Point2D location) {
         return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
