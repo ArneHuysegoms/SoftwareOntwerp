@@ -15,6 +15,12 @@ public class InteractionMediator {
 
     private List<Subwindow> subwindows;
 
+    /**
+     * default constructor
+     */
+    public InteractionMediator(){
+        this.subwindows = new ArrayList<>();
+    }
 
     /**
      * add a new party to all the subwindows repos except for the given subwindow
