@@ -62,9 +62,37 @@ public class Line extends Shape {
      * @param graphics
      *      object used to draw on the program's window
      */
-    @Override
-    public void draw(Graphics graphics) {
-        graphics.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
-    }
 
+    @Override
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        double x1=getStart().getX(),x2=getEnd().getX(),y1=getStart().getY(),y2=getEnd().getY();
+
+        if(x1 < minX){
+            x1 = minX;
+        }
+        if(y1 < minY){
+            y1 = minY;
+        }
+        if(x1 > maxX){
+            x1 = maxX;
+        }
+        if(y1 > maxY){
+            y1 = maxY;
+        }
+
+        if(x2 < minX){
+            x2 = minX;
+        }
+        if(y2 < minY){
+            y2 = minY;
+        }
+        if(x2 > maxX){
+            x2 = maxX;
+        }
+        if(y2 > maxY){
+            y2 = maxY;
+        }
+
+        graphics.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+    }
 }

@@ -4,7 +4,8 @@ import java.awt.*;
 
 public class CloseButton extends Shape{
 
-    private int x,y,width = 21,height = 16;
+    private int x,y;
+    private final int width = 30,height = 30;
 
     /**
      * @param x
@@ -22,9 +23,17 @@ public class CloseButton extends Shape{
     }
 
     @Override
-    public void draw(Graphics graphics) {
-        new Rectangle(x-width, y, width, height).draw(graphics);
-        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics);
-        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics);
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new Rectangle(x-width, y, width, height).draw(graphics,minX,minY,maxX,maxY);
+        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
+        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

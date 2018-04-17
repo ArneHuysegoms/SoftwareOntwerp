@@ -84,10 +84,10 @@ public class Arrow extends Figure {
      *      object used to draw on the program's window
      */
     @Override
-    public void draw(Graphics graphics) {
-        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics);
-        this.getArrowTop().draw(graphics);
-        this.getArrowBottom().draw(graphics);
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics,minX,minY,maxX,maxY);
+        this.getArrowTop().draw(graphics,minX,minY,maxX,maxY);
+        this.getArrowBottom().draw(graphics,minX,minY,maxX,maxY);
     }
 
     /**

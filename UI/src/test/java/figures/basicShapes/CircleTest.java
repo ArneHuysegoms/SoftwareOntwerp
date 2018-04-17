@@ -19,7 +19,7 @@ public class CircleTest {
 
     @Test
     public void test_center_constructor1(){
-        assertEquals(circle.getCenter(), new Point2D.Double(2,2));
+        assertEquals(circle.getUpperLeft(), new Point2D.Double(2,2));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class CircleTest {
 
     @Test
     public void test_center_constructor2(){
-        assertEquals(circle2.getCenter(), new Point2D.Double(2,2));
+        assertEquals(circle2.getUpperLeft(), new Point2D.Double(2,2));
     }
 
     @Test

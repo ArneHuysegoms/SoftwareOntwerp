@@ -123,11 +123,12 @@ public class Rectangle extends Shape {
      * @param graphics
      *      object used to draw on the program's window
      */
+
     @Override
-    public void draw(Graphics graphics) {
-        new Line(positionTL, cornerTR).draw(graphics);
-        new Line(cornerTR, cornerBR).draw(graphics);
-        new Line(cornerBR, cornerBL).draw(graphics);
-        new Line(cornerBL, positionTL).draw(graphics);
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new Line(positionTL, cornerTR).draw(graphics,minX,minY,maxX,maxY);
+        new Line(cornerTR, cornerBR).draw(graphics,minX,minY,maxX,maxY);
+        new Line(cornerBR, cornerBL).draw(graphics,minX,minY,maxX,maxY);
+        new Line(cornerBL, positionTL).draw(graphics,minX,minY,maxX,maxY);
     }
 }

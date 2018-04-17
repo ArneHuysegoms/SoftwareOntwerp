@@ -19,9 +19,9 @@ public class SequenceLifelineDrawer implements Drawer {
      *      empty in this implementation
      */
     @Override
-    public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
+    public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {
         graphics.setColor(Color.GRAY);
-        new DashedLine(start,end).draw(graphics);
+        new DashedLine(start,end).draw(graphics,minX,minY,maxX,maxY);
         graphics.setColor(Color.BLACK);
     }
 }
