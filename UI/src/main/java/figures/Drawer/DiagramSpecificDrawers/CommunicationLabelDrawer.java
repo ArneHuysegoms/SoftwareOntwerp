@@ -19,7 +19,8 @@ public class CommunicationLabelDrawer implements Drawer {
      *      string to be drawn
      */
     @Override
-    public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
+    public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {
+        //TODO check of dit wordt gebruikt & fix min max
         double x = Math.round((start.getX() + end.getX()) / 2);
         double y = Math.round((start.getY() + end.getY()) / 2);
         start = new Point2D.Double(x, y);

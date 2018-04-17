@@ -1,5 +1,6 @@
 package figures;
 
+import controller.CanvasController;
 import diagram.Diagram;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
@@ -35,11 +36,7 @@ import java.util.List;
 public class FigureConverter {
 
     //TODO Die lijn waar parties mogen in een sequence diagram
-    //TODO Sequence helper voor activation bar met secuenceMessageRepo late werke om juist x te berekenen.
-    //TODO (wrs) Draw selection box
-    //TODO fix dat eerst subwindow getekend wordt en dan de diagram, repeat
-
-    //private boolean activeDiagramIsSequence, activeDiagramIsCommunication;
+    //TODO ooit: Sequence helper voor activation bar op een manier verplaatsen naar domain(?).
 
     private SequenceFigureConverter sequenceFC;
     private CommunicationFigureConverter communicationFC;
@@ -50,36 +47,52 @@ public class FigureConverter {
      * default constructor
      */
     public FigureConverter() {
-        sequenceFC = new SequenceFigureConverter();
-        communicationFC = new CommunicationFigureConverter();
         subwindowDrawer = new SubwindowDrawer();
     }
 
-
     /**
-     * upper draw function
+     * main draw function
      *
      * @param graphics   object used to draw on the program's window
      * @param subwindows the subwindows to be drawn on the controller
      */
-    public void draw(Graphics graphics, List<Subwindow> subwindows) {
-
-        //Collections.sort(subwindows);
-
-        for (Subwindow sub : subwindows) {
-
+    public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindows) {
+        drawBackGroundColor(graphics);
+        Subwindow sub;
+        for (CanvasController.SubWindowLevel subLvl : subwindows) {
+            sub = subLvl.getSubwindow();
+            setConverters(sub.getPosition(), sub.getWidth(), sub.getHeight());
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram());
+                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
             } else if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram());
+                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
             }
         }
     }
 
+    private void drawBackGroundColor(Graphics graphics) {
+        graphics.setColor(Color.GRAY);
+        graphics.fillRect(0, 0, 1000, 1000);
+        graphics.setColor(Color.BLACK);
+    }
+
+    /**
+     * method that draws a subwindow
+     *
+     * @param graphics object used to draw on the program's window
+     * @param position coordinate of the top-left point of the subwindow
+     * @param width the subwindow's width
+     * @param height the subwindow's height
+     */
     private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
-        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null);
+        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null,0,0,2000,2000);
+    }
+
+    public void setConverters(Point2D subStart, int width, int height) {
+        sequenceFC = new SequenceFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
+        communicationFC = new CommunicationFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
     }
 
     /*
