@@ -31,7 +31,8 @@ public class CommunicationFigureConverter extends Converter{
     /**
      * default constructor
      */
-    public CommunicationFigureConverter() {
+    public CommunicationFigureConverter(int minX, int minY, int maxX, int maxY) {
+        super(minX,minY,maxX,maxY);
         actorDrawingStrategy = new CommunicationActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
@@ -73,7 +74,7 @@ public class CommunicationFigureConverter extends Converter{
             for (int i = 0; i < pair.getNumberOfMessages(); i++) {
                 start = calculateStart(i * spread, pair, partyMap);
                 end = calculateEnd(i * spread, pair, partyMap);
-                invokeMessageDrawingStrategy.draw(graphics, start, end, "");
+                invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
             }
         }
     }

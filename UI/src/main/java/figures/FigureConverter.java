@@ -47,11 +47,8 @@ public class FigureConverter {
      * default constructor
      */
     public FigureConverter() {
-        sequenceFC = new SequenceFigureConverter();
-        communicationFC = new CommunicationFigureConverter();
         subwindowDrawer = new SubwindowDrawer();
     }
-
 
     /**
      * main draw function
@@ -60,20 +57,25 @@ public class FigureConverter {
      * @param subwindows the subwindows to be drawn on the controller
      */
     public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindows) {
-
-        //SubwindowLevel, klasse met een subwindow en een level. Deze draw krijgt een lijst van
-        //SubwindowLevels ipv Subwindows en itereer hierover in de foreach en doe nekeer getSub (that's probably it).
+        drawBackGroundColor(graphics);
         Subwindow sub;
         for (CanvasController.SubWindowLevel subLvl : subwindows) {
             sub = subLvl.getSubwindow();
+            setConverters(sub.getPosition(), sub.getWidth(), sub.getHeight());
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelectedElement());
+                sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
             } else if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
-                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelectedElement());
+                communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
             }
         }
+    }
+
+    private void drawBackGroundColor(Graphics graphics) {
+        graphics.setColor(Color.GRAY);
+        graphics.fillRect(0, 0, 1000, 1000);
+        graphics.setColor(Color.BLACK);
     }
 
     /**
@@ -86,6 +88,11 @@ public class FigureConverter {
      */
     private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
         subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null,0,0,2000,2000);
+    }
+
+    public void setConverters(Point2D subStart, int width, int height) {
+        sequenceFC = new SequenceFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
+        communicationFC = new CommunicationFigureConverter((int)subStart.getX(),(int)subStart.getY(),width,height);
     }
 
     /*
