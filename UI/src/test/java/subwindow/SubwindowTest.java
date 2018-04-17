@@ -65,7 +65,7 @@ public class SubwindowTest {
 
     @Test
     public void test_subwindow_frame_has_4_corners(){
-        assertTrue(subwindow.getCorners().size() == 4);
+        assertTrue(subwindow.getFrame().getCorners().size() == 4);
     }
     @Test
     public void test_subwindow_frame_has_TL_corner(){
@@ -73,8 +73,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow.getCorners().get(0).getCenter().getX() == 200);
-        assertTrue(subwindow.getCorners().get(0).getCenter().getY() == 200);
+        assertTrue(subwindow.getFrame().getCorners().get(0).getCenter().getX() == 200);
+        assertTrue(subwindow.getFrame().getCorners().get(0).getCenter().getY() == 200);
     }
     @Test
     public void test_subwindow_frame_has_TR_corner(){
@@ -82,8 +82,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow.getCorners().get(1).getCenter().getX() == 800);
-        assertTrue(subwindow.getCorners().get(1).getCenter().getY() == 200);
+        assertTrue(subwindow.getFrame().getCorners().get(1).getCenter().getX() == 800);
+        assertTrue(subwindow.getFrame().getCorners().get(1).getCenter().getY() == 200);
     }
     @Test
     public void test_subwindow_frame_has_BL_corner(){
@@ -91,8 +91,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow.getCorners().get(2).getCenter().getX() == 200);
-        assertTrue(subwindow.getCorners().get(2).getCenter().getY() == 800);
+        assertTrue(subwindow.getFrame().getCorners().get(2).getCenter().getX() == 200);
+        assertTrue(subwindow.getFrame().getCorners().get(2).getCenter().getY() == 800);
     }
     @Test
     public void test_subwindow_frame_has_BR_corner(){
@@ -100,8 +100,8 @@ public class SubwindowTest {
         // 200+600 200
         // 200 200+600
         // 200+600 200+600
-        assertTrue(subwindow.getCorners().get(3).getCenter().getX() == 800);
-        assertTrue(subwindow.getCorners().get(3).getCenter().getY() == 800);
+        assertTrue(subwindow.getFrame().getCorners().get(3).getCenter().getX() == 800);
+        assertTrue(subwindow.getFrame().getCorners().get(3).getCenter().getY() == 800);
     }
 
     @Test

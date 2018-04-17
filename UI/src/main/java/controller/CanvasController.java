@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Main layer between pure UI and the domain
- *
+ * <p>
  * Interprets UIEvents and addresses the appropriate functions in the diagram.
  */
 public class CanvasController {
@@ -23,7 +23,9 @@ public class CanvasController {
 
     private Subwindow activeSubwindow;
 
-    public CanvasController(){
+    private boolean dragging = false;
+
+    public CanvasController() {
         this.setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
     }
@@ -32,8 +34,8 @@ public class CanvasController {
         return subwindows;
     }
 
-    private void setSubwindows(List<SubWindowLevel> subwindows) throws IllegalArgumentException{
-        if(subwindows == null){
+    private void setSubwindows(List<SubWindowLevel> subwindows) throws IllegalArgumentException {
+        if (subwindows == null) {
             throw new IllegalArgumentException("Subwindows may not be null");
         }
         this.subwindows = subwindows;
@@ -44,15 +46,15 @@ public class CanvasController {
     }
 
     private void setActiveSubwindow(Subwindow activeSubwindow) throws IllegalArgumentException {
-        if(activeSubwindow == null){
+        if (activeSubwindow == null) {
             throw new IllegalArgumentException("Active subwindow may not be null");
         }
         this.activeSubwindow = activeSubwindow;
     }
 
-    public void removeSubwindow(Subwindow subwindow){
-        for(SubWindowLevel s : subwindows) {
-            if(s.getSubwindow().equals(subwindow)) {
+    public void removeSubwindow(Subwindow subwindow) {
+        for (SubWindowLevel s : subwindows) {
+            if (s.getSubwindow().equals(subwindow)) {
                 this.subwindows.remove(s);
             }
         }
@@ -60,16 +62,16 @@ public class CanvasController {
         //this.setSubwindowLevels();
     }
 
-    public void setNewActiveSubWindow(){
+    public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
         activeSubwindow = s.getSubwindow();
     }
 
-    public SubWindowLevel findHighestSubwindowLevel(){
+    public SubWindowLevel findHighestSubwindowLevel() {
         int level = -1;
         SubWindowLevel chosen = null;
-        for(SubWindowLevel s : subwindows){
-            if(s.getLevel() > level){
+        for (SubWindowLevel s : subwindows) {
+            if (s.getLevel() > level) {
                 chosen = s;
                 level = s.getLevel();
             }
@@ -77,9 +79,9 @@ public class CanvasController {
         return chosen;
     }
 
-    public void addSubwindow(Subwindow subwindow, int level){
-        if(subwindow == null){
-            throw  new IllegalArgumentException("can't add null subwindow");
+    public void addSubwindow(Subwindow subwindow, int level) {
+        if (subwindow == null) {
+            throw new IllegalArgumentException("can't add null subwindow");
         }
         SubWindowLevel subWindowLevel = new SubWindowLevel(subwindow, level);
         this.getSubwindows().add(subWindowLevel);
@@ -92,15 +94,19 @@ public class CanvasController {
     //public void setSubwindowLevels(){ }
 
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
-        switch(keyEvent.getKeyEventType()){
+        switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                copyActiveSubWindow();
+                if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
+                    copyActiveSubWindow();
+                }
                 break;
             case CTRLN:
-                createNewSubwindow();
+                if(getActiveSubwindow() == null || (getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode())) {
+                    createNewSubwindow();
+                }
                 break;
             default:
-                if(this.getActiveSubwindow() != null) {
+                if (this.getActiveSubwindow() != null) {
                     activeSubwindow.handleKeyEvent(keyEvent);
                     //setSubwindowLevels();
                 }
@@ -108,43 +114,69 @@ public class CanvasController {
         }
     }
 
-    public void handleMouseEvent(MouseEvent mouseEvent){
-        Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-        if(subwindow != null) {
-            if (!subwindow.equals(getActiveSubwindow())) {
-                changeActiveSubwindow(activeSubwindow);
+    public void handleMouseEvent(MouseEvent mouseEvent) {
+        if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
+            if (!dragging) {
+                dragging = checkFordragging(mouseEvent);
             }
-            try {
-                subwindow.handleMouseEvent(mouseEvent);
-            } catch (DomainException exc) {
-                exc.printStackTrace();
+            if (dragging) {
+                switch (mouseEvent.getMouseEventType()) {
+                    case RELEASE:
+                        dragging = false;
+                        activeSubwindow.handleMovement(mouseEvent.getPoint());
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
+                if (subwindow != null) {
+                    if (!subwindow.equals(getActiveSubwindow())) {
+                        changeActiveSubwindow(activeSubwindow);
+                    }
+                    try {
+                        subwindow.handleMouseEvent(mouseEvent);
+                    } catch (DomainException exc) {
+                        exc.printStackTrace();
+                    }
+                }
             }
         }
     }
 
-    private void changeActiveSubwindow(Subwindow newActiveSubWindow){
+    private boolean checkFordragging(MouseEvent mouseEvent) {
+        for (SubWindowLevel subwindow : subwindows) {
+            if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
+                this.activeSubwindow = subwindow.getSubwindow();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
         this.setActiveSubwindow(newActiveSubWindow);
         changeLevelForActiveSubWindow();
         //this.setSubwindowLevels();
     }
 
-    private void changeLevelForActiveSubWindow(){
-        for(SubWindowLevel s : subwindows){
-            if(s.equals(getActiveSubwindow())){
+    private void changeLevelForActiveSubWindow() {
+        for (SubWindowLevel s : subwindows) {
+            if (s.equals(getActiveSubwindow())) {
                 s.setLevel(getCorrectLevel());
             }
         }
     }
 
-    private void createNewSubwindow(){
-        Subwindow subwindow = new Subwindow(new Point2D.Double(100,100), new CloseButton(this), new InteractionMediator());
+    private void createNewSubwindow() {
+        Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), new InteractionMediator());
         int level = getCorrectLevel();
         addSubwindow(subwindow, level);
         this.setActiveSubwindow(subwindow);
     }
 
-    private void copyActiveSubWindow(){
-        if(this.getActiveSubwindow() != null) {
+    private void copyActiveSubWindow() {
+        if (this.getActiveSubwindow() != null) {
             Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
             int level = getCorrectLevel();
             addSubwindow(subwindow, level);
@@ -152,10 +184,10 @@ public class CanvasController {
         }
     }
 
-    private int getCorrectLevel(){
+    private int getCorrectLevel() {
         int level = -1;
-        for(SubWindowLevel s : subwindows){
-            if(s.getLevel() > level){
+        for (SubWindowLevel s : subwindows) {
+            if (s.getLevel() > level) {
                 level = s.getLevel();
             }
         }
@@ -163,15 +195,15 @@ public class CanvasController {
         return level;
     }
 
-    private Subwindow getAppropriateSubwindow(Point2D clickedLocation){
+    private Subwindow getAppropriateSubwindow(Point2D clickedLocation) {
         List<SubWindowLevel> clickedSubwindows = this.getSubwindows()
-                                                    .stream()
-                                                    .filter(s -> s.getSubwindow().isClicked(clickedLocation))
-                                                    .collect(Collectors.toList());
+                .stream()
+                .filter(s -> s.getSubwindow().isClicked(clickedLocation))
+                .collect(Collectors.toList());
         int level = -1;
         Subwindow highest = null;
-        for(SubWindowLevel s : clickedSubwindows){
-            if(s.getLevel() > level){
+        for (SubWindowLevel s : clickedSubwindows) {
+            if (s.getLevel() > level) {
                 highest = s.getSubwindow();
                 level = s.getLevel();
             }
@@ -184,7 +216,7 @@ public class CanvasController {
         private Subwindow subwindow;
         private int level;
 
-        public SubWindowLevel(Subwindow subwindow, int level){
+        public SubWindowLevel(Subwindow subwindow, int level) {
             this.setSubwindow(subwindow);
             this.setLevel(level);
         }
@@ -194,7 +226,7 @@ public class CanvasController {
         }
 
         private void setSubwindow(Subwindow subwindow) {
-            if(subwindow == null){
+            if (subwindow == null) {
                 throw new IllegalArgumentException("Subwindow may not be null");
             }
             this.subwindow = subwindow;
@@ -205,7 +237,7 @@ public class CanvasController {
         }
 
         private void setLevel(int level) {
-            if(level < 0){
+            if (level < 0) {
                 throw new IllegalArgumentException("level can't be negative");
             }
             this.level = level;
@@ -213,14 +245,7 @@ public class CanvasController {
 
         @Override
         public int compareTo(SubWindowLevel o) {
-            // 0 moet helemaal achteraan staan, dus 0 is het grootste
-            if (this.getLevel() > o.getLevel()) {
-                return -1;
-            } else if (this.getLevel() == o.getLevel()) {
-                return 0;
-            } else {
-                return 1;
-            }
+            return -Integer.compare(this.getLevel(), o.getLevel());
         }
     }
 }
