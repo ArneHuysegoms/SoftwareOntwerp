@@ -347,7 +347,13 @@ public class SequenceFigureConverter extends Converter {
                 if (hasParent()) {
                     return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX()+partyObjectExtraOffset;
                 } else {
+<<<<<<< HEAD
                     return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2)+partyObjectExtraOffset;
+=======
+                    //System.out.println(partyMap.get(getSent().getSender()));
+                    System.out.println(getSent().getSender());
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2);
+>>>>>>> origin/DiagramRepo
                 }
             }
 
@@ -392,11 +398,7 @@ public class SequenceFigureConverter extends Converter {
              * @return x-coordinate for the end point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
-                int partyObjectExtraOffset = 0;
-                if(getSent().getReceiver() instanceof Object){
-                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH/2;
-                }
-                return getSubwindow().getAbsolutePosition(partyMap.get((getResponse().getSender()))).getX() + (barWidth / 2)+partyObjectExtraOffset;
+                return getSubwindow().getAbsolutePosition(partyMap.get((getResponse().getSender()))).getX() + (barWidth / 2);
             }
 
             /**
@@ -406,7 +408,7 @@ public class SequenceFigureConverter extends Converter {
              */
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
                 int partyObjectExtraOffset = 0;
-                if(getSent().getReceiver() instanceof Object){
+                if(getSent().getSender() instanceof Object){
                     partyObjectExtraOffset = PartyRepo.OBJECTWIDTH/2;
                 }
                 return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2)+partyObjectExtraOffset;
