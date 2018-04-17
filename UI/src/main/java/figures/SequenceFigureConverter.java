@@ -287,7 +287,6 @@ public class SequenceFigureConverter extends Converter {
              * @param responseDrawer a drawer object to be used to draw response messages
              */
             public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
-
                 boxDrawer.draw(graphics, calculateOwnBarStart(partyMap, messageMap), calculateOwnBarEnd(partyMap, messageMap), "", getX1(), getY1(), getX2(), getY2());
                 boxDrawer.draw(graphics, calculateBrotherBarStart(partyMap, messageMap), calculateBrotherBarEnd(partyMap, messageMap), null, getX1(), getY1(), getX2(), getY2());
 
@@ -341,10 +340,14 @@ public class SequenceFigureConverter extends Converter {
              * @return x-coordinate for the start point of this activation bar
              */
             private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
+                int partyObjectExtraOffset = 0;
+                if(getSent().getSender() instanceof Object){
+                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH/2;
+                }
                 if (hasParent()) {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX();
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX()+partyObjectExtraOffset;
                 } else {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2);
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2)+partyObjectExtraOffset;
                 }
             }
 
@@ -372,10 +375,14 @@ public class SequenceFigureConverter extends Converter {
              * @return x-coordinate for the end point of this activation bar
              */
             private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
+                int partyObjectExtraOffset = 0;
+                if(getSent().getSender() instanceof Object){
+                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH/2;
+                }
                 if (hasParent()) {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getResponse().getReceiver())).getX() + barWidth;
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getResponse().getReceiver())).getX() + barWidth+partyObjectExtraOffset;
                 } else {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + (barWidth / 2);
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + (barWidth / 2)+partyObjectExtraOffset;
                 }
             }
 
@@ -394,7 +401,11 @@ public class SequenceFigureConverter extends Converter {
              * @return x-coordinate for the start point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
-                return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2);
+                int partyObjectExtraOffset = 0;
+                if(getSent().getSender() instanceof Object){
+                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH/2;
+                }
+                return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2)+partyObjectExtraOffset;
             }
 
             /**
