@@ -59,12 +59,11 @@ public class CanvasController {
             }
         }
         setNewActiveSubWindow();
-        //this.setSubwindowLevels();
-    }
+     }
 
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
-        activeSubwindow = s.getSubwindow();
+        changeActiveSubwindow(s.getSubwindow());
     }
 
     public SubWindowLevel findHighestSubwindowLevel() {
@@ -132,7 +131,7 @@ public class CanvasController {
                 Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
                 if (subwindow != null) {
                     if (!subwindow.equals(getActiveSubwindow())) {
-                        changeActiveSubwindow(activeSubwindow);
+                        changeActiveSubwindow(subwindow);
                     }
                     try {
                         subwindow.handleMouseEvent(mouseEvent);
@@ -244,7 +243,7 @@ public class CanvasController {
 
         @Override
         public int compareTo(SubWindowLevel o) {
-            return -Integer.compare(this.getLevel(), o.getLevel());
+            return - Integer.compare(this.getLevel(), o.getLevel());
         }
     }
 }
