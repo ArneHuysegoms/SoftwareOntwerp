@@ -202,6 +202,13 @@ public class Subwindow {
         this.labelContainer = labelContainer;
     }
 
+    public DiagramElement getSelected() {
+        return selected;
+    }
+
+    private void setSelected(DiagramElement selected) {
+        this.selected = selected;
+    }
 
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         if (!labelMode) {
