@@ -12,6 +12,7 @@ import repo.diagram.SequenceRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import subwindow.Subwindow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -27,8 +28,8 @@ public class SequenceFigureConverter extends Converter{
             responseMessageDrawingStrategy,
             lifeLineDrawer;
 
-    public SequenceFigureConverter(int minX, int minY, int maxX, int maxY){
-        super(minX,minY,maxX,maxY);
+    public SequenceFigureConverter(Subwindow subwindow){
+        super(subwindow);
         lifeLineDrawer = new SequenceLifelineDrawer();
         actorDrawingStrategy = new SequenceActorDrawer();
         objectDrawingStrategy = new SequenceObjectDrawer();
@@ -96,8 +97,8 @@ public class SequenceFigureConverter extends Converter{
             }
             //x-coordiaten tweeken hier?
             for (Point2D point : partyMap.values()) {
-                start = new Point2D.Double(point.getX(), messageMap.get(first) - MessageRepo.HEIGHT);
-                end = new Point2D.Double(point.getX(), messageMap.get(last) + MessageRepo.HEIGHT * 2);
+                start = new Point2D.Double(point.getX(), (messageMap.get(first)+getSubwindow().getPosition().getY()) - MessageRepo.HEIGHT);
+                end = new Point2D.Double(point.getX(), (messageMap.get(last)+getSubwindow().getPosition().getY()) + MessageRepo.HEIGHT * 2);
                 lifeLineDrawer.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
             }
         } else {
@@ -322,9 +323,9 @@ public class SequenceFigureConverter extends Converter{
              */
             private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
                 if (hasParent()) {
-                    return partyMap.get(getSent().getSender()).getX();
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX();
                 } else {
-                    return partyMap.get(getSent().getSender()).getX() - (barWidth / 2);
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2);
                 }
             }
 
@@ -334,7 +335,7 @@ public class SequenceFigureConverter extends Converter{
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarStartY(Map<Message, Integer> messageMap) {
-                return messageMap.get(getSent());
+                return messageMap.get(getSent())+getSubwindow().getPosition().getY();
             }
 
             /**
@@ -343,7 +344,7 @@ public class SequenceFigureConverter extends Converter{
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarEndY(Map<Message, Integer> messageMap) {
-                return messageMap.get(getResponse());
+                return messageMap.get(getResponse())+getSubwindow().getPosition().getY();
             }
 
             /**
@@ -353,9 +354,9 @@ public class SequenceFigureConverter extends Converter{
              */
             private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
                 if (hasParent()) {
-                    return partyMap.get(getResponse().getReceiver()).getX() + barWidth;
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getResponse().getReceiver())).getX() + barWidth;
                 } else {
-                    return partyMap.get(getSent().getSender()).getX() + (barWidth / 2);
+                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + (barWidth / 2);
                 }
             }
 
@@ -365,7 +366,7 @@ public class SequenceFigureConverter extends Converter{
              * @return x-coordinate for the end point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
-                return partyMap.get((getResponse().getSender())).getX() + (barWidth / 2);
+                return getSubwindow().getAbsolutePosition(partyMap.get((getResponse().getSender()))).getX() + (barWidth / 2);
             }
 
             /**
@@ -374,7 +375,7 @@ public class SequenceFigureConverter extends Converter{
              * @return x-coordinate for the start point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
-                return partyMap.get(getSent().getReceiver()).getX() - (barWidth / 2);
+                return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2);
             }
 
             /**

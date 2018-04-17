@@ -15,6 +15,7 @@ import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import subwindow.Subwindow;
 import util.PartyPair;
 
 import java.awt.*;
@@ -31,8 +32,8 @@ public class CommunicationFigureConverter extends Converter{
     /**
      * default constructor
      */
-    public CommunicationFigureConverter(int minX, int minY, int maxX, int maxY) {
-        super(minX,minY,maxX,maxY);
+    public CommunicationFigureConverter(Subwindow subwindow) {
+        super(subwindow);
         actorDrawingStrategy = new CommunicationActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
@@ -89,8 +90,8 @@ public class CommunicationFigureConverter extends Converter{
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y;
-        x = partyMap.get(pair.getSender()).getX();
-        y = partyMap.get(pair.getSender()).getY();
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX();
+        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 
@@ -104,8 +105,8 @@ public class CommunicationFigureConverter extends Converter{
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y;
-        x = partyMap.get(pair.getReceiver()).getX();
-        y = partyMap.get(pair.getReceiver()).getY();
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX();
+        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 }

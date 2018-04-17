@@ -17,21 +17,25 @@ import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
+import subwindow.Subwindow;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Map;
 
 public abstract class Converter {
+    private Subwindow subwindow;
     protected int x1,y1,x2,y2;
     protected Drawer boxDrawingStrategy,
             labelDrawingStrategy,
             selectionBoxDrawingStrategy;
 
-    public Converter(int minX, int minY, int maxX, int maxY){
-        x1 = minX;
-        y1 = minY;
-        x2 = maxX;
-        y2 = maxY;
+    public Converter(Subwindow subwindow){
+        this.subwindow = subwindow;
+        x1 = (int)getSubwindow().getPosition().getX();
+        y1 = (int)getSubwindow().getPosition().getY();
+        x2 = x1+getSubwindow().getWidth();
+        y2 = y1+getSubwindow().getHeight();
         boxDrawingStrategy = new BoxDrawer();
         selectionBoxDrawingStrategy = new SelectionBoxDrawer();
         labelDrawingStrategy = new LabelDrawer();
@@ -43,7 +47,7 @@ public abstract class Converter {
         Map<Party, Point2D> partyMap = partyRepo.getMap();
 
         for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {
-            Point2D start = entry.getValue();
+            Point2D start = subwindow.getAbsolutePosition(entry.getValue());
             Point2D end;
 
             if (entry.getKey() instanceof Actor) {
@@ -60,10 +64,14 @@ public abstract class Converter {
         Map<diagram.label.Label, Point2D> labelMap = messageRepo.getMap();
 
         for (Map.Entry<Label, Point2D> entry : labelMap.entrySet()) {
-            Point2D start = entry.getValue();
-            Point2D end;
-
+            Point2D start =  subwindow.getAbsolutePosition(entry.getValue());
             labelDrawingStrategy.draw(graphics, start, null, entry.getKey().getLabel(), getX1(),getY1(),getX2(),getY2());
+        }
+
+        if (getSubwindow().getSelected() instanceof Label){
+            Label selectedLabel = (Label)getSubwindow().getSelected();
+            Point2D start =  subwindow.getAbsolutePosition(labelMap.get(selectedLabel));
+            labelDrawingStrategy.draw(graphics, start, null, selectedLabel.getLabel(), getX1(),getY1(),getX2(),getY2());
         }
     }
 
@@ -74,44 +82,44 @@ public abstract class Converter {
      *
      * @param graphics object used to draw on the program's window
      * @param selectedElement  the subwindow's selected element     */
-
     protected void drawSelectionBox(Graphics graphics, DiagramElement selectedElement, DiagramRepo repo) {
-
         if (selectedElement instanceof Actor) {
             Actor a = (Actor) selectedElement;
             Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
-            Point2D start = new Point2D.Double(partyMap.get(a).getX() - (PartyRepo.ACTORWIDTH/ 2), partyMap.get(a).getY()),
-                    end = new Point2D.Double(partyMap.get(a).getX() + (PartyRepo.ACTORWIDTH / 2), partyMap.get(a).getY() + PartyRepo.ACTORWIDTH);
+            Point2D actorPos = subwindow.getAbsolutePosition(partyMap.get(a));
+            Point2D start = new Point2D.Double(actorPos.getX() - (PartyRepo.ACTORWIDTH/ 2), actorPos.getY()),
+                    end = new Point2D.Double(actorPos.getX() + (PartyRepo.ACTORWIDTH / 2), actorPos.getY() + PartyRepo.ACTORWIDTH);
             selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
         } else if (selectedElement instanceof  Label) {
             Label l = (Label) selectedElement;
-            Point2D start = repo.getLabelRepo().getLocationOfLabel(l);
+            Point2D start = subwindow.getAbsolutePosition(repo.getLabelRepo().getLocationOfLabel(l));
             selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + LabelRepo.WIDTH, start.getY() + LabelRepo.HEIGHT), "", getX1(),getY1(),getX2(),getY2());
         } else if (selectedElement instanceof Object) {
             Object o = (Object) selectedElement;
             Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
+            Point2D objectPos = subwindow.getAbsolutePosition(partyMap.get(o));
             int selectionBoxSize = 5;
-            Point2D start = new Point2D.Double(partyMap.get(o).getX() - selectionBoxSize, partyMap.get(o).getY() - selectionBoxSize);
-            Point2D end = new Point2D.Double(partyMap.get(o).getX() + PartyRepo.OBJECTWIDTH + selectionBoxSize, partyMap.get(o).getY() + PartyRepo.OBJECTHEIGHT + selectionBoxSize);
+            Point2D start = new Point2D.Double(objectPos.getX() - selectionBoxSize, objectPos.getY() - selectionBoxSize);
+            Point2D end = new Point2D.Double(objectPos.getX() + PartyRepo.OBJECTWIDTH + selectionBoxSize, objectPos.getY() + PartyRepo.OBJECTHEIGHT + selectionBoxSize);
             selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
         } else if (selectedElement instanceof Message) {
             Message m = (Message)selectedElement;
             Point2D start;
             Point2D end;
             Map<Party, Point2D> partyMap = repo.getPartyRepo().getMap();
-            if(repo.getMessageRepo() instanceof CommunicationMessageRepo){
-               /* List<PartyPair> pairs = ((CommunicationMessageRepo) repo.getMessageRepo()).getMap();
-                start = new Point2D.Double(partyMap.get(m.getSender()).getX(), m.getyLocation() - (MessageRepo.HEIGHT / 2));
-                end = new Point2D.Double(partyMap.get(m.getReceiver()).getX(), m.getyLocation() + (MessageRepo.HEIGHT / 2));
-                selectionBoxDrawingStrategy.draw(graphics, start, end, "");*/
-            }
-            else if (repo.getMessageRepo() instanceof SequenceMessageRepo){
+            if (repo.getMessageRepo() instanceof SequenceMessageRepo){
                 Map<Message, Integer> msgMap = ((SequenceMessageRepo) repo.getMessageRepo()).getMap();
-                start = new Point2D.Double(partyMap.get(m.getSender()).getX(), msgMap.get(m) - (MessageRepo.HEIGHT / 2));
-                end = new Point2D.Double(partyMap.get(m.getReceiver()).getX(), msgMap.get(m) + (MessageRepo.HEIGHT / 2));
+                Point2D senderPos = subwindow.getAbsolutePosition(partyMap.get(m.getSender()));
+                Point2D receiverPos = subwindow.getAbsolutePosition(partyMap.get(m.getReceiver()));
+                start = new Point2D.Double(senderPos.getX(), (msgMap.get(m)+subwindow.getPosition().getY()) - (MessageRepo.HEIGHT / 2));
+                end = new Point2D.Double(receiverPos.getX(), (msgMap.get(m)+subwindow.getPosition().getY()) + (MessageRepo.HEIGHT / 2));
                 selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
             }
         }
+    }
+
+    protected Subwindow getSubwindow() {
+        return subwindow;
     }
 
     protected int getX1() {
