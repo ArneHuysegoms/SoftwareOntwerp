@@ -16,6 +16,13 @@ public class InteractionMediator {
     private List<Subwindow> subwindows;
 
 
+    /**
+     * add a new party to all the subwindows repos except for the given subwindow
+     *
+     * @param party
+     * @param location
+     * @param subwindow
+     */
     public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
         for(Subwindow s : subwindows){
             if(! s.equals(subwindow)) {
@@ -25,6 +32,12 @@ public class InteractionMediator {
 
     }
 
+    /**
+     * remove a set of elements from the the subwindow repos except for the given subwindow
+     *
+     * @param deletedElements
+     * @param subwindow
+     */
     public void removeInReposInOtherSubwindows(Set<DiagramElement> deletedElements, Subwindow subwindow){
         for(Subwindow s : subwindows){
             if(! s.equals(subwindow)) {
@@ -33,16 +46,33 @@ public class InteractionMediator {
         }
     }
 
+    /**
+     * add a subwindow
+     *
+     * @param subwindow
+     */
     public void addSubwindow(Subwindow subwindow){
         if(! subwindows.contains(subwindow)){
             this.subwindows.add(subwindow);
         }
     }
 
+    /**
+     * remove a subwindow
+     *
+     * @param subwindow
+     */
+
     public void removeSubwindow(Subwindow subwindow){
         subwindows.remove(subwindow);
     }
 
+    /**
+     * add a set of messages to all the subwindows repos except for the given subwindow
+     *
+     * @param newMessages
+     * @param subwindow
+     */
     public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, Subwindow subwindow) {
         for(Subwindow s : subwindows){
             if( ! s.equals(subwindow)){
