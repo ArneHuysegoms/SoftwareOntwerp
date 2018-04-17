@@ -1,9 +1,11 @@
 package util;
 
+import java.io.Serializable;
+
 /**
  * a generic class that stores 2 objects,  a pair.
  */
-public class Pair<A,B> {
+public class Pair<A,B> implements Serializable {
 
     private final A first;
     private final B second;

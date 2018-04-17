@@ -357,9 +357,6 @@ public class Subwindow {
      */
     public void handleMouseEvent(MouseEvent mouseEvent) throws DomainException {
         if (!labelMode) {
-            if (this.selected != null && !(this.selected instanceof Label)) {
-                this.stopEditingLabel();
-            }
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
                     if (this.selected instanceof Party) {
@@ -404,6 +401,7 @@ public class Subwindow {
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
+            startEditingLabel();
             mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
     }
@@ -528,8 +526,6 @@ public class Subwindow {
      * @param mouseEvent the event to handle
      */
     private void handleMousePressed(MouseEvent mouseEvent) {
-        Point2D relativePoint = getRelativePoint(mouseEvent.getPoint());
-        mouseEvent.setPoint(relativePoint);
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {

@@ -344,6 +344,8 @@ public class SequenceFigureConverter extends Converter {
                 if (hasParent()) {
                     return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX();
                 } else {
+                    //System.out.println(partyMap.get(getSent().getSender()));
+                    System.out.println(getSent().getSender());
                     return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2);
                 }
             }

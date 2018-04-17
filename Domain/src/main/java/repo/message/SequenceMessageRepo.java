@@ -33,7 +33,7 @@ public class SequenceMessageRepo extends MessageRepo implements Serializable {
      * @param messageYLocationMap the map containing the state we want the new repo to have
      * @throws IllegalArgumentException if the provided map is null
      */
-    public SequenceMessageRepo(HashMap<Message, Integer> messageYLocationMap) throws IllegalArgumentException{
+    public SequenceMessageRepo(Map<Message, Integer> messageYLocationMap) throws IllegalArgumentException{
         if(messageYLocationMap == null){
             throw new IllegalArgumentException("Map may not be null");
         }
