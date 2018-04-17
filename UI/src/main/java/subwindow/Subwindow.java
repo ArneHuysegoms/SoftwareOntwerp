@@ -532,13 +532,12 @@ public class Subwindow {
         mouseEvent.setPoint(relativePoint);
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-        if (newSelected != null) {
-            if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
-                selected = newSelected;
-                this.startEditingLabel();
-            } else {
-                selected = newSelected;
-            }
+        if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+            selected = newSelected;
+            this.startEditingLabel();
+        } else {
+            stopEditingLabel();
+            selected = newSelected;
         }
     }
 
@@ -555,6 +554,7 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     private void startEditingLabel() {
+        labelMode = true;
         Label labelInEdit = (Label) selected;
         labelContainer = labelInEdit.getLabel() + "I";
     }
