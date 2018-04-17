@@ -51,13 +51,14 @@ public class FigureConverter {
      * main draw function
      *
      * @param graphics   object used to draw on the program's window
-     * @param subwindows the subwindows to be drawn on the controller
+     * @param subwindowLevels the subwindows to be drawn on the controller
      */
-    public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindows) {
+    public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindowLevels) {
         drawBackGroundColor(graphics);
         Subwindow sub;
-        for (CanvasController.SubWindowLevel subLvl : subwindows) {
+        for (CanvasController.SubWindowLevel subLvl : subwindowLevels) {
             sub = subLvl.getSubwindow();
+            System.out.println(subLvl.getLevel());
             setConverters(sub);
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
