@@ -376,7 +376,7 @@ public class Subwindow {
                 case LEFTDOUBLECLICK:
                     if (this.selected instanceof Party) {
                         Party p = (Party) selected;
-                        this.getFacade().changePartyType(p);
+                        selected = this.getFacade().changePartyType(p);
                     }
                     if (this.selected == null) {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
