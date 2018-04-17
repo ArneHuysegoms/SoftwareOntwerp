@@ -35,9 +35,6 @@ import java.util.List;
  */
 public class FigureConverter {
 
-    //TODO Die lijn waar parties mogen in een sequence diagram
-    //TODO ooit: Sequence helper voor activation bar op een manier verplaatsen naar domain(?).
-
     private SequenceFigureConverter sequenceFC;
     private CommunicationFigureConverter communicationFC;
 
@@ -66,7 +63,7 @@ public class FigureConverter {
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
                 sequenceFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
-            } else if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
+            } else if (sub.getFacade().getActiveRepo() instanceof CommunicationRepo) {
                 communicationFC.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
             }
         }
@@ -74,7 +71,7 @@ public class FigureConverter {
 
     private void drawBackGroundColor(Graphics graphics) {
         graphics.setColor(Color.GRAY);
-        graphics.fillRect(0, 0, 1000, 1000);
+        graphics.fillRect(0, 0, 2000, 1000);
         graphics.setColor(Color.BLACK);
     }
 

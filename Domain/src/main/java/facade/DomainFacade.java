@@ -154,11 +154,13 @@ public class DomainFacade {
      * Changes the type of the party on the given location to the type of the opposite type
      *
      * @param oldParty the party to change the type of
+     * @return the new Party
      */
-    public void changePartyType(Party oldParty) throws DomainException{
+    public Party changePartyType(Party oldParty) throws DomainException{
         Party newParty = diagram.changePartyType(oldParty);
         activeRepo.changePartyTypeInRepos(oldParty, newParty);
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
+        return newParty;
     }
 
     /**

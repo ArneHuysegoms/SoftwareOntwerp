@@ -46,25 +46,28 @@ public class CanvasController {
     }
 
     private void setActiveSubwindow(Subwindow activeSubwindow) throws IllegalArgumentException {
-        if (activeSubwindow == null) {
-            throw new IllegalArgumentException("Active subwindow may not be null");
-        }
         this.activeSubwindow = activeSubwindow;
     }
 
     public void removeSubwindow(Subwindow subwindow) {
+       SubWindowLevel toRemove = null;
         for (SubWindowLevel s : subwindows) {
             if (s.getSubwindow().equals(subwindow)) {
-                this.subwindows.remove(s);
+                toRemove = s;
             }
         }
+        this.getSubwindows().remove(toRemove);
         setNewActiveSubWindow();
-        //this.setSubwindowLevels();
-    }
+     }
 
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
-        activeSubwindow = s.getSubwindow();
+        if(s != null) {
+            changeActiveSubwindow(s.getSubwindow());
+        }
+        else {
+            changeActiveSubwindow(null);
+        }
     }
 
     public SubWindowLevel findHighestSubwindowLevel() {
@@ -132,9 +135,11 @@ public class CanvasController {
                 Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
                 if (subwindow != null) {
                     if (!subwindow.equals(getActiveSubwindow())) {
-                        changeActiveSubwindow(activeSubwindow);
+                        changeActiveSubwindow(subwindow);
                     }
                     try {
+                        Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
+                        mouseEvent.setPoint(relativePoint);
                         subwindow.handleMouseEvent(mouseEvent);
                     } catch (DomainException exc) {
                         exc.printStackTrace();
@@ -147,7 +152,7 @@ public class CanvasController {
     private boolean checkFordragging(MouseEvent mouseEvent) {
         for (SubWindowLevel subwindow : subwindows) {
             if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                this.activeSubwindow = subwindow.getSubwindow();
+                changeActiveSubwindow(subwindow.getSubwindow());
                 return true;
             }
         }
@@ -156,14 +161,15 @@ public class CanvasController {
 
     private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
         this.setActiveSubwindow(newActiveSubWindow);
-        changeLevelForActiveSubWindow();
-        //this.setSubwindowLevels();
+        this.changeLevelForActiveSubWindow();
     }
 
     private void changeLevelForActiveSubWindow() {
-        for (SubWindowLevel s : subwindows) {
-            if (s.equals(getActiveSubwindow())) {
-                s.setLevel(getCorrectLevel());
+        if(activeSubwindow != null) {
+            for (SubWindowLevel s : subwindows) {
+                if (s.getSubwindow().equals(getActiveSubwindow())) {
+                    s.setLevel(getCorrectLevel());
+                }
             }
         }
     }
@@ -172,7 +178,7 @@ public class CanvasController {
         Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), new InteractionMediator());
         int level = getCorrectLevel();
         addSubwindow(subwindow, level);
-        this.setActiveSubwindow(subwindow);
+        this.changeActiveSubwindow(subwindow);
     }
 
     private void copyActiveSubWindow() {
@@ -180,7 +186,7 @@ public class CanvasController {
             Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
             int level = getCorrectLevel();
             addSubwindow(subwindow, level);
-            this.setActiveSubwindow(subwindow);
+            this.changeActiveSubwindow(subwindow);
         }
     }
 
@@ -245,7 +251,7 @@ public class CanvasController {
 
         @Override
         public int compareTo(SubWindowLevel o) {
-            return -Integer.compare(this.getLevel(), o.getLevel());
+            return - Integer.compare(this.getLevel(), o.getLevel());
         }
     }
 }

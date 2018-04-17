@@ -6,13 +6,14 @@ import repo.label.LabelRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * class used as a couple of Parties, contains the messages the sender has send to the receiver
  */
-public class PartyPair extends Pair {
+public class PartyPair extends Pair implements Serializable {
     private List<Message> messages;
 
     /**

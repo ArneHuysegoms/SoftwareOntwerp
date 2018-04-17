@@ -7,11 +7,16 @@ import diagram.message.Message;
 import diagram.party.Party;
 import exceptions.DomainException;
 import repo.label.LabelRepo;
+import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
+import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 
 import java.awt.geom.Point2D;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -241,7 +246,20 @@ public abstract class DiagramRepo implements Serializable {
      * @return the deep copy of the provided original
      */
     public static DiagramRepo copy(DiagramRepo orig) {
-        Object obj = null;
+        PartyRepo partyRepo = new PartyRepo(new HashMap<>(orig.getPartyRepo().getMap()));
+        LabelRepo labelRepo = new LabelRepo(new HashMap<>(orig.getLabelRepo().getMap()));
+        MessageRepo messageRepo;
+        if(orig.getMessageRepo() instanceof SequenceMessageRepo){
+            SequenceMessageRepo smrepo = (SequenceMessageRepo) orig.getMessageRepo();
+            SequenceMessageRepo newSmr = new SequenceMessageRepo(new HashMap<>(smrepo.getMap()));
+            return new SequenceRepo(labelRepo, partyRepo, newSmr);
+        }
+        else{
+            CommunicationMessageRepo comrepo = (CommunicationMessageRepo) orig.getMessageRepo();
+            CommunicationMessageRepo newCom = new CommunicationMessageRepo(new ArrayList<>(comrepo.getMap()));
+            return new CommunicationRepo(labelRepo, partyRepo, newCom);
+        }
+        /*Object obj = null;
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -257,7 +275,7 @@ public abstract class DiagramRepo implements Serializable {
         catch(ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
         }
-        return (DiagramRepo) obj;
+        return (DiagramRepo) obj;*/
     }
 
     /**
