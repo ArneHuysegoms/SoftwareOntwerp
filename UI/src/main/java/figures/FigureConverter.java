@@ -1,5 +1,6 @@
 package figures;
 
+import controller.CanvasController;
 import diagram.Diagram;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
@@ -58,12 +59,13 @@ public class FigureConverter {
      * @param graphics   object used to draw on the program's window
      * @param subwindows the subwindows to be drawn on the controller
      */
-    public void draw(Graphics graphics, List<Subwind> subwindows) {
+    public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindows) {
 
         //SubwindowLevel, klasse met een subwindow en een level. Deze draw krijgt een lijst van
         //SubwindowLevels ipv Subwindows en itereer hierover in de foreach en doe nekeer getSub (that's probably it).
-
-        for (Subwindow sub : subwindows) {
+        Subwindow sub;
+        for (CanvasController.SubWindowLevel subLvl : subwindows) {
+            sub = subLvl.getSubwindow();
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
 
             if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
