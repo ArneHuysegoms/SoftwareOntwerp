@@ -305,7 +305,6 @@ public class Subwindow {
         this.selected = selected;
     }
 
-<<<<<<< HEAD
     public List<SubwindowFrameCorner> getCorners() {
         return corners;
     }
@@ -322,12 +321,10 @@ public class Subwindow {
         this.frame = frame;
     }
 
-=======
     /**
      * handle the given keyevent accordingly
      * @param keyEvent
      */
->>>>>>> Arne
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         if (!labelMode) {
             this.stopEditingLabel();

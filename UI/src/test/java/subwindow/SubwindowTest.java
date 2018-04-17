@@ -145,5 +145,5 @@ public class SubwindowTest {
         subwindow.setWidth(-1);
     }
 
-    
+
 }
