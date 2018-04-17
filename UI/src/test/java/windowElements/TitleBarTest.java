@@ -1,8 +1,7 @@
-package windowelements;
+package windowElements;
 
 import org.junit.Before;
 import org.junit.Test;
-import windowElements.TitleBar;
 
 import java.awt.geom.Point2D;
 
@@ -18,13 +17,13 @@ public class TitleBarTest {
         titleBar = new TitleBar(point, 40);
     }
     @Test
-    public void Test_constructor(){
+    public void test_constructor(){
         assertTrue(titleBar.getPosition().getX() == 20);
         assertTrue(titleBar.getPosition().getY() == 20);
     }
 
     @Test
-    public void Test_isClicked(){
+    public void test_isClicked(){
         assertTrue(titleBar.isClicked(new Point2D.Double(30,20)));
     }
 }
