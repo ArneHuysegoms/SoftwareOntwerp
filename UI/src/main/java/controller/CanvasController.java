@@ -139,7 +139,8 @@ public class CanvasController {
                 level = s.getLevel();
             }
         }
-        return level++;
+        level++;
+        return level;
     }
 
     private Point2D getRelativePoint(Subwindow subwindow, Point2D location){

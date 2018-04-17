@@ -336,10 +336,14 @@ public class Subwindow {
                     this.deleteElement();
                     break;
                 case CHAR:
-                    this.addCharToLabel(keyEvent.getKeyChar());
+                    if(selected instanceof Label) {
+                        this.addCharToLabel(keyEvent.getKeyChar());
+                    }
                     break;
                 case BACKSPACE:
-                    this.removeLastCharFromLabel();
+                    if(selected instanceof Label) {
+                        this.removeLastCharFromLabel();
+                    }
                     break;
                 default:
                     break;
@@ -347,10 +351,14 @@ public class Subwindow {
         } else {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
-                    this.addCharToLabel(keyEvent.getKeyChar());
+                    if(selected instanceof Label) {
+                        this.addCharToLabel(keyEvent.getKeyChar());
+                    }
                     break;
                 case BACKSPACE:
-                    this.removeLastCharFromLabel();
+                    if(selected instanceof Label) {
+                        this.removeLastCharFromLabel();
+                    }
                     break;
                 default:
                     break;
