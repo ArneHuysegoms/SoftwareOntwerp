@@ -118,7 +118,7 @@ public class CanvasController {
     }
 
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
+        //if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
             if (!dragging) {
                 dragging = checkFordragging(mouseEvent);
             }
@@ -146,7 +146,7 @@ public class CanvasController {
                     }
                 }
             }
-        }
+        //}
     }
 
     private boolean checkFordragging(MouseEvent mouseEvent) {
