@@ -589,7 +589,7 @@ public class Subwindow {
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if (newSelected != null) {
-            if (oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+            if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
                 selected = newSelected;
                 this.startEditingLabel();
             } else {
