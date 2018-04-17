@@ -50,4 +50,8 @@ public class InteractionMediator {
             }
         }
     }
+
+    public List<Subwindow> getSubwindows() {
+        return subwindows;
+    }
 }
