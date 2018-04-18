@@ -204,7 +204,6 @@ public class InteractrCanvasTest {
         this.screenshot("test_interactrCanvas_changePartyType_backToParty.png");
     }
 
-
     @Test
     public void test_interactrCanvas_editLabel_with_multiple_subwindows() throws IOException, AWTException, InterruptedException{
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,216,172,2);
@@ -238,7 +237,6 @@ public class InteractrCanvasTest {
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("test_interactrCanvas_editLabel_with_multiple_subwindows.png");
     }
-
 
     @Test
     public void test_interactrCanvas_addMessage() throws IOException, AWTException, InterruptedException {
@@ -311,10 +309,6 @@ public class InteractrCanvasTest {
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("interactrCanvas_addMultipleMessages.png");
     }
-
-
-
-
 
     @Test
     public void test_interactrCanvas_moveSubwindow() throws IOException, AWTException, InterruptedException{
