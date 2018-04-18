@@ -6,12 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class KeyEventFactoryTest {
-    private KeyEvent keyEvent1;
-    private KeyEvent keyEvent2;
-    private KeyEvent keyEvent3;
-    private KeyEvent keyEvent4;
-    private KeyEvent keyEvent5;
-    private KeyEvent keyEvent6;
+    private KeyEvent keyEvent1, keyEvent2, keyEvent3, keyEvent4, keyEvent5, keyEvent6, keyEvent7, keyEvent8;
     private KeyEventFactory keyEventFactory;
 
     @Before
@@ -23,6 +18,8 @@ public class KeyEventFactoryTest {
         keyEvent4 = new KeyEvent(KeyEventType.CHAR, 'a');
         keyEvent5 = new KeyEvent(KeyEventType.BACKSPACE);
         keyEvent6 = new KeyEvent(KeyEventType.CHAR);
+        keyEvent7 = new KeyEvent(KeyEventType.CTRLN);
+        keyEvent8 = new KeyEvent(KeyEventType.CTRLD);
     }
     @Test
     public void test_create_tab(){
@@ -53,6 +50,24 @@ public class KeyEventFactoryTest {
     public void test_create_denied_char(){
         KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_TYPED, 0, '7');
         assertTrue(test.equals(keyEvent6));
+    }
+    @Test
+    public void test_create_ctrlN(){
+        keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 17, '0');
+        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 78, 'n');
+        assertTrue(test.equals(keyEvent7));
+    }
+    @Test
+    public void test_create_ctrlD(){
+        keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 17, '0');
+        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 68, 'd');
+        assertTrue(test.equals(keyEvent8));
+    }
+    @Test
+    public void test_compare_with_other_keyEvent(){
+        keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 17, '0');
+        KeyEvent test = keyEventFactory.createKeyEvent(java.awt.event.KeyEvent.KEY_PRESSED, 78, 'n');
+        assertFalse(test.equals(keyEvent8));
     }
 
 }
