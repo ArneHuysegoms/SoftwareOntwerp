@@ -38,5 +38,13 @@ public class CircleTest {
         assertTrue(circle2.getRadius() == 6);
     }
 
+    @Test
+    public void test_width_constructor1(){
+        assertTrue(circle.getWidth() == 6);
+    }
 
+    @Test
+    public void test_width_constructor2(){
+        assertTrue(circle2.getWidth() == 12);
+    }
 }

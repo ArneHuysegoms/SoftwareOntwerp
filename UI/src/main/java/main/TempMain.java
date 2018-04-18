@@ -1,8 +1,6 @@
 package main;
 
 import canvaswindow.CanvasWindow;
-import figures.basicShapes.Circle;
-import figures.basicShapes.CloseButton;
 import figures.basicShapes.DashedLine;
 import figures.diagramFigures.SubwindowFigure;
 

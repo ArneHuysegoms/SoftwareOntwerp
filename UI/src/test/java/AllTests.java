@@ -5,6 +5,9 @@ import mediator.InteractionMediatorTest;
 import subwindow.ButtonTest;
 import subwindow.CloseButtonTest;
 import subwindow.SubwindowTest;
+import suites.FiguresTests;
+import suites.SubwindowTests;
+import suites.UIEventTests;
 import suites.WindowElementsTests;
 import uievents.*;
 import controller.*;
@@ -16,27 +19,14 @@ import windowElements.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CanvasControllerTest.class,
-        CircleTest.class,
-        DashedLineTest.class,
-        LineTest.class,
-        RectangleTest.class,
-        DashedRectangleTest.class,
-        StickManTest.class,
-        KeyEventFactoryTest.class,
-        KeyEventTest.class,
-        MouseEventFactoryTest.class,
-        MouseEventTest.class,
-        PairTest.class,
-        BoxTest.class,
-        ArrowTest.class,
-        DashedArrowTest.class,
+
         InteractrCanvasTest.class,
-        ButtonTest.class,
-        CloseButtonTest.class,
-        SubwindowTest.class,
+        CanvasControllerTest.class,
+        FiguresTests.class,
+        InteractionMediatorTest.class,
+        SubwindowTests.class,
+        UIEventTests.class,
         WindowElementsTests.class,
-        InteractionMediatorTest.class
 })
 
 public class AllTests {
