@@ -329,29 +329,25 @@ public class Subwindow {
                     this.deleteElement();
                     break;
                 case CHAR:
-                    if (selected instanceof Label) {
+                    if (selectedElementIsLabel()) {
                         this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    if (selected instanceof Label) {
+                    if (selectedElementIsLabel()) {
                         this.removeLastCharFromLabel();
                     }
                     break;
                 default:
                     break;
             }
-        } else {
+        } else if (selectedElementIsLabel()){
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
-                    if (selected instanceof Label) {
-                        this.addCharToLabel(keyEvent.getKeyChar());
-                    }
+                    this.addCharToLabel(keyEvent.getKeyChar());
                     break;
                 case BACKSPACE:
-                    if (selected instanceof Label) {
-                        this.removeLastCharFromLabel();
-                    }
+                    this.removeLastCharFromLabel();
                     break;
                 default:
                     break;
@@ -363,13 +359,14 @@ public class Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
+     * @throws DomainException
      */
-    public void handleMouseEvent(MouseEvent mouseEvent) throws DomainException {
+    public void handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
                     dragging = true;
-                    if (this.selected instanceof Party) {
+                    if (selectedElementIsParty()) {
                         Party p = (Party) selected;
                         this.getFacade().changePartyPosition(mouseEvent.getPoint(), p);
                     }
@@ -384,7 +381,7 @@ public class Subwindow {
                     handleLeftClick(mouseEvent);
                     break;
                 case LEFTDOUBLECLICK:
-                    if (this.selected instanceof Party) {
+                    if (selectedElementIsParty()) {
                         Party oldParty = (Party) selected;
                         Party newParty = this.getFacade().changePartyType(oldParty);
                         selected = newParty;
@@ -408,9 +405,9 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent containing the information of the event
      */
-    private void handleReleaseClick(MouseEvent mouseEvent) {
+    private void handleReleaseClick(MouseEvent mouseEvent){
         dragging = false;
-        if (this.selected instanceof DiagramRepo.MessageStart) {
+        if (selectedElementIsMessageStart()) {
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
@@ -520,6 +517,18 @@ public class Subwindow {
         createFrame(frame.getButton());
     }
 
+    public boolean selectedElementIsParty(){
+        return selected instanceof Party;
+    }
+
+    public boolean selectedElementIsLabel(){
+        return selected instanceof Label;
+    }
+
+    public boolean selectedElementIsMessageStart(){
+        return selected instanceof DiagramRepo.MessageStart;
+    }
+
     /**
      * move the subwindow when the user drags by the titlebar
      *
@@ -538,7 +547,7 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent) {
+    private void handleMousePressed(MouseEvent mouseEvent){
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
@@ -572,7 +581,7 @@ public class Subwindow {
      * delete the elements in the repos of the other subwindows
      */
     private void deleteElement() {
-        if (selected instanceof Label) {
+        if (selectedElementIsLabel()) {
             Label l = (Label) selected;
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             mediator.removeInReposInOtherSubwindows(deletedElements, this);
@@ -605,11 +614,13 @@ public class Subwindow {
      * removes the last char from the active label
      */
     private void removeLastCharFromLabel() throws DomainException {
-        String l = labelContainer.substring(0, getLabelContainer().length() - 2);
-        l += "I";
-        labelContainer = l;
-        labelMode = !checkIfValidLable();
-        handleChangeInLabel();
+        if(labelContainer.length() > 1) {
+            String l = labelContainer.substring(0, getLabelContainer().length() - 2);
+            l += "I";
+            labelContainer = l;
+            labelMode = !checkIfValidLable();
+            handleChangeInLabel();
+        }
     }
 
     /**
@@ -631,8 +642,8 @@ public class Subwindow {
      *
      * @return true if the label is valid
      */
-    private boolean checkIfValidLable() {
-        if (selected instanceof Label) {
+    public boolean checkIfValidLable() {
+        if (selectedElementIsLabel()) {
             Label l = (Label) selected;
             return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && ! getLabelContainer().equals("");
     }
