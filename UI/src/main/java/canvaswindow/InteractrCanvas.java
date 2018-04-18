@@ -1,6 +1,8 @@
 package canvaswindow;
 
-import canvas.CanvasController;
+import canvaswindow.CanvasWindow;
+import controller.CanvasController;
+import exceptions.DomainException;
 import figures.FigureConverter;
 import uievents.KeyEvent;
 import uievents.KeyEventFactory;
@@ -9,6 +11,7 @@ import uievents.MouseEventFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Collections;
 
 public class InteractrCanvas extends CanvasWindow {
     /**
@@ -18,7 +21,7 @@ public class InteractrCanvas extends CanvasWindow {
      */
 
     private CanvasController canvasController;
-    //private FigureConverter figureConverter;
+    private FigureConverter figureConverter;
     private KeyEventFactory keyFactory;
     private MouseEventFactory mouseFactory;
 
@@ -27,11 +30,13 @@ public class InteractrCanvas extends CanvasWindow {
         keyFactory = new KeyEventFactory();
         mouseFactory = new MouseEventFactory();
         canvasController = new CanvasController();
-        //figureConverter = new FigureConverter();
+        figureConverter = new FigureConverter();
     }
 
     public void paint(Graphics g){
-        FigureConverter.getInstance().draw(g, canvasController.getFacade().getActiveDiagram());
+        Collections.sort(canvasController.getSubwindows());
+        Collections.reverse(canvasController.getSubwindows());
+        figureConverter.draw(g, canvasController.getSubwindows());
     }
 
     @Override
@@ -45,7 +50,11 @@ public class InteractrCanvas extends CanvasWindow {
     @Override
     public void handleKeyEvent(int id, int keyCode, char keyChar){
         KeyEvent e = keyFactory.createKeyEvent(id, keyCode, keyChar);
-        canvasController.handleKeyEvent(e);
+        try {
+            canvasController.handleKeyEvent(e);
+        }catch (DomainException ex){
+            System.out.println(ex.getMessage());
+        }
         this.repaint();
     }
 }

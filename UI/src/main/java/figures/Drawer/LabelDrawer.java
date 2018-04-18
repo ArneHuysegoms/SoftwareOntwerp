@@ -23,7 +23,10 @@ public class LabelDrawer implements Drawer{
      *      string to be drawn
      */
     @Override
-    public void draw(Graphics graphics, Point2D start, Point2D end, String label) {
+    public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect((int)start.getX(), (int)start.getY(),50,15);
+        graphics.setColor(Color.BLACK);
         graphics.drawString(label, (int)start.getX()+3, (int)start.getY()+10);
     }
 }

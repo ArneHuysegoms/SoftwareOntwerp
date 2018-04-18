@@ -1,75 +1,193 @@
 package facade;
 
-import diagram.Clickable;
-import diagram.CommunicationsDiagram;
 import diagram.Diagram;
-import diagram.SequenceDiagram;
+import diagram.DiagramElement;
+import diagram.label.Label;
+import diagram.message.Message;
+import diagram.party.Party;
+import exceptions.DomainException;
+import repo.diagram.CommunicationRepo;
+import repo.diagram.DiagramRepo;
+import repo.diagram.SequenceRepo;
 
 import java.awt.geom.Point2D;
+import java.util.List;
+import java.util.Set;
 
 /**
  * this class servers as the entrypoint for all of the domain functionality
  */
 public class DomainFacade {
 
-    private Diagram activeDiagram;
+    private DiagramRepo activeRepo;
 
-    private Diagram previousDiagram;
+    private DiagramRepo sequenceRepo;
+    private DiagramRepo communicationRepo;
+
+    private Diagram diagram;
 
     /**
      * Default constructor, starts with a sequencediagram as active diagram
      */
     public DomainFacade(){
-        setActiveDiagram(new SequenceDiagram());
+        this(new Diagram(), new SequenceRepo(), new CommunicationRepo());
+    }
+
+    /**
+     * Constructs a domainfacade with the given diagram, sequencerepo and communicationrepo
+     *
+     * @param diagram the diagram or this domainfacade
+     * @param sequenceRepo the sequencerepo for this domainfacade
+     * @param communicationRepo the communicationrepo for this domainfacade
+     */
+    public DomainFacade(Diagram diagram, DiagramRepo sequenceRepo, DiagramRepo communicationRepo){
+        this.setDiagram(diagram);
+        this.setSequenceRepo(sequenceRepo);
+        this.setCommunicationRepo(communicationRepo);
+        this.setActiveRepo(sequenceRepo);
+    }
+
+    /**
+     * gives the repo detailing the current state of the diagram
+     * @return a diagramrepo containing the current state of the diagram
+     */
+    public DiagramRepo getActiveRepo() {
+        return activeRepo;
+    }
+
+    /**
+     * sets the repo that contains the active state of the diagram
+     * @param activeRepo the state of the diagram we want to be the current one
+     */
+    private void setActiveRepo(DiagramRepo activeRepo) {
+        this.activeRepo = activeRepo;
     }
 
     /**
      *
      * @return the currently active diagram
      */
-    public Diagram getActiveDiagram(){ return activeDiagram;}
+    public Diagram getDiagram(){ return diagram;}
 
     /**
-     * sets the active diagram to the provided active diagram
+     * sets the diagram to the provided diagram
      *
-     * @param activeDiagram the new active diagram
+     * @param diagram the new active diagram
+     *
+     * @throws IllegalArgumentException if the diagram is null
      */
-    private void setActiveDiagram(Diagram activeDiagram){ this.activeDiagram = activeDiagram;}
+    private void setDiagram(Diagram diagram) throws IllegalArgumentException{
+        if(diagram == null){
+            throw new IllegalArgumentException("diagram may not be null");
+        }
+        this.diagram = diagram;}
+
+    /**
+     * @return the sequencerepo of this facade
+     */
+    public DiagramRepo getSequenceRepo() {
+        return sequenceRepo;
+    }
+
+    /**
+     * sets the sequencerepo for this domainfacade
+     * @param sequenceRepo the sequencerepo for the domainfacade
+     * @throws IllegalArgumentException if the provided repo is null
+     */
+    private void setSequenceRepo(DiagramRepo sequenceRepo) throws IllegalArgumentException{
+        if(sequenceRepo == null){
+            throw new IllegalArgumentException("sequencerepo may not be null");
+        }
+        this.sequenceRepo = sequenceRepo;
+    }
+
+    /**
+     * @return the communicationrepo of this domainfacade
+     */
+    public DiagramRepo getCommunicationRepo() {
+        return communicationRepo;
+    }
+
+    /**
+     * sets the communicationRepo for this domainfacade
+     * @param communicationRepo the Communicationrepo for this domainfacade
+     * @throws IllegalArgumentException if the communicationrepo is null
+     */
+    private void setCommunicationRepo(DiagramRepo communicationRepo) throws IllegalArgumentException {
+        if(communicationRepo == null){
+            throw new IllegalArgumentException("communication repo may not be null");
+        }
+        this.communicationRepo = communicationRepo;
+    }
 
     /**
      * Change the active diagram to a diagram of the other type
      */
     public void changeActiveDiagram(){
-        if(this.getActiveDiagram() instanceof SequenceDiagram){
-            Diagram communication = new CommunicationsDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
-                    activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
-            if(previousDiagram != null ) {
-                communication.resetPartyPositions(previousDiagram.getParties());
-            }
-            this.previousDiagram = activeDiagram;
-            activeDiagram = communication;
-        } else{
-            Diagram sequence =  new SequenceDiagram(activeDiagram.getParties(), activeDiagram.getFirstMessage(), activeDiagram.getSelectedElement(),
-                    activeDiagram.getLabelContainer(), activeDiagram.isLabelMode(), activeDiagram.isValidLabel(), activeDiagram.isMessageMode());
-            sequence.resetToSequencePositions();
-            this.previousDiagram = activeDiagram;
-            activeDiagram = sequence;
+        this.activeRepo = getOtherRepo();
+    }
+
+    /**
+     * adds a new party of the type Object on the given location
+     *
+     * @param location the location of the new Party
+     * @return party the newly added party
+     */
+    public Party addNewParty(Point2D location){
+        Party newParty = this.getDiagram().addNewParty();
+        activeRepo.addNewPartyToRepos(newParty, location);
+        getOtherRepo().addNewPartyToRepos(newParty, location);
+        return newParty;
+    }
+
+    /**
+     * puts a party in the repos with the given location without inserting a new one in the diagram
+     * @param party the party to add
+     * @param location the location of the party
+     */
+    public void addPartyToRepo(Party party, Point2D location){
+        activeRepo.addNewPartyToRepos(party, location);
+        getOtherRepo().addNewPartyToRepos(party, location);
+    }
+
+    /**
+     * Changes the type of the party on the given location to the type of the opposite type
+     *
+     * @param oldParty the party to change the type of
+     * @return the new Party
+     */
+    public Party changePartyType(Party oldParty){
+        Party newParty = diagram.changePartyType(oldParty);
+        changePartyTypeInRepo(oldParty, newParty);
+        return newParty;
+    }
+
+    /**
+     * change the partyType of the old party to that of the new Party
+     * @param oldParty oldParty the old type
+     * @param newParty newParty the new type
+     * @throws DomainException
+     */
+    public void changePartyTypeInRepo(Party oldParty, Party newParty){
+        activeRepo.changePartyTypeInRepos(oldParty, newParty);
+        getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
+        activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
+        getOtherRepo().getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), getOtherRepo().getPartyRepo(), getOtherRepo().getLabelRepo());
+    }
+
+    /**
+     * returns the repo that is currently not the active repo
+     *
+     * @return the non-active repository
+     */
+    public DiagramRepo getOtherRepo(){
+        if(activeRepo.equals(communicationRepo)){
+            return sequenceRepo;
+        }
+        else {
+            return communicationRepo;
         }
     }
-
-    /**
-     *
-     * @return true if the label in edit is valid, false otherwise
-     */
-    public boolean checkIfValidLable(){
-        return this.getActiveDiagram().isValidLabel();
-    }
-
-    /**
-     *
-     * @return the currently selected element of the active diagram
-     */
-    public Clickable getSelectedElement(){ return this.getActiveDiagram().getSelectedElement();}
 
     /**
      * find the element on the given location
@@ -79,135 +197,137 @@ public class DomainFacade {
      * @param location the location to find an element on
      * @return the element on the provided location, null if no such element exist
      */
-    public Clickable findSelectedElement(Point2D location) {
-        return this.getActiveDiagram().findSelectedElement(location);
+    public DiagramElement findSelectedElement(Point2D location){
+        return this.getActiveRepo().getSelectedDiagramElement(location);
     }
 
     /**
+     * deletes the element of the diagram whom the given label belongs to
      *
-     * @return wether the currently selected element is an label
+     * @param label the label of the element to delete
+     * @return a set of elements that was deleted by deleting the diagramelement with the given label in the diagram
      */
-    public boolean selectedElementIsLabel(){
-        return this.getActiveDiagram().selectedElementIsLabel();
+    public Set<DiagramElement> deleteElementByLabel(Label label){
+        Set<DiagramElement> deletedElements = this.getDiagram().deleteElementByLabel(label);
+        deleteElementsInRepos(deletedElements);
+        return deletedElements;
     }
 
     /**
-     * start editing the currently selected label
+     * deletes the given diagramelements in the repos
+     * @param deletedElements the elements to remove
      */
-    public void editLabel(){
-        this.getActiveDiagram().editLabel();
+    public void deleteElementsInRepos(Set<DiagramElement> deletedElements){
+        for(DiagramElement d : deletedElements){
+            if(d instanceof Party){
+                Party p = (Party) d;
+                deletePartyInRepos(p);
+            }
+            else if(d instanceof Message){
+                Message m = (Message) d;
+                deleteMessageInRepos(m);
+            }
+        }
     }
 
     /**
-     * returns the element that would be selected element on that location
+     * deletes the given message in both repos
+     * @param message the message to be deleted
+     */
+    private void deleteMessageInRepos(Message message){
+        Message firstMessage = diagram.getFirstMessage();
+        activeRepo.deleteMessageInRepos(message, firstMessage);
+        getOtherRepo().deleteMessageInRepos(message, firstMessage);
+    }
+
+    /**
+     * deletes the given party in both repos, with cascading effect
+     * @param party the party to be deleted
+     */
+    private void deletePartyInRepos(Party party) {
+        this.getActiveRepo().getPartyRepo().removeParty(party);
+        this.getActiveRepo().getLabelRepo().removeLabel(party.getLabel());
+
+        DiagramRepo other = this.getOtherRepo();
+
+        other.getPartyRepo().removeParty(party);
+        other.getLabelRepo().removeLabel(party.getLabel());
+    }
+
+    /**
+     * change the location of the provided party to the provided location
      *
-     * @param location the location to inspect
-     * @return the clickable that would be selected on that position
+     * @param newLocation the new location
+     * @param party the party to change the location of
      */
-    public Clickable wouldBeSelectedElement(Point2D location){
-        return this.getActiveDiagram().wouldBeSelectedElement(location);
-    }
-
-    /**
-     * sets the provided element as the selected element in the diagram
-     *
-     * @param clickable the element to set as the selected element
-     */
-    public void setSelectedElement(Clickable clickable){
-        this.getActiveDiagram().setSelectedElement(clickable);
-    }
-
-    /**
-     * checks wether or not the clickable element is a label
-     *
-     * @param clickable the clickable element to inspect
-     * @return wether or not the clickable element is a label
-     */
-    public boolean isLabel(Clickable clickable){
-        return this.getActiveDiagram().isLabel(clickable);
-    }
-
-    /**
-     * stops editing the currently selected label
-     */
-    public void stopEditingLabel(){
-        this.getActiveDiagram().stopEditingLabel();
-    }
-
-    /**
-     * deletes the currently selected element
-     */
-    public void deleteElement(){
-        this.getActiveDiagram().deleteElement();
-    }
-
-    /**
-     * adds the given char to the currently selected label
-     *
-     * @param newChar the char to add
-     */
-    public void addCharToLabel(char newChar){
-        this.getActiveDiagram().addCharToLabel(newChar);
-    }
-
-    /**
-     * removes the last char from the currently selected label
-     */
-    public void removeLastCharFromLabel(){
-        this.getActiveDiagram().removeLastCharFromLabel();
-    }
-
-    /**
-     * returns whether or not the currently selected element is a party
-     *
-     * @return whether or not the currently selected element is a party
-     */
-    public boolean selectedElementIsParty(){
-        return this.getActiveDiagram().selectedElementIsParty();
-    }
-
-    /**
-     * change the location of the currently selected party to the provided location
-     *
-     * @param location the new location
-     */
-    public void changePartyPosition(Point2D location){
-        this.getActiveDiagram().changePartyPosition(location);
-    }
-
-    /**
-     *
-     * @return whether or not the currently selected element is a messageStart
-     */
-    public boolean selectedElementIsMessageStart(){
-        return this.getActiveDiagram().selectedElementIsMessageStart();
+    public void changePartyPosition(Point2D newLocation, Party party){
+        Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
+        this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
+        this.getActiveRepo().getLabelRepo().updateLabelPosition(getActiveRepo().getPartyRepo().getCorrectLabelPosition(party), party.getLabel());
+        this.getActiveRepo().getMessageRepo().resetLabelPositionsForMovedParty(getActiveRepo().getLabelRepo(), getActiveRepo().getPartyRepo(), party);
     }
 
     /**
      * adds a new message on the given location
      *
      * @param location the location to add a message on
-     */
-    public void addNewMessage(Point2D location){
-        this.getActiveDiagram().addNewMessage(location);
-    }
-
-    /**
-     * Changes the type of the party on the given location to the type of the opposite type
+     * @param messageStart the start of the message
      *
-     * @param location the location of the party to change the type of
+     * @return a list containing the newly added messages
      */
-    public void changePartyType(Point2D location){
-        this.getActiveDiagram().changePartyType(location);
+    public List<Message> addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
+        if(this.getActiveRepo() instanceof SequenceRepo) {
+            SequenceRepo sequenceRepo = (SequenceRepo) this.getActiveRepo();
+            Party Sender = messageStart.getParty();
+            Party receiver = this.getActiveRepo().findReceiver(location);
+            if (receiver != null) {
+                int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
+                Message previous = sequenceRepo.getMessageRepo().findPreviousMessage(yLocation, diagram.getFirstMessage());
+                List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
+                addMessagesToRepos(addedMessages);
+                if(addedMessages.size() == 2){
+                    return addedMessages;
+                }
+                else{
+                    throw new IllegalStateException("New messages weren't added");
+                }
+            }
+        }
+        return null;
     }
 
-    /**
-     * adds a new party on the given location of the type Object
+    public void addMessagesToRepos(List<Message> messages){
+        getActiveRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
+        this.getOtherRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
+    }
+
+   /* *//*
+     * start editing the currently selected label
+     *//*
+    public void editLabel(){
+        this.getActiveDiagram().editLabel();
+    }*/
+
+    /*
+     * stops editing the currently selected label
+     *//*
+    public void stopEditingLabel(){
+        this.getActiveDiagram().stopEditingLabel();
+    }*/
+
+    /*
+     * adds the given char to the currently selected label
      *
-     * @param location the location of the new Party
-     */
-    public void addNewParty(Point2D location){
-        this.getActiveDiagram().addNewParty(location);
+     * @param newChar the char to add
+     *//*
+    public void addCharToLabel(char newChar){
+        this.getActiveDiagram().addCharToLabel(newChar);
     }
 
+    *//*
+     * removes the last char from the currently selected label
+     *//*
+    public void removeLastCharFromLabel(){
+        this.getActiveDiagram().removeLastCharFromLabel();
+    }*/
 }

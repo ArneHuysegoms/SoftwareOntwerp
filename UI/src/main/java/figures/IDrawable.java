@@ -9,5 +9,5 @@ public interface IDrawable {
      * @param graphics
      *      object used to draw on the program's window
      */
-    public void draw(Graphics graphics);
+    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY);
 }

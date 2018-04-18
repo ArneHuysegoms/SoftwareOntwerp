@@ -236,11 +236,11 @@ public class StickMan extends Figure {
      *      object used to draw on the program's window
      */
     @Override
-    public void draw(Graphics graphics) {
-        this.getHead().draw(graphics);
-        this.getBody().draw(graphics);
-        this.getArms().draw(graphics);
-        this.getLegL().draw(graphics);
-        this.getLegR().draw(graphics);
+    public void draw(Graphics graphics,int minX,int minY,int maxX,int maxY) {
+        this.getHead().draw(graphics, minX, minY,maxX, maxY);
+        this.getBody().draw(graphics, minX, minY,maxX, maxY);
+        this.getArms().draw(graphics, minX, minY,maxX, maxY);
+        this.getLegL().draw(graphics, minX, minY,maxX, maxY);
+        this.getLegR().draw(graphics, minX, minY,maxX, maxY);
     }
 }
