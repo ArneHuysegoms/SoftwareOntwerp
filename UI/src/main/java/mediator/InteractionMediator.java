@@ -108,6 +108,7 @@ public class InteractionMediator {
             if (! s.equals(subwindow)){
                 if(s.getSelected() instanceof Label && ((Label) s.getSelected()).equals(selectedLabel)){
                     s.stopEditingLabel();
+                    s.setLabelMode(false);
                 }
             }
         }
