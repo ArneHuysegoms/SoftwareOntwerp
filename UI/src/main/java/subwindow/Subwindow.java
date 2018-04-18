@@ -292,7 +292,7 @@ public class Subwindow {
         return selected;
     }
 
-    private void setSelected(DiagramElement selected) {
+    public void setSelected(DiagramElement selected) {
         this.selected = selected;
     }
 
@@ -311,7 +311,6 @@ public class Subwindow {
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         if (!labelMode) {
-            this.stopEditingLabel();
             switch (keyEvent.getKeyEventType()) {
                 case TAB:
                     this.getFacade().changeActiveDiagram();
@@ -563,6 +562,7 @@ public class Subwindow {
             Label l = (Label) selected;
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             mediator.removeInReposInOtherSubwindows(deletedElements, this);
+            stopEditingLabel();
         }
     }
 
