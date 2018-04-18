@@ -35,9 +35,6 @@ public class InteractrCanvas extends CanvasWindow {
     public void paint(Graphics g){
         Collections.sort(canvasController.getSubwindows());
         Collections.reverse(canvasController.getSubwindows());
-        for(CanvasController.SubWindowLevel s : canvasController.getSubwindows()){
-            System.out.println(s.getLevel());
-        }
         figureConverter.draw(g, canvasController.getSubwindows());
     }
 

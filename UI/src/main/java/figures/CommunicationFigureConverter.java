@@ -2,15 +2,15 @@ package figures;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
+import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.party.Actor;
 import diagram.party.Party;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationInvokeMessageDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationResponseMessageDrawer;
+import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
 import repo.diagram.DiagramRepo;
+import repo.label.LabelRepo;
 import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
@@ -22,22 +22,22 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class CommunicationFigureConverter extends Converter{
+public class CommunicationFigureConverter extends Converter {
 
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
-            invokeMessageDrawingStrategy,
-            responseMessageDrawingStrategy;
+            invokeMessageDrawingStrategy;
+
     /**
      * default constructor
      */
     public CommunicationFigureConverter(Subwindow subwindow) {
         super(subwindow);
-        actorDrawingStrategy = new CommunicationActorDrawer();
+        actorDrawingStrategy = new SequenceActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
-        responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
     }
 
     /**
@@ -51,20 +51,22 @@ public class CommunicationFigureConverter extends Converter{
     public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), null);
-        drawLabels(graphics, repo.getLabelRepo());
+        //drawLabels(graphics, repo.getLabelRepo());
         drawSelectionBox(graphics, selectedElement, repo);
+        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
+        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
     }
 
     /**
-     *
-     * @param graphics object used to draw on the program's window
+     * @param graphics     object used to draw on the program's window
      * @param messageRepo
      * @param partyMap
      * @param firstMessage
      */
     @Override
     protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
-        CommunicationMessageRepo repo = (CommunicationMessageRepo)messageRepo;
+        CommunicationMessageRepo repo = (CommunicationMessageRepo) messageRepo;
 
         List<PartyPair> pairs = repo.getMap();
 
@@ -75,7 +77,7 @@ public class CommunicationFigureConverter extends Converter{
             for (int i = 0; i < pair.getNumberOfMessages(); i++) {
                 start = calculateStart(i * spread, pair, partyMap);
                 end = calculateEnd(i * spread, pair, partyMap);
-                invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
+                invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
@@ -89,8 +91,13 @@ public class CommunicationFigureConverter extends Converter{
      * @return start point of the arrow
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
-        double x, y;
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX();
+        double x, y, offset;
+        if (pair.getSender() instanceof Actor) {
+            offset = PartyRepo.ACTORWIDTH / 2;
+        } else {
+            offset = PartyRepo.OBJECTWIDTH;
+        }
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
@@ -104,8 +111,13 @@ public class CommunicationFigureConverter extends Converter{
      * @return end point of the arrow
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
-        double x, y;
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX();
+        double x, y, offset;
+        if (pair.getSender() instanceof Actor) {
+            offset = PartyRepo.ACTORWIDTH / 2;
+        } else {
+            offset = 0;
+        }
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX()-offset;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
