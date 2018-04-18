@@ -570,7 +570,7 @@ public class Subwindow {
     /**
      * start editing a label in the subwindow
      */
-    private void stopEditingLabel() {
+    public void stopEditingLabel() {
         selected = null;
         labelContainer = "";
     }
@@ -607,6 +607,7 @@ public class Subwindow {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
+            mediator.updateLabelContainers(selectedLabel, this);
         } else {
             labelMode = true;
         }
@@ -620,8 +621,8 @@ public class Subwindow {
     private boolean checkIfValidLable() {
         if (selected instanceof Label) {
             Label l = (Label) selected;
-            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1));
-        }
+            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && ! getLabelContainer().equals("");
+    }
         return true;
     }
 }
