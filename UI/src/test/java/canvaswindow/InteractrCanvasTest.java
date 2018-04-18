@@ -202,4 +202,21 @@ public class InteractrCanvasTest {
         this.screenshot("test_interactrCanvas_changeParty.png");
     }
 
+    @Test
+    public void test_interactrCanvas_copy() throws IOException, AWTException, InterruptedException{
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,197,175,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'C');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'o');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'p');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'y');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,351,108,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,872,161,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 17, '0');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 68, 'd');
+        TimeUnit.SECONDS.sleep(2);
+        this.screenshot("test_interactrCanvas_copy.png");
+    }
+
 }
