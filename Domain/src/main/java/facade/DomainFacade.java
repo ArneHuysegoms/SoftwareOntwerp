@@ -156,11 +156,23 @@ public class DomainFacade {
      * @param oldParty the party to change the type of
      * @return the new Party
      */
-    public Party changePartyType(Party oldParty) throws DomainException{
+    public Party changePartyType(Party oldParty){
         Party newParty = diagram.changePartyType(oldParty);
+        changePartyTypeInRepo(oldParty, newParty);
+        return newParty;
+    }
+
+    /**
+     * change the partyType of the old party to that of the new Party
+     * @param oldParty oldParty the old type
+     * @param newParty newParty the new type
+     * @throws DomainException
+     */
+    public void changePartyTypeInRepo(Party oldParty, Party newParty){
         activeRepo.changePartyTypeInRepos(oldParty, newParty);
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
-        return newParty;
+        activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
+        getOtherRepo().getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
     }
 
     /**

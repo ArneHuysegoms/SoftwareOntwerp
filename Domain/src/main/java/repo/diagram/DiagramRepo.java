@@ -169,9 +169,8 @@ public abstract class DiagramRepo implements Serializable {
      *
      * @param oldParty the old party
      * @param newParty the new party
-     * @throws DomainException if the old party can`t be found or removed
      */
-    public void changePartyTypeInRepos(Party oldParty, Party newParty) throws DomainException {
+    public void changePartyTypeInRepos(Party oldParty, Party newParty){
         Point2D location = getPartyRepo().getLocationOfParty(oldParty);
         Point2D labelLocation = getLabelRepo().getLocationOfLabel(oldParty.getLabel());
 
