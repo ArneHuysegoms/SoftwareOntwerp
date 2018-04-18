@@ -83,8 +83,8 @@ public class SequenceFigureConverter extends Converter {
         Point2D end = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 50));
         Point2D start2 = getSubwindow().getAbsolutePosition(new Point2D.Double(0, 100));
         Point2D end2 = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 100));
-        new DashedLine(start, end).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), 2000);
-        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), 2000);
+        new DashedLine(start, end).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
+        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
     }
 
     /**
