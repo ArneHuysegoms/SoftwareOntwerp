@@ -260,5 +260,14 @@ public class SubwindowTest {
         assertTrue(subwindow2.getFrame().getRectangles().get(3).getPosition().getX() == (195 + subwindow.getWidth()));
         assertTrue(subwindow2.getFrame().getRectangles().get(3).getPosition().getY() == 205);
     }
+    @Test
+    public void test_absolute_position(){
+        assertTrue(subwindow.getAbsolutePosition(new Point2D.Double(24,25)).getX() == 224);
+        assertTrue(subwindow.getAbsolutePosition(new Point2D.Double(24,25)).getY() == 225);
+    }
+    @Test
+    public void test_subwindow_isClicked(){
+        assertTrue(subwindow.isClicked(new Point2D.Double(200,200)));
+    }
 
 }
