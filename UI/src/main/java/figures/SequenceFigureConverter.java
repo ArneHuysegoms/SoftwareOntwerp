@@ -56,10 +56,11 @@ public class SequenceFigureConverter extends Converter {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
         drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo) repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
-        drawSelectionBox(graphics, selectedElement, repo);
         drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
         drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+
         drawSelectedLabel(graphics,repo.getLabelRepo().getMap());
+        drawSelectionBox(graphics, selectedElement, repo);
     }
 
     /**
