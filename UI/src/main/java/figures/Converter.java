@@ -63,7 +63,7 @@ public abstract class Converter {
     }
 
     protected void drawSelectedLabel(Graphics graphics, Map<Label, Point2D> labelMap) {
-        if (getSubwindow().getSelected() instanceof Label) {
+        if (getSubwindow().isInLabelMode()) {
             Label selectedLabel = (Label) getSubwindow().getSelected();
             Point2D start = getSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
             labelDrawingStrategy.draw(graphics, start, null, getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());

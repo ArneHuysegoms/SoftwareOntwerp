@@ -5,11 +5,9 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.party.Actor;
 import diagram.party.Party;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationInvokeMessageDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationResponseMessageDrawer;
+import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
 import repo.diagram.DiagramRepo;
 import repo.label.LabelRepo;
@@ -30,18 +28,16 @@ public class CommunicationFigureConverter extends Converter {
 
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
-            invokeMessageDrawingStrategy,
-            responseMessageDrawingStrategy;
+            invokeMessageDrawingStrategy;
 
     /**
      * default constructor
      */
     public CommunicationFigureConverter(Subwindow subwindow) {
         super(subwindow);
-        actorDrawingStrategy = new CommunicationActorDrawer();
+        actorDrawingStrategy = new SequenceActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
-        responseMessageDrawingStrategy = new CommunicationResponseMessageDrawer();
     }
 
     /**
@@ -95,8 +91,13 @@ public class CommunicationFigureConverter extends Converter {
      * @return start point of the arrow
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
-        double x, y;
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX()+PartyRepo.OBJECTWIDTH;
+        double x, y, offset;
+        if (pair.getSender() instanceof Actor) {
+            offset = PartyRepo.ACTORWIDTH / 2;
+        } else {
+            offset = PartyRepo.OBJECTWIDTH;
+        }
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
@@ -110,8 +111,13 @@ public class CommunicationFigureConverter extends Converter {
      * @return end point of the arrow
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
-        double x, y;
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX();
+        double x, y, offset;
+        if (pair.getSender() instanceof Actor) {
+            offset = PartyRepo.ACTORWIDTH / 2;
+        } else {
+            offset = 0;
+        }
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX()-offset;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
