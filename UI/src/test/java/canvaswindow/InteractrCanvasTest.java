@@ -25,6 +25,8 @@ public class InteractrCanvasTest {
         java.awt.EventQueue.invokeAndWait(() -> {
             interactrCanvas.show();
         });
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 17, '0');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 78, 'n');
     }
 
     public void screenshot(String filename) throws AWTException, IOException{
@@ -40,88 +42,140 @@ public class InteractrCanvasTest {
     }*/
     @Test
     public void test_interactrCanvas_addParty() throws IOException, AWTException, InterruptedException {
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,123,70,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,200,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'A');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'d');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'d');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'p');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'r');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'y');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("test_interactrCanvas_addParty.png");
     }
 
     @Test
     public void test_interactrCanvas_makeMessage() throws IOException, AWTException, InterruptedException {
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,123,70,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,200,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,332,70,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,332,70,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'M');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'k');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,400,170,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,400,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'F');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,163,412,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,362,412,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'M');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'g');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,241,241,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,440,238,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("test_interactrCanvas_makeMessage.png");
     }
 
     @Test
     public void test_interactrCanvas_message_stack() throws IOException, AWTException, InterruptedException {
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,75,76,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,200,170,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'M');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'k');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,400,170,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,400,170,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'M');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'g');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,600,170,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,600,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,212,76,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,212,76,2);
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'F');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,379,76,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,379,76,2);
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'T');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,115,151,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,252,150,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'c');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'k');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,241,241,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,440,238,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,253,135,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,419,139,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,442,233,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,643,235,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("interactrCanvas_message_stack.png");
     }
 
     @Test
     public void test_communication_diagram() throws InterruptedException,IOException, AWTException {
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,75,76,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,200,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,212,76,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,212,76,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'M');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'k');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,400,170,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,400,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'F');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,379,76,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,379,76,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'C');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'o');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'m');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'m');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'u');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'n');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'i');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'c');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'i');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'o');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'n');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,600,170,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,600,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'T');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,115,151,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,252,150,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'D');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'i');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'g');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'r');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'m');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,241,241,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,440,238,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,253,135,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,419,139,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,442,233,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,643,235,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,300,200,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,300,200,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("communication_diagram.png");
@@ -129,17 +183,23 @@ public class InteractrCanvasTest {
 
     @Test
     public void test_interactrCanvas_changeParty() throws IOException, AWTException, InterruptedException {
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,68,67,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,200,170,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'S');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,85,95,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,85,95,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,85,95,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,85,95,2);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,85,95,2);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,85,95,2);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'C');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'h');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'a');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'n');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'g');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'e');
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,235,160,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,235,160,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,235,160,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,235,160,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,235,160,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,235,160,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         TimeUnit.SECONDS.sleep(2);
-        this.screenshot("test_interactrCanvas_addParty.png");
+        this.screenshot("test_interactrCanvas_changeParty.png");
     }
 
 }
