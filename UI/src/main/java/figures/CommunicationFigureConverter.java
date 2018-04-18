@@ -96,7 +96,7 @@ public class CommunicationFigureConverter extends Converter {
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y;
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX();
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX()+PartyRepo.OBJECTWIDTH;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
