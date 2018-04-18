@@ -207,27 +207,33 @@ public class InteractrCanvasTest {
 
     @Test
     public void test_interactrCanvas_editLabel_with_multiple_subwindows() throws IOException, AWTException, InterruptedException{
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,197,175,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,216,172,2);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,':');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'E');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'d');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'i');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,351,108,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,872,161,1);
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,355,111,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,991,235,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 17, '0');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 68, 'd');
-        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,197,175,2);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,255,175,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,255,175,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,255,175,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,255,175,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,255,175,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,255,175,1);
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 8,'\b');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 8,'\b');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 8,'\b');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 8,'\b');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 8,'\b');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'I');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'N');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'O');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'T');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'V');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'A');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'L');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'L');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'O');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'W');
-        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'E');
+        interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'I');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'D');
         TimeUnit.SECONDS.sleep(2);
         this.screenshot("test_interactrCanvas_editLabel_with_multiple_subwindows.png");
