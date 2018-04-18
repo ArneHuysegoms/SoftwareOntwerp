@@ -99,6 +99,8 @@ public class InteractionMediator {
         for(Subwindow s : subwindows){
             if (! s.equals(subwindow)){
                 s.getFacade().changePartyTypeInRepo(oldParty, newParty);
+                s.setSelected(newParty);
+                //s.getFacade().changePartyPosition(s.getFacade().getActiveRepo().getPartyRepo().getLocationOfParty(newParty), newParty );
             }
         }
     }

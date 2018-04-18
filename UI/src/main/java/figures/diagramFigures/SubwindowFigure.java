@@ -1,6 +1,6 @@
 package figures.diagramFigures;
 
-import figures.basicShapes.CloseButton;
+import figures.basicShapes.CloseButtonFigure;
 import figures.basicShapes.Line;
 import figures.basicShapes.Rectangle;
 
@@ -24,9 +24,9 @@ public class SubwindowFigure extends Figure {
         graphics.fillRect(x1, y1, getWidth(), getHeight());
         graphics.setColor(Color.BLACK);
         new Rectangle(x1, y1, getWidth(), getHeight()).draw(graphics,minX,minY,maxX,maxY);
-        CloseButton closeButton = new CloseButton(x1 + getWidth(), y1);
-        closeButton.draw(graphics,minX,minY,maxX,maxY);
-        new Line(x1, y1 + closeButton.getHeight(), x1 + getWidth(), y1 + closeButton.getHeight()).draw(graphics,minX,minY,maxX,maxY);
+        CloseButtonFigure closeButtonFigure = new CloseButtonFigure(x1 + getWidth(), y1);
+        closeButtonFigure.draw(graphics,minX,minY,maxX,maxY);
+        new Line(x1, y1 + closeButtonFigure.getHeight(), x1 + getWidth(), y1 + closeButtonFigure.getHeight()).draw(graphics,minX,minY,maxX,maxY);
     }
 
     public int getWidth(){

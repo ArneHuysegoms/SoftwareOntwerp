@@ -2,7 +2,7 @@ package figures.basicShapes;
 
 import java.awt.*;
 
-public class CloseButton extends Shape{
+public class CloseButtonFigure extends Shape{
 
     private int x,y;
     private final int width = 30,height = 30;
@@ -13,7 +13,7 @@ public class CloseButton extends Shape{
      * @param y
      *      the y-coordinate of the top-right corner of the subwindow
      */
-    public CloseButton(int x, int y){
+    public CloseButtonFigure(int x, int y){
         this.x = x;
         this.y = y;
     }
@@ -30,10 +30,10 @@ public class CloseButton extends Shape{
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 }

@@ -38,13 +38,9 @@ public class CloseButtonTest {
     public void test_height_button2(){
         assertEquals(button2.getHeight(), 30);
     }
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void test_controller_button1(){
-        assertTrue(button1.getController().equals(this.canvasController));
-    }
-    @Test
-    public void test_controller_button2(){
-        assertTrue(button2.getController().equals(this.canvasController));
+        CloseButton button3 = new CloseButton(null);
     }
 
 }
