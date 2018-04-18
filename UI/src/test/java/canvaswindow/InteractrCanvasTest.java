@@ -178,7 +178,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
         TimeUnit.SECONDS.sleep(2);
-        this.screenshot("communication_diagram.png");
+        this.screenshot("test_communication_diagram.png");
     }
 
     @Test
@@ -219,4 +219,34 @@ public class InteractrCanvasTest {
         this.screenshot("test_interactrCanvas_copy.png");
     }
 
+    @Test
+    public void test_interactrCanvas_deleteSubwindow() throws IOException, AWTException, InterruptedException{
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,686,113,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,686,113,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,686,113,1);
+        TimeUnit.SECONDS.sleep(2);
+        this.screenshot("test_interactrCanvas_deleteSubwindow.png");
+    }
+
+    @Test
+    public void test_interactrCanvas_resizeSubwindow() throws IOException, AWTException, InterruptedException{
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,100,100,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,150,150,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,150,700,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,210,637,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,700,636,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,615,555,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,613,149,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,549,227,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,381,228,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,383,264,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,209,420,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,248,421,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,390,555,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,393,518,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,549,406,1);
+        interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,506,410,1);
+        TimeUnit.SECONDS.sleep(2);
+        this.screenshot("test_interactrCanvas_resizeSubwindow.png");
+    }
 }

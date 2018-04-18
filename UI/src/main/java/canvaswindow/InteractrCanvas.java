@@ -1,5 +1,6 @@
 package canvaswindow;
 
+import canvaswindow.CanvasWindow;
 import controller.CanvasController;
 import exceptions.DomainException;
 import figures.FigureConverter;
