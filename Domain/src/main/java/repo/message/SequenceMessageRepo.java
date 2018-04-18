@@ -125,10 +125,10 @@ public class SequenceMessageRepo extends MessageRepo implements Serializable {
         int yLocation = 120;
         while(message != null){
             this.updateMessageLocation(yLocation,message);
-            yLocation += 35;
             Point2D labelCoordinate = new Point2D.Double(getNewLabelXPosition(message.getSender(), message.getReceiver(), partyRepo)
-                    , this.getLocationOfMessage(message) - 15);
+                    , yLocation - 15);
             labelRepo.addLabelWithLocation(message.getLabel(), labelCoordinate);
+            yLocation += 35;
             message = message.getNextMessage();
         }
     }

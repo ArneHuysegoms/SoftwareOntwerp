@@ -172,7 +172,7 @@ public class DomainFacade {
         activeRepo.changePartyTypeInRepos(oldParty, newParty);
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
         activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
-        getOtherRepo().getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
+        getOtherRepo().getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), getOtherRepo().getPartyRepo(), getOtherRepo().getLabelRepo());
     }
 
     /**
