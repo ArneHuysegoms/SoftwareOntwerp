@@ -642,7 +642,7 @@ public class Subwindow {
      *
      * @return true if the label is valid
      */
-    private boolean checkIfValidLable() {
+    public boolean checkIfValidLable() {
         if (selectedElementIsLabel()) {
             Label l = (Label) selected;
             return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && ! getLabelContainer().equals("");
