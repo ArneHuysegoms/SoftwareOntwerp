@@ -30,7 +30,10 @@ public abstract class Converter {
     protected int x1, y1, x2, y2;
     protected Drawer boxDrawingStrategy,
             labelDrawingStrategy,
-            selectionBoxDrawingStrategy;
+            selectionBoxDrawingStrategy,
+            actorDrawingStrategy,
+            objectDrawingStrategy,
+            invokeMessageDrawingStrategy;
 
     public Converter(Subwindow subwindow) {
         this.subwindow = subwindow;
@@ -43,7 +46,30 @@ public abstract class Converter {
         labelDrawingStrategy = new LabelDrawer();
     }
 
-    public abstract void draw(Graphics graphics, DiagramRepo activeRepo, Diagram diagram, DiagramElement selectedElement);
+    //TODO lifeline naar diagramspecific
+    //public abstract void draw(Graphics graphics, DiagramRepo activeRepo, Diagram diagram, DiagramElement selectedElement);
+
+    /**
+     * draw method for sequence diagrams
+     *
+     * @param graphics object used to draw on the program's window
+     * @param repo     repository containing all the coordinates of a diagram
+     * @param diagram  the diagram that will be drawn
+     */
+    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
+        drawDiagramSpecificStuff(graphics, repo, diagram, selectedElement);
+        drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
+        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
+        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
+        drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
+        drawSelectionBox(graphics, selectedElement, repo);
+    }
+
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
+    }
+
+    ;
 
     protected void drawParties(Graphics graphics, PartyRepo partyRepo, Drawer actorDrawer, Drawer objectDrawer) {
         Map<Party, Point2D> partyMap = partyRepo.getMap();

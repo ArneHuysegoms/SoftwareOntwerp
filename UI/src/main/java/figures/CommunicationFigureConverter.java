@@ -26,10 +26,6 @@ import java.util.Set;
 
 public class CommunicationFigureConverter extends Converter {
 
-    private Drawer actorDrawingStrategy,
-            objectDrawingStrategy,
-            invokeMessageDrawingStrategy;
-
     /**
      * default constructor
      */
@@ -38,24 +34,6 @@ public class CommunicationFigureConverter extends Converter {
         actorDrawingStrategy = new SequenceActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
-    }
-
-    /**
-     * draw method for sequence diagrams
-     *
-     * @param graphics object used to draw on the program's window
-     * @param repo
-     * @param diagram
-     */
-    @Override
-    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
-        drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
-        drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), null);
-        //drawLabels(graphics, repo.getLabelRepo());
-        drawSelectionBox(graphics, selectedElement, repo);
-        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
-        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
-        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
     }
 
     /**

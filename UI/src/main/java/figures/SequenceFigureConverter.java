@@ -28,10 +28,7 @@ import java.util.Set;
 
 public class SequenceFigureConverter extends Converter {
 
-    private Drawer actorDrawingStrategy,
-            objectDrawingStrategy,
-            invokeMessageDrawingStrategy,
-            responseMessageDrawingStrategy,
+    private Drawer responseMessageDrawingStrategy,
             lifeLineDrawer;
 
     public SequenceFigureConverter(Subwindow subwindow) {
@@ -41,26 +38,6 @@ public class SequenceFigureConverter extends Converter {
         objectDrawingStrategy = new SequenceObjectDrawer();
         invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
         responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
-    }
-
-    /**
-     * draw method for sequence diagrams
-     *
-     * @param graphics object used to draw on the program's window
-     * @param repo     repository containing all the coordinates of a diagram
-     * @param diagram  the diagram that will be drawn
-     */
-    @Override
-    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
-        drawSequenceDiagramStuff(graphics);
-        drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
-        drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
-        drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo) repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
-        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
-        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
-
-        drawSelectedLabel(graphics,repo.getLabelRepo().getMap());
-        drawSelectionBox(graphics, selectedElement, repo);
     }
 
     /**
@@ -78,13 +55,16 @@ public class SequenceFigureConverter extends Converter {
         }
     }
 
-    private void drawSequenceDiagramStuff(Graphics graphics) {
+    @Override
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
         Point2D start = getSubwindow().getAbsolutePosition(new Point2D.Double(0, 50));
         Point2D end = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 50));
         Point2D start2 = getSubwindow().getAbsolutePosition(new Point2D.Double(0, 100));
         Point2D end2 = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 100));
-        new DashedLine(start, end).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), 2000);
-        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), 2000);
+        new DashedLine(start, end).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
+        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
+
+        drawLifeline(graphics,repo.getPartyRepo().getMap(),((SequenceMessageRepo)repo.getMessageRepo()).getMap(),diagram.getFirstMessage());
     }
 
     /**
