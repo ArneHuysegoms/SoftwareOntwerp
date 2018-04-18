@@ -1,19 +1,13 @@
 package figures;
 
-import diagram.Diagram;
-import diagram.DiagramElement;
-import diagram.label.Label;
-import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Party;
-import figures.Drawer.DiagramSpecificDrawers.*;
-import figures.Drawer.Drawer;
-import repo.diagram.DiagramRepo;
-import repo.label.LabelRepo;
+import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
+import figures.Drawer.DiagramSpecificDrawers.CommunicationInvokeMessageDrawer;
+import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
 import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
-import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
 import subwindow.Subwindow;
 import util.PartyPair;
@@ -22,25 +16,23 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class CommunicationFigureConverter extends Converter {
 
-    /**
-     * default constructor
-     */
     public CommunicationFigureConverter(Subwindow subwindow) {
         super(subwindow);
-        actorDrawingStrategy = new SequenceActorDrawer();
+        actorDrawingStrategy = new CommunicationActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
     }
 
     /**
+     * method that draws messages
+     *
      * @param graphics     object used to draw on the program's window
-     * @param messageRepo
-     * @param partyMap
-     * @param firstMessage
+     * @param messageRepo  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param partyMap     list of Party and Point2D entries
+     * @param firstMessage the first message in the diagram
      */
     @Override
     protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
@@ -95,7 +87,7 @@ public class CommunicationFigureConverter extends Converter {
         } else {
             offset = 0;
         }
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX()-offset;
+        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX() - offset;
         y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }

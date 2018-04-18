@@ -56,8 +56,11 @@ public class Circle extends Shape {
      * a draw fucntion that draws on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
-
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
 
         double startAngle;
@@ -65,31 +68,30 @@ public class Circle extends Shape {
 
         if (upperLeft.getX() < minX && upperLeft.getX() + width <= maxX) {
             if (upperLeft.getY() >= minY && upperLeft.getY() + width <= maxY) {
-                startAngle = Math.toDegrees(Math.acos((minX-radius)/radius));
+                startAngle = Math.toDegrees(Math.acos((minX - radius) / radius));
                 arcAngle = -(startAngle * 2);
-                graphics.drawArc((int)upperLeft.getX(), (int) upperLeft.getY(), (int)width, (int)width, (int)Math.round(startAngle), (int)Math.round(arcAngle));
+                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width, (int) Math.round(startAngle), (int) Math.round(arcAngle));
             }
         } else if (upperLeft.getX() >= minX && upperLeft.getX() + width > maxX) {
             if (upperLeft.getY() >= minY && upperLeft.getY() + width <= maxY) {
-                startAngle = Math.toDegrees(Math.acos((maxX-radius)/radius));
+                startAngle = Math.toDegrees(Math.acos((maxX - radius) / radius));
                 arcAngle = (360 - (startAngle * 2));
-                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int)width, (int)width, (int)Math.round(startAngle), (int)Math.round(arcAngle));
+                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width, (int) Math.round(startAngle), (int) Math.round(arcAngle));
             }
         } else if (upperLeft.getY() < minY && upperLeft.getY() + width <= maxY) {
             if (upperLeft.getX() >= minX && upperLeft.getX() + width <= maxX) {
-                startAngle = Math.toDegrees(Math.asin((radius-minY)/radius));
-                arcAngle = -(360-((90-startAngle)*2));
-                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int)width, (int)width, (int)Math.round(startAngle), (int)Math.round(arcAngle));
+                startAngle = Math.toDegrees(Math.asin((radius - minY) / radius));
+                arcAngle = -(360 - ((90 - startAngle) * 2));
+                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width, (int) Math.round(startAngle), (int) Math.round(arcAngle));
             }
         } else if (upperLeft.getY() >= minY && upperLeft.getY() + width > maxY) {
             if (upperLeft.getX() >= minX && upperLeft.getX() + width <= maxX) {
-                startAngle = Math.toDegrees(Math.asin((radius-maxY)/radius));
-                arcAngle = (360-((90+startAngle)*2));
-                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int)width, (int)width, (int)Math.round(startAngle), (int)Math.round(arcAngle));
+                startAngle = Math.toDegrees(Math.asin((radius - maxY) / radius));
+                arcAngle = (360 - ((90 + startAngle) * 2));
+                graphics.drawArc((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width, (int) Math.round(startAngle), (int) Math.round(arcAngle));
             }
-        }
-        else if (upperLeft.getX() >= minX && upperLeft.getX() + width <= maxX && upperLeft.getY() >= minY && upperLeft.getY() + width <= maxY){
-            graphics.drawOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int)width, (int)width);
+        } else if (upperLeft.getX() >= minX && upperLeft.getX() + width <= maxX && upperLeft.getY() >= minY && upperLeft.getY() + width <= maxY) {
+            graphics.drawOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);
         }
 
     }
