@@ -140,13 +140,9 @@ public class CanvasController {
                     if (!subwindow.equals(getActiveSubwindow())) {
                         changeActiveSubwindow(subwindow);
                     }
-                    try {
                         Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                         mouseEvent.setPoint(relativePoint);
                         subwindow.handleMouseEvent(mouseEvent);
-                    } catch (DomainException exc) {
-                        exc.printStackTrace();
-                    }
                 }
             }
         //}
