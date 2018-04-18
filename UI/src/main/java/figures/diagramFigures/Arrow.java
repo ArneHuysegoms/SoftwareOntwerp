@@ -14,11 +14,8 @@ public class Arrow extends Figure {
     private Line arrowBottom;
 
     /**
-     *
-     * @param start
-     *      the arrow's start point
-     * @param end
-     *      the arrow's end point
+     * @param start the arrow's start point
+     * @param end   the arrow's end point
      */
     public Arrow(Point2D start, Point2D end) {
         lineStart = start;
@@ -28,14 +25,11 @@ public class Arrow extends Figure {
 
     /**
      * methods that calculates the arrow's head at the end point
-     * @param x
-     *      the x-coordinate of the arrow's start point
-     * @param y
-     *      the y-coordinate of the arrow's start point
-     * @param x2
-     *      the x-coordinate of the arrow's end point
-     * @param y2
-     *      the y-coordinate of the arrow's end point
+     *
+     * @param x  the x-coordinate of the arrow's start point
+     * @param y  the y-coordinate of the arrow's start point
+     * @param x2 the x-coordinate of the arrow's end point
+     * @param y2 the y-coordinate of the arrow's end point
      */
     private void calculateArrowHead(int x, int y, int x2, int y2) {
         if (x < x2) {
@@ -69,10 +63,10 @@ public class Arrow extends Figure {
                 //South
                 arrowTop = new Line(x2, y2, x2 + 10, y2 - 10);
                 arrowBottom = new Line(x2, y2, x2 - 10, y2 - 10);
-            } else if(y>y2){
+            } else if (y > y2) {
                 //North
-                arrowTop = new Line(x2, y2, x2 - 10, y2 +10);
-                arrowBottom = new Line(x2, y2, x2 +10, y2 + 10);
+                arrowTop = new Line(x2, y2, x2 - 10, y2 + 10);
+                arrowBottom = new Line(x2, y2, x2 + 10, y2 + 10);
             }
         }
 
@@ -80,18 +74,23 @@ public class Arrow extends Figure {
 
     /**
      * a draw fucntion that draws on the Graphics parameter object
-     * @param graphics
-     *      object used to draw on the program's window
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics,minX,minY,maxX,maxY);
-        this.getArrowTop().draw(graphics,minX,minY,maxX,maxY);
-        this.getArrowBottom().draw(graphics,minX,minY,maxX,maxY);
+        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics, minX, minY, maxX, maxY);
+        this.getArrowTop().draw(graphics, minX, minY, maxX, maxY);
+        this.getArrowBottom().draw(graphics, minX, minY, maxX, maxY);
     }
 
     /**
      * returns the arrow's start point
+     *
      * @return
      */
     public Point2D getLineStart() {
@@ -100,6 +99,7 @@ public class Arrow extends Figure {
 
     /**
      * returns the arrow's end point
+     *
      * @return
      */
     public Point2D getLineEnd() {
@@ -108,6 +108,7 @@ public class Arrow extends Figure {
 
     /**
      * returns the arrow head's upper line
+     *
      * @return
      */
     public Line getArrowTop() {
@@ -116,6 +117,7 @@ public class Arrow extends Figure {
 
     /**
      * returns the arrow head's bottom line
+     *
      * @return
      */
     public Line getArrowBottom() {

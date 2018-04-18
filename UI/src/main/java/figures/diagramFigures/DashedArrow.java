@@ -19,13 +19,17 @@ public class DashedArrow extends Arrow {
 
     /**
      * a draw fucntion that draws on the Graphics parameter object
-     * @param graphics
-     *      object used to draw on the program's window
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new DashedLine(this.getLineStart(), this.getLineEnd()).draw(graphics,minX,minY,maxX,maxY);
-        this.getArrowTop().draw(graphics,minX,minY,maxX,maxY);
-        this.getArrowBottom().draw(graphics,minX,minY,maxX,maxY);
+        new DashedLine(this.getLineStart(), this.getLineEnd()).draw(graphics, minX, minY, maxX, maxY);
+        this.getArrowTop().draw(graphics, minX, minY, maxX, maxY);
+        this.getArrowBottom().draw(graphics, minX, minY, maxX, maxY);
     }
 }

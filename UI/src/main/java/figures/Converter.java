@@ -14,7 +14,6 @@ import figures.Drawer.LabelDrawer;
 import figures.Drawer.SelectionBoxDrawer;
 import repo.diagram.DiagramRepo;
 import repo.label.LabelRepo;
-import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
@@ -25,13 +24,20 @@ import java.awt.geom.Point2D;
 import java.util.Map;
 import java.util.Set;
 
+
 public abstract class Converter {
     private Subwindow subwindow;
     protected int x1, y1, x2, y2;
     protected Drawer boxDrawingStrategy,
             labelDrawingStrategy,
-            selectionBoxDrawingStrategy;
+            selectionBoxDrawingStrategy,
+            actorDrawingStrategy,
+            objectDrawingStrategy,
+            invokeMessageDrawingStrategy;
 
+    /**
+     * @param subwindow the subwindow to be drawn
+     */
     public Converter(Subwindow subwindow) {
         this.subwindow = subwindow;
         x1 = (int) getSubwindow().getPosition().getX();
@@ -43,8 +49,43 @@ public abstract class Converter {
         labelDrawingStrategy = new LabelDrawer();
     }
 
-    public abstract void draw(Graphics graphics, DiagramRepo activeRepo, Diagram diagram, DiagramElement selectedElement);
+    /**
+     * draw method for sequence diagrams
+     *
+     * @param graphics        object used to draw on the program's window
+     * @param repo            repository containing all the coordinates of a diagram
+     * @param diagram         the diagram that will be drawn
+     * @param selectedElement the currently selected element in the subwindow
+     */
+    public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
+        drawDiagramSpecificStuff(graphics, repo, diagram, selectedElement);
+        drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
+        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
+        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
+        drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
+        drawSelectionBox(graphics, selectedElement, repo);
+    }
 
+    /**
+     * default hook method, for drawing diagram specific stuff, that does nothing
+     *
+     * @param graphics        object used to draw on the program's window
+     * @param repo            repository containing all the coordinates of a diagram
+     * @param diagram         the diagram that will be drawn
+     * @param selectedElement the currently selected element in the subwindow
+     */
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
+    }
+
+    /**
+     * method that draws parties
+     *
+     * @param graphics     object used to draw on the program's window
+     * @param partyRepo    repository containing all the coordinates of the parties in the subwindow's diagram
+     * @param actorDrawer  a drawer object to be used to draw actor parties
+     * @param objectDrawer a drawer object to be used to draw object parties
+     */
     protected void drawParties(Graphics graphics, PartyRepo partyRepo, Drawer actorDrawer, Drawer objectDrawer) {
         Map<Party, Point2D> partyMap = partyRepo.getMap();
 
@@ -62,6 +103,12 @@ public abstract class Converter {
         }
     }
 
+    /**
+     * method that draws the subwindow's label container over the selected label it's position
+     *
+     * @param graphics object used to draw on the program's window
+     * @param labelMap list of Label and Point2D entries
+     */
     protected void drawSelectedLabel(Graphics graphics, Map<Label, Point2D> labelMap) {
         if (getSubwindow().isInLabelMode()) {
             Label selectedLabel = (Label) getSubwindow().getSelected();
@@ -70,6 +117,13 @@ public abstract class Converter {
         }
     }
 
+    /**
+     * method that draws labels of parties
+     *
+     * @param graphics   object used to draw on the program's window
+     * @param allParties a set of all parties in the subwindow's diagram
+     * @param labelRepo  repository containing all the coordinates of the labels in the subwindow's diagram
+     */
     protected void drawPartyLabels(Graphics graphics, Set<Party> allParties, LabelRepo labelRepo) {
         Point2D start;
         Map<Label, Point2D> labelMap = labelRepo.getMap();
@@ -80,6 +134,13 @@ public abstract class Converter {
         }
     }
 
+    /**
+     * method that draws labels of messages
+     *
+     * @param graphics     object used to draw on the program's window
+     * @param firstMessage the first message in the diagram
+     * @param labelRepo    repository containing all the coordinates of the labels in the subwindow's diagram
+     */
     protected void drawMessageLabels(Graphics graphics, Message firstMessage, LabelRepo labelRepo) {
         while (firstMessage != null) {
             drawMessageLabel(graphics, firstMessage, labelRepo);
@@ -87,6 +148,13 @@ public abstract class Converter {
         }
     }
 
+    /**
+     * method that draws a label a message
+     *
+     * @param graphics  object used to draw on the program's window
+     * @param message   message to be drawn
+     * @param labelRepo repository containing all the coordinates of the labels in the subwindow's diagram
+     */
     protected void drawMessageLabel(Graphics graphics, Message message, LabelRepo labelRepo) {
         if (message instanceof InvocationMessage) {
             String messageNumber = ((InvocationMessage) message).getMessageNumber();
@@ -98,29 +166,22 @@ public abstract class Converter {
         }
     }
 
-    /*
-    protected void drawLabels(Graphics graphics, LabelRepo labelRepo) {
-        Map<diagram.label.Label, Point2D> labelMap = labelRepo.getMap();
-
-        for (Map.Entry<Label, Point2D> entry : labelMap.entrySet()) {
-            Point2D start =  subwindow.getAbsolutePosition(entry.getValue());
-            labelDrawingStrategy.draw(graphics, start, null, entry.getKey().getLabel(), getX1(),getY1(),getX2(),getY2());
-        }
-
-        if (getSubwindow().getSelected() instanceof Label){
-            Label selectedLabel = (Label)getSubwindow().getSelected();
-            Point2D start =  subwindow.getAbsolutePosition(labelMap.get(selectedLabel));
-            labelDrawingStrategy.draw(graphics, start, null, getSubwindow().getLabelContainer(), getX1(),getY1(),getX2(),getY2());
-        }
-    }
-*/
-    protected abstract void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> map, Message firstMessage);
+    /**
+     * method that draws messages
+     *
+     * @param graphics     object used to draw on the program's window
+     * @param messageRepo  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param partyMap     list of Party and Point2D entries
+     * @param firstMessage the first message in the diagram
+     */
+    protected abstract void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage);
 
     /**
      * method that uses the selection box drawer to draw a box around the currently selected selectable parts of the diagram
      *
      * @param graphics        object used to draw on the program's window
      * @param selectedElement the subwindow's selected element
+     * @param repo            repository containing all the coordinates of a diagram
      */
     protected void drawSelectionBox(Graphics graphics, DiagramElement selectedElement, DiagramRepo repo) {
         if (selectedElement instanceof Actor) {
@@ -158,22 +219,37 @@ public abstract class Converter {
         }
     }
 
+    /**
+     * @return the subwindow to draw
+     */
     protected Subwindow getSubwindow() {
         return subwindow;
     }
 
+    /**
+     * @return the x-coordinate of the top-left corner of the subwindow
+     */
     protected int getX1() {
         return x1;
     }
 
-    protected int getY1() {
-        return y1;
-    }
-
+    /**
+     * @return the x-coordinate of the bottom-right corner of the subwindow
+     */
     protected int getX2() {
         return x2;
     }
 
+    /**
+     * @return the y-coordinate of the top-left corner of the subwindow
+     */
+    protected int getY1() {
+        return y1;
+    }
+
+    /**
+     * @return the y-coordinate of the bottom-right corner of the subwindow
+     */
     protected int getY2() {
         return y2;
     }
