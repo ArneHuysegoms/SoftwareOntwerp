@@ -363,8 +363,9 @@ public class Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
+     * @throws DomainException
      */
-    public void handleMouseEvent(MouseEvent mouseEvent) throws DomainException {
+    public void handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
@@ -408,7 +409,7 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent containing the information of the event
      */
-    private void handleReleaseClick(MouseEvent mouseEvent) {
+    private void handleReleaseClick(MouseEvent mouseEvent){
         dragging = false;
         if (this.selected instanceof DiagramRepo.MessageStart) {
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
@@ -538,7 +539,7 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent) {
+    private void handleMousePressed(MouseEvent mouseEvent){
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
@@ -584,7 +585,7 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     public void stopEditingLabel() {
-        selected = null;
+        //selected = null;
         labelContainer = "";
     }
 

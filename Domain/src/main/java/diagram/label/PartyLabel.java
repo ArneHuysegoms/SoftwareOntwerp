@@ -30,7 +30,7 @@ public class PartyLabel extends Label implements Serializable {
      *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
     public boolean isValidLabel(String label){
-        return label.equals("") || label.matches("[a-z]*:[A-Z][a-z]*\\w*");
+        return label.equals("") || label.matches("[a-z][[a-z][A-Z]]*:[A-Z][[a-z][A-Z][ ]]*\\w*");
     }
 
     /**
