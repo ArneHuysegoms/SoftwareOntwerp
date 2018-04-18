@@ -30,7 +30,28 @@ public class PartyLabel extends Label implements Serializable {
      *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
     public boolean isValidLabel(String label){
-        return label.equals("") || label.matches("[a-z]*[[a-z][A-Z]]*:[A-Z][[a-z][A-Z][ ]]*\\w*");
+        if(label.equals("")){
+            return true;
+        }
+        else{
+            if(label.charAt(0) == ':'){
+                if(label.length() > 1) {
+                    return Character.isUpperCase(label.charAt(1));
+                }
+                return false;
+            }
+            else{
+                String[] parts = label.split(":");
+                if(parts.length == 2) {
+                    if (parts[1].length() > 0) {
+                        return Character.isLowerCase(parts[0].charAt(0)) && Character.isUpperCase(parts[1].charAt(0));
+                    }
+                    return false;
+                }
+                return false;
+            }
+        }
+        //return label.equals("") || label.matches("[]|[a-z][[a-z][A-Z]]*:[A-Z][[a-z][A-Z][ ]]*\\w*");
     }
 
     /**
