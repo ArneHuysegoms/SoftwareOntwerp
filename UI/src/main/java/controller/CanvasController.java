@@ -128,6 +128,9 @@ public class CanvasController {
                         dragging = false;
                         activeSubwindow.handleMovement(mouseEvent.getPoint());
                         break;
+                    case LEFTCLICK:
+                        dragging = false;
+                        break;
                     default:
                         break;
                 }
