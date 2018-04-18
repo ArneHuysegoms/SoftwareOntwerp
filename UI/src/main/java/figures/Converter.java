@@ -126,7 +126,15 @@ public abstract class Converter {
                 messageNumber = ((InvocationMessage)msg).getMessageNumber()+" ";
             }
             Point2D start = getSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
-            labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+            if(!getSubwindow().checkIfValidLable()){
+                graphics.setColor(Color.RED);
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                graphics.setColor(Color.BLACK);
+            }
+            else{
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+            }
+
         }
     }
 
@@ -140,7 +148,6 @@ public abstract class Converter {
     protected void drawPartyLabels(Graphics graphics, Set<Party> allParties, LabelRepo labelRepo) {
         Point2D start;
         Map<Label, Point2D> labelMap = labelRepo.getMap();
-        getSubwindow()
         for (Party party : allParties) {
             start = getSubwindow().getAbsolutePosition(labelMap.get(party.getLabel()));
             labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
