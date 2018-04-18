@@ -33,6 +33,8 @@ public class Subwindow {
 
     private SubwindowFrame frame;
 
+    private boolean dragging = false;
+
     /**
      * default contructor for subwindow with default width and height
      *
@@ -87,6 +89,14 @@ public class Subwindow {
 
         frame = new SubwindowFrame(position, height, width, button);
 
+    }
+
+    /**
+     *
+     * @return wether or not this diagram is dragging something
+     */
+    public boolean isDragging(){
+        return dragging;
     }
 
     /**
@@ -358,6 +368,7 @@ public class Subwindow {
         if (!labelMode) {
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
+                    dragging = true;
                     if (this.selected instanceof Party) {
                         Party p = (Party) selected;
                         this.getFacade().changePartyPosition(mouseEvent.getPoint(), p);
@@ -397,6 +408,7 @@ public class Subwindow {
      * @param mouseEvent the MouseEvent containing the information of the event
      */
     private void handleReleaseClick(MouseEvent mouseEvent) {
+        dragging = false;
         if (this.selected instanceof DiagramRepo.MessageStart) {
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
@@ -570,7 +582,7 @@ public class Subwindow {
     /**
      * start editing a label in the subwindow
      */
-    private void stopEditingLabel() {
+    public void stopEditingLabel() {
         selected = null;
         labelContainer = "";
     }
@@ -607,6 +619,7 @@ public class Subwindow {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
+            mediator.updateLabelContainers(selectedLabel, this);
         } else {
             labelMode = true;
         }
@@ -620,8 +633,8 @@ public class Subwindow {
     private boolean checkIfValidLable() {
         if (selected instanceof Label) {
             Label l = (Label) selected;
-            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1));
-        }
+            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && ! getLabelContainer().equals("");
+    }
         return true;
     }
 }

@@ -95,10 +95,21 @@ public class InteractionMediator {
         return subwindows;
     }
 
-    public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, Subwindow subwindow) throws DomainException {
+    public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, Subwindow subwindow)  {
         for(Subwindow s : subwindows){
             if (! s.equals(subwindow)){
                 s.getFacade().changePartyTypeInRepo(oldParty, newParty);
+            }
+        }
+    }
+
+    public void updateLabelContainers(Label selectedLabel, Subwindow subwindow) {
+        for(Subwindow s : subwindows){
+            if (! s.equals(subwindow)){
+                if(s.getSelected() instanceof Label && ((Label) s.getSelected()).equals(selectedLabel)){
+                    s.stopEditingLabel();
+                    s.setLabelMode(false);
+                }
             }
         }
     }
