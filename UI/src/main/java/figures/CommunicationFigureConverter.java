@@ -82,7 +82,7 @@ public class CommunicationFigureConverter extends Converter {
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y, offset;
-        if (pair.getSender() instanceof Actor) {
+        if (pair.getReceiver() instanceof Actor) {
             offset = PartyRepo.ACTORWIDTH / 2;
         } else {
             offset = 0;
