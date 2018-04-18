@@ -3,6 +3,7 @@ package figures;
 import diagram.Diagram;
 import diagram.DiagramElement;
 import diagram.label.Label;
+import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
@@ -22,6 +23,7 @@ import subwindow.Subwindow;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Converter {
     private Subwindow subwindow;
@@ -60,8 +62,45 @@ public abstract class Converter {
         }
     }
 
-    protected void drawLabels(Graphics graphics, LabelRepo messageRepo) {
-        Map<diagram.label.Label, Point2D> labelMap = messageRepo.getMap();
+    protected void drawSelectedLabel(Graphics graphics, Map<Label, Point2D> labelMap){
+        if (getSubwindow().getSelected() instanceof Label){
+            Label selectedLabel = (Label)getSubwindow().getSelected();
+            Point2D start =  getSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
+            labelDrawingStrategy.draw(graphics, start, null, getSubwindow().getLabelContainer(), getX1(),getY1(),getX2(),getY2());
+        }
+    }
+
+    protected void drawPartyLabels(Graphics graphics, Set<Party> allParties, LabelRepo labelRepo) {
+        Point2D start;
+        Map<Label, Point2D> labelMap = labelRepo.getMap();
+
+        for(Party party: allParties){
+            start =  getSubwindow().getAbsolutePosition(labelMap.get(party.getLabel()));
+            labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(),getY1(),getX2(),getY2());
+        }
+    }
+
+    protected void drawMessageLabels(Graphics graphics, Message firstMessage, LabelRepo labelRepo) {
+        while (firstMessage != null) {
+            drawMessageLabel(graphics, firstMessage, labelRepo);
+            firstMessage = firstMessage.getNextMessage();
+        }
+    }
+
+    protected void drawMessageLabel(Graphics graphics, Message message, LabelRepo labelRepo) {
+        if (message instanceof InvocationMessage) {
+            String messageNumber = ((InvocationMessage) message).getMessageNumber();
+
+            Map<Label, Point2D> labelMap = labelRepo.getMap();
+
+            Point2D start = getSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
+            labelDrawingStrategy.draw(graphics, start, null, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+        }
+    }
+
+    /*
+    protected void drawLabels(Graphics graphics, LabelRepo labelRepo) {
+        Map<diagram.label.Label, Point2D> labelMap = labelRepo.getMap();
 
         for (Map.Entry<Label, Point2D> entry : labelMap.entrySet()) {
             Point2D start =  subwindow.getAbsolutePosition(entry.getValue());
@@ -74,7 +113,7 @@ public abstract class Converter {
             labelDrawingStrategy.draw(graphics, start, null, getSubwindow().getLabelContainer(), getX1(),getY1(),getX2(),getY2());
         }
     }
-
+*/
      protected abstract void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> map, Message firstMessage);
 
     /**

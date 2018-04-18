@@ -2,6 +2,7 @@ package figures;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
+import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
@@ -11,6 +12,7 @@ import figures.Drawer.Drawer;
 import figures.basicShapes.DashedLine;
 import repo.diagram.DiagramRepo;
 import repo.diagram.SequenceRepo;
+import repo.label.LabelRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
 import repo.party.PartyRepo;
@@ -21,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SequenceFigureConverter extends Converter {
 
@@ -51,9 +54,11 @@ public class SequenceFigureConverter extends Converter {
         drawSequenceDiagramStuff(graphics);
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
-        drawLabels(graphics, repo.getLabelRepo());
         drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo) repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
         drawSelectionBox(graphics, selectedElement, repo);
+        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
+        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+        drawSelectedLabel(graphics,repo.getLabelRepo().getMap());
     }
 
     /**
