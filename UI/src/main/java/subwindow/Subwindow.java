@@ -376,6 +376,7 @@ public class Subwindow {
                     if (this.selected instanceof Party) {
                         Party p = (Party) selected;
                         selected = this.getFacade().changePartyType(p);
+                        mediator.updatePartyTypeInOtherSubwindows(p, (Party) selected, this);
                     }
                     if (this.selected == null) {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());

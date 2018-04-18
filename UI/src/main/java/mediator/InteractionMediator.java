@@ -4,6 +4,7 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
+import exceptions.DomainException;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
@@ -92,5 +93,13 @@ public class InteractionMediator {
 
     public List<Subwindow> getSubwindows() {
         return subwindows;
+    }
+
+    public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, Subwindow subwindow) throws DomainException {
+        for(Subwindow s : subwindows){
+            if (! s.equals(subwindow)){
+                s.getFacade().changePartyTypeInRepo(oldParty, newParty);
+            }
+        }
     }
 }
