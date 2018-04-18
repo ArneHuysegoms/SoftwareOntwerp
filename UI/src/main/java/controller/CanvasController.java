@@ -136,7 +136,7 @@ public class CanvasController {
                 }
             } else {
                 Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-                if (subwindow != null) {
+                if (subwindow != null && ! subwindow.isInLabelMode()) {
                     if (!subwindow.equals(getActiveSubwindow())) {
                         changeActiveSubwindow(subwindow);
                     }
@@ -156,6 +156,7 @@ public class CanvasController {
         if( activeSubwindow != null && getActiveSubwindow().isDragging()){
             return false;
         }
+        if(activeSubwindow != null && ! getActiveSubwindow().isInLabelMode())
         for (SubWindowLevel subwindow : subwindows) {
             if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
                 changeActiveSubwindow(subwindow.getSubwindow());
