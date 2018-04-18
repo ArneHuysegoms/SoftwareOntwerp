@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ButtonTest {
@@ -38,9 +39,9 @@ public class ButtonTest {
     public void test_height_button2(){
         assertEquals(button2.getHeight(), 30);
     }
-    @Test
+    @Test (expected = NullPointerException.class)
     public void test_controller_button1(){
-        assertTrue(button1.getController().equals(this.canvasController));
+        assertTrue(button1.getController().equals(null));
     }
     @Test
     public void test_controller_button2(){

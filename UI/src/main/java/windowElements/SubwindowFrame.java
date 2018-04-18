@@ -60,6 +60,13 @@ public class SubwindowFrame implements Clickable{
     }
 
     /**
+     * returns point of subwindow
+     * @return subwindowPoint
+     */
+    public Point2D getSubwindowPoint(){
+        return this.subwindowPoint;
+    }
+    /**
      * sets the subwindowheight to the given height
      * @param subwindowHeight
      */
@@ -68,6 +75,13 @@ public class SubwindowFrame implements Clickable{
     }
 
     /**
+     * returns height of subwindow
+     * @return subwindowHeight
+     */
+    public int getSubwindowHeight(){
+        return subwindowHeight;
+    }
+    /**
      * sets the width to the given width
      * @param subwindowWidth
      */
@@ -75,6 +89,13 @@ public class SubwindowFrame implements Clickable{
         this.subwindowWidth = subwindowWidth;
     }
 
+    /**
+     *  returns width of subwindow
+     * @return subwindowWidth
+     */
+    public int getSubwindowWidth(){
+        return subwindowWidth;
+    }
     /**
      * @return the list of rectangles of which this frame consists of
      */
@@ -85,6 +106,14 @@ public class SubwindowFrame implements Clickable{
     public List<SubwindowFrameCorner> getCorners() { return this.corners;}
 
     public Button getButton() { return button; }
+
+    public TitleBar getTitleBar() {
+        return titleBar;
+    }
+
+    private void setTitleBar(TitleBar titleBar) {
+        this.titleBar = titleBar;
+    }
 
     @Override
     public boolean isClicked(Point2D location) {
