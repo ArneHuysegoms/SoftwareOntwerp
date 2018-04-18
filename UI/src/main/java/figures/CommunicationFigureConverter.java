@@ -2,6 +2,7 @@ package figures;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
+import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Party;
@@ -11,6 +12,7 @@ import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
 import figures.Drawer.DiagramSpecificDrawers.CommunicationResponseMessageDrawer;
 import figures.Drawer.Drawer;
 import repo.diagram.DiagramRepo;
+import repo.label.LabelRepo;
 import repo.message.CommunicationMessageRepo;
 import repo.message.MessageRepo;
 import repo.message.SequenceMessageRepo;
@@ -22,13 +24,15 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class CommunicationFigureConverter extends Converter{
+public class CommunicationFigureConverter extends Converter {
 
     private Drawer actorDrawingStrategy,
             objectDrawingStrategy,
             invokeMessageDrawingStrategy,
             responseMessageDrawingStrategy;
+
     /**
      * default constructor
      */
@@ -51,20 +55,22 @@ public class CommunicationFigureConverter extends Converter{
     public void draw(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), null);
-        drawLabels(graphics, repo.getLabelRepo());
+        //drawLabels(graphics, repo.getLabelRepo());
         drawSelectionBox(graphics, selectedElement, repo);
+        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
+        drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
+        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
     }
 
     /**
-     *
-     * @param graphics object used to draw on the program's window
+     * @param graphics     object used to draw on the program's window
      * @param messageRepo
      * @param partyMap
      * @param firstMessage
      */
     @Override
     protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
-        CommunicationMessageRepo repo = (CommunicationMessageRepo)messageRepo;
+        CommunicationMessageRepo repo = (CommunicationMessageRepo) messageRepo;
 
         List<PartyPair> pairs = repo.getMap();
 
@@ -75,7 +81,7 @@ public class CommunicationFigureConverter extends Converter{
             for (int i = 0; i < pair.getNumberOfMessages(); i++) {
                 start = calculateStart(i * spread, pair, partyMap);
                 end = calculateEnd(i * spread, pair, partyMap);
-                invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(),getY1(),getX2(),getY2());
+                invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
