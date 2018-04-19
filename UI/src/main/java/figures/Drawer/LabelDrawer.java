@@ -28,9 +28,10 @@ public class LabelDrawer implements Drawer {
             stringPixelEstimate = (label.length()) * 5;
         }
         if (x1 > minX && y1 > minY && x1 + stringPixelEstimate < maxX && y1 < maxY) {
+            Color c = graphics.getColor();
             graphics.setColor(Color.WHITE);
             graphics.fillRect((int) x1, (int) y1, 50, 15);
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(c);
             graphics.drawString(label, (int) start.getX() + 3, (int) start.getY() + 10);
         }
     }

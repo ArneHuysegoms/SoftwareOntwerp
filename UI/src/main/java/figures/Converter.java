@@ -62,7 +62,7 @@ public abstract class Converter {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
         drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
-        drawSelectedLabel(graphics, repo.getLabelRepo().getMap());
+        drawSelectedLabel(graphics, diagram.getFirstMessage(), repo.getLabelRepo().getMap());
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
         drawSelectionBox(graphics, selectedElement, repo);
     }
@@ -106,14 +106,35 @@ public abstract class Converter {
     /**
      * method that draws the subwindow's label container over the selected label it's position
      *
-     * @param graphics object used to draw on the program's window
-     * @param labelMap list of Label and Point2D entries
+     * @param graphics     object used to draw on the program's window
+     * @param firstMessage
+     * @param labelMap     list of Label and Point2D entries
      */
-    protected void drawSelectedLabel(Graphics graphics, Map<Label, Point2D> labelMap) {
-        if (getSubwindow().isInLabelMode()) {
+    protected void drawSelectedLabel(Graphics graphics, Message firstMessage, Map<Label, Point2D> labelMap) {
+        if (getSubwindow().getSelected() instanceof Label) {
             Label selectedLabel = (Label) getSubwindow().getSelected();
+            Message msg = firstMessage;
+            String messageNumber = "";
+            while (firstMessage != null) {
+                if (msg.getLabel() == selectedLabel){
+                    break;
+                }
+                msg = msg.getNextMessage();
+            }
+
+            if(msg instanceof InvocationMessage){
+                messageNumber = ((InvocationMessage)msg).getMessageNumber()+" ";
+            }
             Point2D start = getSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
-            labelDrawingStrategy.draw(graphics, start, null, getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+            if(!getSubwindow().checkIfValidLable()){
+                graphics.setColor(Color.RED);
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                graphics.setColor(Color.BLACK);
+            }
+            else{
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+            }
+
         }
     }
 
@@ -127,7 +148,6 @@ public abstract class Converter {
     protected void drawPartyLabels(Graphics graphics, Set<Party> allParties, LabelRepo labelRepo) {
         Point2D start;
         Map<Label, Point2D> labelMap = labelRepo.getMap();
-
         for (Party party : allParties) {
             start = getSubwindow().getAbsolutePosition(labelMap.get(party.getLabel()));
             labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
