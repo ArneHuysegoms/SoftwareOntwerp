@@ -111,7 +111,7 @@ public abstract class Converter {
      * @param labelMap     list of Label and Point2D entries
      */
     protected void drawSelectedLabel(Graphics graphics, Message firstMessage, Map<Label, Point2D> labelMap) {
-        if (getSubwindow().isInLabelMode()) {
+        if (getSubwindow().getSelected()!=null && getSubwindow().isInLabelMode()) {
             Label selectedLabel = (Label) getSubwindow().getSelected();
             Message msg = firstMessage;
             String messageNumber = "";
