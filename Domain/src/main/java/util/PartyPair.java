@@ -76,7 +76,7 @@ public class PartyPair extends Pair implements Serializable {
 
     /**
      * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
-     * @param spaceBetweenArrows
+     * @param spaceBetweenArrows the space between arrows
      * @param partyRepo PartyRepo of the diagram
      * @return
      *      start point of the arrow
@@ -87,7 +87,7 @@ public class PartyPair extends Pair implements Serializable {
 
     /**
      * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
-     * @param spaceBetweenArrows
+     * @param spaceBetweenArrows the space between arrows
      * @param partyRepo PartyRepo of the diagram
      * @return
      *      end point of the arrow

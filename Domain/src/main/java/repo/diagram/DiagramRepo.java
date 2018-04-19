@@ -247,7 +247,6 @@ public abstract class DiagramRepo implements Serializable {
     public static DiagramRepo copy(DiagramRepo orig) {
         PartyRepo partyRepo = new PartyRepo(new HashMap<>(orig.getPartyRepo().getMap()));
         LabelRepo labelRepo = new LabelRepo(new HashMap<>(orig.getLabelRepo().getMap()));
-        MessageRepo messageRepo;
         if(orig.getMessageRepo() instanceof SequenceMessageRepo){
             SequenceMessageRepo smrepo = (SequenceMessageRepo) orig.getMessageRepo();
             SequenceMessageRepo newSmr = new SequenceMessageRepo(new HashMap<>(smrepo.getMap()));
@@ -258,23 +257,6 @@ public abstract class DiagramRepo implements Serializable {
             CommunicationMessageRepo newCom = new CommunicationMessageRepo(new ArrayList<>(comrepo.getMap()));
             return new CommunicationRepo(labelRepo, partyRepo, newCom);
         }
-        /*Object obj = null;
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(bos);
-            out.writeObject(orig);
-            out.flush();
-            out.close();
-            ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
-            obj = in.readObject();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        catch(ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-        }
-        return (DiagramRepo) obj;*/
     }
 
     /**

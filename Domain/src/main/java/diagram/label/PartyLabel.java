@@ -14,10 +14,6 @@ public class PartyLabel extends Label implements Serializable {
      *        The label that has to be given to this party
      * @throws DomainException
      *        The label of this party has to be in the form instanceName:classname
-     * @post  The new label of this party is equal to the given label
-     *        | new.getLabel == label
-     * @post  The new coordinate of this label is equal to the given label
-     *        | new.getCoordinate == coordinate
      */
     public PartyLabel(String label) throws DomainException {
         this.setLabel(label);
@@ -51,7 +47,6 @@ public class PartyLabel extends Label implements Serializable {
                 return false;
             }
         }
-        //return label.equals("") || label.matches("[]|[a-z][[a-z][A-Z]]*:[A-Z][[a-z][A-Z][ ]]*\\w*");
     }
 
     /**
