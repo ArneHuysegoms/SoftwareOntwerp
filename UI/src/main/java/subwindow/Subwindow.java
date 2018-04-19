@@ -560,9 +560,12 @@ public class Subwindow {
         if (oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
             selected = newSelected;
             this.startEditingLabel();
-        } else {
-            stopEditingLabel();
+        } else if (newSelected instanceof Label){
             selected = newSelected;
+        }
+        else{
+            selected = newSelected;
+            stopEditingLabel();
         }
     }
 
@@ -600,7 +603,9 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     public void stopEditingLabel() {
+        labelMode = false;
         labelContainer = "";
+        selected = null;
     }
 
     /**
@@ -619,7 +624,6 @@ public class Subwindow {
         l += "I";
         labelContainer = l;
         handleChangeInLabel();
-        
     }
 
     /**
