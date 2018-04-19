@@ -123,11 +123,8 @@ public class CanvasController {
         if (dragging) {
             switch (mouseEvent.getMouseEventType()) {
                 case RELEASE:
+                    activeSubwindow.handleMovement(mouseEvent.getPoint());
                     dragging = false;
-                    Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-                    if(subwindow != null && subwindow.equals(getActiveSubwindow())) {
-                        activeSubwindow.handleMovement(mouseEvent.getPoint());
-                    }
                     break;
                 case LEFTCLICK:
                     dragging = false;
