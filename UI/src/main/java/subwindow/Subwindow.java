@@ -122,7 +122,9 @@ public class Subwindow {
      * @return a copy of the facade
      */
     public DomainFacade getCopyOfFacade() {
-        return new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
+        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
+        f.setActiveRepo(f.getActiveRepo());
+        return f;
     }
 
     /**
