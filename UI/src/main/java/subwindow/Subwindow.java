@@ -564,8 +564,8 @@ public class Subwindow {
             selected = newSelected;
         }
         else{
-            selected = newSelected;
             stopEditingLabel();
+            selected = newSelected;
         }
     }
 
