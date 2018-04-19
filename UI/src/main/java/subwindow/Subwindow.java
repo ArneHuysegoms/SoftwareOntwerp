@@ -669,7 +669,7 @@ public class Subwindow {
      * @return true if the label is valid
      */
     public boolean checkIfValidLable() {
-        if (getLabelContainer().equals("")) {
+        if (getLabelContainer().equals("") || getLabelContainer().equals("I")) {
             return false;
         }
         if (selectedElementIsLabel() && labelContainer.length() > 0) {
