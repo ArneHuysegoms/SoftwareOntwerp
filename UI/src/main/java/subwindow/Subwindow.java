@@ -92,10 +92,9 @@ public class Subwindow {
     }
 
     /**
-     *
      * @return wether or not this diagram is dragging something
      */
-    public boolean isDragging(){
+    public boolean isDragging() {
         return dragging;
     }
 
@@ -341,7 +340,7 @@ public class Subwindow {
                 default:
                     break;
             }
-        } else if (selectedElementIsLabel()){
+        } else if (selectedElementIsLabel()) {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
                     this.addCharToLabel(keyEvent.getKeyChar());
@@ -405,7 +404,7 @@ public class Subwindow {
      *
      * @param mouseEvent the MouseEvent containing the information of the event
      */
-    private void handleReleaseClick(MouseEvent mouseEvent){
+    private void handleReleaseClick(MouseEvent mouseEvent) {
         dragging = false;
         if (selectedElementIsMessageStart()) {
             DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
@@ -450,31 +449,31 @@ public class Subwindow {
     public void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
 
         Point2D ogPos = this.getPosition();
-        switch (corner.getType()){
+        switch (corner.getType()) {
             case TOPLEFT:
-                double deltaTopleftX = - (corner.getCenter().getX() - point.getX());
-                double deltaTopleftY = - (corner.getCenter().getY() - point.getY());
+                double deltaTopleftX = -(corner.getCenter().getX() - point.getX());
+                double deltaTopleftY = -(corner.getCenter().getY() - point.getY());
                 this.setPosition(new Point2D.Double(ogPos.getX() + deltaTopleftX, ogPos.getY() + deltaTopleftY));
                 this.setHeight(new Double(getHeight() - deltaTopleftY).intValue());
                 this.setWidth(new Double(getWidth() - deltaTopleftX).intValue());
                 break;
             case TOPRIGHT:
-                double deltaToprightX =  - (corner.getCenter().getX() - point.getX());
-                double deltaToprightY =  - (corner.getCenter().getY() - point.getY());
+                double deltaToprightX = -(corner.getCenter().getX() - point.getX());
+                double deltaToprightY = -(corner.getCenter().getY() - point.getY());
                 this.setPosition(new Point2D.Double(ogPos.getX(), ogPos.getY() + deltaToprightY));
                 this.setHeight(new Double(getHeight() - deltaToprightY).intValue());
                 this.setWidth(new Double(getWidth() + deltaToprightX).intValue());
                 break;
             case BOTTOMLEFT:
-                double deltaBottomleftX = - (corner.getCenter().getX() - point.getX());
-                double deltaBottomleftY = - (corner.getCenter().getY() - point.getY());
+                double deltaBottomleftX = -(corner.getCenter().getX() - point.getX());
+                double deltaBottomleftY = -(corner.getCenter().getY() - point.getY());
                 this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY()));
                 this.setHeight(new Double(getHeight() + deltaBottomleftY).intValue());
                 this.setWidth(new Double(getWidth() - deltaBottomleftX).intValue());
                 break;
             case BOTTOMRIGHT:
-                double deltaBottomrightX = - (corner.getCenter().getX() - point.getX());
-                double deltaBottomrightY = - (corner.getCenter().getY() - point.getY());
+                double deltaBottomrightX = -(corner.getCenter().getX() - point.getX());
+                double deltaBottomrightY = -(corner.getCenter().getY() - point.getY());
                 //this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
                 this.setHeight(new Double(getHeight() + deltaBottomrightY).intValue());
                 this.setWidth(new Double(getWidth() + deltaBottomrightX).intValue());
@@ -504,11 +503,11 @@ public class Subwindow {
                 this.setWidth(new Double(getWidth() + leftDelta).intValue());
                 break;
             case RIGHT:
-                double rightDelta = - (this.getPosition().getX() + width - point.getX());
+                double rightDelta = -(this.getPosition().getX() + width - point.getX());
                 this.setWidth(new Double(getWidth() + rightDelta).intValue());
                 break;
             case BOTTOM:
-                double bottomDelta = - (this.getPosition().getY() + height - point.getY());
+                double bottomDelta = -(this.getPosition().getY() + height - point.getY());
                 this.setHeight(new Double(getHeight() + bottomDelta).intValue());
                 break;
             default:
@@ -517,15 +516,15 @@ public class Subwindow {
         createFrame(frame.getButton());
     }
 
-    public boolean selectedElementIsParty(){
+    public boolean selectedElementIsParty() {
         return selected instanceof Party;
     }
 
-    public boolean selectedElementIsLabel(){
+    public boolean selectedElementIsLabel() {
         return selected instanceof Label;
     }
 
-    public boolean selectedElementIsMessageStart(){
+    public boolean selectedElementIsMessageStart() {
         return selected instanceof DiagramRepo.MessageStart;
     }
 
@@ -547,10 +546,10 @@ public class Subwindow {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePressed(MouseEvent mouseEvent){
+    private void handleMousePressed(MouseEvent mouseEvent) {
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
-        if ( oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+        if (oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
             selected = newSelected;
             this.startEditingLabel();
         } else {
@@ -613,7 +612,7 @@ public class Subwindow {
      * removes the last char from the active label
      */
     private void removeLastCharFromLabel() throws DomainException {
-        if(labelContainer.length() > 1) {
+        if (labelContainer.length() > 1) {
             String l = labelContainer.substring(0, getLabelContainer().length() - 2);
             l += "I";
             labelContainer = l;
@@ -642,10 +641,13 @@ public class Subwindow {
      * @return true if the label is valid
      */
     public boolean checkIfValidLable() {
-        if (selectedElementIsLabel()) {
+        if (getLabelContainer().equals("")) {
+            return false;
+        }
+        if (selectedElementIsLabel() && labelContainer.length() > 0) {
             Label l = (Label) selected;
-            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && ! getLabelContainer().equals("");
-    }
+            return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && !getLabelContainer().equals("");
+        }
         return true;
     }
 }
