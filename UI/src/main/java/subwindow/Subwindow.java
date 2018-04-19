@@ -34,7 +34,7 @@ public class Subwindow {
     private SubwindowFrame frame;
 
     private boolean dragging = false;
-    private boolean editing = false;
+    private boolean editing;
 
     /**
      * default contructor for subwindow with default width and height
@@ -394,6 +394,7 @@ public class Subwindow {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
                         selected = newParty.getLabel();
                         startEditingLabel();
+                        editing = true;
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -415,6 +416,7 @@ public class Subwindow {
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
+            editing = true;
             mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
     }
