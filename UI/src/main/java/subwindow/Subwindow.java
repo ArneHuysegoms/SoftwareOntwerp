@@ -277,6 +277,10 @@ public class Subwindow {
         return editing;
     }
 
+    public void setEditing(boolean editing){
+        this.editing = editing;
+    }
+
     /**
      * sets the facade for this subwindow
      *
