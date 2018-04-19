@@ -609,11 +609,17 @@ public class Subwindow {
      * @param c
      */
     private void addCharToLabel(char c) throws DomainException {
-        String l = labelContainer.substring(0, getLabelContainer().length() - 1);
+        String l = "";
+        if (labelContainer.equals("")) {
+            l = "";
+        } else {
+            l = labelContainer.substring(0, labelContainer.length() - 1);
+        }
         l += c;
         l += "I";
         labelContainer = l;
         handleChangeInLabel();
+        
     }
 
     /**
