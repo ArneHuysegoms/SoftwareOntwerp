@@ -563,6 +563,9 @@ public class Subwindow {
         } 
         else{
             stopEditingLabel();
+            if(selected instanceof Label){
+                labelContainer = ((Label) selected).getLabel() + "I";
+            }
             selected = newSelected;
         }
     }
