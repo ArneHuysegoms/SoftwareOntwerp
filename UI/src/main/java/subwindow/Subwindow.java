@@ -327,16 +327,16 @@ public class Subwindow {
                 case DEL:
                     this.deleteElement();
                     break;
-//                case CHAR:
-////                    if (selectedElementIsLabel()) {
-////                        this.addCharToLabel(keyEvent.getKeyChar());
-////                    }
-////                    break;
-////                case BACKSPACE:
-////                    if (selectedElementIsLabel()) {
-////                        this.removeLastCharFromLabel();
-////                    }
-////                    break;
+                case CHAR:
+                    if (selectedElementIsLabel()) {
+                        this.addCharToLabel(keyEvent.getKeyChar());
+                    }
+                    break;
+                case BACKSPACE:
+                    if (selectedElementIsLabel()) {
+                        this.removeLastCharFromLabel();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -563,7 +563,7 @@ public class Subwindow {
         } 
         else{
             stopEditingLabel();
-            if(selected instanceof Label){
+            if(newSelected instanceof Label){
                 labelContainer = ((Label) selected).getLabel() + "I";
             }
             selected = newSelected;
