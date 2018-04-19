@@ -45,7 +45,7 @@ public class SubwindowFrame implements Clickable{
         corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX(), subWindowPoint.getY() + subwindowHeight), CornerType.BOTTOMLEFT));
         corners.add(new SubwindowFrameCorner(new Point2D.Double(subWindowPoint.getX() + subwindowWidth, subWindowPoint.getY() + subwindowHeight), CornerType.BOTTOMRIGHT));
 
-        titleBar = new TitleBar(subWindowPoint, subwindowWidth - 30);
+        setTitleBar(new TitleBar(subWindowPoint, subwindowWidth - 30));
 
         this.button = button;
         this.button.setPosition(new Point2D.Double(subWindowPoint.getX() + subwindowWidth - 30, subWindowPoint.getY()));

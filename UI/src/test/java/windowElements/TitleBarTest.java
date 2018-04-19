@@ -23,6 +23,11 @@ public class TitleBarTest {
     }
 
     @Test
+    public void test_width(){
+        assertTrue(titleBar.getWidth() == 40);
+    }
+
+    @Test
     public void test_isClicked(){
         assertTrue(titleBar.isClicked(new Point2D.Double(30,20)));
     }
