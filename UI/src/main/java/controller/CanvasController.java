@@ -20,20 +20,30 @@ import java.util.stream.Collectors;
 public class CanvasController {
 
     private List<SubWindowLevel> subwindows;
-
     private Subwindow activeSubwindow;
-
     private boolean dragging = false;
 
+    /**
+     * constructor for the controller
+     */
     public CanvasController() {
         this.setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
     }
 
+    /**
+     *
+     * @return subwindows as a List<SubwindowLevel>
+     */
     public List<SubWindowLevel> getSubwindows() {
         return subwindows;
     }
 
+    /**
+     *
+     * @param subwindows
+     * @throws IllegalArgumentException if subwindows is empty
+     */
     private void setSubwindows(List<SubWindowLevel> subwindows) throws IllegalArgumentException {
         if (subwindows == null) {
             throw new IllegalArgumentException("Subwindows may not be null");
@@ -41,14 +51,27 @@ public class CanvasController {
         this.subwindows = subwindows;
     }
 
+    /**
+     *
+     * @return active subwindow
+     */
     public Subwindow getActiveSubwindow() {
         return activeSubwindow;
     }
 
+    /**
+     *
+     * @param activeSubwindow
+     * @throws IllegalArgumentException
+     */
     private void setActiveSubwindow(Subwindow activeSubwindow) throws IllegalArgumentException {
         this.activeSubwindow = activeSubwindow;
     }
 
+    /**
+     * removes the subwindow from the list and sets the subwindow with the highest level as active subwindow
+     * @param subwindow
+     */
     public void removeSubwindow(Subwindow subwindow) {
         SubWindowLevel toRemove = null;
         for (SubWindowLevel s : subwindows) {
@@ -60,6 +83,9 @@ public class CanvasController {
         setNewActiveSubWindow();
     }
 
+    /**
+     * sets the subwindow with the highest level as active subwindow
+     */
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
         if (s != null) {
@@ -69,6 +95,10 @@ public class CanvasController {
         }
     }
 
+    /**
+     * returns the subwindow with the highest level
+     * @return subwindowlevel
+     */
     public SubWindowLevel findHighestSubwindowLevel() {
         int level = -1;
         SubWindowLevel chosen = null;
@@ -81,6 +111,11 @@ public class CanvasController {
         return chosen;
     }
 
+    /**
+     * adds a subwindow with a given level to the list of subwindows
+     * @param subwindow
+     * @param level, level of the subwindow
+     */
     public void addSubwindow(Subwindow subwindow, int level) {
         if (subwindow == null) {
             throw new IllegalArgumentException("can't add null subwindow");
@@ -90,33 +125,43 @@ public class CanvasController {
     }
 
     /**
-     * set the correct level for all subwindows
-     * TODO
+     * handles the KeyEvents that affects subwindow
+     *          | if getKeyEventType() == CTRLD then copy the active subwindow
+     *          | if getKeyEventType() == CTRLN then create a new subwindow
+     *          | otherwise we send the keyEvent to the subwindow itself
      */
-    //public void setSubwindowLevels(){ }
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                if (getActiveSubwindow() != null /*&& ! getActiveSubwindow().isInLabelMode()*/) {
+                if (getActiveSubwindow() != null) {
                     copyActiveSubWindow();
                 }
                 break;
             case CTRLN:
-                //if(getActiveSubwindow() == null || (getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode())) {
                 createNewSubwindow();
-                //}
                 break;
             default:
                 if (this.getActiveSubwindow() != null) {
                     activeSubwindow.handleKeyEvent(keyEvent);
-                    //setSubwindowLevels();
                 }
                 break;
         }
     }
 
+    /**
+     * handles MouseEvent that affects the subwindow
+     *          | if dragged == false, check if subwindow currently is being dragged (update the dragging boolean)
+     *          | if dragged == true, check the mouseEventType
+     *                          | if RELEASE, pass the mouseEvent to activeSubwindow and set dragging == false
+     *                          | if LEFTCLICK, set dragging == false
+     *          | otherwise the appropriate subwindow that was clicked
+     *                          | if the subwindow exists
+     *                              | if the subwindow is not the active one, set it as the active one
+     *                              get the coordinates of the click on the subwindow, relative to the subwindow
+     *                              pass the mouseEvent to the appropriate subwindow
+     * @param mouseEvent
+     */
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        //if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
         if (!dragging) {
             dragging = checkFordragging(mouseEvent);
         }
@@ -134,7 +179,7 @@ public class CanvasController {
             }
         } else {
             Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-            if (subwindow != null /*&& ! subwindow.isInLabelMode()*/) {
+            if (subwindow != null) {
                 if (!subwindow.equals(getActiveSubwindow())) {
                     changeActiveSubwindow(subwindow);
                 }
@@ -143,9 +188,21 @@ public class CanvasController {
                 subwindow.handleMouseEvent(mouseEvent);
             }
         }
-        //}
     }
 
+    /**
+     *
+     * @param mouseEvent
+     * @return if the active subwindow exists
+     *              | if the active subwindow is being dragged
+     *                  return false
+     *              | if the active subwindow's frame has been clicked
+     *                  return true
+     *              | if the active subwindow is not in label mode
+     *                  if a subwindow has been clicked
+     *                  return true
+     *         else return false
+     */
     private boolean checkFordragging(MouseEvent mouseEvent) {
         if (activeSubwindow != null) {
             if (getActiveSubwindow().isDragging()) {
@@ -166,11 +223,19 @@ public class CanvasController {
         return false;
     }
 
+    /**
+     *
+     * @param newActiveSubWindow
+     * sets the active subwindow to newActiveSubWindow and changes the level to the highest
+     */
     private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
         this.setActiveSubwindow(newActiveSubWindow);
         this.changeLevelForActiveSubWindow();
     }
 
+    /**
+     * changes the level for the active subwindow
+     */
     private void changeLevelForActiveSubWindow() {
         if (activeSubwindow != null) {
             for (SubWindowLevel s : subwindows) {
@@ -181,6 +246,9 @@ public class CanvasController {
         }
     }
 
+    /**
+     * creates a new subwindow with the correct level, adds it to the list of subwindows and sets it as active
+     */
     private void createNewSubwindow() {
         Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), new InteractionMediator());
         int level = getCorrectLevel();
@@ -188,6 +256,9 @@ public class CanvasController {
         this.changeActiveSubwindow(subwindow);
     }
 
+    /**
+     * copies the active subwindow, sets the correct level, adds it to the list of subwindows and sets it active
+     */
     private void copyActiveSubWindow() {
         if (this.getActiveSubwindow() != null) {
             Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
@@ -197,6 +268,10 @@ public class CanvasController {
         }
     }
 
+    /**
+     *
+     * @return the highest level in the list of subwindows
+     */
     private int getCorrectLevel() {
         int level = -1;
         for (SubWindowLevel s : subwindows) {
@@ -208,6 +283,11 @@ public class CanvasController {
         return level;
     }
 
+    /**
+     * returns the subwindow with the highest level
+     * @param clickedLocation
+     * @return subwindow
+     */
     private Subwindow getAppropriateSubwindow(Point2D clickedLocation) {
         List<SubWindowLevel> clickedSubwindows = this.getSubwindows()
                 .stream()
@@ -224,20 +304,36 @@ public class CanvasController {
         return highest;
     }
 
+    /**
+     * class SubWindowLevel
+     */
     public class SubWindowLevel implements Comparable<SubWindowLevel> {
 
         private Subwindow subwindow;
         private int level;
 
+        /**
+         * constructor for SubWindowLevel
+         * @param subwindow
+         * @param level
+         */
         public SubWindowLevel(Subwindow subwindow, int level) {
             this.setSubwindow(subwindow);
             this.setLevel(level);
         }
 
+        /**
+         *
+         * @return subwindow
+         */
         public Subwindow getSubwindow() {
             return subwindow;
         }
 
+        /**
+         * sets the subwindow to param subwindow
+         * @param subwindow
+         */
         private void setSubwindow(Subwindow subwindow) {
             if (subwindow == null) {
                 throw new IllegalArgumentException("Subwindow may not be null");
@@ -245,10 +341,18 @@ public class CanvasController {
             this.subwindow = subwindow;
         }
 
+        /**
+         *
+         * @return level
+         */
         public int getLevel() {
             return level;
         }
 
+        /**
+         * sets the level to param level
+         * @param level
+         */
         private void setLevel(int level) {
             if (level < 0) {
                 throw new IllegalArgumentException("level can't be negative");
@@ -256,6 +360,11 @@ public class CanvasController {
             this.level = level;
         }
 
+        /**
+         * compares SubWindowLevel by level
+         * @param o
+         * @return positive if higher, 0 if equal, negative if smaller
+         */
         @Override
         public int compareTo(SubWindowLevel o) {
             return -Integer.compare(this.getLevel(), o.getLevel());
