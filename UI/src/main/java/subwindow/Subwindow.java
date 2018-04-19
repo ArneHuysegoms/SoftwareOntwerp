@@ -612,7 +612,6 @@ public class Subwindow {
         l += "I";
         labelContainer = l;
         handleChangeInLabel();
-        
     }
 
     /**
