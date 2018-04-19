@@ -17,16 +17,25 @@ public class SubwindowFrameCorner implements Clickable {
     /**
      * create a new subwindowcorner on the specified location
      * @param centerPoint the center of the subwindowcorner
+     * @param type the type for this corner
      */
     public SubwindowFrameCorner(Point2D centerPoint, CornerType type){
         this.setCenter(centerPoint);
         this.setType(type);
     }
 
+    /**
+     *
+     * @return the  type of the corner
+     */
     public CornerType getType() {
         return type;
     }
 
+    /**
+     * sets the type of this corner to the given corner
+     * @param type
+     */
     private void setType(CornerType type) {
         this.type = type;
     }

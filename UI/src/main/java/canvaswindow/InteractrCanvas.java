@@ -27,7 +27,7 @@ public class InteractrCanvas extends CanvasWindow {
 
     /**
      *  Creates new factories, controller and figureconverter
-     * @param title
+     * @param title the title for this canvas
      */
     public InteractrCanvas(String title) {
         super(title);

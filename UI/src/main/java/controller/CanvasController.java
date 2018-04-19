@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Main layer between pure UI and the domain
- * <p>
+ *
  * Interprets UIEvents and addresses the appropriate functions in the diagram.
  */
 public class CanvasController {

@@ -33,7 +33,7 @@ public abstract class Button implements Clickable{
 
     /**
      * sets the controller for this button
-     * @param controller
+     * @param controller the controller that handles actions of this button
      */
     private void setController(CanvasController controller) throws IllegalArgumentException{
         if(controller == null){
@@ -44,7 +44,7 @@ public abstract class Button implements Clickable{
 
     /**
      * sets the position for this button
-     * @param position
+     * @param position the position for this button
      */
     public void setPosition(Point2D position){
         this.position = position;
@@ -57,14 +57,26 @@ public abstract class Button implements Clickable{
         return this.controller;
     }
 
+    /**
+     * sets the subwindow for this button
+     * @param subwindow  the subwindow of this button
+     */
     public void setSubwindow(Subwindow subwindow){
         this.subwindow = subwindow;
     }
 
+    /**
+     *
+     * @return the subwindow of this button
+     */
     public Subwindow getSubwindow(){
         return this.subwindow;
     }
 
+    /**
+     *
+     * @return the position of this label
+     */
     public Point2D getPosition() {
         return position;
     }
@@ -87,7 +99,8 @@ public abstract class Button implements Clickable{
 
     /**
      * checks if this button is clicked
-     * @param location
+     * @param location  the location of the click
+     * @return true if this button is clicked, false otherwise
      */
     @Override
     public boolean isClicked(Point2D location) {

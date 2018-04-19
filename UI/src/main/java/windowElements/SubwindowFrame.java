@@ -53,7 +53,7 @@ public class SubwindowFrame implements Clickable{
 
     /**
      * sets the subwindowpoint to the given point
-     * @param subwindowPoint
+     * @param subwindowPoint the point of the subwindow this frame is the frame off
      */
     private void setSubwindowPoint(Point2D subwindowPoint) {
         this.subwindowPoint = subwindowPoint;
@@ -66,9 +66,10 @@ public class SubwindowFrame implements Clickable{
     public Point2D getSubwindowPoint(){
         return this.subwindowPoint;
     }
+
     /**
      * sets the subwindowheight to the given height
-     * @param subwindowHeight
+     * @param subwindowHeight the height of this frame
      */
     private void setSubwindowHeight(int subwindowHeight) {
         this.subwindowHeight = subwindowHeight;
@@ -83,7 +84,7 @@ public class SubwindowFrame implements Clickable{
     }
     /**
      * sets the width to the given width
-     * @param subwindowWidth
+     * @param subwindowWidth the width of this frame
      */
     private void setSubwindowWidth(int subwindowWidth) {
         this.subwindowWidth = subwindowWidth;
@@ -96,6 +97,7 @@ public class SubwindowFrame implements Clickable{
     public int getSubwindowWidth(){
         return subwindowWidth;
     }
+
     /**
      * @return the list of rectangles of which this frame consists of
      */
@@ -103,18 +105,38 @@ public class SubwindowFrame implements Clickable{
         return this.rectangles;
     }
 
+    /**
+     * @return the corners of this frame
+     */
     public List<SubwindowFrameCorner> getCorners() { return this.corners;}
 
+    /**
+     *
+     * @return the button of this frame
+     */
     public Button getButton() { return button; }
 
+    /**
+     *
+     * @return the titlebar of this frame
+     */
     public TitleBar getTitleBar() {
         return titleBar;
     }
 
+    /**
+     * sets the titlebar to the given titlebar
+     * @param titleBar the new titlebar
+     */
     private void setTitleBar(TitleBar titleBar) {
         this.titleBar = titleBar;
     }
 
+    /**
+     *
+     * @param location the location of the click
+     * @return true if this frame is clicked, alse otherwise
+     */
     @Override
     public boolean isClicked(Point2D location) {
         for (SubwindowFrameCorner corner : corners) {
@@ -136,6 +158,11 @@ public class SubwindowFrame implements Clickable{
         return false;
     }
 
+    /**
+     *
+     * @param location the location we want to find the clickable for
+     * @return a clickable denoting one of the frame elements
+     */
     public Clickable getFrameElement(Point2D location){
         for (SubwindowFrameCorner corner : corners) {
             if (corner.isClicked(location)) {
