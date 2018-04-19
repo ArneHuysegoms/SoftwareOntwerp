@@ -112,6 +112,12 @@ public abstract class Converter {
      */
     protected void drawSelectedLabel(Graphics graphics, Message firstMessage, Map<Label, Point2D> labelMap) {
         if (getSubwindow().getSelected() instanceof Label) {
+            System.out.println("_____"+getSubwindow().getLabelContainer());
+            System.out.println(getSubwindow().getLabelContainer());
+            System.out.println(getSubwindow().getLabelContainer());
+            System.out.println(getSubwindow().getLabelContainer());
+            System.out.println(getSubwindow().getLabelContainer());
+            System.out.println(getSubwindow().getLabelContainer());
             Label selectedLabel = (Label) getSubwindow().getSelected();
             Message msg = firstMessage;
             String messageNumber = "";
