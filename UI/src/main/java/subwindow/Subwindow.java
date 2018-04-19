@@ -34,6 +34,7 @@ public class Subwindow {
     private SubwindowFrame frame;
 
     private boolean dragging = false;
+    private boolean editing = false;
 
     /**
      * default contructor for subwindow with default width and height
@@ -272,6 +273,10 @@ public class Subwindow {
         return facade;
     }
 
+    public boolean isEditing(){
+        return editing;
+    }
+
     /**
      * sets the facade for this subwindow
      *
@@ -328,12 +333,12 @@ public class Subwindow {
                     this.deleteElement();
                     break;
                 case CHAR:
-                    if (selectedElementIsLabel()) {
+                    if (selectedElementIsLabel() && editing) {
                         this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    if (selectedElementIsLabel()) {
+                    if (selectedElementIsLabel() && editing) {
                         this.removeLastCharFromLabel();
                     }
                     break;
@@ -358,7 +363,6 @@ public class Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
-     * @throws DomainException
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
@@ -558,10 +562,12 @@ public class Subwindow {
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if (oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+            editing = true;
             selected = newSelected;
             this.startEditingLabel();
         } 
         else{
+            editing = false;
             stopEditingLabel();
             if(newSelected instanceof Label){
                 labelContainer = ((Label) newSelected).getLabel() + "I";
