@@ -7,7 +7,9 @@ import diagram.party.Party;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
+import repo.diagram.CommunicationRepo;
 import repo.diagram.DiagramRepo;
+import repo.message.CommunicationMessageRepo;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import windowElements.*;
@@ -123,7 +125,9 @@ public class Subwindow {
      */
     public DomainFacade getCopyOfFacade() {
         DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
-        f.setActiveRepo(this.getFacade().getActiveRepo());
+        if(this.getFacade().getActiveRepo() instanceof CommunicationRepo){
+            f.changeActiveDiagram();
+        }
         return f;
     }
 
