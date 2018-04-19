@@ -280,7 +280,7 @@ public class SequenceFigureConverter extends Converter {
             }
 
             /**
-             * method that draws an activation bar
+             * method that draws anactivation bars
              *
              * @param graphics       object used to draw on the program's window
              * @param boxDrawer      a box drawer object to be used to draw the activation bars

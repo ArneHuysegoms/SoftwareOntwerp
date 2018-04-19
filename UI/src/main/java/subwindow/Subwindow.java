@@ -451,32 +451,40 @@ public class Subwindow {
         Point2D ogPos = this.getPosition();
         switch (corner.getType()) {
             case TOPLEFT:
-                double deltaTopleftX = -(corner.getCenter().getX() - point.getX());
-                double deltaTopleftY = -(corner.getCenter().getY() - point.getY());
-                this.setPosition(new Point2D.Double(ogPos.getX() + deltaTopleftX, ogPos.getY() + deltaTopleftY));
-                this.setHeight(new Double(getHeight() - deltaTopleftY).intValue());
-                this.setWidth(new Double(getWidth() - deltaTopleftX).intValue());
+                if(! (point.getX() > (ogPos.getX() + width) || point.getY() > (ogPos.getY() + height))) {
+                    double deltaTopleftX = -(corner.getCenter().getX() - point.getX());
+                    double deltaTopleftY = -(corner.getCenter().getY() - point.getY());
+                    this.setPosition(new Point2D.Double(ogPos.getX() + deltaTopleftX, ogPos.getY() + deltaTopleftY));
+                    this.setHeight(new Double(getHeight() - deltaTopleftY).intValue());
+                    this.setWidth(new Double(getWidth() - deltaTopleftX).intValue());
+                }
                 break;
             case TOPRIGHT:
-                double deltaToprightX = -(corner.getCenter().getX() - point.getX());
-                double deltaToprightY = -(corner.getCenter().getY() - point.getY());
-                this.setPosition(new Point2D.Double(ogPos.getX(), ogPos.getY() + deltaToprightY));
-                this.setHeight(new Double(getHeight() - deltaToprightY).intValue());
-                this.setWidth(new Double(getWidth() + deltaToprightX).intValue());
+                if(! (point.getX() < (ogPos.getX() - width) || point.getY() > (ogPos.getY() + height))) {
+                    double deltaToprightX = -(corner.getCenter().getX() - point.getX());
+                    double deltaToprightY = -(corner.getCenter().getY() - point.getY());
+                    this.setPosition(new Point2D.Double(ogPos.getX(), ogPos.getY() + deltaToprightY));
+                    this.setHeight(new Double(getHeight() - deltaToprightY).intValue());
+                    this.setWidth(new Double(getWidth() + deltaToprightX).intValue());
+                }
                 break;
             case BOTTOMLEFT:
-                double deltaBottomleftX = -(corner.getCenter().getX() - point.getX());
-                double deltaBottomleftY = -(corner.getCenter().getY() - point.getY());
-                this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY()));
-                this.setHeight(new Double(getHeight() + deltaBottomleftY).intValue());
-                this.setWidth(new Double(getWidth() - deltaBottomleftX).intValue());
+                if(! (point.getX() > (ogPos.getX() + width) || point.getY() < (ogPos.getY() - height))) {
+                    double deltaBottomleftX = -(corner.getCenter().getX() - point.getX());
+                    double deltaBottomleftY = -(corner.getCenter().getY() - point.getY());
+                    this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY()));
+                    this.setHeight(new Double(getHeight() + deltaBottomleftY).intValue());
+                    this.setWidth(new Double(getWidth() - deltaBottomleftX).intValue());
+                }
                 break;
             case BOTTOMRIGHT:
-                double deltaBottomrightX = -(corner.getCenter().getX() - point.getX());
-                double deltaBottomrightY = -(corner.getCenter().getY() - point.getY());
-                //this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
-                this.setHeight(new Double(getHeight() + deltaBottomrightY).intValue());
-                this.setWidth(new Double(getWidth() + deltaBottomrightX).intValue());
+                if(! (point.getX() < (ogPos.getX() - width) || point.getY() < (ogPos.getY() - height))) {
+                    double deltaBottomrightX = -(corner.getCenter().getX() - point.getX());
+                    double deltaBottomrightY = -(corner.getCenter().getY() - point.getY());
+                    //this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
+                    this.setHeight(new Double(getHeight() + deltaBottomrightY).intValue());
+                    this.setWidth(new Double(getWidth() + deltaBottomrightX).intValue());
+                }
                 break;
             default:
                 break;
@@ -592,7 +600,6 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     public void stopEditingLabel() {
-        selected = null;
         labelContainer = "";
     }
 
