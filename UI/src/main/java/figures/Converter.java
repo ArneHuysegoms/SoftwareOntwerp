@@ -62,8 +62,8 @@ public abstract class Converter {
         drawParties(graphics, repo.getPartyRepo(), actorDrawingStrategy, objectDrawingStrategy);
         drawPartyLabels(graphics, repo.getPartyRepo().getAllParties(), repo.getLabelRepo());
         drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelRepo());
-        drawSelectedLabel(graphics, diagram.getFirstMessage(), repo.getLabelRepo().getMap());
         drawMessages(graphics, repo.getMessageRepo(), repo.getPartyRepo().getMap(), diagram.getFirstMessage());
+        drawSelectedLabel(graphics, diagram.getFirstMessage(), repo.getLabelRepo().getMap());
         drawSelectionBox(graphics, selectedElement, repo);
     }
 
