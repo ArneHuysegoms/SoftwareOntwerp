@@ -564,7 +564,7 @@ public class Subwindow {
         else{
             stopEditingLabel();
             if(newSelected instanceof Label){
-                labelContainer = ((Label) selected).getLabel() + "I";
+                labelContainer = ((Label) newSelected).getLabel() + "I";
             }
             selected = newSelected;
         }
