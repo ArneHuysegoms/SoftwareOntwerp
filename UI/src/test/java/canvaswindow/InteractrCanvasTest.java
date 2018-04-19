@@ -307,7 +307,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         TimeUnit.SECONDS.sleep(2);
-        this.screenshot("interactrCanvas_addMultipleMessages.png");
+        this.screenshot("test_interactrCanvas_addMultipleMessages.png");
     }
 
     @Test
