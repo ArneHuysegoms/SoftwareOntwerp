@@ -108,9 +108,10 @@ public class InteractionMediator {
     public void updateLabelContainers(Label selectedLabel, Subwindow subwindow) {
         for(Subwindow s : subwindows){
             if (! s.equals(subwindow)){
-                if(s.getSelected() instanceof Label && ((Label) s.getSelected()).equals(selectedLabel)){
+                if(s.getSelected() instanceof Label && ( s.getSelected()).equals(selectedLabel)){
                     s.stopEditingLabel();
                     s.setLabelMode(false);
+                    s.setEditing(false);
                 }
             }
         }

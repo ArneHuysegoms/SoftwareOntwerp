@@ -50,7 +50,7 @@ public class CanvasController {
     }
 
     public void removeSubwindow(Subwindow subwindow) {
-       SubWindowLevel toRemove = null;
+        SubWindowLevel toRemove = null;
         for (SubWindowLevel s : subwindows) {
             if (s.getSubwindow().equals(subwindow)) {
                 toRemove = s;
@@ -58,14 +58,13 @@ public class CanvasController {
         }
         this.getSubwindows().remove(toRemove);
         setNewActiveSubWindow();
-     }
+    }
 
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
-        if(s != null) {
+        if (s != null) {
             changeActiveSubwindow(s.getSubwindow());
-        }
-        else {
+        } else {
             changeActiveSubwindow(null);
         }
     }
@@ -95,18 +94,17 @@ public class CanvasController {
      * TODO
      */
     //public void setSubwindowLevels(){ }
-
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
+                if (getActiveSubwindow() != null /*&& ! getActiveSubwindow().isInLabelMode()*/) {
                     copyActiveSubWindow();
                 }
                 break;
             case CTRLN:
-                if(getActiveSubwindow() == null || (getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode())) {
-                    createNewSubwindow();
-                }
+                //if(getActiveSubwindow() == null || (getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode())) {
+                createNewSubwindow();
+                //}
                 break;
             default:
                 if (this.getActiveSubwindow() != null) {
@@ -119,48 +117,50 @@ public class CanvasController {
 
     public void handleMouseEvent(MouseEvent mouseEvent) {
         //if(getActiveSubwindow() != null && ! getActiveSubwindow().isInLabelMode()) {
-            if (!dragging) {
-                dragging = checkFordragging(mouseEvent);
+        if (!dragging) {
+            dragging = checkFordragging(mouseEvent);
+        }
+        if (dragging) {
+            switch (mouseEvent.getMouseEventType()) {
+                case RELEASE:
+                    activeSubwindow.handleMovement(mouseEvent.getPoint());
+                    dragging = false;
+                    break;
+                case LEFTCLICK:
+                    dragging = false;
+                    break;
+                default:
+                    break;
             }
-            if (dragging) {
-                switch (mouseEvent.getMouseEventType()) {
-                    case RELEASE:
-                        dragging = false;
-                        activeSubwindow.handleMovement(mouseEvent.getPoint());
-                        break;
-                    case LEFTCLICK:
-                        dragging = false;
-                        break;
-                    default:
-                        break;
+        } else {
+            Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
+            if (subwindow != null /*&& ! subwindow.isInLabelMode()*/) {
+                if (!subwindow.equals(getActiveSubwindow())) {
+                    changeActiveSubwindow(subwindow);
                 }
-            } else {
-                Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-                if (subwindow != null && ! subwindow.isInLabelMode()) {
-                    if (!subwindow.equals(getActiveSubwindow())) {
-                        changeActiveSubwindow(subwindow);
-                    }
-                    try {
-                        Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
-                        mouseEvent.setPoint(relativePoint);
-                        subwindow.handleMouseEvent(mouseEvent);
-                    } catch (DomainException exc) {
-                        exc.printStackTrace();
-                    }
-                }
+                Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
+                mouseEvent.setPoint(relativePoint);
+                subwindow.handleMouseEvent(mouseEvent);
             }
+        }
         //}
     }
 
     private boolean checkFordragging(MouseEvent mouseEvent) {
-        if( activeSubwindow != null && getActiveSubwindow().isDragging()){
-            return false;
-        }
-        if(activeSubwindow != null && ! getActiveSubwindow().isInLabelMode())
-        for (SubWindowLevel subwindow : subwindows) {
-            if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                changeActiveSubwindow(subwindow.getSubwindow());
+        if (activeSubwindow != null) {
+            if (getActiveSubwindow().isDragging()) {
+                return false;
+            }
+            if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
+            }
+            if (!getActiveSubwindow().isInLabelMode()) {
+                for (SubWindowLevel subwindow : subwindows) {
+                    if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
+                        changeActiveSubwindow(subwindow.getSubwindow());
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -172,7 +172,7 @@ public class CanvasController {
     }
 
     private void changeLevelForActiveSubWindow() {
-        if(activeSubwindow != null) {
+        if (activeSubwindow != null) {
             for (SubWindowLevel s : subwindows) {
                 if (s.getSubwindow().equals(getActiveSubwindow())) {
                     s.setLevel(getCorrectLevel());
@@ -258,7 +258,7 @@ public class CanvasController {
 
         @Override
         public int compareTo(SubWindowLevel o) {
-            return - Integer.compare(this.getLevel(), o.getLevel());
+            return -Integer.compare(this.getLevel(), o.getLevel());
         }
     }
 }

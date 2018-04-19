@@ -33,11 +33,13 @@ public class KeyEventFactory {
             } else if (keyCode == 68) {
                 if (ctrlPressed == true) {
                     System.out.println("CTRLD EVENT CREATED");
+                    setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLD);
                 }
             } else if (keyCode == 78){
                 if(ctrlPressed == true){
                     System.out.println("CTRLN EVENT CREATED");
+                    setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLN);
                 }
             }

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.awt.geom.Point2D;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TitleBarClickTest {
@@ -27,5 +28,9 @@ public class TitleBarClickTest {
     @Test
     public void test_constructor_titlebar(){
         assertTrue(titleBarClick.getTitleBar().equals(titleBar));
+    }
+    @Test
+    public void test_isClicked(){
+        assertFalse(titleBarClick.isClicked(new Point2D.Double(100,100)));
     }
 }
