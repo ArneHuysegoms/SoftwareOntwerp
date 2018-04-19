@@ -13,7 +13,9 @@ public class MouseEventFactory {
      *            | LEFTDOUBLECLICK if MOUSE_CLICKED and clickCount == 2
      *            | LEFTCLICK if MOUSE_CLICKED and clickCount == 1
      *            | DRAG if MOUSE_DRAGGED
+     *            | PRESSED if MOUSE_PRESSED
      *            | RELEASE if MOUSE_RELEASED
+     *            | else IRRELEVANT
      */
     public MouseEvent createMouseEvent(int id, int clickCount, Point2D point) {
         if (id == java.awt.event.MouseEvent.MOUSE_CLICKED && clickCount == 2) {
