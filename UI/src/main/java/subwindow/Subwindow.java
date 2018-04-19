@@ -327,16 +327,16 @@ public class Subwindow {
                 case DEL:
                     this.deleteElement();
                     break;
-                case CHAR:
-                    if (selectedElementIsLabel()) {
-                        this.addCharToLabel(keyEvent.getKeyChar());
-                    }
-                    break;
-                case BACKSPACE:
-                    if (selectedElementIsLabel()) {
-                        this.removeLastCharFromLabel();
-                    }
-                    break;
+//                case CHAR:
+////                    if (selectedElementIsLabel()) {
+////                        this.addCharToLabel(keyEvent.getKeyChar());
+////                    }
+////                    break;
+////                case BACKSPACE:
+////                    if (selectedElementIsLabel()) {
+////                        this.removeLastCharFromLabel();
+////                    }
+////                    break;
                 default:
                     break;
             }
