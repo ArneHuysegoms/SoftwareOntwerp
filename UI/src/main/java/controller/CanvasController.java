@@ -23,27 +23,15 @@ public class CanvasController {
     private Subwindow activeSubwindow;
     private boolean dragging = false;
 
-    /**
-     * constructor for the controller
-     */
     public CanvasController() {
         this.setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
     }
 
-    /**
-     *
-     * @return subwindows as a List<SubwindowLevel>
-     */
     public List<SubWindowLevel> getSubwindows() {
         return subwindows;
     }
 
-    /**
-     *
-     * @param subwindows
-     * @throws IllegalArgumentException if subwindows is empty
-     */
     private void setSubwindows(List<SubWindowLevel> subwindows) throws IllegalArgumentException {
         if (subwindows == null) {
             throw new IllegalArgumentException("Subwindows may not be null");
@@ -125,10 +113,8 @@ public class CanvasController {
     }
 
     /**
-     * handles the KeyEvents that affects subwindow
-     *          | if getKeyEventType() == CTRLD then copy the active subwindow
-     *          | if getKeyEventType() == CTRLN then create a new subwindow
-     *          | otherwise we send the keyEvent to the subwindow itself
+     * set the correct level for all subwindows
+     * TODO
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch (keyEvent.getKeyEventType()) {
