@@ -111,6 +111,7 @@ public class InteractionMediator {
                 if(s.getSelected() instanceof Label && ( s.getSelected()).equals(selectedLabel)){
                     s.stopEditingLabel();
                     s.setLabelMode(false);
+                    s.setEditing(false);
                 }
             }
         }
