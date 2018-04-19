@@ -279,6 +279,9 @@ public class Subwindow {
         return facade;
     }
 
+    /**
+     * @return wether or not this subwindow is editing
+     */
     public boolean isEditing(){
         return editing;
     }
