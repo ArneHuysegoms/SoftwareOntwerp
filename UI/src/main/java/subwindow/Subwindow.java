@@ -123,7 +123,7 @@ public class Subwindow {
      */
     public DomainFacade getCopyOfFacade() {
         DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
-        f.setActiveRepo(f.getActiveRepo());
+        f.setActiveRepo(this.getFacade().getActiveRepo());
         return f;
     }
 
