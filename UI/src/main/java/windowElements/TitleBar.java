@@ -52,6 +52,6 @@ public class TitleBar implements Clickable {
         double endX = position.getX() + width;
         double startY = position.getY() ;
         double endY = position.getY() + HEIGHT;
-        return (startX <= position.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+        return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
 }
