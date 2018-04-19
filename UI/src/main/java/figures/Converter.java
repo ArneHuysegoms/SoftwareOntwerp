@@ -111,28 +111,27 @@ public abstract class Converter {
      * @param labelMap     list of Label and Point2D entries
      */
     protected void drawSelectedLabel(Graphics graphics, Message firstMessage, Map<Label, Point2D> labelMap) {
-        if (getSubwindow().getSelected()!=null && getSubwindow().isInLabelMode()) {
+        if (getSubwindow().getSelected() instanceof Label) {
             Label selectedLabel = (Label) getSubwindow().getSelected();
             Message msg = firstMessage;
             String messageNumber = "";
-            while (firstMessage != null) {
-                if (msg.getLabel() == selectedLabel){
+            while (msg != null) {
+                if (msg.getLabel() == selectedLabel) {
                     break;
                 }
                 msg = msg.getNextMessage();
             }
 
-            if(msg instanceof InvocationMessage){
-                messageNumber = ((InvocationMessage)msg).getMessageNumber()+" ";
+            if (msg instanceof InvocationMessage) {
+                messageNumber = ((InvocationMessage) msg).getMessageNumber() + " ";
             }
             Point2D start = getSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
-            if(!getSubwindow().checkIfValidLable()){
+            if (!getSubwindow().checkIfValidLable()) {
                 graphics.setColor(Color.RED);
-                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber + getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
                 graphics.setColor(Color.BLACK);
-            }
-            else{
-                labelDrawingStrategy.draw(graphics, start, null, messageNumber+getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+            } else {
+                labelDrawingStrategy.draw(graphics, start, null, messageNumber + getSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
             }
 
         }
