@@ -7,7 +7,9 @@ import diagram.party.Party;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
+import repo.diagram.CommunicationRepo;
 import repo.diagram.DiagramRepo;
+import repo.message.CommunicationMessageRepo;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import windowElements.*;
@@ -34,6 +36,7 @@ public class Subwindow {
     private SubwindowFrame frame;
 
     private boolean dragging = false;
+    private boolean editing;
 
     /**
      * default contructor for subwindow with default width and height
@@ -121,7 +124,11 @@ public class Subwindow {
      * @return a copy of the facade
      */
     public DomainFacade getCopyOfFacade() {
-        return new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
+        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
+        if(this.getFacade().getActiveRepo() instanceof CommunicationRepo){
+            f.changeActiveDiagram();
+        }
+        return f;
     }
 
     /**
@@ -272,6 +279,14 @@ public class Subwindow {
         return facade;
     }
 
+    public boolean isEditing(){
+        return editing;
+    }
+
+    public void setEditing(boolean editing){
+        this.editing = editing;
+    }
+
     /**
      * sets the facade for this subwindow
      *
@@ -328,12 +343,12 @@ public class Subwindow {
                     this.deleteElement();
                     break;
                 case CHAR:
-                    if (selectedElementIsLabel()) {
+                    if (selectedElementIsLabel() && editing) {
                         this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
-                    if (selectedElementIsLabel()) {
+                    if (selectedElementIsLabel() && editing) {
                         this.removeLastCharFromLabel();
                     }
                     break;
@@ -358,7 +373,6 @@ public class Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
-     * @throws DomainException
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
@@ -390,6 +404,7 @@ public class Subwindow {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
                         selected = newParty.getLabel();
                         startEditingLabel();
+                        editing = true;
                         mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -411,6 +426,7 @@ public class Subwindow {
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
+            editing = true;
             mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
     }
@@ -558,11 +574,16 @@ public class Subwindow {
         DiagramElement oldSelected = this.selected;
         DiagramElement newSelected = this.getFacade().findSelectedElement(mouseEvent.getPoint());
         if (oldSelected != null && oldSelected.equals(newSelected) && oldSelected instanceof Label) {
+            editing = true;
             selected = newSelected;
             this.startEditingLabel();
         } 
         else{
+            editing = false;
             stopEditingLabel();
+            if(newSelected instanceof Label){
+                labelContainer = ((Label) newSelected).getLabel() + "I";
+            }
             selected = newSelected;
         }
     }
@@ -658,7 +679,7 @@ public class Subwindow {
      * @return true if the label is valid
      */
     public boolean checkIfValidLable() {
-        if (getLabelContainer().equals("")) {
+        if (getLabelContainer().equals("") || getLabelContainer().equals("I")) {
             return false;
         }
         if (selectedElementIsLabel() && labelContainer.length() > 0) {

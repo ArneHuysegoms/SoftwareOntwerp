@@ -59,7 +59,7 @@ public class DomainFacade {
      * sets the repo that contains the active state of the diagram
      * @param activeRepo the state of the diagram we want to be the current one
      */
-    private void setActiveRepo(DiagramRepo activeRepo) {
+    public void setActiveRepo(DiagramRepo activeRepo) {
         this.activeRepo = activeRepo;
     }
 
