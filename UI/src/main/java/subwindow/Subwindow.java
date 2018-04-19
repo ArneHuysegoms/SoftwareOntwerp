@@ -594,6 +594,7 @@ public class Subwindow {
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             mediator.removeInReposInOtherSubwindows(deletedElements, this);
             stopEditingLabel();
+            selected = null;
         }
     }
 
