@@ -16,6 +16,10 @@ public class LabelDrawer implements Drawer {
      * @param start    point slightly to the top-left of the label string
      * @param end      null in this implementation
      * @param label    string to be drawn
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {

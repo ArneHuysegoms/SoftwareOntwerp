@@ -14,31 +14,23 @@ public class Rectangle extends Shape {
     protected Point2D cornerBL;
 
     /**
-     *
-     * @param x
-     *      the x-coordinate of the rectangle's center point
-     * @param y
-     *      the y-coordinate of the rectangle's center point
-     * @param width
-     *      the rectangles width
-     * @param length
-     *      the rectangles height
+     * @param x      the x-coordinate of the rectangle's center point
+     * @param y      the y-coordinate of the rectangle's center point
+     * @param width  the rectangles width
+     * @param length the rectangles height
      */
     public Rectangle(int x, int y, int width, int length) {
         setPositionTL(new Point2D.Double(x, y));
-        setCornerTR(new Point2D.Double(x+width, y));
-        setCornerBR(new Point2D.Double(x+width, y+length));
-        setCornerBL(new Point2D.Double(x, y+length));
+        setCornerTR(new Point2D.Double(x + width, y));
+        setCornerBR(new Point2D.Double(x + width, y + length));
+        setCornerBL(new Point2D.Double(x, y + length));
     }
 
     /**
-     *
-     * @param tl
-     *      the rectangle's top-left point
-     * @param br
-     *      the rectangle's bottom-right point
+     * @param tl the rectangle's top-left point
+     * @param br the rectangle's bottom-right point
      */
-    public Rectangle(Point2D tl, Point2D br){
+    public Rectangle(Point2D tl, Point2D br) {
         setPositionTL(tl);
         setCornerBR(br);
         setCornerBL(new Point2D.Double(tl.getX(), br.getY()));
@@ -47,8 +39,8 @@ public class Rectangle extends Shape {
 
     /**
      * returns the rectangles top-left point
-     * @return
-     *      the rectangles top-left point
+     *
+     * @return the rectangles top-left point
      */
     public Point2D getPositionTL() {
         return positionTL;
@@ -56,9 +48,8 @@ public class Rectangle extends Shape {
 
     /**
      * sets the top-left position of the rectangle
-     * @param positionTL
-     *      the top-left point of the rectangle
      *
+     * @param positionTL the top-left point of the rectangle
      */
     public void setPositionTL(Point2D positionTL) {
         this.positionTL = positionTL;
@@ -66,8 +57,8 @@ public class Rectangle extends Shape {
 
     /**
      * returns the rectangles top-right point
-     * @return
-     *      the rectangles top-right point
+     *
+     * @return the rectangles top-right point
      */
     public Point2D getCornerTR() {
         return cornerTR;
@@ -75,8 +66,8 @@ public class Rectangle extends Shape {
 
     /**
      * sets the rectangles top-right point
-     * @param cornerTR
-     *      the rectangles top-right point
+     *
+     * @param cornerTR the rectangles top-right point
      */
     public void setCornerTR(Point2D cornerTR) {
         this.cornerTR = cornerTR;
@@ -84,8 +75,8 @@ public class Rectangle extends Shape {
 
     /**
      * returns the rectangles bottom-right point
-     * @return
-     *      the rectangles bottom-right point
+     *
+     * @return the rectangles bottom-right point
      */
     public Point2D getCornerBR() {
         return cornerBR;
@@ -93,8 +84,8 @@ public class Rectangle extends Shape {
 
     /**
      * sets the rectangles bottom-right point
-     * @param cornerBR
-     *      the rectangles bottom-right point
+     *
+     * @param cornerBR the rectangles bottom-right point
      */
     public void setCornerBR(Point2D cornerBR) {
         this.cornerBR = cornerBR;
@@ -102,8 +93,8 @@ public class Rectangle extends Shape {
 
     /**
      * returns the rectangles bottom-left point
-     * @return
-     *      the rectangles bottom-left point
+     *
+     * @return the rectangles bottom-left point
      */
     public Point2D getCornerBL() {
         return cornerBL;
@@ -111,8 +102,8 @@ public class Rectangle extends Shape {
 
     /**
      * sets the rectangles bottom-left point
-     * @param cornerBL
-     *      the rectangles bottom-left point
+     *
+     * @param cornerBL the rectangles bottom-left point
      */
     public void setCornerBL(Point2D cornerBL) {
         this.cornerBL = cornerBL;
@@ -120,15 +111,19 @@ public class Rectangle extends Shape {
 
     /**
      * a draw fucntion that draws on the Graphics parameter object
-     * @param graphics
-     *      object used to draw on the program's window
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
 
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Line(positionTL, cornerTR).draw(graphics,minX,minY,maxX,maxY);
-        new Line(cornerTR, cornerBR).draw(graphics,minX,minY,maxX,maxY);
-        new Line(cornerBR, cornerBL).draw(graphics,minX,minY,maxX,maxY);
-        new Line(cornerBL, positionTL).draw(graphics,minX,minY,maxX,maxY);
+        new Line(positionTL, cornerTR).draw(graphics, minX, minY, maxX, maxY);
+        new Line(cornerTR, cornerBR).draw(graphics, minX, minY, maxX, maxY);
+        new Line(cornerBR, cornerBL).draw(graphics, minX, minY, maxX, maxY);
+        new Line(cornerBL, positionTL).draw(graphics, minX, minY, maxX, maxY);
     }
 }
