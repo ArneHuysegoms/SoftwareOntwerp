@@ -584,7 +584,6 @@ public class Subwindow {
      * start editing a label in the subwindow
      */
     public void stopEditingLabel() {
-        selected = null;
         labelContainer = "";
     }
 
