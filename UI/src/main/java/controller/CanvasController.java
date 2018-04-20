@@ -32,7 +32,6 @@ public class CanvasController {
     }
 
     /**
-     *
      * @return the list containing all subwindows
      */
     public List<SubWindowLevel> getSubwindows() {
