@@ -11,14 +11,14 @@ import static org.junit.Assert.assertTrue;
 
 public class SubwindowFrameTest {
 
-   /* private SubwindowFrame subwindowFrame;
+    private SubwindowFrame subwindowFrame;
 
     @Before
     public void setUp(){
         Point2D point = new Point2D.Double(21,22);
         int height = 23;
         int width = 24;
-        Button button = new CloseButton();
+        Button button = new Button();
         subwindowFrame = new SubwindowFrame(point, height, width, button);
     }
 
@@ -132,7 +132,7 @@ public class SubwindowFrameTest {
     public void test_getFrameElement_rectangle(){
         //edge of right rectangle
         assertTrue(subwindowFrame.getFrameElement(new Point2D.Double(47,30)).equals(subwindowFrame.getRectangles().get(3)));
-    }*/
+    }
 
     @Test
     public void Test(){
