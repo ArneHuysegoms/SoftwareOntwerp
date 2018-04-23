@@ -29,6 +29,16 @@ public class SubwindowFrame implements Clickable{
      * @param subwindowHeight the height of the subwindow
      * @param subwindowWidth the width of the subwindow
      */
+    public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth){
+        this(subWindowPoint, subwindowHeight, subwindowWidth, null);
+    }
+
+    /**
+     * create a new subwindowframe based on the given properties
+     * @param subWindowPoint the top left corner of the subwindow
+     * @param subwindowHeight the height of the subwindow
+     * @param subwindowWidth the width of the subwindow
+     */
     public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth, Button button){
         this.setSubwindowPoint(subWindowPoint);
         this.setSubwindowHeight(subwindowHeight);
@@ -47,8 +57,14 @@ public class SubwindowFrame implements Clickable{
 
         setTitleBar(new TitleBar(subWindowPoint, subwindowWidth - 30));
 
+        this.setButton(button);
+    }
+
+    public void setButton(Button button) {
         this.button = button;
-        this.button.setPosition(new Point2D.Double(subWindowPoint.getX() + subwindowWidth - 30, subWindowPoint.getY()));
+        if(button != null) {
+            this.button.setPosition(new Point2D.Double(getSubwindowPoint().getX() + subwindowWidth - 30, getSubwindowPoint().getY()));
+        }
     }
 
     /**

@@ -26,7 +26,6 @@ public class Subwindow {
     private DomainFacade facade;
     private String labelContainer = "";
     private InteractionMediator mediator;
-    private Button button;
 
     private DiagramElement selected;
     private Clickable frameElement;
@@ -40,21 +39,18 @@ public class Subwindow {
      * default contructor for subwindow with default width and height
      *
      * @param pos the position of the subwindow
-     * @param button the button of this subwindow
      * @param mediator the mediator for thi subwindow
      */
-    public Subwindow(Point2D pos, Button button, InteractionMediator mediator) {
+    public Subwindow(Point2D pos, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
         setLabelMode(false);
         setFacade(new DomainFacade());
-        this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame(button);
+        createFrame();
 
-        button.setSubwindow(this);
         mediator.addSubwindow(this);
     }
 
@@ -62,31 +58,34 @@ public class Subwindow {
      * contructor for subwindow with default width and height
      *
      * @param pos the position of the subwindow
-     * @param button the button of this subwindow
      * @param facade the facade for this subwindow
      * @param mediator the mediator for thi subwindow
      */
-    public Subwindow(Point2D pos, Button button, DomainFacade facade, InteractionMediator mediator) {
+    public Subwindow(Point2D pos,DomainFacade facade, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
         setLabelMode(false);
         setFacade(facade);
-        this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame(button);
+        createFrame();
 
-        button.setSubwindow(this);
         mediator.addSubwindow(this);
     }
 
     /**
      * creates the frame with corners for resizing, titlebar and close button
      */
-    private void createFrame(Button button) {
+    private void createFrame() {
 
-        frame = new SubwindowFrame(position, height, width, button);
+        if(frame == null) {
+            frame = new SubwindowFrame(position, height, width);
+        }
+        else{
+            Button button = frame.getButton();
+            frame = new SubwindowFrame(position, height, width, button);
+        }
 
     }
 
@@ -147,25 +146,6 @@ public class Subwindow {
         double startY = this.getPosition().getY();
         double endY = this.getPosition().getY() + this.getHeight();
         return (startX <= position.getX() && endX >= position.getX()) && (startY <= position.getY() && endY >= position.getY());
-    }
-
-    /**
-     * @return the close button for this subwindow
-     */
-    public Button getButton() {
-        return button;
-    }
-
-    /**
-     * sets the close button for this subwindow
-     *
-     * @param button the button for this subwindow
-     */
-    private void setButton(Button button) {
-        if (button == null) {
-            throw new IllegalArgumentException("Button may not be null");
-        }
-        this.button = button;
     }
 
     /**
@@ -460,21 +440,21 @@ public class Subwindow {
      */
     public void handleMovement(Point2D movedLocation) {
         if (frameElement != null) {
-            if (frameElement instanceof CloseButton) {
-                CloseButton c = (CloseButton) frameElement;
+            if (frameElement instanceof Button) {
+                Button c = (Button) frameElement;
                 c.performAction();
             } else if (frameElement instanceof SubwindowFrameCorner) {
                 SubwindowFrameCorner corner = (SubwindowFrameCorner) frameElement;
                 resizeByCorner(corner, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             } else if (frameElement instanceof SubwindowFrameRectangle) {
                 SubwindowFrameRectangle frameRectangle = (SubwindowFrameRectangle) frameElement;
                 resizeByFrameRectangle(frameRectangle, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             } else if (frameElement instanceof TitleBarClick) {
                 TitleBarClick titleBarClick = (TitleBarClick) frameElement;
                 moveSubwindow(titleBarClick, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             }
         }
     }
@@ -535,7 +515,7 @@ public class Subwindow {
             default:
                 break;
         }
-        createFrame(getButton());
+        createFrame();
     }
 
     /**
@@ -567,7 +547,7 @@ public class Subwindow {
             default:
                 break;
         }
-        createFrame(frame.getButton());
+        createFrame();
     }
 
     /**
@@ -604,7 +584,7 @@ public class Subwindow {
         double x = point.getX() - titleBarClick.getInitialClickPosition().getX();
         double y = point.getY() - titleBarClick.getInitialClickPosition().getY();
         setPosition(new Point2D.Double(position.getX() + x, position.getY() + y));
-        createFrame(frame.getButton());
+        createFrame();
     }
 
     /**

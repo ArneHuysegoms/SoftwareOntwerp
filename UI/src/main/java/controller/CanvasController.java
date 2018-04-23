@@ -1,8 +1,9 @@
 package controller;
 
+import command.CloseSubwindowCommand;
 import exceptions.DomainException;
 import mediator.InteractionMediator;
-import subwindow.CloseButton;
+import subwindow.Button;
 import subwindow.Subwindow;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
@@ -248,7 +249,9 @@ public class CanvasController {
      * creates a new subwindow with the correct level, adds it to the list of subwindows and sets it as active
      */
     private void createNewSubwindow() {
-        Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), new InteractionMediator());
+        Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new InteractionMediator());
+        Button button = new Button(new CloseSubwindowCommand(this, subwindow));
+        subwindow.getFrame().setButton(button);
         int level = getCorrectLevel();
         addSubwindow(subwindow, level);
         this.changeActiveSubwindow(subwindow);
@@ -259,7 +262,9 @@ public class CanvasController {
      */
     private void copyActiveSubWindow() {
         if (this.getActiveSubwindow() != null) {
-            Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new CloseButton(this), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
+            Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
+            Button button = new Button(new CloseSubwindowCommand(this, subwindow));
+            subwindow.getFrame().setButton(button);
             int level = getCorrectLevel();
             addSubwindow(subwindow, level);
             this.changeActiveSubwindow(subwindow);
