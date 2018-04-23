@@ -17,7 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class SubwindowTest {
-    /*private Subwindow subwindow;
+    private Subwindow subwindow;
     private Subwindow subwindow2;
     private Button button;
     private InteractionMediator interactionMediator;
@@ -27,11 +27,11 @@ public class SubwindowTest {
     @Before
     public void setUp(){
         point = new Point2D.Double(200,200);
-        button = new CloseButton();
+        button = new Button();
         interactionMediator = new InteractionMediator();
-        subwindow = new Subwindow(point, button, interactionMediator);
+        subwindow = new Subwindow(point, interactionMediator);
         facade = new DomainFacade();
-        subwindow2 = new Subwindow(point, button, facade, interactionMediator);
+        subwindow2 = new Subwindow(point, facade, interactionMediator);
 
     }
 
@@ -46,10 +46,6 @@ public class SubwindowTest {
     @Test
     public void test_subwindow_position(){
         assertTrue(subwindow.getPosition().equals(point));
-    }
-    @Test
-    public void test_subwindow_button(){
-        assertTrue(subwindow.getButton().equals(button));
     }
     @Test
     public void test_subwindow_mediator(){
@@ -133,12 +129,7 @@ public class SubwindowTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void test_setMediator_null(){
-        Subwindow s = new Subwindow(point, button, null);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void test_setButton_null(){
-        Subwindow s = new Subwindow(point, null, interactionMediator);
+        Subwindow s = new Subwindow(point, null);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -165,16 +156,8 @@ public class SubwindowTest {
         assertTrue(subwindow2.getPosition().equals(point));
     }
     @Test
-    public void test_subwindow2_button(){
-        assertTrue(subwindow2.getButton().equals(button));
-    }
-    @Test
     public void test_subwindow2_mediator(){
         assertTrue(subwindow2.getMediator().equals(interactionMediator));
-    }
-    @Test
-    public void test_button2_subwindow2(){
-        assertTrue(subwindow2.getButton().getSubwindow().equals(subwindow2));
     }
     @Test
     public void test_mediator_subwindow2(){
@@ -268,7 +251,7 @@ public class SubwindowTest {
     @Test
     public void test_subwindow_isClicked(){
         assertTrue(subwindow.isClicked(new Point2D.Double(200,200)));
-    }*/
+    }
 
     @Test
     public void Test(){

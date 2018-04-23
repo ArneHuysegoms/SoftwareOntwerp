@@ -1,5 +1,7 @@
 package subwindow;
 
+import command.CloseSubwindowCommand;
+import command.Command;
 import controller.CanvasController;
 import figures.basicShapes.Circle;
 import org.junit.Before;
@@ -12,15 +14,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ButtonTest {
-    /*private Button button1;
+    private Button button1;
     private Button button2;
     private CanvasController canvasController;
 
     @Before
     public void setUp(){
-        button1 = new CloseButton();
+        button1 = new Button();
         canvasController = new CanvasController();
-        button2 = new CloseButton(canvasController);
+        button2 = new Button(new CloseSubwindowCommand(canvasController, null));
     }
 
     @Test
@@ -38,19 +40,6 @@ public class ButtonTest {
     @Test
     public void test_height_button2(){
         assertEquals(button2.getHeight(), 30);
-    }
-    @Test (expected = NullPointerException.class)
-    public void test_controller_button1(){
-        assertTrue(button1.getController().equals(null));
-    }
-    @Test
-    public void test_controller_button2(){
-        assertTrue(button2.getController().equals(this.canvasController));
-    }*/
-
-    @Test
-    public void Test(){
-
     }
 
 }
