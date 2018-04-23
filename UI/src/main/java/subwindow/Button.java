@@ -1,13 +1,13 @@
 package subwindow;
 
+import command.Command;
 import controller.CanvasController;
 
 import java.awt.geom.Point2D;
 
-public abstract class Button implements Clickable{
+public class Button implements Clickable{
 
-    private CanvasController controller;
-    private Subwindow subwindow;
+    private Command command;
 
     private Point2D position;
 
@@ -25,21 +25,18 @@ public abstract class Button implements Clickable{
     /**
      * constructor with controller
      */
-    public Button(CanvasController controller){
+    public Button(Command command){
         this.width = 30;
         this.height = 30;
-        this.setController(controller);
+        this.setCommand(command);
     }
 
-    /**
-     * sets the controller for this button
-     * @param controller the controller that handles actions of this button
-     */
-    private void setController(CanvasController controller) throws IllegalArgumentException{
-        if(controller == null){
-            throw  new IllegalArgumentException("Canvascontroller may not be null");
-        }
-        this.controller = controller;
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     /**
@@ -48,29 +45,6 @@ public abstract class Button implements Clickable{
      */
     public void setPosition(Point2D position){
         this.position = position;
-    }
-
-    /**
-     * @return controller for this button
-     */
-    public CanvasController getController(){
-        return this.controller;
-    }
-
-    /**
-     * sets the subwindow for this button
-     * @param subwindow  the subwindow of this button
-     */
-    public void setSubwindow(Subwindow subwindow){
-        this.subwindow = subwindow;
-    }
-
-    /**
-     *
-     * @return the subwindow of this button
-     */
-    public Subwindow getSubwindow(){
-        return this.subwindow;
     }
 
     /**
@@ -95,7 +69,9 @@ public abstract class Button implements Clickable{
         return height;
     }
 
-    public abstract void performAction();
+    public void performAction(){
+        command.performAction();
+    }
 
     /**
      * checks if this button is clicked

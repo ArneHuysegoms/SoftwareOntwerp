@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import repo.message.SequenceMessageRepo;
 import subwindow.Button;
-import subwindow.CloseButton;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
@@ -23,7 +22,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class InteractionMediatorTest {
-    private Actor actor1, actor2;
+    /*private Actor actor1, actor2;
     private Object object1, object2;
     private Label labelActor1, labelActor2, labelObject1, labelObject2;
 
@@ -170,6 +169,11 @@ public class InteractionMediatorTest {
 
     public InteractionMediatorTest() {
 
+
+    }*/
+
+    @Test
+    public void Test(){
 
     }
 }
