@@ -7,5 +7,11 @@ public enum KeyEventType {
     BACKSPACE,
     CTRLN,
     CTRLD,
-    IRRELEVANT;
+    CTRLENTER,
+    SPACE,
+    ARROWKEYUP,
+    ARROWKEYLEFT,
+    ARROWKEYDOWN,
+    ARROWKEYRIGHT,
+    IRRELEVANT
 }
