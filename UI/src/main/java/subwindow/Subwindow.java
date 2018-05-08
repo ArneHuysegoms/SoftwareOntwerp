@@ -9,13 +9,11 @@ import facade.DomainFacade;
 import mediator.InteractionMediator;
 import repo.diagram.CommunicationRepo;
 import repo.diagram.DiagramRepo;
-import repo.message.CommunicationMessageRepo;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import windowElements.*;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +26,6 @@ public class Subwindow {
     private DomainFacade facade;
     private String labelContainer = "";
     private InteractionMediator mediator;
-    private Button button;
 
     private DiagramElement selected;
     private Clickable frameElement;
@@ -41,56 +38,54 @@ public class Subwindow {
     /**
      * default contructor for subwindow with default width and height
      *
-     * @param pos
-     * @param button
-     * @param mediator
+     * @param pos the position of the subwindow
+     * @param mediator the mediator for thi subwindow
      */
-    //TODO button positioning
-    public Subwindow(Point2D pos, Button button, InteractionMediator mediator) {
+    public Subwindow(Point2D pos, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
         setLabelMode(false);
         setFacade(new DomainFacade());
-        this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame(button);
+        createFrame();
 
-        button.setSubwindow(this);
         mediator.addSubwindow(this);
     }
 
     /**
      * contructor for subwindow with default width and height
      *
-     * @param pos
-     * @param button
-     * @param facade
-     * @param mediator
+     * @param pos the position of the subwindow
+     * @param facade the facade for this subwindow
+     * @param mediator the mediator for thi subwindow
      */
-    public Subwindow(Point2D pos, Button button, DomainFacade facade, InteractionMediator mediator) {
+    public Subwindow(Point2D pos,DomainFacade facade, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
         setLabelMode(false);
         setFacade(facade);
-        this.setButton(button);
         this.setMediator(mediator);
 
-        createFrame(button);
+        createFrame();
 
-        button.setSubwindow(this);
         mediator.addSubwindow(this);
     }
 
     /**
      * creates the frame with corners for resizing, titlebar and close button
      */
-    //TODO also works for updating frame
-    private void createFrame(Button button) {
+    private void createFrame() {
 
-        frame = new SubwindowFrame(position, height, width, button);
+        if(frame == null) {
+            frame = new SubwindowFrame(position, height, width);
+        }
+        else{
+            Button button = frame.getButton();
+            frame = new SubwindowFrame(position, height, width, button);
+        }
 
     }
 
@@ -111,7 +106,8 @@ public class Subwindow {
     /**
      * sets the mediator for this subwindow
      *
-     * @param mediator
+     * @param mediator the mediator for this subwindow
+     * @throws IllegalArgumentException if the given mediator is null
      */
     public void setMediator(InteractionMediator mediator) throws IllegalArgumentException {
         if (mediator == null) {
@@ -141,7 +137,8 @@ public class Subwindow {
     /**
      * checks if this button is clicked
      *
-     * @param position
+     * @param position the position of the click
+     * @return true if this element is clicked, false otherwise
      */
     public boolean isClicked(Point2D position) {
         double startX = this.getPosition().getX();
@@ -152,28 +149,9 @@ public class Subwindow {
     }
 
     /**
-     * @return the close button for this subwindow
-     */
-    public Button getButton() {
-        return button;
-    }
-
-    /**
-     * sets the close button for this subwindow
-     *
-     * @param button
-     */
-    private void setButton(Button button) {
-        if (button == null) {
-            throw new IllegalArgumentException("Button may not be null");
-        }
-        this.button = button;
-    }
-
-    /**
      * update the container with the label
      *
-     * @param c
+     * @param c the new char for the label
      */
     public void updateLabelContainer(char c) {
         setLabelContainer(labelContainer + c);
@@ -196,7 +174,8 @@ public class Subwindow {
     /**
      * sets the width of this subwindow
      *
-     * @param width
+     * @param width the width for this subwindow
+     * @throws IllegalArgumentException if the width is negative
      */
     public void setWidth(int width) {
         if (width < 0) {
@@ -215,7 +194,8 @@ public class Subwindow {
     /**
      * sets the height of this subwindow
      *
-     * @param height
+     * @param height the height of this subwindow
+     * @throws IllegalArgumentException if the given height is negative
      */
     public void setHeight(int height) {
         if (height < 0) {
@@ -234,7 +214,7 @@ public class Subwindow {
     /**
      * sets the position of the upper left corner for this subwindow
      *
-     * @param position2D
+     * @param position2D the new position for this subwindow
      */
     public void setPosition(Point2D position2D) {
         this.position = position2D;
@@ -250,7 +230,7 @@ public class Subwindow {
     /**
      * sets the subwindow in the given labelmode
      *
-     * @param labelMode
+     * @param labelMode the new labelmode for this subwindow
      */
     public void setLabelMode(boolean labelMode) {
         this.labelMode = labelMode;
@@ -266,7 +246,7 @@ public class Subwindow {
     /**
      * sets the active label
      *
-     * @param label
+     * @param label the new label for this subwindow
      */
     public void setLabel(Label label) {
         this.label = label;
@@ -286,6 +266,10 @@ public class Subwindow {
         return editing;
     }
 
+    /**
+     *
+     * @param editing the new mode for the editing flag
+     */
     public void setEditing(boolean editing){
         this.editing = editing;
     }
@@ -293,9 +277,9 @@ public class Subwindow {
     /**
      * sets the facade for this subwindow
      *
-     * @param facade
+     * @param facade the new facade for this subwindow
      */
-    public void setFacade(DomainFacade facade) {
+    private void setFacade(DomainFacade facade) {
         this.facade = facade;
     }
 
@@ -309,24 +293,40 @@ public class Subwindow {
     /**
      * sets the labelcontainer for the active label
      *
-     * @param labelContainer
+     * @param labelContainer the new labelcontainer for this subwindow
      */
-    public void setLabelContainer(String labelContainer) {
+    private void setLabelContainer(String labelContainer) {
         this.labelContainer = labelContainer;
     }
 
+    /**
+     *
+     * @return the selected element of this subwindow
+     */
     public DiagramElement getSelected() {
         return selected;
     }
 
+    /**
+     *
+     * @param selected the new selected element for this subwindow
+     */
     public void setSelected(DiagramElement selected) {
         this.selected = selected;
     }
 
+    /**
+     *
+     * @return the frame of this subwindow
+     */
     public SubwindowFrame getFrame() {
         return frame;
     }
 
+    /**
+     * sets the frame for this subwindow
+     * @param frame the new subwindow for this frame
+     */
     private void setFrame(SubwindowFrame frame) {
         this.frame = frame;
     }
@@ -334,7 +334,7 @@ public class Subwindow {
     /**
      * handle the given keyevent accordingly
      *
-     * @param keyEvent
+     * @param keyEvent the keyevent to handle
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         if (!labelMode) {
@@ -434,27 +434,35 @@ public class Subwindow {
         }
     }
 
+    /**
+     * handles movement of the subwindow
+     * @param movedLocation the new location
+     */
     public void handleMovement(Point2D movedLocation) {
         if (frameElement != null) {
-            if (frameElement instanceof CloseButton) {
-                CloseButton c = (CloseButton) frameElement;
+            if (frameElement instanceof Button) {
+                Button c = (Button) frameElement;
                 c.performAction();
             } else if (frameElement instanceof SubwindowFrameCorner) {
                 SubwindowFrameCorner corner = (SubwindowFrameCorner) frameElement;
                 resizeByCorner(corner, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             } else if (frameElement instanceof SubwindowFrameRectangle) {
                 SubwindowFrameRectangle frameRectangle = (SubwindowFrameRectangle) frameElement;
                 resizeByFrameRectangle(frameRectangle, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             } else if (frameElement instanceof TitleBarClick) {
                 TitleBarClick titleBarClick = (TitleBarClick) frameElement;
                 moveSubwindow(titleBarClick, movedLocation);
-                createFrame(frame.getButton());
+                createFrame();
             }
         }
     }
 
+    /**
+     * handles a leftclick for the given mouseEvent
+     * @param mouseEvent the mouseEvent to handle
+     */
     private void handleLeftClick(MouseEvent mouseEvent) {
 
     }
@@ -462,11 +470,10 @@ public class Subwindow {
     /**
      * resize the subwindow when the user drags by the corner
      *
-     * @param corner
-     * @param point
+     * @param corner the corner that was resized
+     * @param point the new point of the subwindow
      */
-    public void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
-
+    private void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
         Point2D ogPos = this.getPosition();
         switch (corner.getType()) {
             case TOPLEFT:
@@ -508,16 +515,16 @@ public class Subwindow {
             default:
                 break;
         }
-        createFrame(getButton());
+        createFrame();
     }
 
     /**
      * resize the subwindow when the user drags by one of the borders
      *
-     * @param rectangle
-     * @param point
+     * @param rectangle the rectangle that was resized
+     * @param point the new point for the rectangle
      */
-    public void resizeByFrameRectangle(SubwindowFrameRectangle rectangle, Point2D point) {
+    private void resizeByFrameRectangle(SubwindowFrameRectangle rectangle, Point2D point) {
         switch (rectangle.getType()) {
             case TOP:
                 double topDelta = this.getPosition().getY() - point.getY();
@@ -540,32 +547,44 @@ public class Subwindow {
             default:
                 break;
         }
-        createFrame(frame.getButton());
+        createFrame();
     }
 
-    public boolean selectedElementIsParty() {
+    /**
+     *
+     * @return true if the selected element is a party, false otherwise
+     */
+    private boolean selectedElementIsParty() {
         return selected instanceof Party;
     }
 
-    public boolean selectedElementIsLabel() {
+    /**
+     *
+     * @return true if the selected element is a party, false otherwise
+     */
+    private boolean selectedElementIsLabel() {
         return selected instanceof Label;
     }
 
-    public boolean selectedElementIsMessageStart() {
+    /**
+     *
+     * @return true if the selected element is a party, false otherwise
+     */
+    private boolean selectedElementIsMessageStart() {
         return selected instanceof DiagramRepo.MessageStart;
     }
 
     /**
      * move the subwindow when the user drags by the titlebar
      *
-     * @param titleBarClick
-     * @param point
+     * @param titleBarClick the click on the titlebar
+     * @param point the new point of the titlebar
      */
-    public void moveSubwindow(TitleBarClick titleBarClick, Point2D point) {
+    private void moveSubwindow(TitleBarClick titleBarClick, Point2D point) {
         double x = point.getX() - titleBarClick.getInitialClickPosition().getX();
         double y = point.getY() - titleBarClick.getInitialClickPosition().getY();
         setPosition(new Point2D.Double(position.getX() + x, position.getY() + y));
-        createFrame(frame.getButton());
+        createFrame();
     }
 
     /**
@@ -591,10 +610,20 @@ public class Subwindow {
         }
     }
 
+    /**
+     * returns a relative point based on the given location and the location of the subwindow
+     * @param location the location that needs to be translated
+     * @return a relative point to this subwindow based on the given location
+     */
     public Point2D getRelativePoint(Point2D location) {
         return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
+    /**
+     * return true if the frame of this subwindow is clicked
+     * @param clickLocation the location of the click
+     * @return true if the frame is clicked, false otherwise
+     */
     public boolean frameIsClicked(Point2D clickLocation) {
         frameElement = frame.getFrameElement(clickLocation);
         return this.frame.isClicked(clickLocation);
@@ -634,7 +663,7 @@ public class Subwindow {
     /**
      * adds the given char to the active label
      *
-     * @param c
+     * @param c the char to add
      */
     private void addCharToLabel(char c) throws DomainException {
         String l = "";

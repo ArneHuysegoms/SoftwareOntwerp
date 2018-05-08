@@ -55,9 +55,9 @@ public class CommunicationFigureConverter extends Converter {
     /**
      * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
      *
-     * @param spaceing
-     * @param pair
-     * @param partyMap
+     * @param spaceing space to leave between the arrow and the object's top y-coordinate
+     * @param pair a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
+     * @param partyMap     list of Party and Point2D entries
      * @return start point of the arrow
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
@@ -75,9 +75,9 @@ public class CommunicationFigureConverter extends Converter {
     /**
      * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
      *
-     * @param spaceing
-     * @param pair
-     * @param partyMap
+     * @param spaceing space to leave between the arrow and the object's top y-coordinate
+     * @param pair a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
+     * @param partyMap     list of Party and Point2D entries
      * @return end point of the arrow
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {

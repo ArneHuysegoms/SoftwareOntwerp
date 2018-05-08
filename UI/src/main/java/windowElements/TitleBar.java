@@ -24,18 +24,34 @@ public class TitleBar implements Clickable {
         setWidth(width);
     }
 
+    /**
+     *
+     * @return the postion of this titlebar
+     */
     public Point2D getPosition() {
         return position;
     }
 
+    /**
+     * sets the position of this titlebar to the given position
+     * @param position
+     */
     private void setPosition(Point2D position) {
         this.position = position;
     }
 
+    /**
+     *
+     * @return the width of this titleframe
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * sets the width of this titlebar to the given titlebar
+     * @param width the new width for this titlebar
+     */
     private void setWidth(int width) {
         this.width = width;
     }

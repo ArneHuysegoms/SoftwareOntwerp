@@ -10,12 +10,9 @@ import java.io.Serializable;
 public class MessageLabel extends Label implements Serializable {
 
     /**
-     * @param label
+     * @param label the new label for this messagelabel
      * @throws DomainException
      *         The label has to start with a lowercase character
-     *
-     * @post The labeltext of the new label equals the label of the new messageLabel
-     *       | new.getLabel == label;
      */
     public MessageLabel(String label) throws DomainException {
         this.setLabel(label);

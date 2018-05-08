@@ -33,7 +33,7 @@ public class PartyRepo implements Serializable {
 
     /**
      * constructs a new partyrepo of which the state is equal to the given state
-     * @param labelPoint2DMap
+     * @param labelPoint2DMap the new map for this PartyRepo
      */
     public PartyRepo(Map<Party, Point2D> labelPoint2DMap){
         this.setPartyPoint2DMap(labelPoint2DMap);
@@ -81,6 +81,10 @@ public class PartyRepo implements Serializable {
         return this.getMap().get(party);
     }
 
+    /**
+     * removes the given party from this repository
+     * @param party the party to remove
+     */
     public void removeParty(Party party){
         this.getMap().remove(party);
     }

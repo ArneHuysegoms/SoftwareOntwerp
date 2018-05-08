@@ -339,7 +339,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns x-coordinate for the start point of this activation bar
-             *
+             * @param partyMap     list of Party and Point2D entries
              * @return x-coordinate for the start point of this activation bar
              */
             private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
@@ -356,7 +356,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns y-coordinate for the start point of this activation bar and for the one that is created because of the outgoing message
-             *
+             * @param messageMap   list of Message and y-coördinate entries
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarStartY(Map<Message, Integer> messageMap) {
@@ -365,7 +365,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns y-coordinate for the end point of this activation bar and for the one that is created because of the outgoing message
-             *
+             * @param messageMap   list of Message and y-coördinate entries
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarEndY(Map<Message, Integer> messageMap) {
@@ -374,7 +374,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns x-coordinate for the end point of this activation bar
-             *
+             * @param partyMap     list of Party and Point2D entries
              * @return x-coordinate for the end point of this activation bar
              */
             private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
@@ -391,7 +391,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns x-coordinate for the end point of the activation bar that is created because of the outgoing message
-             *
+             * @param partyMap     list of Party and Point2D entries
              * @return x-coordinate for the end point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
@@ -404,7 +404,7 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * returns x-coordinate for the start point of the activation bar that is created because of the outgoing message
-             *
+             * @param partyMap     list of Party and Point2D entries
              * @return x-coordinate for the start point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
@@ -417,7 +417,8 @@ public class SequenceFigureConverter extends Converter {
 
             /**
              * calculates the start point of this activation bar
-             *
+             * @param partyMap     list of Party and Point2D entries
+             * @param messageMap   list of Message and y-coördinate entries
              * @return the start point of this activation bar
              */
             private Point2D calculateOwnBarStart(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -427,6 +428,8 @@ public class SequenceFigureConverter extends Converter {
             /**
              * calculates the end point of this activation bar
              *
+             * @param partyMap     list of Party and Point2D entries
+             * @param messageMap   list of Message and y-coördinate entries
              * @return the end point of this activation bar
              */
             private Point2D calculateOwnBarEnd(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -436,6 +439,8 @@ public class SequenceFigureConverter extends Converter {
             /**
              * calculates the start point of the activation bar that is created because of the outgoing message
              *
+             * @param partyMap     list of Party and Point2D entries
+             * @param messageMap   list of Message and y-coördinate entries
              * @return the start point of the activation bar that is created because of the outgoing message
              */
             private Point2D calculateBrotherBarStart(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -445,6 +450,8 @@ public class SequenceFigureConverter extends Converter {
             /**
              * calculates the end point of the activation bar that is created because of the outgoing message
              *
+             * @param partyMap     list of Party and Point2D entries
+             * @param messageMap   list of Message and y-coördinate entries
              * @return the end point of the activation bar that is created because of the outgoing message
              */
             private Point2D calculateBrotherBarEnd(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {

@@ -166,7 +166,6 @@ public class DomainFacade {
      * change the partyType of the old party to that of the new Party
      * @param oldParty oldParty the old type
      * @param newParty newParty the new type
-     * @throws DomainException
      */
     public void changePartyTypeInRepo(Party oldParty, Party newParty){
         activeRepo.changePartyTypeInRepos(oldParty, newParty);
@@ -296,38 +295,12 @@ public class DomainFacade {
         return null;
     }
 
+    /**
+     * adds the given messages to all repos of this facade
+     * @param messages the messages to add
+     */
     public void addMessagesToRepos(List<Message> messages){
         getActiveRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
         this.getOtherRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
     }
-
-   /* *//*
-     * start editing the currently selected label
-     *//*
-    public void editLabel(){
-        this.getActiveDiagram().editLabel();
-    }*/
-
-    /*
-     * stops editing the currently selected label
-     *//*
-    public void stopEditingLabel(){
-        this.getActiveDiagram().stopEditingLabel();
-    }*/
-
-    /*
-     * adds the given char to the currently selected label
-     *
-     * @param newChar the char to add
-     *//*
-    public void addCharToLabel(char newChar){
-        this.getActiveDiagram().addCharToLabel(newChar);
-    }
-
-    *//*
-     * removes the last char from the currently selected label
-     *//*
-    public void removeLastCharFromLabel(){
-        this.getActiveDiagram().removeLastCharFromLabel();
-    }*/
 }

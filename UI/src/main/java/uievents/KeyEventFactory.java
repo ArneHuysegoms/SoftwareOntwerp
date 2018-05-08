@@ -10,9 +10,11 @@ public class KeyEventFactory {
      * @return new KeyEvent with KeyEventType
      *          | TAB if KEY_PRESSED and keyCode == 9
      *          | DEL if KEY_PRESSED and keyCode == 46 or 127
-     *          | COLON if KEY_TYPED and keyCode == 186
-     *          | CHAR if KEY_TYPED
      *          | BACKSPACE if KEY_PRESSED and keyCode == 8
+     *          | CTRLN if KEY_PRESSED and keyCode == 68 and ctrlPressed == true
+     *          | CTRLD if KEY_PRESSED and keyCode == 78 and ctrlPressed == true
+     *          | CHAR if KEY_TYPED
+     *          | else IRRELEVANT
      */
     private boolean ctrlPressed;
     public KeyEvent createKeyEvent(int id, int keyCode, char keyChar) {

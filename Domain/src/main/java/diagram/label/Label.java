@@ -54,8 +54,8 @@ public abstract class Label extends DiagramElement implements Serializable {
      *
      * only alfabetical chars, spaces and colons are allowed
      *
-     * @param charToAdd
-     * @return
+     * @param charToAdd the char to check
+     * @return if the provided char is valid for a label
      */
     public static boolean isCorrectCharForLabel(char charToAdd){
         return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':' || charToAdd == ' ';

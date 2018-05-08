@@ -73,6 +73,13 @@ public class CommunicationMessageRepo extends MessageRepo  implements Serializab
         setLabelPositions(labelRepo, partyRepo);
     }
 
+    /**
+     * resets the label positions in case a party is moved
+     *
+     * @param labelRepo the repo containing all details of the labels
+     * @param partyRepo the repo containing all detail of the parties
+     * @param movedParty the party that was moved
+     */
     @Override
     public void resetLabelPositionsForMovedParty(LabelRepo labelRepo, PartyRepo partyRepo, Party movedParty) {
         setLabelPositions(labelRepo, partyRepo);
@@ -100,6 +107,14 @@ public class CommunicationMessageRepo extends MessageRepo  implements Serializab
         throw new IllegalStateException("This operation should never happen, you have the wrong kind of repo");
     }
 
+    /**
+     * adds messages to the repos and take cares of any other objects that need to be updated for the new messages
+     *
+     * @param messages the message to add
+     * @param firstMessage the first message of the diagram
+     * @param partyRepo the repo containing all detail of the parties
+     * @param labelRepo the repo containing all details of the labels
+     */
     @Override
     public void addMessages(List<Message> messages, Message firstMessage, PartyRepo partyRepo, LabelRepo labelRepo) {
         pairs = new ArrayList<>();
@@ -109,6 +124,13 @@ public class CommunicationMessageRepo extends MessageRepo  implements Serializab
         }
     }
 
+    /**
+     * finds a partypair by the receiver and sender of a message
+     *
+     * @param sender the sender
+     * @param receiver the receiver
+     * @return the partypair that corresponds to the given sender and receiver by equals
+     */
     public PartyPair findPartyPairByParties(Party sender, Party receiver){
         for(PartyPair p : pairs){
             if(p.equalPair(sender, receiver)){

@@ -1,13 +1,13 @@
 package subwindow;
 
+import command.Command;
 import controller.CanvasController;
 
 import java.awt.geom.Point2D;
 
-public abstract class Button implements Clickable{
+public class Button implements Clickable{
 
-    private CanvasController controller;
-    private Subwindow subwindow;
+    private Command command;
 
     private Point2D position;
 
@@ -25,46 +25,32 @@ public abstract class Button implements Clickable{
     /**
      * constructor with controller
      */
-    public Button(CanvasController controller){
+    public Button(Command command){
         this.width = 30;
         this.height = 30;
-        this.setController(controller);
+        this.setCommand(command);
     }
 
-    /**
-     * sets the controller for this button
-     * @param controller
-     */
-    private void setController(CanvasController controller) throws IllegalArgumentException{
-        if(controller == null){
-            throw  new IllegalArgumentException("Canvascontroller may not be null");
-        }
-        this.controller = controller;
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     /**
      * sets the position for this button
-     * @param position
+     * @param position the position for this button
      */
     public void setPosition(Point2D position){
         this.position = position;
     }
 
     /**
-     * @return controller for this button
+     *
+     * @return the position of this label
      */
-    public CanvasController getController(){
-        return this.controller;
-    }
-
-    public void setSubwindow(Subwindow subwindow){
-        this.subwindow = subwindow;
-    }
-
-    public Subwindow getSubwindow(){
-        return this.subwindow;
-    }
-
     public Point2D getPosition() {
         return position;
     }
@@ -83,11 +69,14 @@ public abstract class Button implements Clickable{
         return height;
     }
 
-    public abstract void performAction();
+    public void performAction(){
+        command.performAction();
+    }
 
     /**
      * checks if this button is clicked
-     * @param location
+     * @param location  the location of the click
+     * @return true if this button is clicked, false otherwise
      */
     @Override
     public boolean isClicked(Point2D location) {

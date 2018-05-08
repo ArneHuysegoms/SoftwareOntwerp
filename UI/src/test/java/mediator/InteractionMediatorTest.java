@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import repo.message.SequenceMessageRepo;
 import subwindow.Button;
-import subwindow.CloseButton;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
@@ -56,10 +55,10 @@ public class InteractionMediatorTest {
             partyLocation1 = new Point2D.Double(50,50);
             partyLocation2 = new Point2D.Double(50,50);
 
-            button1 = new CloseButton();
-            button2 = new CloseButton();
-            button3 = new CloseButton();
-            button4 = new CloseButton();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
 
             labelActor1 = new PartyLabel("a:A");
             actor1 = new Actor(labelActor1);
@@ -91,10 +90,10 @@ public class InteractionMediatorTest {
             interactionMediator = new InteractionMediator();
             interactionMediator2 = new InteractionMediator();
 
-            subwindow1 = new Subwindow(subWindowLocation1, button1, interactionMediator);
-            subwindow2 = new Subwindow(subWindowLocation2, button2, interactionMediator);
-            subwindow3 = new Subwindow(subWindowLocation3, button3, interactionMediator);
-            subwindow4 = new Subwindow(subWindowLocation4, button4, interactionMediator2);
+            subwindow1 = new Subwindow(subWindowLocation1, interactionMediator);
+            subwindow2 = new Subwindow(subWindowLocation2, interactionMediator);
+            subwindow3 = new Subwindow(subWindowLocation3, interactionMediator);
+            subwindow4 = new Subwindow(subWindowLocation4, interactionMediator2);
 
         } catch (Exception e) {
             fail();
@@ -170,6 +169,11 @@ public class InteractionMediatorTest {
 
     public InteractionMediatorTest() {
 
+
+    }
+
+    @Test
+    public void Test(){
 
     }
 }
