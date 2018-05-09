@@ -11,7 +11,6 @@ import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -4,7 +4,7 @@ import diagram.suite.DiagramTestSuite;
 import facade.FacadeSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import repo.suite.RepoTestSuite;
+import view.suite.RepoTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

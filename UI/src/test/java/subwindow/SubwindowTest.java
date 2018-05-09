@@ -1,7 +1,5 @@
 package subwindow;
 
-import controller.CanvasController;
-import diagram.label.Label;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import exceptions.DomainException;
@@ -61,8 +59,8 @@ public class SubwindowTest {
     }
     @Test
     public void test_subwindow_facade_repos_are_empty(){
-        assertTrue(subwindow.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
-        assertTrue(subwindow.getFacade().getActiveRepo().getLabelRepo().getMap().isEmpty());
+        assertTrue(subwindow.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
+        assertTrue(subwindow.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
     }
 
     @Test
@@ -169,17 +167,17 @@ public class SubwindowTest {
     }
     @Test
     public void test_subwindow2_facade_repos_are_empty(){
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
-        assertTrue(subwindow2.getFacade().getActiveRepo().getLabelRepo().getMap().isEmpty());
+        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
+        assertTrue(subwindow2.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
     }
     @Test
     public void test_subwindow2_facade_repos_are_not_empty_after_fill() {
         try {
-            subwindow2.getFacade().getActiveRepo().getPartyRepo().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
+            subwindow2.getFacade().getActiveRepo().getPartyView().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
         } catch (DomainException d) {
             System.out.println(d.getMessage());
         }
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
+        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
     }
 
     @Test

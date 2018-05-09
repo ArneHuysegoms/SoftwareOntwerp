@@ -4,7 +4,6 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
-import exceptions.DomainException;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;

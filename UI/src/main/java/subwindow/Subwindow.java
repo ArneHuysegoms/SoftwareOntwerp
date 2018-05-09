@@ -7,8 +7,8 @@ import diagram.party.Party;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import mediator.InteractionMediator;
-import repo.diagram.CommunicationRepo;
-import repo.diagram.DiagramRepo;
+import view.diagram.CommunicationView;
+import view.diagram.DiagramView;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import windowElements.*;
@@ -120,8 +120,8 @@ public class Subwindow {
      * @return a copy of the facade
      */
     public DomainFacade getCopyOfFacade() {
-        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramRepo.copy(getFacade().getSequenceRepo()), DiagramRepo.copy(getFacade().getCommunicationRepo()));
-        if(this.getFacade().getActiveRepo() instanceof CommunicationRepo){
+        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramView.copy(getFacade().getSequenceRepo()), DiagramView.copy(getFacade().getCommunicationRepo()));
+        if(this.getFacade().getActiveRepo() instanceof CommunicationView){
             f.changeActiveDiagram();
         }
         return f;
@@ -425,7 +425,7 @@ public class Subwindow {
     private void handleReleaseClick(MouseEvent mouseEvent) {
         dragging = false;
         if (selectedElementIsMessageStart()) {
-            DiagramRepo.MessageStart ms = (DiagramRepo.MessageStart) selected;
+            DiagramView.MessageStart ms = (DiagramView.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
@@ -571,7 +571,7 @@ public class Subwindow {
      * @return true if the selected element is a party, false otherwise
      */
     private boolean selectedElementIsMessageStart() {
-        return selected instanceof DiagramRepo.MessageStart;
+        return selected instanceof DiagramView.MessageStart;
     }
 
     /**

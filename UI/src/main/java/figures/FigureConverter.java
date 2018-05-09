@@ -1,33 +1,14 @@
 package figures;
 
 import controller.CanvasController;
-import diagram.Diagram;
-import diagram.label.Label;
-import diagram.message.InvocationMessage;
-import diagram.message.Message;
-import diagram.message.ResultMessage;
-import diagram.party.Actor;
-import diagram.party.Object;
-import diagram.party.Party;
 
-import facade.DomainFacade;
 import figures.Drawer.*;
-import figures.Drawer.DiagramSpecificDrawers.*;
-import figures.helperClasses.Pair;
-import repo.diagram.CommunicationRepo;
-import repo.diagram.DiagramRepo;
-import repo.diagram.SequenceRepo;
-import repo.label.LabelRepo;
-import repo.message.CommunicationMessageRepo;
-import repo.message.MessageRepo;
-import repo.message.SequenceMessageRepo;
-import repo.party.PartyRepo;
+import view.diagram.CommunicationView;
+import view.diagram.SequenceView;
 import subwindow.Subwindow;
-import util.PartyPair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.*;
 import java.util.List;
 
 /**
@@ -91,9 +72,9 @@ public class FigureConverter {
      * @param sub
      */
     public void setConverter(Subwindow sub) {
-        if (sub.getFacade().getActiveRepo() instanceof SequenceRepo) {
+        if (sub.getFacade().getActiveRepo() instanceof SequenceView) {
             converter = new SequenceFigureConverter(sub);
-        } else if (sub.getFacade().getActiveRepo() instanceof CommunicationRepo) {
+        } else if (sub.getFacade().getActiveRepo() instanceof CommunicationView) {
             converter = new CommunicationFigureConverter(sub);
         }
     }

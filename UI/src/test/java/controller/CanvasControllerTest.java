@@ -1,18 +1,6 @@
 package controller;
-import diagram.Diagram;
-import diagram.label.PartyLabel;
-import diagram.party.Actor;
-import diagram.party.Party;
-import org.junit.Before;
 import org.junit.Test;
-import uievents.KeyEvent;
-import uievents.KeyEventType;
-import uievents.MouseEvent;
-import uievents.MouseEventType;
 
-import java.awt.geom.Point2D;
-
-import static org.junit.Assert.*;
 public class CanvasControllerTest {
 
     @Test
