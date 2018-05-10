@@ -5,10 +5,9 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
-import exceptions.DomainException;
-import repo.diagram.CommunicationRepo;
-import repo.diagram.DiagramRepo;
-import repo.diagram.SequenceRepo;
+import view.diagram.CommunicationView;
+import view.diagram.DiagramView;
+import view.diagram.SequenceView;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -19,10 +18,10 @@ import java.util.Set;
  */
 public class DomainFacade {
 
-    private DiagramRepo activeRepo;
+    private DiagramView activeRepo;
 
-    private DiagramRepo sequenceRepo;
-    private DiagramRepo communicationRepo;
+    private DiagramView sequenceRepo;
+    private DiagramView communicationRepo;
 
     private Diagram diagram;
 
@@ -30,7 +29,7 @@ public class DomainFacade {
      * Default constructor, starts with a sequencediagram as active diagram
      */
     public DomainFacade(){
-        this(new Diagram(), new SequenceRepo(), new CommunicationRepo());
+        this(new Diagram(), new SequenceView(), new CommunicationView());
     }
 
     /**
@@ -40,7 +39,7 @@ public class DomainFacade {
      * @param sequenceRepo the sequencerepo for this domainfacade
      * @param communicationRepo the communicationrepo for this domainfacade
      */
-    public DomainFacade(Diagram diagram, DiagramRepo sequenceRepo, DiagramRepo communicationRepo){
+    public DomainFacade(Diagram diagram, DiagramView sequenceRepo, DiagramView communicationRepo){
         this.setDiagram(diagram);
         this.setSequenceRepo(sequenceRepo);
         this.setCommunicationRepo(communicationRepo);
@@ -48,18 +47,18 @@ public class DomainFacade {
     }
 
     /**
-     * gives the repo detailing the current state of the diagram
+     * gives the view detailing the current state of the diagram
      * @return a diagramrepo containing the current state of the diagram
      */
-    public DiagramRepo getActiveRepo() {
+    public DiagramView getActiveRepo() {
         return activeRepo;
     }
 
     /**
-     * sets the repo that contains the active state of the diagram
+     * sets the view that contains the active state of the diagram
      * @param activeRepo the state of the diagram we want to be the current one
      */
-    public void setActiveRepo(DiagramRepo activeRepo) {
+    public void setActiveRepo(DiagramView activeRepo) {
         this.activeRepo = activeRepo;
     }
 
@@ -85,16 +84,16 @@ public class DomainFacade {
     /**
      * @return the sequencerepo of this facade
      */
-    public DiagramRepo getSequenceRepo() {
+    public DiagramView getSequenceRepo() {
         return sequenceRepo;
     }
 
     /**
      * sets the sequencerepo for this domainfacade
      * @param sequenceRepo the sequencerepo for the domainfacade
-     * @throws IllegalArgumentException if the provided repo is null
+     * @throws IllegalArgumentException if the provided view is null
      */
-    private void setSequenceRepo(DiagramRepo sequenceRepo) throws IllegalArgumentException{
+    private void setSequenceRepo(DiagramView sequenceRepo) throws IllegalArgumentException{
         if(sequenceRepo == null){
             throw new IllegalArgumentException("sequencerepo may not be null");
         }
@@ -104,7 +103,7 @@ public class DomainFacade {
     /**
      * @return the communicationrepo of this domainfacade
      */
-    public DiagramRepo getCommunicationRepo() {
+    public DiagramView getCommunicationRepo() {
         return communicationRepo;
     }
 
@@ -113,9 +112,9 @@ public class DomainFacade {
      * @param communicationRepo the Communicationrepo for this domainfacade
      * @throws IllegalArgumentException if the communicationrepo is null
      */
-    private void setCommunicationRepo(DiagramRepo communicationRepo) throws IllegalArgumentException {
+    private void setCommunicationRepo(DiagramView communicationRepo) throws IllegalArgumentException {
         if(communicationRepo == null){
-            throw new IllegalArgumentException("communication repo may not be null");
+            throw new IllegalArgumentException("communication view may not be null");
         }
         this.communicationRepo = communicationRepo;
     }
@@ -170,16 +169,16 @@ public class DomainFacade {
     public void changePartyTypeInRepo(Party oldParty, Party newParty){
         activeRepo.changePartyTypeInRepos(oldParty, newParty);
         getOtherRepo().changePartyTypeInRepos(oldParty, newParty);
-        activeRepo.getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyRepo(), activeRepo.getLabelRepo());
-        getOtherRepo().getMessageRepo().resetMessagePositions(diagram.getFirstMessage(), getOtherRepo().getPartyRepo(), getOtherRepo().getLabelRepo());
+        activeRepo.getMessageView().resetMessagePositions(diagram.getFirstMessage(), activeRepo.getPartyView(), activeRepo.getLabelView());
+        getOtherRepo().getMessageView().resetMessagePositions(diagram.getFirstMessage(), getOtherRepo().getPartyView(), getOtherRepo().getLabelView());
     }
 
     /**
-     * returns the repo that is currently not the active repo
+     * returns the view that is currently not the active view
      *
      * @return the non-active repository
      */
-    public DiagramRepo getOtherRepo(){
+    public DiagramView getOtherRepo(){
         if(activeRepo.equals(communicationRepo)){
             return sequenceRepo;
         }
@@ -244,13 +243,13 @@ public class DomainFacade {
      * @param party the party to be deleted
      */
     private void deletePartyInRepos(Party party) {
-        this.getActiveRepo().getPartyRepo().removeParty(party);
-        this.getActiveRepo().getLabelRepo().removeLabel(party.getLabel());
+        this.getActiveRepo().getPartyView().removeParty(party);
+        this.getActiveRepo().getLabelView().removeLabel(party.getLabel());
 
-        DiagramRepo other = this.getOtherRepo();
+        DiagramView other = this.getOtherRepo();
 
-        other.getPartyRepo().removeParty(party);
-        other.getLabelRepo().removeLabel(party.getLabel());
+        other.getPartyView().removeParty(party);
+        other.getLabelView().removeLabel(party.getLabel());
     }
 
     /**
@@ -261,9 +260,9 @@ public class DomainFacade {
      */
     public void changePartyPosition(Point2D newLocation, Party party){
         Point2D validNewLocation = this.getActiveRepo().getValidPartyLocation(newLocation);
-        this.getActiveRepo().getPartyRepo().addPartyWithLocation(party, validNewLocation);
-        this.getActiveRepo().getLabelRepo().updateLabelPosition(getActiveRepo().getPartyRepo().getCorrectLabelPosition(party), party.getLabel());
-        this.getActiveRepo().getMessageRepo().resetLabelPositionsForMovedParty(getActiveRepo().getLabelRepo(), getActiveRepo().getPartyRepo(), party);
+        this.getActiveRepo().getPartyView().addPartyWithLocation(party, validNewLocation);
+        this.getActiveRepo().getLabelView().updateLabelPosition(getActiveRepo().getPartyView().getCorrectLabelPosition(party), party.getLabel());
+        this.getActiveRepo().getMessageView().resetLabelPositionsForMovedParty(getActiveRepo().getLabelView(), getActiveRepo().getPartyView(), party);
     }
 
     /**
@@ -274,14 +273,14 @@ public class DomainFacade {
      *
      * @return a list containing the newly added messages
      */
-    public List<Message> addNewMessage(Point2D location, DiagramRepo.MessageStart messageStart) throws IllegalStateException{
-        if(this.getActiveRepo() instanceof SequenceRepo) {
-            SequenceRepo sequenceRepo = (SequenceRepo) this.getActiveRepo();
+    public List<Message> addNewMessage(Point2D location, DiagramView.MessageStart messageStart) throws IllegalStateException{
+        if(this.getActiveRepo() instanceof SequenceView) {
+            SequenceView sequenceRepo = (SequenceView) this.getActiveRepo();
             Party Sender = messageStart.getParty();
             Party receiver = this.getActiveRepo().findReceiver(location);
             if (receiver != null) {
                 int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
-                Message previous = sequenceRepo.getMessageRepo().findPreviousMessage(yLocation, diagram.getFirstMessage());
+                Message previous = sequenceRepo.getMessageView().findPreviousMessage(yLocation, diagram.getFirstMessage());
                 List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
                 addMessagesToRepos(addedMessages);
                 if(addedMessages.size() == 2){
@@ -300,7 +299,7 @@ public class DomainFacade {
      * @param messages the messages to add
      */
     public void addMessagesToRepos(List<Message> messages){
-        getActiveRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyRepo(), getActiveRepo().getLabelRepo());
-        this.getOtherRepo().getMessageRepo().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyRepo(),getOtherRepo().getLabelRepo());
+        getActiveRepo().getMessageView().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyView(), getActiveRepo().getLabelView());
+        this.getOtherRepo().getMessageView().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyView(),getOtherRepo().getLabelView());
     }
 }

@@ -6,10 +6,10 @@ import diagram.party.Party;
 import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
 import figures.Drawer.DiagramSpecificDrawers.CommunicationInvokeMessageDrawer;
 import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
-import repo.message.CommunicationMessageRepo;
-import repo.message.MessageRepo;
-import repo.party.PartyRepo;
-import subwindow.Subwindow;
+import view.message.CommunicationMessageView;
+import view.message.MessageView;
+import view.party.PartyView;
+import window.diagram.DiagramSubwindow;
 import util.PartyPair;
 
 import java.awt.*;
@@ -19,8 +19,8 @@ import java.util.Map;
 
 public class CommunicationFigureConverter extends Converter {
 
-    public CommunicationFigureConverter(Subwindow subwindow) {
-        super(subwindow);
+    public CommunicationFigureConverter(DiagramSubwindow diagramSubwindow) {
+        super(diagramSubwindow);
         actorDrawingStrategy = new CommunicationActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
@@ -30,18 +30,18 @@ public class CommunicationFigureConverter extends Converter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageRepo  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param messageView  repository containing all the coordinates of the messages in the subwindow's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
     @Override
-    protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
-        CommunicationMessageRepo repo = (CommunicationMessageRepo) messageRepo;
+    protected void drawMessages(Graphics graphics, MessageView messageView, Map<Party, Point2D> partyMap, Message firstMessage) {
+        CommunicationMessageView repo = (CommunicationMessageView) messageView;
 
         List<PartyPair> pairs = repo.getMap();
 
         for (PartyPair pair : pairs) {
-            int spread = PartyRepo.OBJECTHEIGHT / pair.getNumberOfMessages();
+            int spread = PartyView.OBJECTHEIGHT / pair.getNumberOfMessages();
             Point2D start, end;
 
             for (int i = 0; i < pair.getNumberOfMessages(); i++) {
@@ -63,12 +63,12 @@ public class CommunicationFigureConverter extends Converter {
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y, offset;
         if (pair.getSender() instanceof Actor) {
-            offset = PartyRepo.ACTORWIDTH / 2;
+            offset = PartyView.ACTORWIDTH / 2;
         } else {
-            offset = PartyRepo.OBJECTWIDTH;
+            offset = PartyView.OBJECTWIDTH;
         }
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
-        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
+        x = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
+        y = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 
@@ -83,12 +83,12 @@ public class CommunicationFigureConverter extends Converter {
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y, offset;
         if (pair.getReceiver() instanceof Actor) {
-            offset = PartyRepo.ACTORWIDTH / 2;
+            offset = PartyView.ACTORWIDTH / 2;
         } else {
             offset = 0;
         }
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX() - offset;
-        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
+        x = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX() - offset;
+        y = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 }

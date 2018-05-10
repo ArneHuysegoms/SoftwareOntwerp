@@ -1,6 +1,6 @@
 import mediator.InteractionMediatorTest;
 import suites.FiguresTests;
-import suites.SubwindowTests;
+import suites.DiagramSubwindowTests;
 import suites.UIEventTests;
 import suites.WindowElementsTests;
 import controller.*;
@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
         CanvasControllerTest.class,
         FiguresTests.class,
         InteractionMediatorTest.class,
-        SubwindowTests.class,
+        DiagramSubwindowTests.class,
         UIEventTests.class,
         WindowElementsTests.class,
 })

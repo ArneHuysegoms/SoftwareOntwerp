@@ -1,7 +1,7 @@
 package windowElements;
 
-import subwindow.Button;
-import subwindow.Clickable;
+import window.windowElements.Button;
+import window.windowElements.Clickable;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

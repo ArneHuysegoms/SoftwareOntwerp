@@ -10,11 +10,11 @@ import diagram.party.Party;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
 import figures.basicShapes.DashedLine;
-import repo.diagram.DiagramRepo;
-import repo.message.MessageRepo;
-import repo.message.SequenceMessageRepo;
-import repo.party.PartyRepo;
-import subwindow.Subwindow;
+import view.diagram.DiagramView;
+import view.message.MessageView;
+import view.message.SequenceMessageView;
+import view.party.PartyView;
+import window.diagram.DiagramSubwindow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -27,8 +27,8 @@ public class SequenceFigureConverter extends Converter {
     private Drawer responseMessageDrawingStrategy,
             lifeLineDrawer;
 
-    public SequenceFigureConverter(Subwindow subwindow) {
-        super(subwindow);
+    public SequenceFigureConverter(DiagramSubwindow diagramSubwindow) {
+        super(diagramSubwindow);
         lifeLineDrawer = new SequenceLifelineDrawer();
         actorDrawingStrategy = new SequenceActorDrawer();
         objectDrawingStrategy = new SequenceObjectDrawer();
@@ -40,16 +40,16 @@ public class SequenceFigureConverter extends Converter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageRepo  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param messageView  repository containing all the coordinates of the messages in the subwindow's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
     @Override
-    protected void drawMessages(Graphics graphics, MessageRepo messageRepo, Map<Party, Point2D> partyMap, Message firstMessage) {
+    protected void drawMessages(Graphics graphics, MessageView messageView, Map<Party, Point2D> partyMap, Message firstMessage) {
         SequenceActivationBarAndMessageHelper helper;
         if (firstMessage != null) {
             helper = new SequenceActivationBarAndMessageHelper(firstMessage);
-            helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy, partyMap, ((SequenceMessageRepo) messageRepo).getMap());
+            helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy, partyMap, ((SequenceMessageView) messageView).getMap());
         }
     }
 
@@ -62,15 +62,15 @@ public class SequenceFigureConverter extends Converter {
      * @param selectedElement the currently selected element in the subwindow
      */
     @Override
-    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramRepo repo, Diagram diagram, DiagramElement selectedElement) {
-        Point2D start = getSubwindow().getAbsolutePosition(new Point2D.Double(0, 50));
-        Point2D end = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 50));
-        Point2D start2 = getSubwindow().getAbsolutePosition(new Point2D.Double(0, 100));
-        Point2D end2 = getSubwindow().getAbsolutePosition(new Point2D.Double(2000, 100));
-        new DashedLine(start, end).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
-        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getSubwindow().getPosition().getX() + getSubwindow().getWidth(), (int) getSubwindow().getPosition().getY() + getSubwindow().getHeight());
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView repo, Diagram diagram, DiagramElement selectedElement) {
+        Point2D start = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(0, 50));
+        Point2D end = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(2000, 50));
+        Point2D start2 = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(0, 100));
+        Point2D end2 = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(2000, 100));
+        new DashedLine(start, end).draw(graphics, 0, 0, (int) getDiagramSubwindow().getPosition().getX() + getDiagramSubwindow().getWidth(), (int) getDiagramSubwindow().getPosition().getY() + getDiagramSubwindow().getHeight());
+        new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getDiagramSubwindow().getPosition().getX() + getDiagramSubwindow().getWidth(), (int) getDiagramSubwindow().getPosition().getY() + getDiagramSubwindow().getHeight());
 
-        drawLifeline(graphics, repo.getPartyRepo().getMap(), ((SequenceMessageRepo) repo.getMessageRepo()).getMap(), diagram.getFirstMessage());
+        drawLifeline(graphics, repo.getPartyView().getMap(), ((SequenceMessageView) repo.getMessageView()).getMap(), diagram.getFirstMessage());
     }
 
     /**
@@ -97,27 +97,27 @@ public class SequenceFigureConverter extends Converter {
                 }
             }
             for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {
-                Point2D point = getSubwindow().getAbsolutePosition(entry.getValue());
+                Point2D point = getDiagramSubwindow().getAbsolutePosition(entry.getValue());
                 if (entry.getKey() instanceof Actor) {
-                    start = new Point2D.Double(point.getX(), (messageMap.get(first) + getSubwindow().getPosition().getY()) - MessageRepo.HEIGHT);
-                    end = new Point2D.Double(point.getX(), (messageMap.get(last) + getSubwindow().getPosition().getY()) + MessageRepo.HEIGHT * 2);
+                    start = new Point2D.Double(point.getX(), (messageMap.get(first) + getDiagramSubwindow().getPosition().getY()) - MessageView.HEIGHT);
+                    end = new Point2D.Double(point.getX(), (messageMap.get(last) + getDiagramSubwindow().getPosition().getY()) + MessageView.HEIGHT * 2);
                     lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 } else {
-                    start = new Point2D.Double(point.getX() + (PartyRepo.OBJECTWIDTH / 2), (messageMap.get(first) + getSubwindow().getPosition().getY()) - MessageRepo.HEIGHT);
-                    end = new Point2D.Double(point.getX() + (PartyRepo.OBJECTWIDTH / 2), (messageMap.get(last) + getSubwindow().getPosition().getY()) + MessageRepo.HEIGHT * 2);
+                    start = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), (messageMap.get(first) + getDiagramSubwindow().getPosition().getY()) - MessageView.HEIGHT);
+                    end = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), (messageMap.get(last) + getDiagramSubwindow().getPosition().getY()) + MessageView.HEIGHT * 2);
                     lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 }
             }
         } else {
             for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {
-                Point2D point = getSubwindow().getAbsolutePosition(entry.getValue());
+                Point2D point = getDiagramSubwindow().getAbsolutePosition(entry.getValue());
                 if (entry.getKey() instanceof Actor) {
-                    start = new Point2D.Double(point.getX(), point.getY() + PartyRepo.OBJECTHEIGHT);
-                    end = new Point2D.Double(point.getX(), point.getY() + point.getY() + PartyRepo.OBJECTHEIGHT * 4);
+                    start = new Point2D.Double(point.getX(), point.getY() + PartyView.OBJECTHEIGHT);
+                    end = new Point2D.Double(point.getX(), point.getY() + point.getY() + PartyView.OBJECTHEIGHT * 4);
                     lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 } else {
-                    start = new Point2D.Double(point.getX() + (PartyRepo.OBJECTWIDTH / 2), point.getY() + PartyRepo.OBJECTHEIGHT);
-                    end = new Point2D.Double(point.getX() + (PartyRepo.OBJECTWIDTH / 2), point.getY() + PartyRepo.OBJECTHEIGHT * 4);
+                    start = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), point.getY() + PartyView.OBJECTHEIGHT);
+                    end = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), point.getY() + PartyView.OBJECTHEIGHT * 4);
                     lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 }
             }
@@ -345,12 +345,12 @@ public class SequenceFigureConverter extends Converter {
             private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
                 int partyObjectExtraOffset = 0;
                 if (getSent().getSender() instanceof Object) {
-                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH / 2;
+                    partyObjectExtraOffset = PartyView.OBJECTWIDTH / 2;
                 }
                 if (hasParent()) {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + partyObjectExtraOffset;
+                    return getDiagramSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + partyObjectExtraOffset;
                 } else {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2) + partyObjectExtraOffset;
+                    return getDiagramSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() - (barWidth / 2) + partyObjectExtraOffset;
                 }
             }
 
@@ -360,7 +360,7 @@ public class SequenceFigureConverter extends Converter {
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarStartY(Map<Message, Integer> messageMap) {
-                return messageMap.get(getSent()) + getSubwindow().getPosition().getY();
+                return messageMap.get(getSent()) + getDiagramSubwindow().getPosition().getY();
             }
 
             /**
@@ -369,7 +369,7 @@ public class SequenceFigureConverter extends Converter {
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarEndY(Map<Message, Integer> messageMap) {
-                return messageMap.get(getResponse()) + getSubwindow().getPosition().getY();
+                return messageMap.get(getResponse()) + getDiagramSubwindow().getPosition().getY();
             }
 
             /**
@@ -380,12 +380,12 @@ public class SequenceFigureConverter extends Converter {
             private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
                 int partyObjectExtraOffset = 0;
                 if (getSent().getSender() instanceof Object) {
-                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH / 2;
+                    partyObjectExtraOffset = PartyView.OBJECTWIDTH / 2;
                 }
                 if (hasParent()) {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getResponse().getReceiver())).getX() + barWidth + partyObjectExtraOffset;
+                    return getDiagramSubwindow().getAbsolutePosition(partyMap.get(getResponse().getReceiver())).getX() + barWidth + partyObjectExtraOffset;
                 } else {
-                    return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + (barWidth / 2) + partyObjectExtraOffset;
+                    return getDiagramSubwindow().getAbsolutePosition(partyMap.get(getSent().getSender())).getX() + (barWidth / 2) + partyObjectExtraOffset;
                 }
             }
 
@@ -397,9 +397,9 @@ public class SequenceFigureConverter extends Converter {
             private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
                 int partyObjectExtraOffset = 0;
                 if (getSent().getReceiver() instanceof Object) {
-                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH / 2;
+                    partyObjectExtraOffset = PartyView.OBJECTWIDTH / 2;
                 }
-                return getSubwindow().getAbsolutePosition(partyMap.get((getResponse().getSender()))).getX() + (barWidth / 2) + partyObjectExtraOffset;
+                return getDiagramSubwindow().getAbsolutePosition(partyMap.get((getResponse().getSender()))).getX() + (barWidth / 2) + partyObjectExtraOffset;
             }
 
             /**
@@ -410,9 +410,9 @@ public class SequenceFigureConverter extends Converter {
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
                 int partyObjectExtraOffset = 0;
                 if (getSent().getReceiver() instanceof Object) {
-                    partyObjectExtraOffset = PartyRepo.OBJECTWIDTH / 2;
+                    partyObjectExtraOffset = PartyView.OBJECTWIDTH / 2;
                 }
-                return getSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2) + partyObjectExtraOffset;
+                return getDiagramSubwindow().getAbsolutePosition(partyMap.get(getSent().getReceiver())).getX() - (barWidth / 2) + partyObjectExtraOffset;
             }
 
             /**

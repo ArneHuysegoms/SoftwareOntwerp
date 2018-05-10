@@ -1,13 +1,10 @@
 package subwindow;
 
 import command.CloseSubwindowCommand;
-import command.Command;
 import controller.CanvasController;
-import figures.basicShapes.Circle;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.geom.Point2D;
+import window.windowElements.Button;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
