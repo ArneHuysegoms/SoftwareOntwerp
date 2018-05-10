@@ -2,14 +2,14 @@ package windowElements;
 
 import org.junit.Before;
 import org.junit.Test;
-import subwindow.Button;
+import window.windowElements.Button;
 
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class SubwindowFrameTest {
+public class DiagramSubwindowFrameTest {
 
     private SubwindowFrame subwindowFrame;
 

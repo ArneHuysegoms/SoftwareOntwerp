@@ -1,4 +1,4 @@
-package subwindow;
+package window.diagram;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
@@ -11,13 +11,15 @@ import view.diagram.CommunicationView;
 import view.diagram.DiagramView;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.windowElements.Button;
+import window.windowElements.Clickable;
 import windowElements.*;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Set;
 
-public class Subwindow {
+public class DiagramSubwindow {
     private int width;
     private int height;
     private Point2D position;
@@ -41,7 +43,7 @@ public class Subwindow {
      * @param pos the position of the subwindow
      * @param mediator the mediator for thi subwindow
      */
-    public Subwindow(Point2D pos, InteractionMediator mediator) {
+    public DiagramSubwindow(Point2D pos, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
@@ -61,7 +63,7 @@ public class Subwindow {
      * @param facade the facade for this subwindow
      * @param mediator the mediator for thi subwindow
      */
-    public Subwindow(Point2D pos,DomainFacade facade, InteractionMediator mediator) {
+    public DiagramSubwindow(Point2D pos, DomainFacade facade, InteractionMediator mediator) {
         setWidth(600);
         setHeight(600);
         setPosition(pos);
@@ -78,7 +80,6 @@ public class Subwindow {
      * creates the frame with corners for resizing, titlebar and close button
      */
     private void createFrame() {
-
         if(frame == null) {
             frame = new SubwindowFrame(position, height, width);
         }

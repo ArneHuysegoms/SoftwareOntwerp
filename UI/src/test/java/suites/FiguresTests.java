@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
         BoxTest.class,
         DashedArrowTest.class,
         StickManTest.class,
-        SubwindowFigureTest.class,
+        DiagramSubwindowFigureTest.class,
 
         PairTest.class,
 })

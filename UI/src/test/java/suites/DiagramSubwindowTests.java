@@ -3,13 +3,13 @@ package suites;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import subwindow.ButtonTest;
-import subwindow.SubwindowTest;
+import subwindow.DiagramSubwindowTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         ButtonTest.class,
-        SubwindowTest.class
+        DiagramSubwindowTest.class
 })
 
-public class SubwindowTests {
+public class DiagramSubwindowTests {
 }
