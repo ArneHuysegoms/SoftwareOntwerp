@@ -19,14 +19,6 @@ public class ResultMessage extends Message implements Serializable {
      *        The party which sends this message
      * @throws DomainException
      *        The sender cannot be null
-     * @post  The new message of this message is equal to the given message
-     *        | new.getMessage == Message;
-     * @post  The new label of this message is equal to the given label
-     *        | new.getLabel == label
-     * @post  The new receiver of this message is equal to the given receiver
-     *        | new.getReceiver == receiver
-     * @post  The new sender of this message is equal to the given sender
-     *        | new.getsender == sender
      */
      public ResultMessage(Message message, Label label, Party receiver, Party sender) throws DomainException {
          super(message, label, receiver, sender);

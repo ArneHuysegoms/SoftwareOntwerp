@@ -11,7 +11,6 @@ import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
 
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,8 +36,8 @@ public class Diagram implements Serializable {
     /**
      * creates a new diagram with the given parties, the first message of the call stack
      *
-     * @param parties
-     * @param firstMessage
+     * @param parties the parties for this diagram
+     * @param firstMessage the firstmessage of the new diagram
      */
     public Diagram(List<Party> parties, Message firstMessage) {
         this.setParties(parties);
@@ -363,9 +362,6 @@ public class Diagram implements Serializable {
      * @return true if the party is on top of the call stack, false otherwise
      */
     private boolean checkCallStack(Message previous, Party sender) {
-        /*if(previous == null || (previous instanceof InvocationMessage && previous.getReceiver().equals(sender))){
-            return true;
-        }*/
         if (previous == null) {
             return true;
         }

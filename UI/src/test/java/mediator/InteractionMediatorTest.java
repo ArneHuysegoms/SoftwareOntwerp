@@ -12,9 +12,8 @@ import diagram.party.Object;
 import facade.DomainFacade;
 import org.junit.Before;
 import org.junit.Test;
-import repo.message.SequenceMessageRepo;
+import view.message.SequenceMessageView;
 import subwindow.Button;
-import subwindow.CloseButton;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
@@ -56,10 +55,10 @@ public class InteractionMediatorTest {
             partyLocation1 = new Point2D.Double(50,50);
             partyLocation2 = new Point2D.Double(50,50);
 
-            button1 = new CloseButton();
-            button2 = new CloseButton();
-            button3 = new CloseButton();
-            button4 = new CloseButton();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
 
             labelActor1 = new PartyLabel("a:A");
             actor1 = new Actor(labelActor1);
@@ -91,10 +90,10 @@ public class InteractionMediatorTest {
             interactionMediator = new InteractionMediator();
             interactionMediator2 = new InteractionMediator();
 
-            subwindow1 = new Subwindow(subWindowLocation1, button1, interactionMediator);
-            subwindow2 = new Subwindow(subWindowLocation2, button2, interactionMediator);
-            subwindow3 = new Subwindow(subWindowLocation3, button3, interactionMediator);
-            subwindow4 = new Subwindow(subWindowLocation4, button4, interactionMediator2);
+            subwindow1 = new Subwindow(subWindowLocation1, interactionMediator);
+            subwindow2 = new Subwindow(subWindowLocation2, interactionMediator);
+            subwindow3 = new Subwindow(subWindowLocation3, interactionMediator);
+            subwindow4 = new Subwindow(subWindowLocation4, interactionMediator2);
 
         } catch (Exception e) {
             fail();
@@ -111,10 +110,10 @@ public class InteractionMediatorTest {
         assertNotNull(subwindow3.getFacade().getDiagram().getParties());
 
         //check if the partyrepo of subwindows 2 and 3 contains the added element
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(actor1));
-        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(actor1));
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(object1));
-        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(object1));
+        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
+        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
+        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
+        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
     }
 
     @Test
@@ -128,10 +127,10 @@ public class InteractionMediatorTest {
         interactionMediator.removeInReposInOtherSubwindows(elementsToDelete, subwindow3);
 
         //check if the partyrepo of subwindows 2 and 3 do not contain the added element
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(actor2));
-        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(actor2));
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(object2));
-        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyRepo().getAllParties().contains(object2));
+        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
+        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
+        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
+        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
     }
 
     @Test
@@ -155,7 +154,7 @@ public class InteractionMediatorTest {
         for (Subwindow sb : subList){
             if (sb != subwindow1){
                 DomainFacade f = sb.getFacade();
-                SequenceMessageRepo sequenceMessageRepo = (SequenceMessageRepo) f.getActiveRepo().getMessageRepo();
+                SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveRepo().getMessageView();
                 for (Message m : messages){
                     assertTrue(sequenceMessageRepo.getAllMessages().contains(m));
                 }
@@ -170,6 +169,11 @@ public class InteractionMediatorTest {
 
     public InteractionMediatorTest() {
 
+
+    }
+
+    @Test
+    public void Test(){
 
     }
 }

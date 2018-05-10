@@ -4,7 +4,6 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
-import exceptions.DomainException;
 import subwindow.Subwindow;
 
 import java.awt.geom.Point2D;
@@ -26,9 +25,9 @@ public class InteractionMediator {
     /**
      * add a new party to all the subwindows repos except for the given subwindow
      *
-     * @param party
-     * @param location
-     * @param subwindow
+     * @param party  the party to add
+     * @param location the location of the new Party
+     * @param subwindow the original subwindow
      */
     public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
         for(Subwindow s : subwindows){
@@ -42,8 +41,8 @@ public class InteractionMediator {
     /**
      * remove a set of elements from the the subwindow repos except for the given subwindow
      *
-     * @param deletedElements
-     * @param subwindow
+     * @param deletedElements the elements to delete
+     * @param subwindow the original subwindow
      */
     public void removeInReposInOtherSubwindows(Set<DiagramElement> deletedElements, Subwindow subwindow){
         for(Subwindow s : subwindows){
@@ -59,7 +58,7 @@ public class InteractionMediator {
     /**
      * add a subwindow
      *
-     * @param subwindow
+     * @param subwindow the subwindow to add
      */
     public void addSubwindow(Subwindow subwindow){
         if(! subwindows.contains(subwindow)){
@@ -70,7 +69,7 @@ public class InteractionMediator {
     /**
      * remove a subwindow
      *
-     * @param subwindow
+     * @param subwindow the subwindow to remove
      */
 
     public void removeSubwindow(Subwindow subwindow){
@@ -80,8 +79,8 @@ public class InteractionMediator {
     /**
      * add a set of messages to all the subwindows repos except for the given subwindow
      *
-     * @param newMessages
-     * @param subwindow
+     * @param newMessages the newmesssages to add
+     * @param subwindow the original subwindow
      */
     public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, Subwindow subwindow) {
         for(Subwindow s : subwindows){
@@ -91,20 +90,34 @@ public class InteractionMediator {
         }
     }
 
+    /**
+     *
+     * @return all subwindows this mediator  mediates
+     */
     public List<Subwindow> getSubwindows() {
         return subwindows;
     }
 
+    /**
+     * updates the party type in all other subwindows
+     * @param oldParty the old type
+     * @param newParty the new type
+     * @param subwindow the original subwindow
+     */
     public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, Subwindow subwindow)  {
         for(Subwindow s : subwindows){
             if (! s.equals(subwindow)){
                 s.getFacade().changePartyTypeInRepo(oldParty, newParty);
                 s.setSelected(newParty);
-                //s.getFacade().changePartyPosition(s.getFacade().getActiveRepo().getPartyRepo().getLocationOfParty(newParty), newParty );
             }
         }
     }
 
+    /**
+     * updates the labelcontainers of the other subwindows and sets the correct flags for label editing
+     * @param selectedLabel the label that has been edited
+     * @param subwindow the original subwindow
+     */
     public void updateLabelContainers(Label selectedLabel, Subwindow subwindow) {
         for(Subwindow s : subwindows){
             if (! s.equals(subwindow)){

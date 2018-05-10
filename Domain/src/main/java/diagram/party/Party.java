@@ -36,26 +36,8 @@ public abstract class Party extends DiagramElement implements Serializable {
 
     /**
      * @param label the label to edit to
-     * @post  The new label of this party is equal to the given label
-     *        | new.getLabel == label
      */
     public void setLabel(Label label) {
         this.label = label;
     }
-
-/*    *//*
-     * method to find the correct location for the label of a Party
-     *
-     * @return a Point2D indicating the location
-     *//*
-    public abstract Point2D getCorrectLabelPosition();
-
-    *//*
-     * method to get the x location of the lifeline belonging to the party
-     *
-     * @return returns a double which denotes the x location of the lifeline belonging to the party
-     *//*
-    public abstract double getXLocationOfLifeline();*/
-
-
 }

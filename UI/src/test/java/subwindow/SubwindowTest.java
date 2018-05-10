@@ -1,7 +1,5 @@
 package subwindow;
 
-import controller.CanvasController;
-import diagram.label.Label;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import exceptions.DomainException;
@@ -27,11 +25,11 @@ public class SubwindowTest {
     @Before
     public void setUp(){
         point = new Point2D.Double(200,200);
-        button = new CloseButton();
+        button = new Button();
         interactionMediator = new InteractionMediator();
-        subwindow = new Subwindow(point, button, interactionMediator);
+        subwindow = new Subwindow(point, interactionMediator);
         facade = new DomainFacade();
-        subwindow2 = new Subwindow(point, button, facade, interactionMediator);
+        subwindow2 = new Subwindow(point, facade, interactionMediator);
 
     }
 
@@ -48,10 +46,6 @@ public class SubwindowTest {
         assertTrue(subwindow.getPosition().equals(point));
     }
     @Test
-    public void test_subwindow_button(){
-        assertTrue(subwindow.getButton().equals(button));
-    }
-    @Test
     public void test_subwindow_mediator(){
         assertTrue(subwindow.getMediator().equals(interactionMediator));
     }
@@ -65,8 +59,8 @@ public class SubwindowTest {
     }
     @Test
     public void test_subwindow_facade_repos_are_empty(){
-        assertTrue(subwindow.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
-        assertTrue(subwindow.getFacade().getActiveRepo().getLabelRepo().getMap().isEmpty());
+        assertTrue(subwindow.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
+        assertTrue(subwindow.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
     }
 
     @Test
@@ -133,12 +127,7 @@ public class SubwindowTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void test_setMediator_null(){
-        Subwindow s = new Subwindow(point, button, null);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void test_setButton_null(){
-        Subwindow s = new Subwindow(point, null, interactionMediator);
+        Subwindow s = new Subwindow(point, null);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -165,16 +154,8 @@ public class SubwindowTest {
         assertTrue(subwindow2.getPosition().equals(point));
     }
     @Test
-    public void test_subwindow2_button(){
-        assertTrue(subwindow2.getButton().equals(button));
-    }
-    @Test
     public void test_subwindow2_mediator(){
         assertTrue(subwindow2.getMediator().equals(interactionMediator));
-    }
-    @Test
-    public void test_button2_subwindow2(){
-        assertTrue(subwindow2.getButton().getSubwindow().equals(subwindow2));
     }
     @Test
     public void test_mediator_subwindow2(){
@@ -186,17 +167,17 @@ public class SubwindowTest {
     }
     @Test
     public void test_subwindow2_facade_repos_are_empty(){
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
-        assertTrue(subwindow2.getFacade().getActiveRepo().getLabelRepo().getMap().isEmpty());
+        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
+        assertTrue(subwindow2.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
     }
     @Test
     public void test_subwindow2_facade_repos_are_not_empty_after_fill() {
         try {
-            subwindow2.getFacade().getActiveRepo().getPartyRepo().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
+            subwindow2.getFacade().getActiveRepo().getPartyView().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
         } catch (DomainException d) {
             System.out.println(d.getMessage());
         }
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyRepo().getAllParties().isEmpty());
+        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
     }
 
     @Test
@@ -268,6 +249,11 @@ public class SubwindowTest {
     @Test
     public void test_subwindow_isClicked(){
         assertTrue(subwindow.isClicked(new Point2D.Double(200,200)));
+    }
+
+    @Test
+    public void Test(){
+
     }
 
 }

@@ -23,15 +23,7 @@ public class InvocationMessage extends Message implements Serializable {
      * @param sender
      *        The party which sends this message
      * @throws DomainException
-     *        The sender or receiver cannot be null
-     * @post  The new message of this message is equal to the given message
-     *        | new.getMessage == Message;
-     * @post  The new label of this message is equal to the given label
-     *        | new.getLabel == label
-     * @post  The new receiver of this message is equal to the given receiver
-     *        | new.getReceiver == receiver
-     * @post  The new sender of this message is equal to the given sender
-     *        | new.getsender == sender
+     *          the sender or receiver can't be null
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender) throws DomainException{
         this(message, label, receiver, sender, "");
@@ -50,14 +42,6 @@ public class InvocationMessage extends Message implements Serializable {
      *        The messageNumber used in the communication Diagram
      * @throws DomainException
      *        The sender or receiver cannot be null
-     * @post  The new message of this message is equal to the given message
-     *        | new.getMessage == Message;
-     * @post  The new label of this message is equal to the given label
-     *        | new.getLabel == label
-     * @post  The new receiver of this message is equal to the given receiver
-     *        | new.getReceiver == receiver
-     * @post  The new sender of this message is equal to the given sender
-     *        | new.getsender == sender
      */
     public InvocationMessage(Message message, Label label, Party receiver, Party sender, String messageNumber) throws DomainException{
         super(message, label, receiver, sender);
@@ -75,7 +59,7 @@ public class InvocationMessage extends Message implements Serializable {
     /**
      * sets the messageNumber to the provided messageNumber
      *
-     * @param messageNumber
+     * @param messageNumber the new messagenumbe for this invocationMessage
      */
     public void setMessageNumber(String messageNumber) {
         this.messageNumber = messageNumber;

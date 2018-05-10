@@ -2,8 +2,8 @@ package util;
 
 import diagram.message.Message;
 import diagram.party.Party;
-import repo.label.LabelRepo;
-import repo.party.PartyRepo;
+import view.label.LabelView;
+import view.party.PartyView;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
@@ -76,42 +76,42 @@ public class PartyPair extends Pair implements Serializable {
 
     /**
      * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
-     * @param spaceBetweenArrows
-     * @param partyRepo PartyRepo of the diagram
+     * @param spaceBetweenArrows the space between arrows
+     * @param partyView PartyView of the diagram
      * @return
      *      start point of the arrow
      */
-    public Point2D calculateStart(int spaceBetweenArrows, PartyRepo partyRepo) {
-        return new Point2D.Double(partyRepo.getLocationOfParty(getSender()).getX() + PartyRepo.OBJECTWIDTH, partyRepo.getLocationOfParty(getSender()).getY() + spaceBetweenArrows);
+    public Point2D calculateStart(int spaceBetweenArrows, PartyView partyView) {
+        return new Point2D.Double(partyView.getLocationOfParty(getSender()).getX() + PartyView.OBJECTWIDTH, partyView.getLocationOfParty(getSender()).getY() + spaceBetweenArrows);
     }
 
     /**
      * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
-     * @param spaceBetweenArrows
-     * @param partyRepo PartyRepo of the diagram
+     * @param spaceBetweenArrows the space between arrows
+     * @param partyView PartyView of the diagram
      * @return
      *      end point of the arrow
      */
-    public Point2D calculateEnd(int spaceBetweenArrows, PartyRepo partyRepo) {
-        return new Point2D.Double(partyRepo.getLocationOfParty(getReceiver()).getX(), partyRepo.getLocationOfParty(getReceiver()).getY() + spaceBetweenArrows);
+    public Point2D calculateEnd(int spaceBetweenArrows, PartyView partyView) {
+        return new Point2D.Double(partyView.getLocationOfParty(getReceiver()).getX(), partyView.getLocationOfParty(getReceiver()).getY() + spaceBetweenArrows);
     }
 
     /**
      * update the position of the labels for the messages of this partypair
      *
-     * @param partyRepo partyRepo of the diagram
-     * @param labelRepo labelRepo of the diagram
+     * @param partyView partyView of the diagram
+     * @param labelView labelView of the diagram
      */
-    public void updateLabelPosition(PartyRepo partyRepo, LabelRepo labelRepo) {
-        int spread = PartyRepo.OBJECTHEIGHT / messages.size();
+    public void updateLabelPosition(PartyView partyView, LabelView labelView) {
+        int spread = PartyView.OBJECTHEIGHT / messages.size();
         Message message;
         Point2D start, end;
 
         for (int i = 0; i < messages.size(); i++) {
             message = messages.get(i);
-            start = calculateStart(i * spread, partyRepo);
-            end = calculateEnd(i * spread,partyRepo);
-            labelRepo.updateLabelPosition(calculateLabelStartPosition(start, end),message.getLabel());
+            start = calculateStart(i * spread, partyView);
+            end = calculateEnd(i * spread, partyView);
+            labelView.updateLabelPosition(calculateLabelStartPosition(start, end),message.getLabel());
         }
     }
 
