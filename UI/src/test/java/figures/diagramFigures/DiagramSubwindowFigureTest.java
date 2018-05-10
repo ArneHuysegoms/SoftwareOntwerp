@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.awt.geom.Point2D;
 import static org.junit.Assert.assertTrue;
 
-public class SubwindowFigureTest {
+public class DiagramSubwindowFigureTest {
     private SubwindowFigure subwindowFigure;
     private int x1, x2, y1, y2, width, height;
 

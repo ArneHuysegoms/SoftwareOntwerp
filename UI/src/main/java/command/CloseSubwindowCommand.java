@@ -1,15 +1,15 @@
 package command;
 
 import controller.CanvasController;
-import subwindow.Subwindow;
+import window.diagram.DiagramSubwindow;
 
 public class CloseSubwindowCommand extends Command {
 
     private CanvasController canvasController;
-    private Subwindow subwindow;
+    private DiagramSubwindow diagramSubwindow;
 
-    public CloseSubwindowCommand(CanvasController canvasController, Subwindow subwindow){
-        this.setSubwindow(subwindow);
+    public CloseSubwindowCommand(CanvasController canvasController, DiagramSubwindow diagramSubwindow){
+        this.setDiagramSubwindow(diagramSubwindow);
         this.setCanvasController(canvasController);
     }
 
@@ -21,16 +21,16 @@ public class CloseSubwindowCommand extends Command {
         this.canvasController = canvasController;
     }
 
-    public Subwindow getSubwindow() {
-        return subwindow;
+    public DiagramSubwindow getDiagramSubwindow() {
+        return diagramSubwindow;
     }
 
-    private void setSubwindow(Subwindow subwindow) {
-        this.subwindow = subwindow;
+    private void setDiagramSubwindow(DiagramSubwindow diagramSubwindow) {
+        this.diagramSubwindow = diagramSubwindow;
     }
 
     @Override
     public void performAction() {
-        canvasController.removeSubwindow(subwindow);
+        canvasController.removeSubwindow(diagramSubwindow);
     }
 }

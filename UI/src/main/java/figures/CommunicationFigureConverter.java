@@ -9,7 +9,7 @@ import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
 import view.message.CommunicationMessageView;
 import view.message.MessageView;
 import view.party.PartyView;
-import subwindow.Subwindow;
+import window.diagram.DiagramSubwindow;
 import util.PartyPair;
 
 import java.awt.*;
@@ -19,8 +19,8 @@ import java.util.Map;
 
 public class CommunicationFigureConverter extends Converter {
 
-    public CommunicationFigureConverter(Subwindow subwindow) {
-        super(subwindow);
+    public CommunicationFigureConverter(DiagramSubwindow diagramSubwindow) {
+        super(diagramSubwindow);
         actorDrawingStrategy = new CommunicationActorDrawer();
         objectDrawingStrategy = new CommunicationObjectDrawer();
         invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
@@ -67,8 +67,8 @@ public class CommunicationFigureConverter extends Converter {
         } else {
             offset = PartyView.OBJECTWIDTH;
         }
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
-        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
+        x = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getX() + offset;
+        y = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getSender())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 
@@ -87,8 +87,8 @@ public class CommunicationFigureConverter extends Converter {
         } else {
             offset = 0;
         }
-        x = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX() - offset;
-        y = getSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
+        x = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getX() - offset;
+        y = getDiagramSubwindow().getAbsolutePosition(partyMap.get(pair.getReceiver())).getY();
         return new Point2D.Double(x, y + spaceing);
     }
 }

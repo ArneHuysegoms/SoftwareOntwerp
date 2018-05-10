@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertTrue;
 
-public class SubwindowFrameRectangleTest {
+public class DiagramSubwindowFrameRectangleTest {
 
     private SubwindowFrameRectangle subwindowFrameRectangle1;
     private SubwindowFrameRectangle subwindowFrameRectangle2;

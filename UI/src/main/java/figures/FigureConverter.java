@@ -3,9 +3,9 @@ package figures;
 import controller.CanvasController;
 
 import figures.Drawer.*;
+import window.diagram.DiagramSubwindow;
 import view.diagram.CommunicationView;
 import view.diagram.SequenceView;
-import subwindow.Subwindow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -34,9 +34,9 @@ public class FigureConverter {
      */
     public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindowLevels) {
         drawBackGroundColor(graphics);
-        Subwindow sub;
+        DiagramSubwindow sub;
         for (CanvasController.SubWindowLevel subLvl : subwindowLevels) {
-            sub = subLvl.getSubwindow();
+            sub = subLvl.getDiagramSubwindow();
             setConverter(sub);
             drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
             converter.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
@@ -71,7 +71,7 @@ public class FigureConverter {
      *
      * @param sub
      */
-    public void setConverter(Subwindow sub) {
+    public void setConverter(DiagramSubwindow sub) {
         if (sub.getFacade().getActiveRepo() instanceof SequenceView) {
             converter = new SequenceFigureConverter(sub);
         } else if (sub.getFacade().getActiveRepo() instanceof CommunicationView) {

@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertTrue;
 
-public class SubwindowFrameCornerTest {
+public class DiagramSubwindowFrameCornerTest {
 
     private SubwindowFrameCorner subwindowFrameCorner1;
     private SubwindowFrameCorner subwindowFrameCorner2;

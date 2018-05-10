@@ -12,9 +12,9 @@ import diagram.party.Object;
 import facade.DomainFacade;
 import org.junit.Before;
 import org.junit.Test;
+import window.diagram.DiagramSubwindow;
 import view.message.SequenceMessageView;
-import subwindow.Button;
-import subwindow.Subwindow;
+import window.windowElements.Button;
 
 import java.awt.geom.Point2D;
 import java.util.*;
@@ -26,7 +26,7 @@ public class InteractionMediatorTest {
     private Object object1, object2;
     private Label labelActor1, labelActor2, labelObject1, labelObject2;
 
-    private Subwindow subwindow1, subwindow2, subwindow3, subwindow4;
+    private DiagramSubwindow diagramSubwindow1, diagramSubwindow2, diagramSubwindow3, diagramSubwindow4;
 
     private Point2D subWindowLocation1, subWindowLocation2, subWindowLocation3, subWindowLocation4;
 
@@ -90,10 +90,10 @@ public class InteractionMediatorTest {
             interactionMediator = new InteractionMediator();
             interactionMediator2 = new InteractionMediator();
 
-            subwindow1 = new Subwindow(subWindowLocation1, interactionMediator);
-            subwindow2 = new Subwindow(subWindowLocation2, interactionMediator);
-            subwindow3 = new Subwindow(subWindowLocation3, interactionMediator);
-            subwindow4 = new Subwindow(subWindowLocation4, interactionMediator2);
+            diagramSubwindow1 = new DiagramSubwindow(subWindowLocation1, interactionMediator);
+            diagramSubwindow2 = new DiagramSubwindow(subWindowLocation2, interactionMediator);
+            diagramSubwindow3 = new DiagramSubwindow(subWindowLocation3, interactionMediator);
+            diagramSubwindow4 = new DiagramSubwindow(subWindowLocation4, interactionMediator2);
 
         } catch (Exception e) {
             fail();
@@ -102,57 +102,57 @@ public class InteractionMediatorTest {
 
     @Test
     public void Test_mediator_addNewPartyToOtherSubwindowRepos(){
-        interactionMediator.addNewPartyToOtherSubwindowRepos(actor1, partyLocation1, subwindow1);
-        interactionMediator.addNewPartyToOtherSubwindowRepos(object1, partyLocation2, subwindow1);
+        interactionMediator.addNewPartyToOtherSubwindowRepos(actor1, partyLocation1, diagramSubwindow1);
+        interactionMediator.addNewPartyToOtherSubwindowRepos(object1, partyLocation2, diagramSubwindow1);
 
         //check if list of parties is not empty
-        assertNotNull(subwindow2.getFacade().getDiagram().getParties());
-        assertNotNull(subwindow3.getFacade().getDiagram().getParties());
+        assertNotNull(diagramSubwindow2.getFacade().getDiagram().getParties());
+        assertNotNull(diagramSubwindow3.getFacade().getDiagram().getParties());
 
         //check if the partyrepo of subwindows 2 and 3 contains the added element
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
-        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
-        assertTrue(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
-        assertTrue(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
+        assertTrue(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
+        assertTrue(diagramSubwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor1));
+        assertTrue(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
+        assertTrue(diagramSubwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object1));
     }
 
     @Test
     public void Test_mediator_removeInReposInOtherSubwindows(){
-        interactionMediator.addNewPartyToOtherSubwindowRepos(actor2, partyLocation1, subwindow1);
-        interactionMediator.addNewPartyToOtherSubwindowRepos(object2, partyLocation2, subwindow1);
+        interactionMediator.addNewPartyToOtherSubwindowRepos(actor2, partyLocation1, diagramSubwindow1);
+        interactionMediator.addNewPartyToOtherSubwindowRepos(object2, partyLocation2, diagramSubwindow1);
 
         Set<DiagramElement> elementsToDelete = new HashSet<DiagramElement>(Arrays.asList(actor2,object2));
 
-        interactionMediator.removeInReposInOtherSubwindows(elementsToDelete, subwindow2);
-        interactionMediator.removeInReposInOtherSubwindows(elementsToDelete, subwindow3);
+        interactionMediator.removeInReposInOtherSubwindows(elementsToDelete, diagramSubwindow2);
+        interactionMediator.removeInReposInOtherSubwindows(elementsToDelete, diagramSubwindow3);
 
         //check if the partyrepo of subwindows 2 and 3 do not contain the added element
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
-        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
-        assertFalse(subwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
-        assertFalse(subwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
+        assertFalse(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
+        assertFalse(diagramSubwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(actor2));
+        assertFalse(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
+        assertFalse(diagramSubwindow3.getFacade().getActiveRepo().getPartyView().getAllParties().contains(object2));
     }
 
     @Test
     public void Test_mediator_addSubwindow(){
-        interactionMediator.addSubwindow(subwindow4);
+        interactionMediator.addSubwindow(diagramSubwindow4);
 
-        assertTrue(interactionMediator.getSubwindows().contains(subwindow4));
+        assertTrue(interactionMediator.getDiagramSubwindows().contains(diagramSubwindow4));
     }
 
     @Test
     public void Test_mediator_removeSubwindow(){
-        interactionMediator.removeSubwindow(subwindow1);
+        interactionMediator.removeSubwindow(diagramSubwindow1);
 
-        assertFalse(interactionMediator.getSubwindows().contains(subwindow4));
+        assertFalse(interactionMediator.getDiagramSubwindows().contains(diagramSubwindow4));
     }
 
     @Test
     public void Test_mediator_addNewMessageToOtherSubwindowRepos(){
-        interactionMediator.addNewMessagesToOtherSubwindowRepos(messages, subwindow1);
-        List<Subwindow> subList = interactionMediator.getSubwindows();
-        for (Subwindow sb : subList){
-            if (sb != subwindow1){
+        interactionMediator.addNewMessagesToOtherSubwindowRepos(messages, diagramSubwindow1);
+        List<DiagramSubwindow> subList = interactionMediator.getDiagramSubwindows();
+        for (DiagramSubwindow sb : subList){
+            if (sb != diagramSubwindow1){
                 DomainFacade f = sb.getFacade();
                 SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveRepo().getMessageView();
                 for (Message m : messages){

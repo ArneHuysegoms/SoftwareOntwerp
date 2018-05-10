@@ -1,4 +1,4 @@
-package subwindow;
+package window.windowElements;
 
 import java.awt.geom.Point2D;
 

@@ -3,8 +3,8 @@ package controller;
 import command.CloseSubwindowCommand;
 import exceptions.DomainException;
 import mediator.InteractionMediator;
-import subwindow.Button;
-import subwindow.Subwindow;
+import window.diagram.DiagramSubwindow;
+import window.windowElements.Button;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class CanvasController {
 
     private List<SubWindowLevel> subwindows;
-    private Subwindow activeSubwindow;
+    private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
 
     /**
@@ -29,7 +29,7 @@ public class CanvasController {
      */
     public CanvasController() {
         this.setSubwindows(new ArrayList<>());
-        this.activeSubwindow = null;
+        this.activeDiagramSubwindow = null;
     }
 
     /**
@@ -53,28 +53,28 @@ public class CanvasController {
 
     /**
      *
-     * @return active subwindow
+     * @return active diagramSubwindow
      */
-    public Subwindow getActiveSubwindow() {
-        return activeSubwindow;
+    public DiagramSubwindow getActiveDiagramSubwindow() {
+        return activeDiagramSubwindow;
     }
 
     /**
      *
-     * @param activeSubwindow the new active subwindow
+     * @param activeDiagramSubwindow the new active diagramSubwindow
      */
-    private void setActiveSubwindow(Subwindow activeSubwindow){
-        this.activeSubwindow = activeSubwindow;
+    private void setActiveDiagramSubwindow(DiagramSubwindow activeDiagramSubwindow){
+        this.activeDiagramSubwindow = activeDiagramSubwindow;
     }
 
     /**
-     * removes the subwindow from the list and sets the subwindow with the highest level as active subwindow
-     * @param subwindow the subwindow to remove
+     * removes the diagramSubwindow from the list and sets the diagramSubwindow with the highest level as active diagramSubwindow
+     * @param diagramSubwindow the diagramSubwindow to remove
      */
-    public void removeSubwindow(Subwindow subwindow) {
+    public void removeSubwindow(DiagramSubwindow diagramSubwindow) {
         SubWindowLevel toRemove = null;
         for (SubWindowLevel s : subwindows) {
-            if (s.getSubwindow().equals(subwindow)) {
+            if (s.getDiagramSubwindow().equals(diagramSubwindow)) {
                 toRemove = s;
             }
         }
@@ -83,19 +83,19 @@ public class CanvasController {
     }
 
     /**
-     * sets the subwindow with the highest level as active subwindow
+     * sets the diagramSubwindow with the highest level as active diagramSubwindow
      */
     public void setNewActiveSubWindow() {
         SubWindowLevel s = findHighestSubwindowLevel();
         if (s != null) {
-            changeActiveSubwindow(s.getSubwindow());
+            changeActiveSubwindow(s.getDiagramSubwindow());
         } else {
             changeActiveSubwindow(null);
         }
     }
 
     /**
-     * returns the subwindow with the highest level
+     * returns the diagramSubwindow with the highest level
      * @return subwindowlevel
      */
     public SubWindowLevel findHighestSubwindowLevel() {
@@ -111,15 +111,15 @@ public class CanvasController {
     }
 
     /**
-     * adds a subwindow with a given level to the list of subwindows
-     * @param subwindow the subindow to add
-     * @param level, level of the subwindow
+     * adds a diagramSubwindow with a given level to the list of subwindows
+     * @param diagramSubwindow the subindow to add
+     * @param level, level of the diagramSubwindow
      */
-    public void addSubwindow(Subwindow subwindow, int level) {
-        if (subwindow == null) {
-            throw new IllegalArgumentException("can't add null subwindow");
+    public void addSubwindow(DiagramSubwindow diagramSubwindow, int level) {
+        if (diagramSubwindow == null) {
+            throw new IllegalArgumentException("can't add null diagramSubwindow");
         }
-        SubWindowLevel subWindowLevel = new SubWindowLevel(subwindow, level);
+        SubWindowLevel subWindowLevel = new SubWindowLevel(diagramSubwindow, level);
         this.getSubwindows().add(subWindowLevel);
     }
 
@@ -130,7 +130,7 @@ public class CanvasController {
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                if (getActiveSubwindow() != null) {
+                if (getActiveDiagramSubwindow() != null) {
                     copyActiveSubWindow();
                 }
                 break;
@@ -138,24 +138,24 @@ public class CanvasController {
                 createNewSubwindow();
                 break;
             default:
-                if (this.getActiveSubwindow() != null) {
-                    activeSubwindow.handleKeyEvent(keyEvent);
+                if (this.getActiveDiagramSubwindow() != null) {
+                    activeDiagramSubwindow.handleKeyEvent(keyEvent);
                 }
                 break;
         }
     }
 
     /**
-     * handles MouseEvent that affects the subwindow
-     *          | if dragged == false, check if subwindow currently is being dragged (update the dragging boolean)
+     * handles MouseEvent that affects the diagramSubwindow
+     *          | if dragged == false, check if diagramSubwindow currently is being dragged (update the dragging boolean)
      *          | if dragged == true, check the mouseEventType
-     *                          | if RELEASE, pass the mouseEvent to activeSubwindow and set dragging == false
+     *                          | if RELEASE, pass the mouseEvent to activeDiagramSubwindow and set dragging == false
      *                          | if LEFTCLICK, set dragging == false
-     *          | otherwise the appropriate subwindow that was clicked
-     *                          | if the subwindow exists
-     *                              | if the subwindow is not the active one, set it as the active one
-     *                              get the coordinates of the click on the subwindow, relative to the subwindow
-     *                              pass the mouseEvent to the appropriate subwindow
+     *          | otherwise the appropriate diagramSubwindow that was clicked
+     *                          | if the diagramSubwindow exists
+     *                              | if the diagramSubwindow is not the active one, set it as the active one
+     *                              get the coordinates of the click on the diagramSubwindow, relative to the diagramSubwindow
+     *                              pass the mouseEvent to the appropriate diagramSubwindow
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
@@ -165,7 +165,7 @@ public class CanvasController {
         if (dragging) {
             switch (mouseEvent.getMouseEventType()) {
                 case RELEASE:
-                    activeSubwindow.handleMovement(mouseEvent.getPoint());
+                    activeDiagramSubwindow.handleMovement(mouseEvent.getPoint());
                     dragging = false;
                     break;
                 case LEFTCLICK:
@@ -175,14 +175,14 @@ public class CanvasController {
                     break;
             }
         } else {
-            Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-            if (subwindow != null) {
-                if (!subwindow.equals(getActiveSubwindow())) {
-                    changeActiveSubwindow(subwindow);
+            DiagramSubwindow diagramSubwindow = getAppropriateSubwindow(mouseEvent.getPoint());
+            if (diagramSubwindow != null) {
+                if (!diagramSubwindow.equals(getActiveDiagramSubwindow())) {
+                    changeActiveSubwindow(diagramSubwindow);
                 }
-                Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
+                Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
-                subwindow.handleMouseEvent(mouseEvent);
+                diagramSubwindow.handleMouseEvent(mouseEvent);
             }
         }
     }
@@ -191,28 +191,28 @@ public class CanvasController {
      * checks if  the mouseEvent results in a drag
      *
      * @param mouseEvent the mouseEvent to check for
-     * @return if the active subwindow exists
-     *              | if the active subwindow is being dragged
+     * @return if the active diagramSubwindow exists
+     *              | if the active diagramSubwindow is being dragged
      *                  return false
-     *              | if the active subwindow's frame has been clicked
+     *              | if the active diagramSubwindow's frame has been clicked
      *                  return true
-     *              | if the active subwindow is not in label mode
-     *                  if a subwindow has been clicked
+     *              | if the active diagramSubwindow is not in label mode
+     *                  if a diagramSubwindow has been clicked
      *                  return true
      *         else return false
      */
     private boolean checkFordragging(MouseEvent mouseEvent) {
-        if (activeSubwindow != null) {
-            if (getActiveSubwindow().isDragging()) {
+        if (activeDiagramSubwindow != null) {
+            if (getActiveDiagramSubwindow().isDragging()) {
                 return false;
             }
-            if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
+            if (activeDiagramSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
             }
-            if (!getActiveSubwindow().isInLabelMode()) {
+            if (!getActiveDiagramSubwindow().isInLabelMode()) {
                 for (SubWindowLevel subwindow : subwindows) {
-                    if (subwindow.getSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                        changeActiveSubwindow(subwindow.getSubwindow());
+                    if (subwindow.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
+                        changeActiveSubwindow(subwindow.getDiagramSubwindow());
                         return true;
                     }
                 }
@@ -222,23 +222,23 @@ public class CanvasController {
     }
 
     /**
-     * sets the active subwindow to newActiveSubWindow and changes the level to the highest
+     * sets the active diagramSubwindow to newActiveSubWindow and changes the level to the highest
      *
-     * @param newActiveSubWindow the new actie subwindow
+     * @param newActiveSubWindow the new actie diagramSubwindow
      *
      */
-    private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
-        this.setActiveSubwindow(newActiveSubWindow);
+    private void changeActiveSubwindow(DiagramSubwindow newActiveSubWindow) {
+        this.setActiveDiagramSubwindow(newActiveSubWindow);
         this.changeLevelForActiveSubWindow();
     }
 
     /**
-     * changes the level for the active subwindow
+     * changes the level for the active diagramSubwindow
      */
     private void changeLevelForActiveSubWindow() {
-        if (activeSubwindow != null) {
+        if (activeDiagramSubwindow != null) {
             for (SubWindowLevel s : subwindows) {
-                if (s.getSubwindow().equals(getActiveSubwindow())) {
+                if (s.getDiagramSubwindow().equals(getActiveDiagramSubwindow())) {
                     s.setLevel(getCorrectLevel());
                 }
             }
@@ -246,28 +246,28 @@ public class CanvasController {
     }
 
     /**
-     * creates a new subwindow with the correct level, adds it to the list of subwindows and sets it as active
+     * creates a new diagramSubwindow with the correct level, adds it to the list of subwindows and sets it as active
      */
     private void createNewSubwindow() {
-        Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), new InteractionMediator());
-        Button button = new Button(new CloseSubwindowCommand(this, subwindow));
-        subwindow.getFrame().setButton(button);
+        DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), new InteractionMediator());
+        Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
+        diagramSubwindow.getFrame().setButton(button);
         int level = getCorrectLevel();
-        addSubwindow(subwindow, level);
-        this.changeActiveSubwindow(subwindow);
+        addSubwindow(diagramSubwindow, level);
+        this.changeActiveSubwindow(diagramSubwindow);
     }
 
     /**
-     * copies the active subwindow, sets the correct level, adds it to the list of subwindows and sets it active
+     * copies the active diagramSubwindow, sets the correct level, adds it to the list of subwindows and sets it active
      */
     private void copyActiveSubWindow() {
-        if (this.getActiveSubwindow() != null) {
-            Subwindow subwindow = new Subwindow(new Point2D.Double(100, 100), activeSubwindow.getCopyOfFacade(), activeSubwindow.getMediator());
-            Button button = new Button(new CloseSubwindowCommand(this, subwindow));
-            subwindow.getFrame().setButton(button);
+        if (this.getActiveDiagramSubwindow() != null) {
+            DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade(), activeDiagramSubwindow.getMediator());
+            Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
+            diagramSubwindow.getFrame().setButton(button);
             int level = getCorrectLevel();
-            addSubwindow(subwindow, level);
-            this.changeActiveSubwindow(subwindow);
+            addSubwindow(diagramSubwindow, level);
+            this.changeActiveSubwindow(diagramSubwindow);
         }
     }
 
@@ -287,20 +287,20 @@ public class CanvasController {
     }
 
     /**
-     * returns the subwindow with the highest level
+     * returns the diagramSubwindow with the highest level
      * @param clickedLocation the location of the click
-     * @return subwindow if a subwindow is clicked, null otherwise
+     * @return diagramSubwindow if a diagramSubwindow is clicked, null otherwise
      */
-    private Subwindow getAppropriateSubwindow(Point2D clickedLocation) {
+    private DiagramSubwindow getAppropriateSubwindow(Point2D clickedLocation) {
         List<SubWindowLevel> clickedSubwindows = this.getSubwindows()
                 .stream()
-                .filter(s -> s.getSubwindow().isClicked(clickedLocation))
+                .filter(s -> s.getDiagramSubwindow().isClicked(clickedLocation))
                 .collect(Collectors.toList());
         int level = -1;
-        Subwindow highest = null;
+        DiagramSubwindow highest = null;
         for (SubWindowLevel s : clickedSubwindows) {
             if (s.getLevel() > level) {
-                highest = s.getSubwindow();
+                highest = s.getDiagramSubwindow();
                 level = s.getLevel();
             }
         }
@@ -310,40 +310,40 @@ public class CanvasController {
     /**
      * class SubWindowLevel
      *
-     * Contains a subwindow and its level in the canvas
+     * Contains a diagramSubwindow and its level in the canvas
      */
     public class SubWindowLevel implements Comparable<SubWindowLevel> {
 
-        private Subwindow subwindow;
+        private DiagramSubwindow diagramSubwindow;
         private int level;
 
         /**
          * constructor for SubWindowLevel
-         * @param subwindow the subwindow
-         * @param level the level of this subwindow in the canvas
+         * @param diagramSubwindow the diagramSubwindow
+         * @param level the level of this diagramSubwindow in the canvas
          */
-        public SubWindowLevel(Subwindow subwindow, int level) {
-            this.setSubwindow(subwindow);
+        public SubWindowLevel(DiagramSubwindow diagramSubwindow, int level) {
+            this.setDiagramSubwindow(diagramSubwindow);
             this.setLevel(level);
         }
 
         /**
          *
-         * @return subwindow
+         * @return diagramSubwindow
          */
-        public Subwindow getSubwindow() {
-            return subwindow;
+        public DiagramSubwindow getDiagramSubwindow() {
+            return diagramSubwindow;
         }
 
         /**
-         * sets the subwindow to param subwindow
-         * @param subwindow the new  subwindow
+         * sets the diagramSubwindow to param diagramSubwindow
+         * @param diagramSubwindow the new  diagramSubwindow
          */
-        private void setSubwindow(Subwindow subwindow) {
-            if (subwindow == null) {
-                throw new IllegalArgumentException("Subwindow may not be null");
+        private void setDiagramSubwindow(DiagramSubwindow diagramSubwindow) {
+            if (diagramSubwindow == null) {
+                throw new IllegalArgumentException("DiagramSubwindow may not be null");
             }
-            this.subwindow = subwindow;
+            this.diagramSubwindow = diagramSubwindow;
         }
 
         /**
@@ -367,7 +367,7 @@ public class CanvasController {
 
         /**
          * compares SubWindowLevel by level
-         * @param o other subwindow to compare to
+         * @param o other diagramSubwindow to compare to
          * @return positive if higher, 0 if equal, negative if smaller
          */
         @Override

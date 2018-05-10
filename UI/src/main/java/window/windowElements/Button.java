@@ -1,11 +1,10 @@
-package subwindow;
+package window.windowElements;
 
 import command.Command;
-import controller.CanvasController;
 
 import java.awt.geom.Point2D;
 
-public class Button implements Clickable{
+public class Button implements Clickable {
 
     private Command command;
 
