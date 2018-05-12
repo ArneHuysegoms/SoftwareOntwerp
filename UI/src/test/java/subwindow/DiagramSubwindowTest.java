@@ -4,7 +4,6 @@ import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import exceptions.DomainException;
 import facade.DomainFacade;
-import mediator.InteractionMediator;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;

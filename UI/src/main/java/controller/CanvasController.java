@@ -2,7 +2,6 @@ package controller;
 
 import command.CloseSubwindowCommand;
 import exceptions.DomainException;
-import mediator.InteractionMediator;
 import window.diagram.DiagramSubwindow;
 import window.windowElements.Button;
 import uievents.KeyEvent;
