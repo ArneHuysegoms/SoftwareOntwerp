@@ -12,8 +12,7 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
-import window.windowElements.Button;
-import windowElements.*;
+import windowFrame.*;
 
 import java.awt.geom.Point2D;
 import java.util.List;

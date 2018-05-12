@@ -1,4 +1,4 @@
-package windowElements;
+package windowFrame;
 
 import window.windowElements.Clickable;
 

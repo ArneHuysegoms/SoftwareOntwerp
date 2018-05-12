@@ -1,4 +1,4 @@
-package windowElements;
+package windowFrame;
 
 /**
  * enum class to differentiate between rectangles of a frame

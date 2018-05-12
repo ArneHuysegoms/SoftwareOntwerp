@@ -6,10 +6,10 @@ import uievents.MouseEvent;
 import window.windowElements.Button;
 import window.windowElements.Clickable;
 import window.windowElements.CloseWindowButton;
-import windowElements.SubwindowFrame;
-import windowElements.SubwindowFrameCorner;
-import windowElements.SubwindowFrameRectangle;
-import windowElements.TitleBarClick;
+import windowFrame.SubwindowFrame;
+import windowFrame.SubwindowFrameCorner;
+import windowFrame.SubwindowFrameRectangle;
+import windowFrame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
