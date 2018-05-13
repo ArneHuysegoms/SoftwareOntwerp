@@ -1,4 +1,4 @@
-package window.windowElements;
+package window;
 
 import java.awt.geom.Point2D;
 

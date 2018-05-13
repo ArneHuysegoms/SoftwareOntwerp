@@ -302,4 +302,12 @@ public class DomainFacade {
         getActiveRepo().getMessageView().addMessages(messages, diagram.getFirstMessage(), getActiveRepo().getPartyView(), getActiveRepo().getLabelView());
         this.getOtherRepo().getMessageView().addMessages(messages, diagram.getFirstMessage(), getOtherRepo().getPartyView(),getOtherRepo().getLabelView());
     }
+
+    public boolean activeDiagramIsSequence() {
+        return this.getActiveRepo() instanceof SequenceView;
+    }
+
+    public boolean activeDiagramIsCommunication() {
+        return this.getActiveRepo() instanceof CommunicationView;
+    }
 }

@@ -7,7 +7,7 @@ import facade.DomainFacade;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;
-import window.windowElements.Button;
+import window.elements.button.Button;
 
 import java.awt.geom.Point2D;
 

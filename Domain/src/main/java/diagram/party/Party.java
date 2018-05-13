@@ -40,4 +40,12 @@ public abstract class Party extends DiagramElement implements Serializable {
     public void setLabel(Label label) {
         this.label = label;
     }
+
+    public static boolean isValidClassString(String toCheck){
+        return Character.isUpperCase(toCheck.charAt(1));
+    }
+
+    public static boolean isValidInstanceString(String toCheck){
+        return Character.isLowerCase(toCheck.charAt(1));
+    }
 }

@@ -1,8 +1,8 @@
-package windowFrame;
+package window.frame;
 
 import org.junit.Before;
 import org.junit.Test;
-import window.windowElements.Button;
+import window.elements.button.Button;
 
 import java.awt.geom.Point2D;
 

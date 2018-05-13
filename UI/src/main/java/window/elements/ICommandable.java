@@ -1,4 +1,4 @@
-package window.windowElements;
+package window.elements;
 
 public interface ICommandable {
 

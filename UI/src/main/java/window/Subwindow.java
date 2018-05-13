@@ -3,17 +3,18 @@ package window;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import window.windowElements.Button;
-import window.windowElements.Clickable;
-import window.windowElements.CloseWindowButton;
-import windowFrame.SubwindowFrame;
-import windowFrame.SubwindowFrameCorner;
-import windowFrame.SubwindowFrameRectangle;
-import windowFrame.TitleBarClick;
+import window.elements.button.Button;
+import window.elements.button.CloseWindowButton;
+import window.frame.SubwindowFrame;
+import window.frame.SubwindowFrameCorner;
+import window.frame.SubwindowFrameRectangle;
+import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow {
+public abstract class Subwindow implements Clickable{
+
+    //TODO give InteractionController
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
@@ -297,12 +298,20 @@ public abstract class Subwindow {
      * @param position the position of the click
      * @return true if this element is clicked, false otherwise
      */
+    @Override
     public boolean isClicked(Point2D position) {
         double startX = this.getPosition().getX();
         double endX = this.getPosition().getX() + this.getWidth();
         double startY = this.getPosition().getY();
         double endY = this.getPosition().getY() + this.getHeight();
         return (startX <= position.getX() && endX >= position.getX()) && (startY <= position.getY() && endY >= position.getY());
+    }
+
+    /**
+     * @return the absolute postion for a relative point within this subwindow
+     */
+    public Point2D getAbsolutePosition(Point2D relativePoint) {
+        return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
     }
 
     public abstract void handleMouseEvent(MouseEvent mouseEvent);

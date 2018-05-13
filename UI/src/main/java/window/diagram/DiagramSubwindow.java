@@ -12,7 +12,6 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
-import windowFrame.*;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -26,9 +25,7 @@ public class DiagramSubwindow extends Subwindow {
     private String labelContainer = "";
 
     private DiagramElement selected;
-
-    private SubwindowFrame frame;
-
+    
     private boolean editing;
 
     /**
@@ -63,13 +60,6 @@ public class DiagramSubwindow extends Subwindow {
             f.changeActiveDiagram();
         }
         return f;
-    }
-
-    /**
-     * @return the absolute postion for a relative point within this subwindow
-     */
-    public Point2D getAbsolutePosition(Point2D relativePoint) {
-        return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
     }
 
     /**
@@ -222,6 +212,18 @@ public class DiagramSubwindow extends Subwindow {
                     break;
             }
         }
+    }
+
+    public void changeActiveDiagram(){
+        this.getFacade().changeActiveDiagram();
+    }
+
+    public boolean activeDiagamIsSequence(){
+        return getFacade().activeDiagramIsSequence();
+    }
+
+    public boolean activeDiagramIsCommunication(){
+        return getFacade().activeDiagramIsCommunication();
     }
 
     /**

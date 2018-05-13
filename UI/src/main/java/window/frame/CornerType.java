@@ -1,4 +1,4 @@
-package windowFrame;
+package window.frame;
 
 /**
  * enum class to differentiate between corners
