@@ -4,7 +4,7 @@ import command.CloseSubwindowCommand;
 import controller.CanvasController;
 import org.junit.Before;
 import org.junit.Test;
-import window.windowElements.Button;
+import window.elements.button.Button;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

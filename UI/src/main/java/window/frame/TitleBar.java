@@ -1,6 +1,6 @@
-package windowElements;
+package window.frame;
 
-import window.windowElements.Clickable;
+import window.Clickable;
 
 import java.awt.geom.Point2D;
 

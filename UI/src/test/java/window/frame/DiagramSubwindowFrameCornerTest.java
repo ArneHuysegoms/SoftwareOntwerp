@@ -1,4 +1,4 @@
-package windowElements;
+package window.frame;
 
 import org.junit.Before;
 import org.junit.Test;
