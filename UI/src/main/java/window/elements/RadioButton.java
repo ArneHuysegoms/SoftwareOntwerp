@@ -13,8 +13,8 @@ public class RadioButton extends DialogboxElement implements Clickable,ICommanda
 
     private Command command;
 
-    public RadioButton(Command command, Point2D coordinate) throws UIException {
-        super(coordinate);
+    public RadioButton(Command command, Point2D coordinate, String description) throws UIException {
+        super(coordinate, description);
         this.setCommand(command);
     }
 

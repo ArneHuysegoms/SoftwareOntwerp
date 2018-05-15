@@ -8,15 +8,24 @@ import java.awt.geom.Point2D;
 public abstract class DialogboxElement implements Clickable {
 
     private Point2D coordinate;
+    private String description;
 
     protected DialogboxElement(){
 
     }
 
-    public DialogboxElement(Point2D coordinate) throws UIException{
+    public DialogboxElement(Point2D coordinate, String description) throws UIException{
         this.setCoordinate(coordinate);
+        this.setDescription(description);
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Point2D getCoordinate() {
         return coordinate;

@@ -7,8 +7,8 @@ import java.awt.geom.Point2D;
 
 public class ClassTextBox extends TextBox {
 
-    public ClassTextBox(Point2D coordinate) throws UIException {
-        super(coordinate);
+    public ClassTextBox(Point2D coordinate, String description) throws UIException {
+        super(coordinate, description);
     }
 
     @Override

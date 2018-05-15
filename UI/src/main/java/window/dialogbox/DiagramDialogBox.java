@@ -27,8 +27,8 @@ public class DiagramDialogBox extends DialogBox {
         super(position);
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 30));
-        toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 60));
+        toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
+        toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
         selected = toCommunicationDiagram;
     }
 

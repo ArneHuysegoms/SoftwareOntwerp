@@ -8,8 +8,8 @@ import java.awt.geom.Point2D;
 
 public class ListBox extends DialogboxElement implements Clickable {
 
-    public ListBox(Command command, Point2D coordinate) throws UIException {
-        super(command, coordinate);
+    public ListBox(Point2D coordinate, String description) throws UIException {
+        super(coordinate, description);
     }
 
     @Override

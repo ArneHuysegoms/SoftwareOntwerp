@@ -13,8 +13,8 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
 
     private String contents;
 
-    public TextBox(Point2D coordinate) throws UIException {
-        super(coordinate);
+    public TextBox(Point2D coordinate, String description) throws UIException {
+        super(coordinate, description);
         this.setContents("");
     }
 
