@@ -1,15 +1,15 @@
-package command;
+package command.closeWindow;
 
 import controller.CanvasController;
 import window.diagram.DiagramSubwindow;
 
-public class CloseSubwindowCommand extends Command {
+public class CloseDiagramSubwindowCommand extends CloseSubwindowCommand{
 
     private CanvasController canvasController;
     private DiagramSubwindow diagramSubwindow;
 
-    public CloseSubwindowCommand(CanvasController canvasController, DiagramSubwindow diagramSubwindow){
-        this.setDiagramSubwindow(diagramSubwindow);
+    public CloseDiagramSubwindowCommand(CanvasController canvasController, DiagramSubwindow diagramSubwindow){
+        super(diagramSubwindow);
         this.setCanvasController(canvasController);
     }
 
@@ -19,14 +19,6 @@ public class CloseSubwindowCommand extends Command {
 
     private void setCanvasController(CanvasController canvasController) {
         this.canvasController = canvasController;
-    }
-
-    public DiagramSubwindow getDiagramSubwindow() {
-        return diagramSubwindow;
-    }
-
-    private void setDiagramSubwindow(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
     }
 
     @Override

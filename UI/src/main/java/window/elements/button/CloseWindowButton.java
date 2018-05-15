@@ -1,8 +1,8 @@
 package window.elements.button;
 
-import command.CloseSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 
-public class CloseWindowButton extends Button{
+public abstract class CloseWindowButton extends Button{
 
     public CloseWindowButton(CloseSubwindowCommand closeSubwindowCommand){
         super(closeSubwindowCommand);

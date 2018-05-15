@@ -1,18 +1,19 @@
-package command;
+package command.changeType;
 
+import command.Command;
 import window.diagram.DiagramSubwindow;
 
-public class ChangeToSequenceCommand extends Command {
+public class ChangeToCommunicationCommand extends Command {
 
     private DiagramSubwindow diagramSubwindow;
 
-    public ChangeToSequenceCommand(DiagramSubwindow diagramSubwindow){
+    public ChangeToCommunicationCommand(DiagramSubwindow diagramSubwindow){
         this.diagramSubwindow = diagramSubwindow;
     }
 
     @Override
     public void performAction() {
-        if(! (diagramSubwindow.activeDiagamIsSequence())){
+        if(! (diagramSubwindow.activeDiagramIsCommunication())){
             diagramSubwindow.changeActiveDiagram();
         }
     }

@@ -1,7 +1,7 @@
 package window.dialogbox;
 
-import command.ChangeToCommunicationCommand;
-import command.ChangeToSequenceCommand;
+import command.changeType.ChangeToCommunicationCommand;
+import command.changeType.ChangeToSequenceCommand;
 import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
@@ -34,11 +34,10 @@ public class DiagramDialogBox extends DialogBox {
 
     @Override
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        if(toCommunicationDiagram.isClicked(mouseEvent.getPoint())){
-            toCommunicationDiagram.performAction();
-        }
-        else if(toSequenceDiagram.isClicked(mouseEvent.getPoint())){
-            toSequenceDiagram.performAction();
+        switch (mouseEvent.getMouseEventType()) {
+            case PRESSED:
+                handleMousePress(mouseEvent);
+                break;
         }
     }
 
@@ -51,6 +50,17 @@ public class DiagramDialogBox extends DialogBox {
             case SPACE:
                 selected.performAction();
                 break;
+        }
+    }
+
+    private void handleMousePress(MouseEvent mouseEvent){
+        if(toCommunicationDiagram.isClicked(mouseEvent.getPoint())){
+            selected = toCommunicationDiagram;
+            toCommunicationDiagram.performAction();
+        }
+        else if(toSequenceDiagram.isClicked(mouseEvent.getPoint())){
+            selected = toSequenceDiagram;
+            toSequenceDiagram.performAction();
         }
     }
 
