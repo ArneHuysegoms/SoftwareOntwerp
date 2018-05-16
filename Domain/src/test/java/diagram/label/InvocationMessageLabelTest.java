@@ -16,20 +16,27 @@ public class InvocationMessageLabelTest {
 
     @Test
     public void Test_constructor() throws DomainException {
-        String argument1 = "Argument1";
-        String argument2 = "Argument2";
+        String argumentInstance1 = "instance1";
+        String argumentInstance2 = "instance2";
+        String argumentClass1 = "Class1";
+        String argumentClass2 = "Class2";
+        String argument1 = "instance1: Class1";
+        String argument2 = "instance2: Class2";
         ArrayList<Argument> argumentsList = new ArrayList<>();
-        Argument a1 = new Argument(argument1);
-        Argument a2 = new Argument(argument2);
+        Argument a1 = new Argument(argumentInstance1, argumentClass1);
+        Argument a2 = new Argument(argumentInstance2, argumentClass2);
         argumentsList.add(a1);
         argumentsList.add(a2);
 
         Label label = new InvocationMessageLabel(VALIDNAME, argumentsList);
         Label label2 = new InvocationMessageLabel(VALIDNAME2, argumentsList);
+        assertEquals(a1.toString(), argument1);
+        assertEquals(a2.toString(), argument2);
         assertEquals(VALIDNAME, label.getLabel());
         assertEquals(VALIDNAME2, label2.getLabel());
         assertEquals(argumentsList, ((InvocationMessageLabel) label).getArguments());
         assertEquals(argumentsList, ((InvocationMessageLabel) label2).getArguments());
+
     }
 
     @Test (expected = DomainException.class)
