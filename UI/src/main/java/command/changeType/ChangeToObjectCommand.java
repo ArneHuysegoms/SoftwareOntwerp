@@ -1,15 +1,16 @@
-package command;
+package command.changeType;
 
-import diagram.party.Object;
+import command.Command;
+import diagram.party.Actor;
 import diagram.party.Party;
 import window.diagram.DiagramSubwindow;
 
-public class ChangeToActorCommand extends Command {
+public class ChangeToObjectCommand extends Command {
 
     private DiagramSubwindow subwindow;
     private Party party;
 
-    public ChangeToActorCommand(DiagramSubwindow subwindow, Party party){
+    public ChangeToObjectCommand(DiagramSubwindow subwindow, Party party){
         this.setSubwindow(subwindow);
         this.setParty(party);
     }
@@ -32,7 +33,7 @@ public class ChangeToActorCommand extends Command {
 
     @Override
     public void performAction() {
-        if(party instanceof Object) {
+        if(party instanceof Actor) {
             Party newParty = subwindow.getFacade().changePartyType(party);
             //TODO change at other positions
         }

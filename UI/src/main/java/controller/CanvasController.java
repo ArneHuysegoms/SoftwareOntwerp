@@ -1,6 +1,6 @@
 package controller;
 
-import command.CloseSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import exceptions.DomainException;
 import window.diagram.DiagramSubwindow;
 import window.elements.button.Button;

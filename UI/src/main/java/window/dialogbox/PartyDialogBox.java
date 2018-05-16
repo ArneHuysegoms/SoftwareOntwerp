@@ -1,18 +1,22 @@
 package window.dialogbox;
 
-import command.ChangeToActorCommand;
-import command.ChangeToObjectCommand;
+import command.changeType.ChangeToActorCommand;
+import command.changeType.ChangeToObjectCommand;
 import diagram.party.Party;
 import exception.UIException;
+import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
 import window.elements.RadioButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartyDialogBox extends DialogBox {
 
@@ -31,6 +35,10 @@ public class PartyDialogBox extends DialogBox {
     private TextBox instanceTextBox;
     private TextBox classTextBox;
 
+    private DialogboxElement selected;
+
+    private List<DialogboxElement> elementList;
+
     private Party party;
 
     //TODO give party
@@ -41,6 +49,12 @@ public class PartyDialogBox extends DialogBox {
         toObject = new RadioButton(new ChangeToObjectCommand(subwindow, party), new Point2D.Double(85, 20), TOOBJECT_DESPCRIPTION);
         instanceTextBox = new InstanceTextBox(new Point2D.Double(10, 50), INSTANCE_DESCRIPTION);
         classTextBox = new ClassTextBox(new Point2D.Double(10, 75), CLASS_DESCRIPTION);
+        elementList = new ArrayList<>();
+        elementList.add(toActor);
+        elementList.add(toObject);
+        elementList.add(instanceTextBox);
+        elementList.add(classTextBox);
+        selected = toActor;
     }
 
     public Party getParty() {
@@ -53,11 +67,103 @@ public class PartyDialogBox extends DialogBox {
 
     @Override
     public void handleMouseEvent(MouseEvent mouseEvent) {
-
+        switch (mouseEvent.getMouseEventType()) {
+            case PRESSED:
+                handleMousePress(mouseEvent);
+                break;
+        }
     }
 
     @Override
     public void handleKeyEvent(KeyEvent keyEvent) {
+        try {
+            switch (keyEvent.getKeyEventType()) {
+                case TAB:
+                    cycleSelectedElement();
+                    break;
+                case SPACE:
+                    handleSpace();
+                    break;
+                case CHAR:
+                    handleChar(keyEvent);
+                    break;
+                case BACKSPACE:
+                    handleBackSpace();
+                    break;
+            }
+        }
+        catch (DomainException e){
+            e.printStackTrace();
+        }
+    }
 
+    private void handleMousePress(MouseEvent mouseEvent) {
+        if (toActor.isClicked(mouseEvent.getPoint())) {
+            selected = toActor;
+            toActor.performAction();
+        } else if (toObject.isClicked(mouseEvent.getPoint())) {
+            selected = toObject;
+            toObject.performAction();
+        } else if (instanceTextBox.isClicked(mouseEvent.getPoint())) {
+            selected = instanceTextBox;
+        } else if (classTextBox.isClicked(mouseEvent.getPoint())) {
+            selected = classTextBox;
+        }
+    }
+
+    private void handleBackSpace() throws DomainException{
+        if (selected instanceof TextBox) {
+            TextBox t = (TextBox) selected;
+            t.deleteLastCharFromContents();
+            if (t.hasValidContents()) {
+                changePartyLabel();
+            }
+        }
+    }
+
+    private void handleChar(KeyEvent keyEvent) throws DomainException{
+        if (selected instanceof TextBox) {
+            TextBox t = (TextBox) selected;
+            t.addCharToContents(keyEvent.getKeyChar());
+            if (t.hasValidContents()) {
+                changePartyLabel();
+            }
+        }
+    }
+
+    private void cycleSelectedElement() {
+        int oldIndex = elementList.indexOf(selected);
+        selected = elementList.get((oldIndex++) % 4);
+    }
+
+    private void handleSpace() {
+        if (selected instanceof RadioButton) {
+            ((RadioButton) selected).performAction();
+        }
+    }
+
+    //TODO
+    private void changePartyLabel() throws DomainException {
+        if (selected instanceof InstanceTextBox) {
+            TextBox t = (TextBox) selected;
+            String oldLabel = party.getLabel().getLabel();
+            String[] split = oldLabel.split(":");
+            if (split.length == 1) {
+                party.getLabel().setLabel(t.getContents() + " :" + split[0]);
+            }
+            else{
+                party.getLabel().setLabel(t.getContents() + " :" + split[1]);
+            }
+        } else {
+            TextBox t = (TextBox) selected;
+            String oldLabel = party.getLabel().getLabel();
+            String[] split = oldLabel.split(":");
+            if (split.length == 1) {
+                party.getLabel().setLabel(" :" + t.getContents());
+            }
+            else{
+                party.getLabel().setLabel(split[0] + " :" + t.getContents());
+            }
+        }
     }
 }

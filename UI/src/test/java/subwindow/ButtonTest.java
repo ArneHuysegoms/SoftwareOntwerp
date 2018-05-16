@@ -1,6 +1,6 @@
 package subwindow;
 
-import command.CloseSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import controller.CanvasController;
 import org.junit.Before;
 import org.junit.Test;
