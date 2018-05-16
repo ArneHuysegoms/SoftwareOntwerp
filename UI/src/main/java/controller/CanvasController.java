@@ -1,10 +1,9 @@
 package controller;
 
-import command.CloseSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import exceptions.DomainException;
-import mediator.InteractionMediator;
 import window.diagram.DiagramSubwindow;
-import window.windowElements.Button;
+import window.elements.button.Button;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 

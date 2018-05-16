@@ -4,11 +4,10 @@ import diagram.label.PartyLabel;
 import diagram.party.Actor;
 import exceptions.DomainException;
 import facade.DomainFacade;
-import mediator.InteractionMediator;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;
-import window.windowElements.Button;
+import window.elements.button.Button;
 
 import java.awt.geom.Point2D;
 
