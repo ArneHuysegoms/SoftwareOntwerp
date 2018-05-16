@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 import static org.junit.Assert.assertTrue;
 
 public class DiagramSubwindowFigureTest {
-    private SubwindowFigure subwindowFigure;
+    private DiagramSubwindowFigure subwindowFigure;
     private int x1, x2, y1, y2, width, height;
 
     @Before
@@ -17,7 +17,7 @@ public class DiagramSubwindowFigureTest {
         y1 = 20;
         x2 = x1 + width;
         y2 = y1 + height;
-        subwindowFigure = new SubwindowFigure(new Point2D.Double(x1, y1), new Point2D.Double(x2, y2));
+        subwindowFigure = new DiagramSubwindowFigure(new Point2D.Double(x1, y1), new Point2D.Double(x2, y2));
     }
 
     @Test

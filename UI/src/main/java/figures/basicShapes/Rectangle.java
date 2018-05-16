@@ -37,6 +37,13 @@ public class Rectangle extends Shape {
         setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
+    public Rectangle(Point2D subwindowPoint, int subwindowHeight, int subwindowWidth) {
+        setPositionTL(subwindowPoint);
+        setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()+subwindowWidth));
+        setCornerBL(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()));
+        setCornerTR(new Point2D.Double(subwindowPoint.getX(), subwindowPoint.getY()+subwindowWidth));
+    }
+
     /**
      * returns the rectangles top-left point
      *

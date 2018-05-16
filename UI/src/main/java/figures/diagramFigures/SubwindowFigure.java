@@ -1,25 +1,27 @@
 package figures.diagramFigures;
 
 import figures.basicShapes.CloseButtonFigure;
-import figures.basicShapes.Line;
 import figures.basicShapes.Rectangle;
+import window.elements.button.Button;
+import window.frame.SubwindowFrame;
+import window.frame.TitleBar;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class SubwindowFigure extends Figure {
 
-    private int x1, y1, x2, y2;
+    private SubwindowFrame subwindow;
+    private TitleBar titleBar;
+    private Button closeButton;
 
     /**
      * @param start top-left point of the subwindow
      * @param end   bottom-right point of the subwindow
      */
-    public SubwindowFigure(Point2D start, Point2D end) {
-        x1 = (int) start.getX();
-        y1 = (int) start.getY();
-        x2 = (int) end.getX();
-        y2 = (int) end.getY();
+    public SubwindowFigure(SubwindowFrame subwindow) {
+        this.subwindow = subwindow;
+        this.titleBar = subwindow.getTitleBar();
+        this.closeButton = subwindow.getButton();
     }
 
     /**
@@ -33,54 +35,28 @@ public class SubwindowFigure extends Figure {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(x1, y1, getWidth(), getHeight());
+        drawBackgroundColor(graphics, Color.WHITE);
+        drawFrame(graphics, minX, minY, maxX, maxY);
+        drawTitleBar(graphics, minX, minY, maxX, maxY);
+        drawCloseButton(graphics, minX, minY, maxX, maxY);
+    }
+
+
+    public void drawBackgroundColor(Graphics graphics, Color c) {
+        graphics.setColor(c);
+        graphics.fillRect((int)subwindow.getSubwindowPoint().getX(),(int)subwindow.getSubwindowPoint().getY(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth());
         graphics.setColor(Color.BLACK);
-        new Rectangle(x1, y1, getWidth(), getHeight()).draw(graphics, minX, minY, maxX, maxY);
-        CloseButtonFigure closeButtonFigure = new CloseButtonFigure(x1 + getWidth(), y1);
-        closeButtonFigure.draw(graphics, minX, minY, maxX, maxY);
-        new Line(x1, y1 + closeButtonFigure.getHeight(), x1 + getWidth(), y1 + closeButtonFigure.getHeight()).draw(graphics, minX, minY, maxX, maxY);
     }
 
-    /**
-     * @return the width of the subwindow
-     */
-    public int getWidth() {
-        return x2 - x1;
+    public void drawFrame(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new figures.basicShapes.Rectangle(subwindow.getSubwindowPoint(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth()).draw(graphics, minX, minY, maxX, maxY);
     }
 
-    /**
-     * @return the height of the subwindow
-     */
-    public int getHeight() {
-        return y2 - y1;
+    public void drawTitleBar(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new Rectangle(titleBar.getPosition(),titleBar.getHeight(),titleBar.getWidth()).draw(graphics, minX, minY, maxX, maxY);
     }
 
-    /**
-     * @return the x-coordinate of the top-left corner of the subwindow
-     */
-    public int getX1() {
-        return x1;
-    }
-
-    /**
-     * @return the x-coordinate of the bottom-right corner of the subwindow
-     */
-    public int getX2() {
-        return x2;
-    }
-
-    /**
-     * @return the y-coordinate of the top-left corner of the subwindow
-     */
-    public int getY1() {
-        return y1;
-    }
-
-    /**
-     * @return the y-coordinate of the bottom-right corner of the subwindow
-     */
-    public int getY2() {
-        return y2;
+    public void drawCloseButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new CloseButtonFigure(closeButton.getPosition(),closeButton.getHeight(),closeButton.getWidth()).draw(graphics, minX, minY, maxX, maxY);
     }
 }

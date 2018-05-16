@@ -1,11 +1,11 @@
 package figures.basicShapes;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class CloseButtonFigure extends Shape{
 
-    private int x,y;
-    private final int width = 30,height = 30;
+    private int x,y,width,height;
 
     /**
      * @param x
@@ -13,9 +13,11 @@ public class CloseButtonFigure extends Shape{
      * @param y
      *      the y-coordinate of the top-right corner of the subwindow
      */
-    public CloseButtonFigure(int x, int y){
-        this.x = x;
-        this.y = y;
+    public CloseButtonFigure(Point2D position,int width, int height){
+        this.x = (int)position.getX();
+        this.y = (int)position.getY();
+        this.width = width;
+        this.height = height;
     }
 
     /**
