@@ -8,7 +8,7 @@ import window.frame.TitleBar;
 
 import java.awt.*;
 
-public class SubwindowFigure extends Figure {
+public abstract class SubwindowFigure extends Figure {
 
     private SubwindowFrame subwindow;
     private TitleBar titleBar;
