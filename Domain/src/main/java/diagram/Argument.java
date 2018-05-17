@@ -2,6 +2,8 @@ package diagram;
 
 import exceptions.DomainException;
 
+import java.util.Collections;
+
 public class Argument {
     private String argumentInstance;
     private String argumentClass;
@@ -56,5 +58,22 @@ public class Argument {
     @Override
     public String toString() {
         return this.getArgumentInstance() + ": " + this.getArgumentClass();
+    }
+
+    /**
+     * @param instance
+     *        The instance string
+     * @param clas
+     *        The class string
+     * @return
+     *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
+     */
+    public static boolean isValidArgument(String instance, String clas){
+        if(instance.isEmpty() || clas.isEmpty()){
+            return false;
+        }
+        else{
+            return Character.isLowerCase(instance.charAt(0)) && Character.isUpperCase(clas.charAt(0));
+        }
     }
 }
