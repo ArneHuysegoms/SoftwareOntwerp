@@ -12,7 +12,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable{
+public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
 
     //TODO give InteractionController
 
@@ -312,6 +312,11 @@ public abstract class Subwindow implements Clickable{
      */
     public Point2D getAbsolutePosition(Point2D relativePoint) {
         return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
+    }
+
+    @Override
+    public int compareTo(Subwindow other){
+        return Integer.compare(this.getLevel(), other.getLevel());
     }
 
     public abstract void handleMouseEvent(MouseEvent mouseEvent);
