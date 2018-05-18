@@ -2,13 +2,18 @@ package figures;
 
 import controller.CanvasController;
 
-import figures.Drawer.*;
+import figures.diagramFigures.*;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import view.diagram.CommunicationView;
 import view.diagram.SequenceView;
+import window.dialogbox.DiagramDialogBox;
+import window.dialogbox.DialogBox;
+import window.dialogbox.PartyDialogBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +28,7 @@ public class FigureConverter {
      * default constructor
      */
     public FigureConverter() {
-        subwindowDrawer = new SubwindowDrawer();
+
     }
 
     /**
@@ -32,14 +37,57 @@ public class FigureConverter {
      * @param graphics        object used to draw on the program's window
      * @param subwindowLevels the subwindows to be drawn on the controller
      */
-    public void draw(Graphics graphics, List<CanvasController.SubWindowLevel> subwindowLevels) {
+    public void draw(Graphics graphics, CanvasController canvasController) {
+
         drawBackGroundColor(graphics);
-        DiagramSubwindow sub;
-        for (CanvasController.SubWindowLevel subLvl : subwindowLevels) {
-            sub = subLvl.getDiagramSubwindow();
-            setConverter(sub);
-            drawSubwindow(graphics, sub.getPosition(), sub.getWidth(), sub.getHeight());
-            converter.draw(graphics, sub.getFacade().getActiveRepo(), sub.getFacade().getDiagram(), sub.getSelected());
+        drawSubwindows(graphics, sortDiagramSubwindows(canvasController));
+
+    }
+
+    private List<Subwindow> sortDiagramSubwindows(CanvasController canvasController) {
+        List<DiagramSubwindow> temp = new ArrayList<DiagramSubwindow>();
+        List<Subwindow> result = new ArrayList<Subwindow>();
+
+        for (InteractionController interaction : canvasController.getInteractionControllers()) {
+            temp.addAll(interaction.getDiagramSubwindows());
+        }
+        for (DiagramSubwindow sub : temp) {
+            result.addAll(sub.getDialogBoxes());
+        }
+        result.addAll(temp);
+        Collections.sort(result);
+        return result;
+    }
+
+    private void drawSubwindows(Graphics graphics, List<Subwindow> canvasController) {
+        DiagramSubwindow tempDS;
+        for (Subwindow sub : canvasController) {
+            if (sub instanceof DiagramSubwindow) {
+                tempDS = (DiagramSubwindow)sub;
+                setConverter(tempDS);
+                drawSubwindow(graphics, tempDS);
+                converter.draw(graphics, tempDS.getFacade().getActiveRepo(), tempDS.getFacade().getDiagram(), tempDS.getSelected());
+            }
+            else {
+                drawDialogBoxes(graphics,(DialogBox)sub);
+            }
+        }
+    }
+
+    private void drawDialogBoxes(Graphics graphics, DialogBox sub) {
+        if(sub instanceof PartyDialogBox){
+            new PartyDialogBoxFigure((PartyDialogBox)sub).draw(graphics,0, 0, 2000, 2000);
+        }
+        else if(sub instanceof DiagramDialogBox){
+            new DiagramDialogBoxFigure((DiagramDialogBox)sub).draw(graphics,0, 0, 2000, 2000);
+        }
+        else if(sub instanceof InvocationMessageDialogBox){
+            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox)sub).draw(graphics,0, 0, 2000, 2000);
+
+        }
+        else if(sub instanceof ResultMessageDialogBox){
+            new ResultMessageDialogBoxFigure((ResultMessageDialogBox)sub).draw(graphics,0, 0, 2000, 2000);
+
         }
     }
 
@@ -62,8 +110,8 @@ public class FigureConverter {
      * @param width    the subwindow's width
      * @param height   the subwindow's height
      */
-    private void drawSubwindow(Graphics graphics, Point2D position, int width, int height) {
-        subwindowDrawer.draw(graphics, position, new Point2D.Double(position.getX() + width, position.getY() + height), null, 0, 0, 2000, 2000);
+    private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
+        new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
     }
 
     /**
@@ -76,6 +124,14 @@ public class FigureConverter {
             converter = new SequenceFigureConverter(sub);
         } else if (sub.getFacade().getActiveRepo() instanceof CommunicationView) {
             converter = new CommunicationFigureConverter(sub);
+        }
+    }
+
+    private class InteractionController {
+        private List<DiagramSubwindow> diagramSubwindows;
+
+        public List<DiagramSubwindow> getDiagramSubwindows() {
+            return diagramSubwindows;
         }
     }
 }

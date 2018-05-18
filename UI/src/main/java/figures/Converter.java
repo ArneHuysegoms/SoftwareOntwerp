@@ -8,10 +8,12 @@ import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
-import figures.Drawer.BoxDrawer;
-import figures.Drawer.Drawer;
+
 import figures.Drawer.LabelDrawer;
 import figures.Drawer.SelectionBoxDrawer;
+import figures.diagramFigures.Box;
+import figures.diagramFigures.SelectionBoxFigure;
+import figures.diagramFigures.StickMan;
 import window.diagram.DiagramSubwindow;
 import view.diagram.DiagramView;
 import view.label.LabelView;
@@ -28,12 +30,13 @@ import java.util.Set;
 public abstract class Converter {
     private DiagramSubwindow diagramSubwindow;
     protected int x1, y1, x2, y2;
-    protected Drawer boxDrawingStrategy,
+
+    /*protected Drawer boxDrawingStrategy,
             labelDrawingStrategy,
             selectionBoxDrawingStrategy,
             actorDrawingStrategy,
             objectDrawingStrategy,
-            invokeMessageDrawingStrategy;
+            invokeMessageDrawingStrategy;*/
 
     /**
      * @param diagramSubwindow the diagramSubwindow to be drawn
@@ -95,10 +98,12 @@ public abstract class Converter {
 
             if (entry.getKey() instanceof Actor) {
                 end = new Point2D.Double(start.getX() + PartyView.ACTORWIDTH, start.getY() + PartyView.ACTORHEIGHT);
-                actorDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
+                new StickMan(start).draw(graphics, getX1(), getY1(), getX2(), getY2());
+                //actorDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             } else {
                 end = new Point2D.Double(start.getX() + PartyView.OBJECTWIDTH, start.getY() + PartyView.OBJECTHEIGHT);
-                objectDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
+                new Box(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+                // /objectDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
@@ -128,10 +133,12 @@ public abstract class Converter {
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
             if (!getDiagramSubwindow().checkIfValidLable()) {
                 graphics.setColor(Color.RED);
-                labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                drawLabel(graphics, start,  messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                //labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
                 graphics.setColor(Color.BLACK);
             } else {
-                labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                drawLabel(graphics, start,  messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                //labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
             }
 
         }
@@ -149,7 +156,8 @@ public abstract class Converter {
         Map<Label, Point2D> labelMap = labelView.getMap();
         for (Party party : allParties) {
             start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(party.getLabel()));
-            labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+            drawLabel(graphics, start, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+            //labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
         }
     }
 
@@ -181,7 +189,22 @@ public abstract class Converter {
             Map<Label, Point2D> labelMap = labelView.getMap();
 
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
-            labelDrawingStrategy.draw(graphics, start, null, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+            drawLabel(graphics, start, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+            //labelDrawingStrategy.draw(graphics, start, null, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+        }
+    }
+
+    private void drawLabel(Graphics graphics, Point2D start, String label, int minX, int minY, int maxX, int maxY) {
+        double x1 = start.getX(), y1 = start.getY(), stringPixelEstimate = 50;
+        if ((label.length()) * 5 > stringPixelEstimate) {
+            stringPixelEstimate = (label.length()) * 5;
+        }
+        if (x1 > minX && y1 > minY && x1 + stringPixelEstimate < maxX && y1 < maxY) {
+            Color c = graphics.getColor();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect((int) x1, (int) y1, 50, 15);
+            graphics.setColor(c);
+            graphics.drawString(label, (int) start.getX() + 3, (int) start.getY() + 10);
         }
     }
 
@@ -209,11 +232,13 @@ public abstract class Converter {
             Point2D actorPos = diagramSubwindow.getAbsolutePosition(partyMap.get(a));
             Point2D start = new Point2D.Double(actorPos.getX() - (PartyView.ACTORWIDTH / 2), actorPos.getY()),
                     end = new Point2D.Double(actorPos.getX() + (PartyView.ACTORWIDTH / 2), actorPos.getY() + PartyView.ACTORWIDTH);
-            selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Label) {
             Label l = (Label) selectedElement;
             Point2D start = diagramSubwindow.getAbsolutePosition(repo.getLabelView().getLocationOfLabel(l));
-            selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT), "", getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT)).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            //selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT), "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Object) {
             Object o = (Object) selectedElement;
             Map<Party, Point2D> partyMap = repo.getPartyView().getMap();
@@ -221,7 +246,8 @@ public abstract class Converter {
             int selectionBoxSize = 5;
             Point2D start = new Point2D.Double(objectPos.getX() - selectionBoxSize, objectPos.getY() - selectionBoxSize);
             Point2D end = new Point2D.Double(objectPos.getX() + PartyView.OBJECTWIDTH + selectionBoxSize, objectPos.getY() + PartyView.OBJECTHEIGHT + selectionBoxSize);
-            selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Message) {
             Message m = (Message) selectedElement;
             Point2D start;
@@ -233,7 +259,8 @@ public abstract class Converter {
                 Point2D receiverPos = diagramSubwindow.getAbsolutePosition(partyMap.get(m.getReceiver()));
                 start = new Point2D.Double(senderPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) - (MessageView.HEIGHT / 2));
                 end = new Point2D.Double(receiverPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) + (MessageView.HEIGHT / 2));
-                selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
+                new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+                //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
