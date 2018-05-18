@@ -47,9 +47,9 @@ public abstract class Converter {
         y1 = (int) getDiagramSubwindow().getPosition().getY();
         x2 = x1 + getDiagramSubwindow().getWidth();
         y2 = y1 + getDiagramSubwindow().getHeight();
-        boxDrawingStrategy = new BoxDrawer();
-        selectionBoxDrawingStrategy = new SelectionBoxDrawer();
-        labelDrawingStrategy = new LabelDrawer();
+        //boxDrawingStrategy = new BoxDrawer();
+        //selectionBoxDrawingStrategy = new SelectionBoxDrawer();
+        //labelDrawingStrategy = new LabelDrawer();
     }
 
     /**
@@ -62,7 +62,8 @@ public abstract class Converter {
      */
     public void draw(Graphics graphics, DiagramView repo, Diagram diagram, DiagramElement selectedElement) {
         drawDiagramSpecificStuff(graphics, repo, diagram, selectedElement);
-        drawParties(graphics, repo.getPartyView(), actorDrawingStrategy, objectDrawingStrategy);
+        //drawParties(graphics, repo.getPartyView(), actorDrawingStrategy, objectDrawingStrategy);
+        drawParties(graphics, repo.getPartyView());
         drawPartyLabels(graphics, repo.getPartyView().getAllParties(), repo.getLabelView());
         drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelView());
         drawMessages(graphics, repo.getMessageView(), repo.getPartyView().getMap(), diagram.getFirstMessage());
@@ -86,10 +87,11 @@ public abstract class Converter {
      *
      * @param graphics     object used to draw on the program's window
      * @param partyView    repository containing all the coordinates of the parties in the diagramSubwindow's diagram
-     * @param actorDrawer  a drawer object to be used to draw actor parties
-     * @param objectDrawer a drawer object to be used to draw object parties
+     //@param actorDrawer  a drawer object to be used to draw actor parties
+     //@param objectDrawer a drawer object to be used to draw object parties
      */
-    protected void drawParties(Graphics graphics, PartyView partyView, Drawer actorDrawer, Drawer objectDrawer) {
+    //protected void drawParties(Graphics graphics, PartyView partyView, Drawer actorDrawer, Drawer objectDrawer) {
+    protected void drawParties(Graphics graphics, PartyView partyView) {
         Map<Party, Point2D> partyMap = partyView.getMap();
 
         for (Map.Entry<Party, Point2D> entry : partyMap.entrySet()) {

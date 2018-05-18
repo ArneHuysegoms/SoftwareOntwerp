@@ -3,6 +3,7 @@ package figures.diagramFigures;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.dialogbox.DialogBox;
+import window.dialogbox.ResultMessageDialogBox;
 
 import java.awt.geom.Point2D;
 

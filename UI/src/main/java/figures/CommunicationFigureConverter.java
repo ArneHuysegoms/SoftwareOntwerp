@@ -22,9 +22,9 @@ public class CommunicationFigureConverter extends Converter {
 
     public CommunicationFigureConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
-        actorDrawingStrategy = new CommunicationActorDrawer();
-        objectDrawingStrategy = new CommunicationObjectDrawer();
-        invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
+        //actorDrawingStrategy = new CommunicationActorDrawer();
+        //objectDrawingStrategy = new CommunicationObjectDrawer();
+        //invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
     }
 
     /**

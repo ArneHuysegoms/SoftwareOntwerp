@@ -34,9 +34,9 @@ public class SequenceFigureConverter extends Converter {
     public SequenceFigureConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
         lifeLineDrawer = new SequenceLifelineDrawer();
-        actorDrawingStrategy = new SequenceActorDrawer();
-        objectDrawingStrategy = new SequenceObjectDrawer();
-        invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
+        //actorDrawingStrategy = new SequenceActorDrawer();
+        //objectDrawingStrategy = new SequenceObjectDrawer();
+        //invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
         responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
     }
 
@@ -179,9 +179,9 @@ public class SequenceFigureConverter extends Converter {
          * method that draws activation bars
          *
          * @param graphics       object used to draw on the program's window
-         * @param boxDrawer      a box drawer object to be used to draw the activation bars
-         * @param invokeDrawer   a drawer object to be used to draw invocation messages
-         * @param responseDrawer a drawer object to be used to draw response messages
+         //* @param boxDrawer      a box drawer object to be used to draw the activation bars
+         //* @param invokeDrawer   a drawer object to be used to draw invocation messages
+         //* @param responseDrawer a drawer object to be used to draw response messages
          * @param partyMap       list of Party and Point2D entries
          * @param messageMap     list of Message and y-coördinate entries
          */

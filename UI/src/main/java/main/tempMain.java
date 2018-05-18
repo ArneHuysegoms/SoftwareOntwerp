@@ -4,8 +4,10 @@ import canvaswindow.CanvasWindow;
 import canvaswindow.InteractrCanvas;
 import figures.basicShapes.Circle;
 import figures.basicShapes.FilledCircle;
+import figures.basicShapes.RemoveButtonFigure;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class tempMain extends CanvasWindow {
 
@@ -23,6 +25,7 @@ public class tempMain extends CanvasWindow {
     public void paint(Graphics g) {
         new FilledCircle(100,100,50).draw(g,-100,-100,1000,1000);
         new Circle(250,100,50).draw(g,-100,-100,1000,1000);
+        new RemoveButtonFigure(new Point2D.Double(80,80),20,20).draw(g,0,0,2000,2000);
     }
 
     @Override

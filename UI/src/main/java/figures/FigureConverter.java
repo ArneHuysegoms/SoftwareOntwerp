@@ -7,9 +7,7 @@ import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import view.diagram.CommunicationView;
 import view.diagram.SequenceView;
-import window.dialogbox.DiagramDialogBox;
-import window.dialogbox.DialogBox;
-import window.dialogbox.PartyDialogBox;
+import window.dialogbox.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ import java.util.List;
 public class FigureConverter {
 
     private Converter converter;
-    private Drawer subwindowDrawer;
+    //private Drawer subwindowDrawer;
 
     /**
      * default constructor
@@ -35,7 +33,7 @@ public class FigureConverter {
      * main draw function
      *
      * @param graphics        object used to draw on the program's window
-     * @param subwindowLevels the subwindows to be drawn on the controller
+     //* @param subwindowLevels the subwindows to be drawn on the controller
      */
     public void draw(Graphics graphics, CanvasController canvasController) {
 
@@ -106,9 +104,9 @@ public class FigureConverter {
      * method that draws a subwindow
      *
      * @param graphics object used to draw on the program's window
-     * @param position coordinate of the top-left point of the subwindow
-     * @param width    the subwindow's width
-     * @param height   the subwindow's height
+     //* @param position coordinate of the top-left point of the subwindow
+     //* @param width    the subwindow's width
+     //* @param height   the subwindow's height
      */
     private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
         new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
