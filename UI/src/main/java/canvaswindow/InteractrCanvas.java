@@ -1,9 +1,8 @@
 package canvaswindow;
 
-import canvaswindow.CanvasWindow;
 import controller.CanvasController;
 import exceptions.DomainException;
-import figures.FigureConverter;
+import figures.converters.FigureConverter;
 import uievents.KeyEvent;
 import uievents.KeyEventFactory;
 import uievents.MouseEvent;
