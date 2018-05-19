@@ -73,15 +73,16 @@ public class InteractionController {
      * @param location the location of the new Party
      * @param diagramSubwindow the original diagramSubwindow
      */
-    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
+    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, DiagramSubwindow diagramSubwindow){
         for(Subwindow s : this.subwindows){
             if(s instanceof DiagramSubwindow) {
-                if (!s.equals(subwindow)) {
+                if (!s.equals(diagramSubwindow)) {
                     ((DiagramSubwindow) s).getFacade().addPartyToRepo(party, location);
+                    //TODO ook dialogboxes updaten?
                 }
             }
         }
-        setActiveSubwindow(subwindow);
+        setActiveSubwindow(diagramSubwindow);
     }
 
     /**
@@ -91,22 +92,25 @@ public class InteractionController {
      * @param diagramSubwindow the original diagramSubwindow
      */
     public void removeInReposInOtherSubwindows(Set<DiagramElement> deletedElements, DiagramSubwindow diagramSubwindow){
-        for(DiagramSubwindow s : diagramSubwindows){
-            if(! s.equals(diagramSubwindow)) {
-                s.getFacade().deleteElementsInRepos(deletedElements);
-                if(deletedElements.contains(s.getSelected())){
-                    s.setSelected(null);
+        for(Subwindow s : this.subwindows){
+            if(s instanceof DiagramSubwindow){
+                if(! s.equals(diagramSubwindow)) {
+                    ((DiagramSubwindow)s).getFacade().deleteElementsInRepos(deletedElements);
+                    if(deletedElements.contains(((DiagramSubwindow)s).getSelected())){
+                        ((DiagramSubwindow)s).setSelected(null);
+                        // TODO ook dialogboxes updaten??
+                    }
                 }
             }
+
         }
-        //check levels voor nieuwe activesubwindow
-        setActiveDiagramSubwindow(getHighestLevelSubwindow());
+        setActiveSubwindow(getHighestLevelSubwindow());
     }
 
     /**
      * add a diagramSubwindow
      *
-     * @param diagramSubwindow the diagramSubwindow to add
+     * @param subwindow the diagramSubwindow to add
      */
     public void addSubwindow(Subwindow subwindow){
         if(! subwindows.contains(subwindow)){
@@ -118,13 +122,13 @@ public class InteractionController {
     /**
      * remove a diagramSubwindow
      *
-     * @param diagramSubwindow the diagramSubwindow to remove
+     * @param subwindow the diagramSubwindow to remove
      */
 
-    public void removeSubwindow(DiagramSubwindow diagramSubwindow){
-        diagramSubwindows.remove(diagramSubwindow);
+    public void removeSubwindow(Subwindow subwindow){
+        subwindows.remove(subwindow);
         //check levels voor nieuwe activesubwindow
-        setActiveDiagramSubwindow(getHighestLevelSubwindow());
+        setActiveSubwindow(getHighestLevelSubwindow());
     }
 
     /**
@@ -134,10 +138,13 @@ public class InteractionController {
      * @param diagramSubwindow the original diagramSubwindow
      */
     public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, DiagramSubwindow diagramSubwindow) {
-        for(DiagramSubwindow s : diagramSubwindows){
-            if( ! s.equals(diagramSubwindow)){
-                s.getFacade().addMessagesToRepos(newMessages);
+        for(Subwindow s : this.subwindows){
+            if(s instanceof DiagramSubwindow){
+                if( ! s.equals(diagramSubwindow)){
+                    ((DiagramSubwindow)s).getFacade().addMessagesToRepos(newMessages);
+                }
             }
+
         }
     }
 
@@ -156,13 +163,15 @@ public class InteractionController {
      * @param diagramSubwindow the original diagramSubwindow
      */
     public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, DiagramSubwindow diagramSubwindow)  {
-        for(DiagramSubwindow s : diagramSubwindows){
-            if (! s.equals(diagramSubwindow)){
-                s.getFacade().changePartyTypeInRepo(oldParty, newParty);
-                s.setSelected(newParty);
+        for(Subwindow s : this.subwindows){
+            if(s instanceof DiagramSubwindow) {
+                if (!s.equals(diagramSubwindow)) {
+                    ((DiagramSubwindow) s).getFacade().changePartyTypeInRepo(oldParty, newParty);
+                    ((DiagramSubwindow) s).setSelected(newParty);
+                }
             }
         }
-        setActiveDiagramSubwindow(diagramSubwindow);
+        setActiveSubwindow(diagramSubwindow);
     }
 
     /**
@@ -171,16 +180,19 @@ public class InteractionController {
      * @param diagramSubwindow the original diagramSubwindow
      */
     public void updateLabelContainers(Label selectedLabel, DiagramSubwindow diagramSubwindow) {
-        for(DiagramSubwindow s : diagramSubwindows){
-            if (! s.equals(diagramSubwindow)){
-                if(s.getSelected() instanceof Label && ( s.getSelected()).equals(selectedLabel)){
-                    s.stopEditingLabel();
-                    s.setLabelMode(false);
-                    s.setEditing(false);
+        for(Subwindow s : this.subwindows){
+            if(s instanceof DiagramSubwindow){
+                if (! s.equals(diagramSubwindow)){
+                    if(((DiagramSubwindow) s).getSelected() instanceof Label && ( ((DiagramSubwindow) s).getSelected()).equals(selectedLabel)){
+                        ((DiagramSubwindow) s).stopEditingLabel();
+                        ((DiagramSubwindow) s).setLabelMode(false);
+                        ((DiagramSubwindow) s).setEditing(false);
+                    }
                 }
             }
+
         }
-        setActiveDiagramSubwindow(diagramSubwindow);
+        setActiveSubwindow(diagramSubwindow);
     }
 
     /**
@@ -353,14 +365,14 @@ public class InteractionController {
      *         else return false
      */
     private boolean checkFordragging(MouseEvent mouseEvent) {
-        if (activeDiagramSubwindow != null) {
-            if (getActiveDiagramSubwindow().isDragging()) {
+        if (activeSubwindow != null) {
+            if (getActiveSubwindow().isDragging()) {
                 return false;
             }
-            if (activeDiagramSubwindow.frameIsClicked(mouseEvent.getPoint())) {
+            if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
             }
-            if (!getActiveDiagramSubwindow().isInLabelMode()) {
+            if (!getActiveSubwindow().isInLabelMode()) {
                 /*for (SubWindowLevel subwindow : subwindows) {
                     if (subwindow.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
                         changeActiveSubwindow(subwindow.getDiagramSubwindow());
