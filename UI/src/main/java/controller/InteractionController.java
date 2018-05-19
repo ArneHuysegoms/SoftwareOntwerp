@@ -372,7 +372,7 @@ public class InteractionController {
             if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
             }
-            if (!getActiveSubwindow().isInLabelMode()) {
+            if (!getActiveSubwindow().isLabelMode()) {
                 /*for (SubWindowLevel subwindow : subwindows) {
                     if (subwindow.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
                         changeActiveSubwindow(subwindow.getDiagramSubwindow());
