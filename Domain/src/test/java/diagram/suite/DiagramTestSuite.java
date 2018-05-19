@@ -1,6 +1,7 @@
 package diagram.suite;
 
 import diagram.diagram.DiagramTest;
+import diagram.label.InvocationMessageLabelTest;
 import diagram.label.MessageLabelTest;
 import diagram.label.PartyLabelTest;
 import diagram.message.InvocationMessageTest;
@@ -15,6 +16,8 @@ import org.junit.runners.Suite;
         InvocationMessageTest.class,
         ResultMessageTest.class,
         DiagramTest.class,
+        InvocationMessageLabelTest.class,
+        MessageLabelTest.class,
 })
 public class DiagramTestSuite {
 }
