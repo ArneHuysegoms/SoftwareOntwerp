@@ -1,6 +1,7 @@
 package canvaswindow;
 
 import controller.CanvasController;
+import exception.UIException;
 import exceptions.DomainException;
 import figures.converters.FigureConverter;
 import uievents.KeyEvent;
@@ -40,10 +41,15 @@ public class InteractrCanvas extends CanvasWindow {
      *
      * @param g This object offers the methods that allow you to paint on the controller.
      */
-    public void paint(Graphics g){
+    /*public void paint(Graphics g){
         Collections.sort(canvasController.getSubwindows());
         Collections.reverse(canvasController.getSubwindows());
         figureConverter.draw(g, canvasController.getSubwindows());
+    }*/
+    public void paint(Graphics g){
+        //Collections.sort(canvasController);
+        //Collections.reverse(canvasController.getSubwindows());
+        figureConverter.draw(g, canvasController);
     }
 
     /**
@@ -76,6 +82,8 @@ public class InteractrCanvas extends CanvasWindow {
             canvasController.handleKeyEvent(e);
         }catch (DomainException ex){
             System.out.println(ex.getMessage());
+        }catch (UIException uiex){
+            System.out.println(uiex.getMessage());
         }
         this.repaint();
     }
