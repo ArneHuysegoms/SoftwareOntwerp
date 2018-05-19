@@ -1,28 +1,28 @@
 package command.closeWindow;
 
-import controller.CanvasController;
+import controller.InteractionController;
 import window.diagram.DiagramSubwindow;
 
 public class CloseDiagramSubwindowCommand extends CloseSubwindowCommand{
 
-    private CanvasController canvasController;
+    private InteractionController interactionController;
     private DiagramSubwindow diagramSubwindow;
 
-    public CloseDiagramSubwindowCommand(CanvasController canvasController, DiagramSubwindow diagramSubwindow){
+    public CloseDiagramSubwindowCommand(InteractionController interactionController, DiagramSubwindow diagramSubwindow){
         super(diagramSubwindow);
-        this.setCanvasController(canvasController);
+        this.setInteractionController(interactionController);
     }
 
-    public CanvasController getCanvasController() {
-        return canvasController;
+    public InteractionController getCanvasController() {
+        return interactionController;
     }
 
-    private void setCanvasController(CanvasController canvasController) {
-        this.canvasController = canvasController;
+    private void setInteractionController(InteractionController interactionController) {
+        this.interactionController = interactionController;
     }
 
     @Override
     public void performAction() {
-        canvasController.removeSubwindow(diagramSubwindow);
+        interactionController.removeSubwindow(diagramSubwindow);
     }
 }
