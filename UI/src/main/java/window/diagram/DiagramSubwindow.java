@@ -509,4 +509,8 @@ public class DiagramSubwindow extends Subwindow {
         }
         return true;
     }
+
+    public List<DialogBox> getDialogBoxlist() {
+        return dialogBoxlist;
+    }
 }

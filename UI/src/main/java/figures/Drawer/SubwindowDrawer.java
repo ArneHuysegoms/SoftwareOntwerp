@@ -1,7 +1,5 @@
 package figures.Drawer;
 
-import figures.diagramFigures.SubwindowFigure;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 

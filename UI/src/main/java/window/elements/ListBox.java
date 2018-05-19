@@ -89,4 +89,8 @@ public class ListBox extends DialogboxElement implements Clickable {
     public boolean hasSelectedArgument(){
         return selectedIndex > -1;
     }
+
+    public List<String> getArguments() {
+        return arguments;
+    }
 }
