@@ -1,7 +1,6 @@
 package controller;
 
 import command.closeWindow.CloseDiagramSubwindowCommand;
-import command.closeWindow.CloseSubwindowCommand;
 import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
@@ -10,7 +9,9 @@ import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
+import window.dialogbox.DialogBox;
 import window.elements.button.Button;
 import window.elements.button.CloseDiagramSubwindowButton;
 
@@ -21,7 +22,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InteractionController {
-    private List<DiagramSubwindow> diagramSubwindows;
+    private List<Subwindow> subwindows;
+    private Subwindow activeSubwindow;
+    //private List<DiagramSubwindow> diagramSubwindows;
     private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
 
@@ -29,14 +32,33 @@ public class InteractionController {
      * default constructor
      */
     public InteractionController(){
-        this.diagramSubwindows = new ArrayList<>();
-        this.activeDiagramSubwindow = null;
+        this.subwindows = new ArrayList<>();
+        this.activeSubwindow = null;
     }
 
-    public DiagramSubwindow getHighestLevelSubwindow(){
-        DiagramSubwindow highest = null;
+    public List<Subwindow> getSubwindows() {
+        return subwindows;
+    }
+
+    public void setSubwindows(List<Subwindow> subwindows) {
+        this.subwindows = subwindows;
+    }
+
+    public Subwindow getActiveSubwindow() {
+        return activeSubwindow;
+    }
+
+    public void setActiveSubwindow(Subwindow activeSubwindow) {
+        if(activeSubwindow instanceof DiagramSubwindow){
+            setActiveDiagramSubwindow((DiagramSubwindow) activeSubwindow);
+        }
+        this.activeSubwindow = activeSubwindow;
+    }
+
+    public Subwindow getHighestLevelSubwindow(){
+        Subwindow highest = null;
         int level = -1;
-        for(DiagramSubwindow s : diagramSubwindows){
+        for(Subwindow s : subwindows){
             if(s.getLevel() > level){
                 highest = s;
             }
@@ -51,13 +73,15 @@ public class InteractionController {
      * @param location the location of the new Party
      * @param diagramSubwindow the original diagramSubwindow
      */
-    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, DiagramSubwindow diagramSubwindow){
-        for(DiagramSubwindow s : diagramSubwindows){
-            if(! s.equals(diagramSubwindow)) {
-                s.getFacade().addPartyToRepo(party, location);
+    public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, Subwindow subwindow){
+        for(Subwindow s : this.subwindows){
+            if(s instanceof DiagramSubwindow) {
+                if (!s.equals(subwindow)) {
+                    ((DiagramSubwindow) s).getFacade().addPartyToRepo(party, location);
+                }
             }
         }
-        setActiveDiagramSubwindow(diagramSubwindow);
+        setActiveSubwindow(subwindow);
     }
 
     /**
@@ -84,11 +108,11 @@ public class InteractionController {
      *
      * @param diagramSubwindow the diagramSubwindow to add
      */
-    public void addSubwindow(DiagramSubwindow diagramSubwindow){
-        if(! diagramSubwindows.contains(diagramSubwindow)){
-            this.diagramSubwindows.add(diagramSubwindow);
+    public void addSubwindow(Subwindow subwindow){
+        if(! subwindows.contains(subwindow)){
+            this.subwindows.add(subwindow);
         }
-        setActiveDiagramSubwindow(diagramSubwindow);
+        setActiveSubwindow(subwindow);
     }
 
     /**
@@ -121,9 +145,9 @@ public class InteractionController {
      *
      * @return all diagramSubwindows this mediator  mediates
      */
-    public List<DiagramSubwindow> getDiagramSubwindows() {
+    /*public List<DiagramSubwindow> getDiagramSubwindows() {
         return diagramSubwindows;
-    }
+    }*/
 
     /**
      * updates the party type in all other diagramSubwindows
@@ -258,15 +282,15 @@ public class InteractionController {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 if (getActiveDiagramSubwindow() != null) {
-                    copyActiveSubWindow();
+                    copyActiveDiagramSubwindow();
                 }
                 break;
             case CTRLN:
-                createNewSubwindow();
+                createNewDiagramSubwindow();
                 break;
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
-                    activeDiagramSubwindow.handleKeyEvent(keyEvent);
+                    activeSubwindow.handleKeyEvent(keyEvent);
                 }
                 break;
         }
@@ -292,7 +316,7 @@ public class InteractionController {
         if (dragging) {
             switch (mouseEvent.getMouseEventType()) {
                 case RELEASE:
-                    activeDiagramSubwindow.handleMovement(mouseEvent.getPoint());
+                    activeSubwindow.handleMovement(mouseEvent.getPoint());
                     dragging = false;
                     break;
                 case LEFTCLICK:
@@ -302,14 +326,14 @@ public class InteractionController {
                     break;
             }
         } else {
-            DiagramSubwindow diagramSubwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-            if (diagramSubwindow != null) {
-                if (!diagramSubwindow.equals(getActiveDiagramSubwindow())) {
-                    changeActiveSubwindow(diagramSubwindow);
+            Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
+            if (subwindow != null) {
+                if (!subwindow.equals(getActiveSubwindow())) {
+                    changeActiveSubwindow(subwindow);
                 }
-                Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
+                Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
-                diagramSubwindow.handleMouseEvent(mouseEvent);
+                subwindow.handleMouseEvent(mouseEvent);
             }
         }
     }
@@ -356,28 +380,15 @@ public class InteractionController {
      * @param newActiveSubWindow the new actie diagramSubwindow
      *
      */
-    private void changeActiveSubwindow(DiagramSubwindow newActiveSubWindow) {
-        this.setActiveDiagramSubwindow(newActiveSubWindow);
+    private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
+        this.setActiveSubwindow(newActiveSubWindow);
         //this.changeLevelForActiveSubWindow();
     }
 
     /**
-     * changes the level for the active diagramSubwindow
-     */
-   /* private void changeLevelForActiveSubWindow() {
-        if (activeDiagramSubwindow != null) {
-            for (SubWindowLevel s : subwindows) {
-                if (s.getDiagramSubwindow().equals(getActiveDiagramSubwindow())) {
-                    s.setLevel(getCorrectLevel());
-                }
-            }
-        }
-    }*/
-
-    /**
      * creates a new diagramSubwindow with the correct level, adds it to the list of subwindows and sets it as active
      */
-    private void createNewSubwindow() {
+    private void createNewDiagramSubwindow() {
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
         Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
         diagramSubwindow.getFrame().setButton(button);
@@ -389,7 +400,7 @@ public class InteractionController {
     /**
      * copies the active diagramSubwindow, sets the correct level, adds it to the list of subwindows and sets it active
      */
-    private void copyActiveSubWindow() {
+    private void copyActiveDiagramSubwindow() {
         if (this.getActiveDiagramSubwindow() != null) {
             DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade());
             Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
@@ -399,21 +410,6 @@ public class InteractionController {
             this.changeActiveSubwindow(diagramSubwindow);
         }
     }
-
-    /**
-     *
-     * @return the highest level in the list of subwindows
-     */
-    /*private int getCorrectLevel() {
-        int level = -1;
-        for (SubWindowLevel s : subwindows) {
-            if (s.getLevel() > level) {
-                level = s.getLevel();
-            }
-        }
-        level++;
-        return level;
-    }*/
 
     /**
      * returns the diagramSubwindow with the highest level
@@ -436,14 +432,14 @@ public class InteractionController {
         return highest;
     }*/
 
-    public DiagramSubwindow getAppropriateSubwindow(Point2D clickedLocation) {
-        List<DiagramSubwindow> clickedSubwindows = this.getDiagramSubwindows()
+    public Subwindow getAppropriateSubwindow(Point2D clickedLocation) {
+        List<Subwindow> clickedSubwindows = this.getSubwindows()
                 .stream()
                 .filter(s -> s.isClicked(clickedLocation))
                 .collect(Collectors.toList());
         int level = -1;
-        DiagramSubwindow highest = null;
-        for (DiagramSubwindow s : clickedSubwindows) {
+        Subwindow highest = null;
+        for (Subwindow s : clickedSubwindows) {
             if (s.getLevel() > level) {
                 highest = s;
                 level = s.getLevel();
