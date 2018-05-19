@@ -25,13 +25,6 @@ public class FigureConverter {
     //private Drawer subwindowDrawer;
 
     /**
-     * default constructor
-     */
-    public FigureConverter() {
-
-    }
-
-    /**
      * main draw function
      *
      * @param graphics object used to draw on the program's window
