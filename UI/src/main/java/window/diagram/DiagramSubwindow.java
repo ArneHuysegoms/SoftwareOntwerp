@@ -1,9 +1,13 @@
 package window.diagram;
 
 import diagram.DiagramElement;
+import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
+import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.message.ResultMessage;
 import diagram.party.Party;
+import exception.UIException;
 import exceptions.DomainException;
 import facade.DomainFacade;
 import view.diagram.CommunicationView;
@@ -12,10 +16,13 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
+import window.dialogbox.*;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DiagramSubwindow extends Subwindow {
 
@@ -28,6 +35,8 @@ public class DiagramSubwindow extends Subwindow {
     
     private boolean editing;
 
+    private List<DialogBox> dialogBoxlist;
+
     /**
      * default contructor for subwindow with default width and height
      *
@@ -37,6 +46,7 @@ public class DiagramSubwindow extends Subwindow {
         super(pos, WindowLevelCounter.getNextLevel());
         setLabelMode(false);
         setFacade(new DomainFacade());
+        dialogBoxlist = new ArrayList<>();
     }
 
     /**
@@ -49,6 +59,7 @@ public class DiagramSubwindow extends Subwindow {
         super(pos, WindowLevelCounter.getNextLevel());
         setLabelMode(false);
         setFacade(facade);
+        dialogBoxlist = new ArrayList<>();
     }
 
     /**
@@ -178,7 +189,7 @@ public class DiagramSubwindow extends Subwindow {
      *
      * @param keyEvent the keyevent to handle
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
+    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         if (!labelMode) {
             switch (keyEvent.getKeyEventType()) {
                 case TAB:
@@ -197,6 +208,9 @@ public class DiagramSubwindow extends Subwindow {
                         this.removeLastCharFromLabel();
                     }
                     break;
+                case CTRLENTER:
+                    opendialogBox();
+                    break;
                 default:
                     break;
             }
@@ -212,6 +226,58 @@ public class DiagramSubwindow extends Subwindow {
                     break;
             }
         }
+    }
+
+    private void opendialogBox() throws UIException {
+        if(selected == null){
+            DiagramDialogBox diagramBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
+            closeOldDialogBoxes(diagramBox);
+            dialogBoxlist.add(diagramBox);
+        }
+        else if(selectedElementIsParty()){
+            Party p = (Party) selected;
+            openPartyDialogBox(p);
+        }
+        else if(selectedElementIsLabel()){
+            DiagramElement element = this.getFacade().findParentElement((Label) selected);
+            if(element instanceof Party){
+                Party p = (Party) element;
+                openPartyDialogBox(p);
+            }
+            else if(selected instanceof InvocationMessageLabel){
+                InvocationMessageDialogBox invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(100, 100), (InvocationMessageLabel) selected, this);
+                closeOldDialogBoxes(invocationMessageDialogBox);
+                dialogBoxlist.add(invocationMessageDialogBox);
+            }
+            else if(element instanceof ResultMessage){
+                ResultMessageDialogBox resultMessageDialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element , this);
+                closeOldDialogBoxes(resultMessageDialogBox);
+                dialogBoxlist.add(resultMessageDialogBox);
+            }
+        }
+    }
+
+    private void openPartyDialogBox(Party p) throws UIException{
+        PartyDialogBox partyDialogBox = new PartyDialogBox(new Point2D.Double(100,100), p, this);
+        closeOldDialogBoxes(partyDialogBox);
+        closeOtherPartyDialogBoxes(partyDialogBox);
+        dialogBoxlist.add(partyDialogBox);
+    }
+
+    private void closeOldDialogBoxes(DialogBox newBox){
+        List<DialogBox> olds = dialogBoxlist.stream()
+                                    .filter(d -> d.getClass() != newBox.getClass())
+                                    .collect(Collectors.toList());
+        dialogBoxlist.removeAll(olds);
+    }
+
+    private void closeOtherPartyDialogBoxes(PartyDialogBox dialogBox){
+        List<DialogBox> olds = dialogBoxlist.stream()
+                .filter(d -> d.getClass() != dialogBox.getClass())
+                .map(d -> (PartyDialogBox) d)
+                .filter(d -> d.getParty() != dialogBox.getParty())
+                .collect(Collectors.toList());
+        dialogBoxlist.removeAll(olds);
     }
 
     public void changeActiveDiagram(){

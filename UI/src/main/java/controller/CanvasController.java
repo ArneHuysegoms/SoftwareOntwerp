@@ -19,107 +19,52 @@ import java.util.stream.Collectors;
  */
 public class CanvasController {
 
-    private List<SubWindowLevel> subwindows;
-    private DiagramSubwindow activeDiagramSubwindow;
+    //private List<SubWindowLevel> subwindows;
+    //private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
+    private InteractionController activeInteractionController;
+    private List<InteractionController> interactionControllers;
 
     /**
      * constructs a new empty canvascontroller
      */
     public CanvasController() {
-        this.setSubwindows(new ArrayList<>());
-        this.activeDiagramSubwindow = null;
+        //this.setSubwindows(new ArrayList<>());
+        //this.activeDiagramSubwindow = null;
+        this.activeInteractionController = null;
+        this.setInteractionControllers(new ArrayList<>());
     }
 
-    /**
-     * @return the list containing all subwindows
-     */
-    public List<SubWindowLevel> getSubwindows() {
-        return subwindows;
+    public InteractionController getActiveInteractionController() {
+        return activeInteractionController;
     }
 
-    /**
-     * sets the subwindowlevels  to the given subwindowlevels
-     * @param subwindows the new subwindows
-     * @throws IllegalArgumentException if the given subwindows is null
-     */
-    private void setSubwindows(List<SubWindowLevel> subwindows) throws IllegalArgumentException {
-        if (subwindows == null) {
-            throw new IllegalArgumentException("Subwindows may not be null");
+    public void setActiveInteractionController(InteractionController activeInteractionController) {
+        this.activeInteractionController = activeInteractionController;
+    }
+
+    public List<InteractionController> getInteractionControllers() {
+        return interactionControllers;
+    }
+
+    public void setInteractionControllers(List<InteractionController> interactionControllers) {
+        this.interactionControllers = interactionControllers;
+    }
+
+    public void addInteractionController(InteractionController interactionController){
+        if(!this.getInteractionControllers().contains(interactionController)){
+            this.interactionControllers.add(interactionController);
         }
-        this.subwindows = subwindows;
+        setActiveInteractionController(interactionController);
     }
 
-    /**
-     *
-     * @return active diagramSubwindow
-     */
-    public DiagramSubwindow getActiveDiagramSubwindow() {
-        return activeDiagramSubwindow;
+    public void removeInteractionController(InteractionController interactionController){
+        this.interactionControllers.remove(interactionController);
+        //iets active setten?
     }
 
-    /**
-     *
-     * @param activeDiagramSubwindow the new active diagramSubwindow
-     */
-    private void setActiveDiagramSubwindow(DiagramSubwindow activeDiagramSubwindow){
-        this.activeDiagramSubwindow = activeDiagramSubwindow;
-    }
-
-    /**
-     * removes the diagramSubwindow from the list and sets the diagramSubwindow with the highest level as active diagramSubwindow
-     * @param diagramSubwindow the diagramSubwindow to remove
-     */
-    public void removeSubwindow(DiagramSubwindow diagramSubwindow) {
-        SubWindowLevel toRemove = null;
-        for (SubWindowLevel s : subwindows) {
-            if (s.getDiagramSubwindow().equals(diagramSubwindow)) {
-                toRemove = s;
-            }
-        }
-        this.getSubwindows().remove(toRemove);
-        setNewActiveSubWindow();
-    }
-
-    /**
-     * sets the diagramSubwindow with the highest level as active diagramSubwindow
-     */
-    public void setNewActiveSubWindow() {
-        SubWindowLevel s = findHighestSubwindowLevel();
-        if (s != null) {
-            changeActiveSubwindow(s.getDiagramSubwindow());
-        } else {
-            changeActiveSubwindow(null);
-        }
-    }
-
-    /**
-     * returns the diagramSubwindow with the highest level
-     * @return subwindowlevel
-     */
-    public SubWindowLevel findHighestSubwindowLevel() {
-        int level = -1;
-        SubWindowLevel chosen = null;
-        for (SubWindowLevel s : subwindows) {
-            if (s.getLevel() > level) {
-                chosen = s;
-                level = s.getLevel();
-            }
-        }
-        return chosen;
-    }
-
-    /**
-     * adds a diagramSubwindow with a given level to the list of subwindows
-     * @param diagramSubwindow the subindow to add
-     * @param level, level of the diagramSubwindow
-     */
-    public void addSubwindow(DiagramSubwindow diagramSubwindow, int level) {
-        if (diagramSubwindow == null) {
-            throw new IllegalArgumentException("can't add null diagramSubwindow");
-        }
-        SubWindowLevel subWindowLevel = new SubWindowLevel(diagramSubwindow, level);
-        this.getSubwindows().add(subWindowLevel);
+    public void changeActiveInteractionController(InteractionController interactionController){
+        setActiveInteractionController(interactionController);
     }
 
     /**
@@ -129,17 +74,26 @@ public class CanvasController {
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                if (getActiveDiagramSubwindow() != null) {
-                    copyActiveSubWindow();
+                checkForDeleteInteractionController();
+                if(getActiveInteractionController() != null){
+                    activeInteractionController.handleKeyEvent(keyEvent);
                 }
+                /*if (getActiveDiagramSubwindow() != null) {
+                    copyActiveSubWindow();
+                }*/
                 break;
             case CTRLN:
-                createNewSubwindow();
+                createNewInteractionController();
+                activeInteractionController.handleKeyEvent(keyEvent);
+                //createNewSubwindow();
                 break;
             default:
-                if (this.getActiveDiagramSubwindow() != null) {
-                    activeDiagramSubwindow.handleKeyEvent(keyEvent);
+                if(this.getActiveInteractionController() != null){
+                    activeInteractionController.handleKeyEvent(keyEvent);
                 }
+                /*if (this.getActiveDiagramSubwindow() != null) {
+                    activeDiagramSubwindow.handleKeyEvent(keyEvent);
+                }*/
                 break;
         }
     }
@@ -158,7 +112,7 @@ public class CanvasController {
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        if (!dragging) {
+        /*if (!dragging) {
             dragging = checkFordragging(mouseEvent);
         }
         if (dragging) {
@@ -173,18 +127,21 @@ public class CanvasController {
                 default:
                     break;
             }
-        } else {
-            DiagramSubwindow diagramSubwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-            if (diagramSubwindow != null) {
-                if (!diagramSubwindow.equals(getActiveDiagramSubwindow())) {
-                    changeActiveSubwindow(diagramSubwindow);
+        } else {*/
+            InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
+            if (ic != null) {
+                if (!ic.equals(getActiveInteractionController())) {
+                    changeActiveInteractionController(ic);
                 }
-                Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
+                ic.handleMouseEvent(mouseEvent);
+                /*Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
-                diagramSubwindow.handleMouseEvent(mouseEvent);
+                diagramSubwindow.handleMouseEvent(mouseEvent);*/
             }
-        }
+        //}
     }
+
+
 
     /**
      * checks if  the mouseEvent results in a drag
@@ -200,7 +157,7 @@ public class CanvasController {
      *                  return true
      *         else return false
      */
-    private boolean checkFordragging(MouseEvent mouseEvent) {
+/*    private boolean checkFordragging(MouseEvent mouseEvent) {
         if (activeDiagramSubwindow != null) {
             if (getActiveDiagramSubwindow().isDragging()) {
                 return false;
@@ -218,48 +175,39 @@ public class CanvasController {
             }
         }
         return false;
+    }*/
+
+
+    private void createNewInteractionController(){
+        InteractionController interactionController = new InteractionController();
+        this.changeActiveInteractionController(interactionController);
     }
 
-    /**
-     * sets the active diagramSubwindow to newActiveSubWindow and changes the level to the highest
-     *
-     * @param newActiveSubWindow the new actie diagramSubwindow
-     *
-     */
-    private void changeActiveSubwindow(DiagramSubwindow newActiveSubWindow) {
-        this.setActiveDiagramSubwindow(newActiveSubWindow);
-        this.changeLevelForActiveSubWindow();
-    }
-
-    /**
-     * changes the level for the active diagramSubwindow
-     */
-    private void changeLevelForActiveSubWindow() {
-        if (activeDiagramSubwindow != null) {
-            for (SubWindowLevel s : subwindows) {
-                if (s.getDiagramSubwindow().equals(getActiveDiagramSubwindow())) {
-                    s.setLevel(getCorrectLevel());
-                }
+    private void checkForDeleteInteractionController(){
+        if(activeInteractionController.getActiveDiagramSubwindow() == null){
+            if(activeInteractionController.getDiagramSubwindows().isEmpty()){
+                this.activeInteractionController = null;
             }
         }
     }
 
+
     /**
      * creates a new diagramSubwindow with the correct level, adds it to the list of subwindows and sets it as active
      */
-    private void createNewSubwindow() {
+ /*   private void createNewSubwindow() {
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), new InteractionMediator());
         Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
         diagramSubwindow.getFrame().setButton(button);
         int level = getCorrectLevel();
         addSubwindow(diagramSubwindow, level);
         this.changeActiveSubwindow(diagramSubwindow);
-    }
+    }*/
 
     /**
      * copies the active diagramSubwindow, sets the correct level, adds it to the list of subwindows and sets it active
      */
-    private void copyActiveSubWindow() {
+   /* private void copyActiveSubWindow() {
         if (this.getActiveDiagramSubwindow() != null) {
             DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade(), activeDiagramSubwindow.getMediator());
             Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
@@ -268,110 +216,19 @@ public class CanvasController {
             addSubwindow(diagramSubwindow, level);
             this.changeActiveSubwindow(diagramSubwindow);
         }
-    }
+    }*/
 
-    /**
-     *
-     * @return the highest level in the list of subwindows
-     */
-    private int getCorrectLevel() {
+
+    public InteractionController getAppropriateInteractionController(Point2D clickedLocation){
+        InteractionController result = null;
         int level = -1;
-        for (SubWindowLevel s : subwindows) {
-            if (s.getLevel() > level) {
-                level = s.getLevel();
+        for(InteractionController ic : getInteractionControllers()){
+            DiagramSubwindow ds = ic.getAppropriateSubwindow(clickedLocation);
+            if(ds.getLevel() > level){
+                result = ic;
+                level = ds.getLevel();
             }
         }
-        level++;
-        return level;
-    }
-
-    /**
-     * returns the diagramSubwindow with the highest level
-     * @param clickedLocation the location of the click
-     * @return diagramSubwindow if a diagramSubwindow is clicked, null otherwise
-     */
-    private DiagramSubwindow getAppropriateSubwindow(Point2D clickedLocation) {
-        List<SubWindowLevel> clickedSubwindows = this.getSubwindows()
-                .stream()
-                .filter(s -> s.getDiagramSubwindow().isClicked(clickedLocation))
-                .collect(Collectors.toList());
-        int level = -1;
-        DiagramSubwindow highest = null;
-        for (SubWindowLevel s : clickedSubwindows) {
-            if (s.getLevel() > level) {
-                highest = s.getDiagramSubwindow();
-                level = s.getLevel();
-            }
-        }
-        return highest;
-    }
-
-    /**
-     * class SubWindowLevel
-     *
-     * Contains a diagramSubwindow and its level in the canvas
-     */
-    public class SubWindowLevel implements Comparable<SubWindowLevel> {
-
-        private DiagramSubwindow diagramSubwindow;
-        private int level;
-
-        /**
-         * constructor for SubWindowLevel
-         * @param diagramSubwindow the diagramSubwindow
-         * @param level the level of this diagramSubwindow in the canvas
-         */
-        public SubWindowLevel(DiagramSubwindow diagramSubwindow, int level) {
-            this.setDiagramSubwindow(diagramSubwindow);
-            this.setLevel(level);
-        }
-
-        /**
-         *
-         * @return diagramSubwindow
-         */
-        public DiagramSubwindow getDiagramSubwindow() {
-            return diagramSubwindow;
-        }
-
-        /**
-         * sets the diagramSubwindow to param diagramSubwindow
-         * @param diagramSubwindow the new  diagramSubwindow
-         */
-        private void setDiagramSubwindow(DiagramSubwindow diagramSubwindow) {
-            if (diagramSubwindow == null) {
-                throw new IllegalArgumentException("DiagramSubwindow may not be null");
-            }
-            this.diagramSubwindow = diagramSubwindow;
-        }
-
-        /**
-         *
-         * @return level
-         */
-        public int getLevel() {
-            return level;
-        }
-
-        /**
-         * sets the level to param level
-         * @param level the new level
-         */
-        private void setLevel(int level) {
-            if (level < 0) {
-                throw new IllegalArgumentException("level can't be negative");
-            }
-            this.level = level;
-        }
-
-        /**
-         * compares SubWindowLevel by level
-         * @param o other diagramSubwindow to compare to
-         * @return positive if higher, 0 if equal, negative if smaller
-         */
-        @Override
-        public int compareTo(SubWindowLevel o) {
-            return -Integer.compare(this.getLevel(), o.getLevel());
-        }
+        return result;
     }
 }

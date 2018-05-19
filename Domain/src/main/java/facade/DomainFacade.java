@@ -212,6 +212,16 @@ public class DomainFacade {
     }
 
     /**
+     * finds the diagramelement that has the given label
+     *
+     * @param label the label to find the parent off
+     * @return the parent of the label or null if no such parent exists
+     */
+    public DiagramElement findParentElement(Label label){
+        return this.getDiagram().findParentElement(label);
+    }
+
+    /**
      * deletes the given diagramelements in the repos
      * @param deletedElements the elements to remove
      */
