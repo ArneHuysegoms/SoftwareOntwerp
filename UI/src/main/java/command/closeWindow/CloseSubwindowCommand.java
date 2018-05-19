@@ -1,5 +1,6 @@
 package command.closeWindow;
 
+import action.Action;
 import command.Command;
 import window.diagram.DiagramSubwindow;
 
@@ -20,5 +21,5 @@ public abstract class CloseSubwindowCommand extends Command {
     }
 
     @Override
-    public abstract void performAction();
+    public abstract Action performAction();
 }

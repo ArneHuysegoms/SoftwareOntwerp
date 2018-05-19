@@ -1,5 +1,7 @@
 package command.changeType;
 
+import action.Action;
+import action.EmptyAction;
 import command.Command;
 import window.diagram.DiagramSubwindow;
 
@@ -12,9 +14,10 @@ public class ChangeToCommunicationCommand extends Command {
     }
 
     @Override
-    public void performAction() {
+    public Action performAction() {
         if(! (diagramSubwindow.activeDiagramIsCommunication())){
             diagramSubwindow.changeActiveDiagram();
         }
+        return new EmptyAction();
     }
 }
