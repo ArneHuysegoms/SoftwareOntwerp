@@ -1,5 +1,7 @@
 package command.closeWindow;
 
+import action.Action;
+import action.EmptyAction;
 import window.diagram.DiagramSubwindow;
 import window.dialogbox.DialogBox;
 
@@ -21,7 +23,8 @@ public class CloseDialogBoxCommand extends CloseSubwindowCommand {
     }
 
     @Override
-    public void performAction() {
-        //TODO
+    public Action performAction() {
+        getDiagramSubwindow().removeDialogBox(getDialogBox());
+        return new EmptyAction();
     }
 }

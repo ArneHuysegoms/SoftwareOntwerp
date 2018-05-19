@@ -1,5 +1,6 @@
 package window.diagram;
 
+import action.*;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
@@ -14,6 +15,7 @@ import view.diagram.CommunicationView;
 import view.diagram.DiagramView;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.IActionHandler;
 import window.Subwindow;
 import window.WindowLevelCounter;
 import window.dialogbox.*;
@@ -24,18 +26,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DiagramSubwindow extends Subwindow {
+public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
-    private boolean labelMode;
+
     private Label label;
     private DomainFacade facade;
     private String labelContainer = "";
 
     private DiagramElement selected;
     
-    private boolean editing;
-
     private List<DialogBox> dialogBoxlist;
+
+    private DialogBox activeDialogBox;
 
     /**
      * default contructor for subwindow with default width and height
@@ -82,28 +84,6 @@ public class DiagramSubwindow extends Subwindow {
         setLabelContainer(labelContainer + c);
     }
 
-    /**
-     * checks if this subwindow is in labelmode
-     */
-    public boolean isInLabelMode() {
-        return this.labelMode;
-    }
-
-    /**
-     * @return true if the subwindow is in label mode
-     */
-    public boolean isLabelMode() {
-        return labelMode;
-    }
-
-    /**
-     * sets the subwindow in the given labelmode
-     *
-     * @param labelMode the new labelmode for this subwindow
-     */
-    public void setLabelMode(boolean labelMode) {
-        this.labelMode = labelMode;
-    }
 
     /**
      * @return the active label
@@ -129,21 +109,6 @@ public class DiagramSubwindow extends Subwindow {
     }
 
     /**
-     * @return wether or not this subwindow is editing
-     */
-    public boolean isEditing(){
-        return editing;
-    }
-
-    /**
-     *
-     * @param editing the new mode for the editing flag
-     */
-    public void setEditing(boolean editing){
-        this.editing = editing;
-    }
-
-    /**
      * sets the facade for this subwindow
      *
      * @param facade the new facade for this subwindow
@@ -164,7 +129,7 @@ public class DiagramSubwindow extends Subwindow {
      *
      * @param labelContainer the new labelcontainer for this subwindow
      */
-    private void setLabelContainer(String labelContainer) {
+    public void setLabelContainer(String labelContainer) {
         this.labelContainer = labelContainer;
     }
 
@@ -188,24 +153,25 @@ public class DiagramSubwindow extends Subwindow {
      * handle the given keyevent accordingly
      *
      * @param keyEvent the keyevent to handle
+     *
+     * @return an action to be handled higher up
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
+    public Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         if (!labelMode) {
             switch (keyEvent.getKeyEventType()) {
                 case TAB:
                     this.getFacade().changeActiveDiagram();
                     break;
                 case DEL:
-                    this.deleteElement();
-                    break;
+                    return this.deleteElement();
                 case CHAR:
                     if (selectedElementIsLabel() && editing) {
-                        this.addCharToLabel(keyEvent.getKeyChar());
+                        return this.addCharToLabel(keyEvent.getKeyChar());
                     }
                     break;
                 case BACKSPACE:
                     if (selectedElementIsLabel() && editing) {
-                        this.removeLastCharFromLabel();
+                        return this.removeLastCharFromLabel();
                     }
                     break;
                 case CTRLENTER:
@@ -217,22 +183,29 @@ public class DiagramSubwindow extends Subwindow {
         } else if (selectedElementIsLabel()) {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
-                    this.addCharToLabel(keyEvent.getKeyChar());
-                    break;
+                    return this.addCharToLabel(keyEvent.getKeyChar());
                 case BACKSPACE:
-                    this.removeLastCharFromLabel();
-                    break;
+                    return this.removeLastCharFromLabel();
                 default:
                     break;
             }
         }
+        return new EmptyAction();
     }
 
-    private void opendialogBox() throws UIException {
+    public void removeDialogBox(DialogBox dialogBox){
+        this.dialogBoxlist.remove(dialogBox);
+        if(activeDialogBox == dialogBox){
+            this.activeDialogBox = null;
+        }
+    }
+
+    public void opendialogBox() throws UIException {
         if(selected == null){
             DiagramDialogBox diagramBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
             closeOldDialogBoxes(diagramBox);
             dialogBoxlist.add(diagramBox);
+            activeDialogBox = diagramBox;
         }
         else if(selectedElementIsParty()){
             Party p = (Party) selected;
@@ -248,11 +221,13 @@ public class DiagramSubwindow extends Subwindow {
                 InvocationMessageDialogBox invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(100, 100), (InvocationMessageLabel) selected, this);
                 closeOldDialogBoxes(invocationMessageDialogBox);
                 dialogBoxlist.add(invocationMessageDialogBox);
+                activeDialogBox = invocationMessageDialogBox;
             }
             else if(element instanceof ResultMessage){
                 ResultMessageDialogBox resultMessageDialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element , this);
                 closeOldDialogBoxes(resultMessageDialogBox);
                 dialogBoxlist.add(resultMessageDialogBox);
+                activeDialogBox = resultMessageDialogBox;
             }
         }
     }
@@ -262,6 +237,7 @@ public class DiagramSubwindow extends Subwindow {
         closeOldDialogBoxes(partyDialogBox);
         closeOtherPartyDialogBoxes(partyDialogBox);
         dialogBoxlist.add(partyDialogBox);
+        activeDialogBox = partyDialogBox;
     }
 
     private void closeOldDialogBoxes(DialogBox newBox){
@@ -296,8 +272,10 @@ public class DiagramSubwindow extends Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
+     *
+     * @return an action to be handled higher up
      */
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
@@ -311,8 +289,7 @@ public class DiagramSubwindow extends Subwindow {
                     handleMousePressed(mouseEvent);
                     break;
                 case RELEASE:
-                    handleReleaseClick(mouseEvent);
-                    break;
+                    return handleReleaseClick(mouseEvent);
                 case LEFTCLICK:
                     handleLeftClick(mouseEvent);
                     break;
@@ -321,6 +298,7 @@ public class DiagramSubwindow extends Subwindow {
                         Party oldParty = (Party) selected;
                         Party newParty = this.getFacade().changePartyType(oldParty);
                         selected = newParty;
+                        return new UpdatePartyTypeAction(oldParty, newParty);
                         //mediator.updatePartyTypeInOtherSubwindows(oldParty, newParty, this);
                     }
                     if (this.selected == null) {
@@ -328,6 +306,7 @@ public class DiagramSubwindow extends Subwindow {
                         selected = newParty.getLabel();
                         startEditingLabel();
                         editing = true;
+                        return new AddNewPartyToReposAction(newParty, mouseEvent.getPoint());
                         //mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
@@ -335,14 +314,17 @@ public class DiagramSubwindow extends Subwindow {
                     break;
             }
         }
+        return new EmptyAction();
     }
 
     /**
      * handle a left click on the UI
      *
      * @param mouseEvent the MouseEvent containing the information of the event
+     *
+     * @return an action detailing that the messages have to be added elsewhere
      */
-    private void handleReleaseClick(MouseEvent mouseEvent) {
+    private Action handleReleaseClick(MouseEvent mouseEvent) {
         this.setDragging(false);
         if (selectedElementIsMessageStart()) {
             DiagramView.MessageStart ms = (DiagramView.MessageStart) selected;
@@ -350,8 +332,10 @@ public class DiagramSubwindow extends Subwindow {
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
             editing = true;
+            return new AddNewMessagesInRepos(newMessages);
             //mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
+        return new EmptyAction();
     }
 
     /**
@@ -410,15 +394,6 @@ public class DiagramSubwindow extends Subwindow {
     }
 
     /**
-     * returns a relative point based on the given location and the location of the subwindow
-     * @param location the location that needs to be translated
-     * @return a relative point to this subwindow based on the given location
-     */
-    public Point2D getRelativePoint(Point2D location) {
-        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
-    }
-
-    /**
      * start editing a label in the subwindow
      */
     private void startEditingLabel() {
@@ -429,15 +404,19 @@ public class DiagramSubwindow extends Subwindow {
 
     /**
      * delete the elements in the repos of the other subwindows
+     *
+     * @return an action detailing what needs to happen in other subwindows
      */
-    private void deleteElement() {
+    private Action deleteElement() {
         if (selectedElementIsLabel()) {
             Label l = (Label) selected;
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             //mediator.removeInReposInOtherSubwindows(deletedElements, this);
             stopEditingLabel();
             selected = null;
+            return new RemoveInReposAction(deletedElements);
         }
+        return new EmptyAction();
     }
 
     /**
@@ -453,8 +432,9 @@ public class DiagramSubwindow extends Subwindow {
      * adds the given char to the active label
      *
      * @param c the char to add
+     * @return an action detailing what needs to happen in other subwindows
      */
-    private void addCharToLabel(char c) throws DomainException {
+    private Action addCharToLabel(char c) throws DomainException {
         String l = "";
         if (labelContainer.equals("")) {
             l = "";
@@ -464,33 +444,40 @@ public class DiagramSubwindow extends Subwindow {
         l += c;
         l += "I";
         labelContainer = l;
-        handleChangeInLabel();
+        return handleChangeInLabel();
     }
 
     /**
      * removes the last char from the active label
+     *
+     * @return an action detailing what needs to happen in other subwindows
      */
-    private void removeLastCharFromLabel() throws DomainException {
+    private Action removeLastCharFromLabel() throws DomainException {
         if (labelContainer.length() > 1) {
             String l = labelContainer.substring(0, getLabelContainer().length() - 2);
             l += "I";
             labelContainer = l;
             labelMode = !checkIfValidLable();
-            handleChangeInLabel();
+            return handleChangeInLabel();
         }
+        return new EmptyAction();
     }
 
     /**
      * handle a change in the active label
+     * @return an action detailing what needs to happen in other subwindows
      */
-    private void handleChangeInLabel() throws DomainException {
+    private Action handleChangeInLabel() throws DomainException {
         if (checkIfValidLable()) {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
             //mediator.updateLabelContainers(selectedLabel, this);
+            updateDialogBoxes(new UpdateLabelAction(selected));
+            return new UpdateLabelContainersAction(selectedLabel);
         } else {
             labelMode = true;
+            return new EmptyAction();
         }
     }
 
@@ -509,8 +496,17 @@ public class DiagramSubwindow extends Subwindow {
         }
         return true;
     }
-
-    public List<DialogBox> getDialogBoxlist() {
-        return dialogBoxlist;
+  @Override
+    public void handleAction(Action action) {
+        action.performAction(this);
+        for(DialogBox dialogBox : dialogBoxlist){
+            dialogBox.handleAction(action);
+        }public Action updateDialogBoxes(Action action){
+        for(DialogBox dialogBox : dialogBoxlist){
+            dialogBox.handleAction(action);
+        }
+        return action;
     }
-}
+public List<DialogBox> getDialogBoxlist() {
+        return dialogBoxlist;
+    }   }

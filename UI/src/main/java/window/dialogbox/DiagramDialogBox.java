@@ -1,5 +1,7 @@
 package window.dialogbox;
 
+import action.Action;
+import action.EmptyAction;
 import command.changeType.ChangeToCommunicationCommand;
 import command.changeType.ChangeToSequenceCommand;
 import exception.UIException;
@@ -61,16 +63,17 @@ public class DiagramDialogBox extends DialogBox {
     }
 
     @Override
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
             case PRESSED:
                 handleMousePress(mouseEvent);
                 break;
         }
+        return new EmptyAction();
     }
 
     @Override
-    public void handleKeyEvent(KeyEvent keyEvent) {
+    public Action handleKeyEvent(KeyEvent keyEvent) {
         switch (keyEvent.getKeyEventType()){
             case TAB:
                 changeSelectedRadioButton();
@@ -79,6 +82,7 @@ public class DiagramDialogBox extends DialogBox {
                 selected.performAction();
                 break;
         }
+        return new EmptyAction();
     }
 
     private void handleMousePress(MouseEvent mouseEvent){
@@ -99,5 +103,10 @@ public class DiagramDialogBox extends DialogBox {
         else{
             selected = toCommunicationDiagram;
         }
+    }
+
+    @Override
+    public void handleAction(Action action) {
+
     }
 }

@@ -1,5 +1,6 @@
 package window;
 
+import action.Action;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -13,9 +14,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
-
-    //TODO give InteractionController
+public abstract class Subwindow implements Clickable, ILowController, Comparable<Subwindow>{
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
@@ -25,6 +24,8 @@ public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
     private Point2D position;
     private int level;
     private boolean dragging = false;
+    protected boolean labelMode = false;
+    protected boolean editing = false;
 
     private SubwindowFrame frame;
 
@@ -72,6 +73,37 @@ public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
             Button button = frame.getButton();
             frame = new SubwindowFrame(this.getPosition(), height, width, button);
         }
+    }
+
+    /**
+     * @return true if the subwindow is in label mode
+     */
+    public boolean isLabelMode() {
+        return labelMode;
+    }
+
+    /**
+     * sets the subwindow in the given labelmode
+     *
+     * @param labelMode the new labelmode for this subwindow
+     */
+    public void setLabelMode(boolean labelMode) {
+        this.labelMode = labelMode;
+    }
+
+    /**
+     * @return wether or not this subwindow is editing
+     */
+    public boolean isEditing(){
+        return editing;
+    }
+
+    /**
+     *
+     * @param editing the new mode for the editing flag
+     */
+    public void setEditing(boolean editing){
+        this.editing = editing;
     }
 
     /**
@@ -315,12 +347,21 @@ public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
         return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
     }
 
+    /**
+     * returns a relative point based on the given location and the location of the subwindow
+     * @param location the location that needs to be translated
+     * @return a relative point to this subwindow based on the given location
+     */
+    public Point2D getRelativePoint(Point2D location) {
+        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
+    }
+
     @Override
     public int compareTo(Subwindow other){
         return Integer.compare(this.getLevel(), other.getLevel());
     }
 
-    public abstract void handleMouseEvent(MouseEvent mouseEvent);
+    public abstract Action handleMouseEvent(MouseEvent mouseEvent);
 
-    public abstract void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
+    public abstract Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
 }
