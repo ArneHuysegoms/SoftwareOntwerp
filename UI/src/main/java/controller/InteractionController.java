@@ -6,6 +6,7 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.Message;
 import diagram.party.Party;
+import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
@@ -253,7 +254,7 @@ public class InteractionController {
      * handles a key event
      * @param keyEvent the keyEvent to handle
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
+    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 if (getActiveDiagramSubwindow() != null) {
@@ -378,7 +379,7 @@ public class InteractionController {
      */
     private void createNewSubwindow() {
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-        Button button = new Button(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
+        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
         diagramSubwindow.getFrame().setButton(button);
         //int level = getCorrectLevel();
         addSubwindow(diagramSubwindow);
@@ -391,7 +392,7 @@ public class InteractionController {
     private void copyActiveSubWindow() {
         if (this.getActiveDiagramSubwindow() != null) {
             DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade());
-            Button button = new Button(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
+            Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
             diagramSubwindow.getFrame().setButton(button);
             //int level = getCorrectLevel();
             addSubwindow(diagramSubwindow);
