@@ -1,5 +1,6 @@
 package window.dialogbox;
 
+import action.*;
 import command.changeType.ChangeToActorCommand;
 import command.changeType.ChangeToObjectCommand;
 import diagram.party.Party;
@@ -7,6 +8,7 @@ import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.RadioButton;
@@ -41,6 +43,8 @@ public class PartyDialogBox extends DialogBox {
 
     private Party party;
 
+    private DiagramSubwindow subwindow;
+
     //TODO give party
     public PartyDialogBox(Point2D pos, Party party, DiagramSubwindow subwindow) throws UIException {
         super(pos);
@@ -55,6 +59,8 @@ public class PartyDialogBox extends DialogBox {
         elementList.add(instanceTextBox);
         elementList.add(classTextBox);
         selected = toActor;
+
+        subwindow = subwindow;
     }
 
     public static int getWIDTH() {
@@ -114,16 +120,18 @@ public class PartyDialogBox extends DialogBox {
     }
 
     @Override
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
             case PRESSED:
                 handleMousePress(mouseEvent);
                 break;
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     @Override
-    public void handleKeyEvent(KeyEvent keyEvent) {
+    public Action handleKeyEvent(KeyEvent keyEvent) {
         try {
             switch (keyEvent.getKeyEventType()) {
                 case TAB:
@@ -143,6 +151,8 @@ public class PartyDialogBox extends DialogBox {
         catch (DomainException e){
             e.printStackTrace();
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     private void handleMousePress(MouseEvent mouseEvent) {
@@ -181,7 +191,7 @@ public class PartyDialogBox extends DialogBox {
 
     private void cycleSelectedElement() {
         int oldIndex = elementList.indexOf(selected);
-        selected = elementList.get((oldIndex++) % 4);
+        selected = elementList.get((oldIndex + 1) % 4);
     }
 
     private void handleSpace() {
@@ -212,6 +222,46 @@ public class PartyDialogBox extends DialogBox {
             else{
                 party.getLabel().setLabel(split[0] + " :" + t.getContents());
             }
+        }
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        if(action instanceof RemoveInReposAction) {
+            RemoveInReposAction a = (RemoveInReposAction) action;
+            if(a.getDeletedElements().contains(party)){
+                this.getFrame().close();
+            }
+        }
+        else if(action instanceof UpdatePartyTypeAction){
+            UpdatePartyTypeAction a = (UpdatePartyTypeAction) action;
+            if(a.getOldParty().equals(party)){
+                subwindow.setSelected(a.getNewParty());
+                try {
+                    subwindow.opendialogBox();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                this.getFrame().close();
+            }
+        }
+        if(action instanceof UpdateLabelAction){
+            UpdateLabelAction a = (UpdateLabelAction) action;
+            if(a.getElement().equals(party)){
+                updateFields((Party) a.getElement());
+            }
+        }
+    }
+
+    private void updateFields(Party party) {
+        String[] labels = party.getLabel().getLabel().split(":");
+        if(labels.length == 2){
+            instanceTextBox.setContents(labels[0]);
+            classTextBox.setContents(labels[1]);
+        }
+        else{
+            classTextBox.setContents(labels[0]);
         }
     }
 }

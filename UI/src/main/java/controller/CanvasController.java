@@ -1,6 +1,7 @@
 package controller;
 
 import command.closeWindow.CloseSubwindowCommand;
+import exception.UIException;
 import exceptions.DomainException;
 import window.diagram.DiagramSubwindow;
 import window.elements.button.Button;
@@ -71,7 +72,7 @@ public class CanvasController {
      * handles a key event
      * @param keyEvent the keyEvent to handle
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException {
+    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 checkForDeleteInteractionController();
@@ -143,7 +144,7 @@ public class CanvasController {
 
 
 
-    /**
+    /*
      * checks if  the mouseEvent results in a drag
      *
      * @param mouseEvent the mouseEvent to check for

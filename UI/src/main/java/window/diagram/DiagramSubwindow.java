@@ -1,5 +1,7 @@
 package window.diagram;
 
+import action.Action;
+import action.EmptyAction;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
@@ -14,6 +16,7 @@ import view.diagram.CommunicationView;
 import view.diagram.DiagramView;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.IActionHandler;
 import window.Subwindow;
 import window.WindowLevelCounter;
 import window.dialogbox.*;
@@ -24,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DiagramSubwindow extends Subwindow {
+public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     private boolean labelMode;
     private Label label;
@@ -36,6 +39,9 @@ public class DiagramSubwindow extends Subwindow {
     private boolean editing;
 
     private List<DialogBox> dialogBoxlist;
+
+    //TODO
+    private DialogBox active;
 
     /**
      * default contructor for subwindow with default width and height
@@ -164,7 +170,7 @@ public class DiagramSubwindow extends Subwindow {
      *
      * @param labelContainer the new labelcontainer for this subwindow
      */
-    private void setLabelContainer(String labelContainer) {
+    public void setLabelContainer(String labelContainer) {
         this.labelContainer = labelContainer;
     }
 
@@ -188,8 +194,11 @@ public class DiagramSubwindow extends Subwindow {
      * handle the given keyevent accordingly
      *
      * @param keyEvent the keyevent to handle
+     *
+     * @return an action to be handled higher up
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
+    //TODO update dialogBoxes
+    public Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         if (!labelMode) {
             switch (keyEvent.getKeyEventType()) {
                 case TAB:
@@ -226,9 +235,11 @@ public class DiagramSubwindow extends Subwindow {
                     break;
             }
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
-    private void opendialogBox() throws UIException {
+    public void opendialogBox() throws UIException {
         if(selected == null){
             DiagramDialogBox diagramBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
             closeOldDialogBoxes(diagramBox);
@@ -296,8 +307,11 @@ public class DiagramSubwindow extends Subwindow {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
+     *
+     * @return an action to be handled higher up
      */
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    //TODO update dialogBoxes
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         if (!labelMode) {
             switch (mouseEvent.getMouseEventType()) {
                 case DRAG:
@@ -335,6 +349,8 @@ public class DiagramSubwindow extends Subwindow {
                     break;
             }
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     /**
@@ -407,15 +423,6 @@ public class DiagramSubwindow extends Subwindow {
             }
             selected = newSelected;
         }
-    }
-
-    /**
-     * returns a relative point based on the given location and the location of the subwindow
-     * @param location the location that needs to be translated
-     * @return a relative point to this subwindow based on the given location
-     */
-    public Point2D getRelativePoint(Point2D location) {
-        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
     /**
@@ -508,5 +515,20 @@ public class DiagramSubwindow extends Subwindow {
             return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && !getLabelContainer().equals("");
         }
         return true;
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        action.performAction(this);
+        for(DialogBox dialogBox : dialogBoxlist){
+            dialogBox.handleAction(action);
+        }
+    }
+
+    public Action updateDialogBoxes(Action action){
+        for(DialogBox dialogBox : dialogBoxlist){
+            dialogBox.handleAction(action);
+        }
+        return action;
     }
 }

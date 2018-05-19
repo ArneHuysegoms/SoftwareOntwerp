@@ -1,5 +1,9 @@
 package window.dialogbox;
 
+import action.Action;
+import action.EmptyAction;
+import action.RemoveInReposAction;
+import action.UpdateLabelAction;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
@@ -55,11 +59,12 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
     @Override
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
+        return new EmptyAction();
     }
 
     @Override
-    public void handleKeyEvent(KeyEvent keyEvent) {
+    public Action handleKeyEvent(KeyEvent keyEvent) {
         try {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
@@ -72,6 +77,8 @@ public class ResultMessageDialogBox extends DialogBox {
         } catch (DomainException e) {
             e.printStackTrace();
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     private void handleBackSpace() throws DomainException {
@@ -90,5 +97,25 @@ public class ResultMessageDialogBox extends DialogBox {
 
     private void changeResultMessageLabel() throws DomainException {
         getResultMessage().getLabel().setLabel(selected.getContents());
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        if(action instanceof RemoveInReposAction) {
+            RemoveInReposAction a = (RemoveInReposAction) action;
+            if(a.getDeletedElements().contains(resultMessage)){
+                this.getFrame().close();
+            }
+        }
+        if(action instanceof UpdateLabelAction){
+            UpdateLabelAction a = (UpdateLabelAction) action;
+            if(a.getElement().equals(resultMessage)){
+                updateFields((ResultMessage) a.getElement());
+            }
+        }
+    }
+
+    private void updateFields(ResultMessage resultMessage) {
+        labelTextBox.setContents(resultMessage.getLabel().getLabel());
     }
 }
