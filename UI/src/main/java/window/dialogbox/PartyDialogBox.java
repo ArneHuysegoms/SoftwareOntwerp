@@ -57,6 +57,54 @@ public class PartyDialogBox extends DialogBox {
         selected = toActor;
     }
 
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public static String getToobjectDespcription() {
+        return TOOBJECT_DESPCRIPTION;
+    }
+
+    public static String getToactorDescription() {
+        return TOACTOR_DESCRIPTION;
+    }
+
+    public static String getInstanceDescription() {
+        return INSTANCE_DESCRIPTION;
+    }
+
+    public static String getClassDescription() {
+        return CLASS_DESCRIPTION;
+    }
+
+    public RadioButton getToActor() {
+        return toActor;
+    }
+
+    public RadioButton getToObject() {
+        return toObject;
+    }
+
+    public TextBox getInstanceTextBox() {
+        return instanceTextBox;
+    }
+
+    public TextBox getClassTextBox() {
+        return classTextBox;
+    }
+
+    public DialogboxElement getSelected() {
+        return selected;
+    }
+
+    public List<DialogboxElement> getElementList() {
+        return elementList;
+    }
+
     public Party getParty() {
         return party;
     }

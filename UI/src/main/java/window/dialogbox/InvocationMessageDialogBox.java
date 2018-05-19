@@ -64,6 +64,58 @@ public class InvocationMessageDialogBox extends DialogBox {
         selected = null;
     }
 
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public MethodTextBox getMethodTextBox() {
+        return methodTextBox;
+    }
+
+    public ArgumentTextBox getArgumentTextBox() {
+        return argumentTextBox;
+    }
+
+    public ListBox getArgumentListBox() {
+        return argumentListBox;
+    }
+
+    public FakeButton getAddArgument() {
+        return addArgument;
+    }
+
+    public FakeButton getDeleteArgument() {
+        return deleteArgument;
+    }
+
+    public FakeButton getMoveUp() {
+        return moveUp;
+    }
+
+    public FakeButton getMoveDown() {
+        return moveDown;
+    }
+
+    public DialogboxElement getSelected() {
+        return selected;
+    }
+
+    public List<DialogboxElement> getDialogboxElements() {
+        return dialogboxElements;
+    }
+
+    public InvocationMessageLabel getInvocationMessageLabel() {
+        return invocationMessageLabel;
+    }
+
+    public DiagramSubwindow getSubwindow() {
+        return subwindow;
+    }
+
     @Override
     public void handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {

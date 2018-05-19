@@ -32,6 +32,34 @@ public class DiagramDialogBox extends DialogBox {
         selected = toCommunicationDiagram;
     }
 
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public static String getTocommunicationdiagramDespcription() {
+        return TOCOMMUNICATIONDIAGRAM_DESPCRIPTION;
+    }
+
+    public static String getTosequencediagramDescription() {
+        return TOSEQUENCEDIAGRAM_DESCRIPTION;
+    }
+
+    public RadioButton getToCommunicationDiagram() {
+        return toCommunicationDiagram;
+    }
+
+    public RadioButton getToSequenceDiagram() {
+        return toSequenceDiagram;
+    }
+
+    public RadioButton getSelected() {
+        return selected;
+    }
+
     @Override
     public void handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {

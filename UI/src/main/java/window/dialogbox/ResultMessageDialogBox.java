@@ -30,6 +30,18 @@ public class ResultMessageDialogBox extends DialogBox {
         selected = labelTextBox;
     }
 
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public TextBox getSelected() {
+        return selected;
+    }
+
     public TextBox getLabelTextBox() {
         return labelTextBox;
     }
