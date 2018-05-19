@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SequenceFigureConverter extends Converter {
+public class SequenceFigureConverter extends DiagramSubwindowConverter {
 
     private Drawer responseMessageDrawingStrategy,
             lifeLineDrawer;

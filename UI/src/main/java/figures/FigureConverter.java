@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class FigureConverter {
 
-    private Converter converter;
+    private DiagramSubwindowConverter diagramConverter;
     //private Drawer subwindowDrawer;
 
     /**
@@ -64,7 +64,7 @@ public class FigureConverter {
                 tempDS = (DiagramSubwindow)sub;
                 setConverter(tempDS);
                 drawSubwindow(graphics, tempDS);
-                converter.draw(graphics, tempDS.getFacade().getActiveRepo(), tempDS.getFacade().getDiagram(), tempDS.getSelected());
+                diagramConverter.draw(graphics, tempDS.getFacade().getActiveRepo(), tempDS.getFacade().getDiagram(), tempDS.getSelected());
             }
             else {
                 drawDialogBoxes(graphics,(DialogBox)sub);
@@ -73,6 +73,11 @@ public class FigureConverter {
     }
 
     private void drawDialogBoxes(Graphics graphics, DialogBox sub) {
+        drawDialogBoxStructure(graphics, sub);
+
+    }
+
+    public void drawDialogBoxStructure(Graphics graphics, DialogBox sub){
         if(sub instanceof PartyDialogBox){
             new PartyDialogBoxFigure((PartyDialogBox)sub).draw(graphics,0, 0, 2000, 2000);
         }
@@ -119,9 +124,9 @@ public class FigureConverter {
      */
     public void setConverter(DiagramSubwindow sub) {
         if (sub.getFacade().getActiveRepo() instanceof SequenceView) {
-            converter = new SequenceFigureConverter(sub);
+            diagramConverter = new SequenceFigureConverter(sub);
         } else if (sub.getFacade().getActiveRepo() instanceof CommunicationView) {
-            converter = new CommunicationFigureConverter(sub);
+            diagramConverter = new CommunicationFigureConverter(sub);
         }
     }
 

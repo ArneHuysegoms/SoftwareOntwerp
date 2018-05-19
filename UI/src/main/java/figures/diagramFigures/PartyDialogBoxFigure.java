@@ -51,6 +51,6 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
         new Circle(obj,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);;
         graphics.drawString(PartyDialogBox.TOOBJECT_DESPCRIPTION, (int)obj.getX(), (int)obj.getY());
 
-        new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
+        //new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
     }
 }

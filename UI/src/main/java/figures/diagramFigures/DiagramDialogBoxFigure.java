@@ -35,6 +35,6 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         new Circle(seq,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
         graphics.drawString(DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION, (int)seq.getX(), (int)seq.getY());
 
-        new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);;
+        //new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);;
     }
 }

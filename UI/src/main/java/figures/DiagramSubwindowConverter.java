@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public abstract class Converter {
+public abstract class DiagramSubwindowConverter {
     private DiagramSubwindow diagramSubwindow;
     protected int x1, y1, x2, y2;
 
@@ -41,7 +41,7 @@ public abstract class Converter {
     /**
      * @param diagramSubwindow the diagramSubwindow to be drawn
      */
-    public Converter(DiagramSubwindow diagramSubwindow) {
+    public DiagramSubwindowConverter(DiagramSubwindow diagramSubwindow) {
         this.diagramSubwindow = diagramSubwindow;
         x1 = (int) getDiagramSubwindow().getPosition().getX();
         y1 = (int) getDiagramSubwindow().getPosition().getY();

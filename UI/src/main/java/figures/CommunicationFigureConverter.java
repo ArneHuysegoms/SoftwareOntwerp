@@ -3,9 +3,6 @@ package figures;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Party;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationActorDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationInvokeMessageDrawer;
-import figures.Drawer.DiagramSpecificDrawers.CommunicationObjectDrawer;
 import figures.diagramFigures.Arrow;
 import view.message.CommunicationMessageView;
 import view.message.MessageView;
@@ -18,7 +15,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
 
-public class CommunicationFigureConverter extends Converter {
+public class CommunicationFigureConverter extends DiagramSubwindowConverter {
 
     public CommunicationFigureConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
