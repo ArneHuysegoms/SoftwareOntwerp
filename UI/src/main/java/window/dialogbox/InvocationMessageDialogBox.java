@@ -22,6 +22,7 @@ import window.elements.textbox.TextBox;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InvocationMessageDialogBox extends DialogBox {
 
@@ -225,7 +226,7 @@ public class InvocationMessageDialogBox extends DialogBox {
                 handleDeleteArgument();
             } else if (moveDown == selected) {
                 handleMoveDown();
-            } else if (moveDown == selected) {
+            } else if (moveUp == selected) {
                 handleMoveUp();
             }
         }
@@ -278,7 +279,7 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     private void cycleSelectedElement() {
         int oldIndex = dialogboxElements.indexOf(selected);
-        selected = dialogboxElements.get((oldIndex++) % 7);
+        selected = dialogboxElements.get((oldIndex + 1) % 7);
     }
 
     @Override
@@ -300,6 +301,10 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     private void updateFields(InvocationMessage invocationMessage) {
-        //TODO
+        InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
+        methodTextBox.setContents(label.getLabel());
+        argumentListBox.setArguments(label.getArguments().stream()
+                                        .map(a -> a.toString())
+                                        .collect(Collectors.toList()));
     }
 }

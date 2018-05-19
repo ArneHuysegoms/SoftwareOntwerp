@@ -39,6 +39,10 @@ public class ListBox extends DialogboxElement implements Clickable {
         }
     }
 
+    public void setArguments(List<String> newArguments){
+        this.arguments = newArguments;
+    }
+
     @Override
     public boolean isClicked(Point2D location) {
         double startX = getCoordinate().getX();

@@ -191,7 +191,7 @@ public class PartyDialogBox extends DialogBox {
 
     private void cycleSelectedElement() {
         int oldIndex = elementList.indexOf(selected);
-        selected = elementList.get((oldIndex++) % 4);
+        selected = elementList.get((oldIndex + 1) % 4);
     }
 
     private void handleSpace() {
@@ -255,6 +255,13 @@ public class PartyDialogBox extends DialogBox {
     }
 
     private void updateFields(Party party) {
-        //TODO
+        String[] labels = party.getLabel().getLabel().split(":");
+        if(labels.length == 2){
+            instanceTextBox.setContents(labels[0]);
+            classTextBox.setContents(labels[1]);
+        }
+        else{
+            classTextBox.setContents(labels[0]);
+        }
     }
 }

@@ -17,6 +17,9 @@ public class UpdateLabelAction extends Action {
 
     @Override
     public void performAction(DiagramSubwindow subwindow) {
+        if(subwindow.getSelected().equals(element)){
+            subwindow.setLabelContainer(element.toString());
 
+        }
     }
 }

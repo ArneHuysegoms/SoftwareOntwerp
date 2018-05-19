@@ -170,7 +170,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      *
      * @param labelContainer the new labelcontainer for this subwindow
      */
-    private void setLabelContainer(String labelContainer) {
+    public void setLabelContainer(String labelContainer) {
         this.labelContainer = labelContainer;
     }
 
@@ -423,15 +423,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             }
             selected = newSelected;
         }
-    }
-
-    /**
-     * returns a relative point based on the given location and the location of the subwindow
-     * @param location the location that needs to be translated
-     * @return a relative point to this subwindow based on the given location
-     */
-    public Point2D getRelativePoint(Point2D location) {
-        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
     /**

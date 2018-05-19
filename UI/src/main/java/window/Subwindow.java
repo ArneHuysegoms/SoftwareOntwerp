@@ -16,8 +16,6 @@ import java.awt.geom.Point2D;
 
 public abstract class Subwindow implements Clickable, ILowController, Comparable<Subwindow>{
 
-    //TODO give InteractionController
-
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
 
@@ -314,6 +312,15 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
      */
     public Point2D getAbsolutePosition(Point2D relativePoint) {
         return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
+    }
+
+    /**
+     * returns a relative point based on the given location and the location of the subwindow
+     * @param location the location that needs to be translated
+     * @return a relative point to this subwindow based on the given location
+     */
+    public Point2D getRelativePoint(Point2D location) {
+        return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
     @Override

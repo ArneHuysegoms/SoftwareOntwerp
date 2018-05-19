@@ -116,6 +116,6 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
     private void updateFields(ResultMessage resultMessage) {
-        //TODO
+        labelTextBox.setContents(resultMessage.getLabel().getLabel());
     }
 }
