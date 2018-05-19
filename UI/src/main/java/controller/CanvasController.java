@@ -190,6 +190,7 @@ public class CanvasController {
                 this.activeInteractionController = null;
             }
         }
+        //getSubwindows() kan nog dialogboxes bevatten?
     }
 
 

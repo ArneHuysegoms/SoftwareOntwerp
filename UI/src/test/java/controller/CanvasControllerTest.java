@@ -7,11 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 public class CanvasControllerTest {
 
-    @Test
-    public void Test_empty(){
-
-    }
-
     private CanvasController canvasController;
 
     @Before

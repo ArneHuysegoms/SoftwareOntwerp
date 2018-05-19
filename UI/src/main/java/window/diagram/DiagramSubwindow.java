@@ -477,7 +477,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
         return true;
     }
-    }
+
 
     @Override
     public void handleAction(Action action) {
@@ -487,12 +487,15 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
     }
 
-        for(DialogBox dialogBox : dialogBoxlist){
-    public Action updateDialogBoxes(Action action){
-            dialogBox.handleAction(action);
-        return action;
-        }
 
+    public Action updateDialogBoxes(Action action) {
+        for (DialogBox dialogBox : dialogBoxlist) {
+            dialogBox.handleAction(action);
+        }
+        return action;
+    }
+
+    public List<DialogBox> getDialogBoxlist(){
         return dialogBoxlist;
-    public List<DialogBox> getDialogBoxlist() {
+    }
 }
