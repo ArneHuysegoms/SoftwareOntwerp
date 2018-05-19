@@ -1,5 +1,6 @@
 package window;
 
+import action.Action;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -13,7 +14,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
+public abstract class Subwindow implements Clickable, ILowController, Comparable<Subwindow>{
 
     //TODO give InteractionController
 
@@ -320,7 +321,7 @@ public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
         return Integer.compare(this.getLevel(), other.getLevel());
     }
 
-    public abstract void handleMouseEvent(MouseEvent mouseEvent);
+    public abstract Action handleMouseEvent(MouseEvent mouseEvent);
 
-    public abstract void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
+    public abstract Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
 }

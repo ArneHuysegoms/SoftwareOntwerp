@@ -148,6 +148,10 @@ public class SubwindowFrame implements Clickable{
         this.titleBar = titleBar;
     }
 
+    public void close(){
+        this.getButton().performAction();
+    }
+
     /**
      *
      * @param location the location of the click

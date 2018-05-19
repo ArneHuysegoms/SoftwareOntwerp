@@ -1,6 +1,11 @@
 package window.dialogbox;
 
+import action.Action;
+import action.EmptyAction;
+import action.RemoveInReposAction;
+import action.UpdateLabelAction;
 import diagram.label.InvocationMessageLabel;
+import diagram.message.InvocationMessage;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -49,6 +54,8 @@ public class InvocationMessageDialogBox extends DialogBox {
         deleteArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Del");
         moveDown = new TextualFakeButton(new Point2D.Double(40, 100), "Down");
         moveUp = new TextualFakeButton(new Point2D.Double(80, 100), "Up");
+
+        this.subwindow = subwindow;
 
         argumentListBox = new ListBox(new Point2D.Double(10, 140), "");
 
@@ -117,7 +124,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     @Override
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
             case PRESSED:
                 handlePressed(mouseEvent.getPoint());
@@ -125,6 +132,8 @@ public class InvocationMessageDialogBox extends DialogBox {
             default:
                 break;
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     private void handlePressed(Point2D point) {
@@ -149,7 +158,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     @Override
-    public void handleKeyEvent(KeyEvent keyEvent) {
+    public Action handleKeyEvent(KeyEvent keyEvent) {
         try {
             switch (keyEvent.getKeyEventType()) {
                 case BACKSPACE:
@@ -177,6 +186,8 @@ public class InvocationMessageDialogBox extends DialogBox {
         catch (Exception e){
             e.printStackTrace();
         }
+        //TODO replace
+        return new EmptyAction();
     }
 
     private void handleBackSpace() throws DomainException{
@@ -268,5 +279,27 @@ public class InvocationMessageDialogBox extends DialogBox {
     private void cycleSelectedElement() {
         int oldIndex = dialogboxElements.indexOf(selected);
         selected = dialogboxElements.get((oldIndex++) % 7);
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        if(action instanceof RemoveInReposAction) {
+            RemoveInReposAction a = (RemoveInReposAction) action;
+            InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
+            if(a.getDeletedElements().contains(invocationMessage)){
+                this.getFrame().close();
+            }
+        }
+        if(action instanceof UpdateLabelAction){
+            UpdateLabelAction a = (UpdateLabelAction) action;
+            InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
+            if(a.getElement().equals(invocationMessage)){
+                updateFields((InvocationMessage) a.getElement());
+            }
+        }
+    }
+
+    private void updateFields(InvocationMessage invocationMessage) {
+        //TODO
     }
 }
