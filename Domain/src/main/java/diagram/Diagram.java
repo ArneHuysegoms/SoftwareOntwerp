@@ -166,7 +166,7 @@ public class Diagram implements Serializable {
      * @param label the label of the diagramelement to find
      * @return the diagramelement that has the provided label
      */
-    private DiagramElement findParentElement(Label label) {
+    public DiagramElement findParentElement(Label label) {
         for (Party p : parties) {
             if (p.getLabel().equals(label)) {
                 return p;

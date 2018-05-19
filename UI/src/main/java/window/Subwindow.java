@@ -1,5 +1,6 @@
 package window;
 
+import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
@@ -321,5 +322,5 @@ public abstract class Subwindow implements Clickable, Comparable<Subwindow>{
 
     public abstract void handleMouseEvent(MouseEvent mouseEvent);
 
-    public abstract void handleKeyEvent(KeyEvent keyEvent) throws DomainException;
+    public abstract void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
 }
