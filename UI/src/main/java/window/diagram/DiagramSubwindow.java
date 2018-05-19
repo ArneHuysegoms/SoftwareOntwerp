@@ -29,14 +29,12 @@ import java.util.stream.Collectors;
 
 public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
-    private boolean labelMode;
+
     private Label label;
     private DomainFacade facade;
     private String labelContainer = "";
 
     private DiagramElement selected;
-    
-    private boolean editing;
 
     private List<DialogBox> dialogBoxlist;
 
@@ -88,28 +86,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         setLabelContainer(labelContainer + c);
     }
 
-    /**
-     * checks if this subwindow is in labelmode
-     */
-    public boolean isInLabelMode() {
-        return this.labelMode;
-    }
-
-    /**
-     * @return true if the subwindow is in label mode
-     */
-    public boolean isLabelMode() {
-        return labelMode;
-    }
-
-    /**
-     * sets the subwindow in the given labelmode
-     *
-     * @param labelMode the new labelmode for this subwindow
-     */
-    public void setLabelMode(boolean labelMode) {
-        this.labelMode = labelMode;
-    }
 
     /**
      * @return the active label
@@ -132,21 +108,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      */
     public DomainFacade getFacade() {
         return facade;
-    }
-
-    /**
-     * @return wether or not this subwindow is editing
-     */
-    public boolean isEditing(){
-        return editing;
-    }
-
-    /**
-     *
-     * @param editing the new mode for the editing flag
-     */
-    public void setEditing(boolean editing){
-        this.editing = editing;
     }
 
     /**

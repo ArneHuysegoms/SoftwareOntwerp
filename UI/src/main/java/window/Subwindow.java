@@ -24,6 +24,8 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     private Point2D position;
     private int level;
     private boolean dragging = false;
+    protected boolean labelMode = false;
+    protected boolean editing = false;
 
     private SubwindowFrame frame;
 
@@ -71,6 +73,37 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
             Button button = frame.getButton();
             frame = new SubwindowFrame(this.getPosition(), height, width, button);
         }
+    }
+
+    /**
+     * @return true if the subwindow is in label mode
+     */
+    public boolean isLabelMode() {
+        return labelMode;
+    }
+
+    /**
+     * sets the subwindow in the given labelmode
+     *
+     * @param labelMode the new labelmode for this subwindow
+     */
+    public void setLabelMode(boolean labelMode) {
+        this.labelMode = labelMode;
+    }
+
+    /**
+     * @return wether or not this subwindow is editing
+     */
+    public boolean isEditing(){
+        return editing;
+    }
+
+    /**
+     *
+     * @param editing the new mode for the editing flag
+     */
+    public void setEditing(boolean editing){
+        this.editing = editing;
     }
 
     /**
