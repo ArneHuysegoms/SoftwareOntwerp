@@ -1,4 +1,4 @@
-package figures.converters;
+package figures.converters.diagramSub;
 
 import diagram.message.Message;
 import diagram.party.Actor;

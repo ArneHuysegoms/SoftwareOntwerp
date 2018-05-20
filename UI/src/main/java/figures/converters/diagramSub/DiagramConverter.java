@@ -1,4 +1,4 @@
-package figures.converters;
+package figures.converters.diagramSub;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
@@ -9,6 +9,7 @@ import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
 
+import figures.converters.SubwindowConverter;
 import figures.drawable.diagramFigures.Box;
 import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
 import figures.drawable.diagramFigures.SelectionBoxFigure;
@@ -26,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public abstract class DiagramConverter extends SubwindowConverter{
+public abstract class DiagramConverter extends SubwindowConverter {
     private DiagramSubwindow diagramSubwindow;
     protected int x1, y1, x2, y2;
 

@@ -3,6 +3,10 @@ package figures.converters;
 import controller.CanvasController;
 
 import controller.InteractionController;
+import exception.UIException;
+import figures.converters.diagramSub.CommunicationConverter;
+import figures.converters.diagramSub.SequenceConverter;
+import figures.converters.dialogbox.*;
 import figures.drawable.subwindowFigures.*;
 import window.Subwindow;
 import window.diagram.DiagramSubwindow;
@@ -101,24 +105,11 @@ public class FigureConverter {
     }
 
     /**
-     * method that draws a subwindow
-     *
-     * @param graphics object used to draw on the program's window
-     *                 //* @param position coordinate of the top-left point of the subwindow
-     *                 //* @param width    the subwindow's width
-     *                 //* @param height   the subwindow's height
-     */
-    private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
-        //TODO replace to specific converters
-        new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
-    }
-
-    /**
      * creates and sets the correct converter
      *
      * @param sub
      */
-    public void setConverter(Subwindow sub) {
+    public void setConverter(Subwindow sub){
         if (sub instanceof DiagramSubwindow) {
             DiagramSubwindow temp = ((DiagramSubwindow) sub);
             if (temp.getFacade().getActiveRepo() instanceof SequenceView) {
@@ -126,8 +117,14 @@ public class FigureConverter {
             } else if (temp.getFacade().getActiveRepo() instanceof CommunicationView) {
                 converter = new CommunicationConverter(temp);
             }
-        } else if (sub instanceof DialogBox) {
-            converter = new DialogBoxConverter((DialogBox) sub);
+        } else if (sub instanceof PartyDialogBox) {
+            converter = new PartyDialogboxConverter((PartyDialogBox) sub);
+        }else if (sub instanceof InvocationMessageDialogBox) {
+            converter = new InvocationMessageDialogboxConverter((InvocationMessageDialogBox) sub);
+        }else if (sub instanceof ResultMessageDialogBox) {
+            converter = new ResultMessageDialogboxConverter((ResultMessageDialogBox) sub);
+        }else if (sub instanceof DiagramDialogBox) {
+            converter = new DiagramDialogboxConverter((DiagramDialogBox) sub);
         }
     }
 }
