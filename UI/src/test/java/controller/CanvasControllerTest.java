@@ -1,20 +1,70 @@
 package controller;
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CanvasControllerTest {
 
-    @Test
-    public void Test_empty(){
-
-    }
-
-    /*private CanvasController canvasController;
+    private CanvasController canvasController;
 
     @Before
     public void setUp() {
         canvasController = new CanvasController();
     }
 
+    @Test
+    public void test_list_empty_after_init(){
+        assertTrue(canvasController.getInteractionControllers().isEmpty());
+    }
+
+    @Test
+    public void test_active_interactioncontroller_is_null_after_init(){
+        assertTrue(canvasController.getActiveInteractionController() == null);
+    }
+
+    @Test
+    public void test_addInteractionController(){
+        InteractionController ic = new InteractionController();
+        canvasController.addInteractionController(ic);
+        assertEquals(canvasController.getActiveInteractionController(),ic);
+        assertTrue(canvasController.getInteractionControllers().isEmpty());
+    }
+
+    @Test
+    public void test_addInteractionController_twice(){
+        InteractionController ic = new InteractionController();
+        canvasController.addInteractionController(ic);
+        canvasController.addInteractionController(ic);
+        assertEquals(canvasController.getActiveInteractionController(),ic);
+        assertTrue(canvasController.getInteractionControllers().isEmpty());
+    }
+
+    @Test
+    public void test_removeInteractionController(){
+        InteractionController ic = new InteractionController();
+        canvasController.addInteractionController(ic);
+        canvasController.removeInteractionController(ic);
+        assertEquals(canvasController.getActiveInteractionController(),null);
+        assertTrue(canvasController.getInteractionControllers().isEmpty());
+    }
+
+    @Test
+    public void test_createNewInteractionController(){
+
+    }
+
+    @Test
+    public void test_checkForDeleteInteractionController(){
+
+    }
+
+    @Test
+    public void test_getAppropriateInteractionController(){
+
+    }
+    /*
     @Test
     public void activeDiagram_is_sequence_after_init(){
         assertTrue(canvasController.getFacade().getActiveDiagram() instanceof SequenceDiagram);

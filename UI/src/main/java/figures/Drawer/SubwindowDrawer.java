@@ -1,7 +1,5 @@
 package figures.Drawer;
 
-import figures.diagramFigures.SubwindowFigure;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -25,6 +23,7 @@ public class SubwindowDrawer implements Drawer {
      */
     @Override
     public void draw(Graphics graphics, Point2D start, Point2D end, String label, int minX, int minY, int maxX, int maxY) {
-        new SubwindowFigure(start, end).draw(graphics, minX, minY, maxX, maxY);
+        //TODO use new suwindow classes
+        // /new SubwindowFigure(start, end).draw(graphics, minX, minY, maxX, maxY);
     }
 }

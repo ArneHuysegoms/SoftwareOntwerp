@@ -1,7 +1,7 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
 import figures.Drawer.Drawer;
-import figures.diagramFigures.Arrow;
+import figures.drawable.diagramFigures.Arrow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

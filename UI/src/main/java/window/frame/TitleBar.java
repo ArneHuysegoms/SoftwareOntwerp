@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
  */
 public class TitleBar implements Clickable {
 
-    private final int HEIGHT = 30;
+    public static final int HEIGHT = 30;
 
     Point2D position;
     int width;

@@ -1,7 +1,7 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
 import figures.Drawer.Drawer;
-import figures.basicShapes.DashedLine;
+import figures.drawable.basicShapes.DashedLine;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
