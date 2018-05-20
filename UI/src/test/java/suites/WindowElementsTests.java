@@ -6,9 +6,9 @@ import window.frame.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        DiagramSubwindowFrameCornerTest.class,
-        DiagramSubwindowFrameRectangleTest.class,
-        DiagramSubwindowFrameTest.class,
+        FrameCornerTest.class,
+        FrameRectangleTest.class,
+        FrameTest.class,
         TitleBarClickTest.class,
         TitleBarTest.class
 })

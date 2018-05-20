@@ -48,7 +48,7 @@ public class FigureConverter {
         List<Subwindow> result = new ArrayList<Subwindow>();
 
         for (InteractionController interaction : canvasController.getInteractionControllers()) {
-            temp.addAll(interaction.getDiagramSubwindows());
+            //temp.addAll(interaction.getDiagramSubwindows());
         }
         for (DiagramSubwindow sub : temp) {
             result.addAll(sub.getDialogBoxlist());
@@ -108,12 +108,12 @@ public class FigureConverter {
     }
 
     /**
-     * method that draws a subwindow
+     * method that draws a window.diagram
      *
      * @param graphics object used to draw on the program's window
-     *                 //* @param position coordinate of the top-left point of the subwindow
-     *                 //* @param width    the subwindow's width
-     *                 //* @param height   the subwindow's height
+     *                 //* @param position coordinate of the top-left point of the window.diagram
+     *                 //* @param width    the window.diagram's width
+     *                 //* @param height   the window.diagram's height
      */
     private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
         //TODO replace to specific converters
@@ -128,9 +128,9 @@ public class FigureConverter {
     public void setConverter(Subwindow sub) {
         if (sub instanceof DiagramSubwindow) {
             DiagramSubwindow temp = ((DiagramSubwindow) sub);
-            if (temp.getFacade().getActiveRepo() instanceof SequenceView) {
+            if (temp.getFacade().getActiveView() instanceof SequenceView) {
                 converter = new SequenceConverter(temp);
-            } else if (temp.getFacade().getActiveRepo() instanceof CommunicationView) {
+            } else if (temp.getFacade().getActiveView() instanceof CommunicationView) {
                 converter = new CommunicationConverter(temp);
             }
         } else if (sub instanceof DialogBox) {

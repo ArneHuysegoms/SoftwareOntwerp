@@ -13,6 +13,6 @@ public class ClassTextBox extends TextBox {
 
     @Override
     public boolean hasValidContents() {
-        return Party.isValidClassString(getContents());
+        return super.hasValidContents() && Party.isValidClassString(getContents());
     }
 }

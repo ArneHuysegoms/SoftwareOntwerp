@@ -42,10 +42,10 @@ public abstract class Party extends DiagramElement implements Serializable {
     }
 
     public static boolean isValidClassString(String toCheck){
-        return Character.isUpperCase(toCheck.charAt(1));
+        return Character.isUpperCase(toCheck.charAt(0));
     }
 
     public static boolean isValidInstanceString(String toCheck){
-        return Character.isLowerCase(toCheck.charAt(1));
+        return Character.isLowerCase(toCheck.charAt(0));
     }
 }

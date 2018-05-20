@@ -7,6 +7,9 @@ import java.awt.geom.Point2D;
 
 public abstract class Button implements Clickable {
 
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
+
     private Command command;
 
     private Point2D position;
@@ -18,8 +21,8 @@ public abstract class Button implements Clickable {
      * default constructor
      */
     public Button(){
-        this.width = 30;
-        this.height = 30;
+        this.width = WIDTH;
+        this.height = HEIGHT;
     }
 
     /**

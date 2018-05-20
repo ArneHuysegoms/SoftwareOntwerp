@@ -7,6 +7,7 @@ import command.changeType.ChangeToSequenceCommand;
 import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.RadioButton;
 
@@ -25,13 +26,24 @@ public class DiagramDialogBox extends DialogBox {
 
     private RadioButton selected;
 
+    private DiagramSubwindow subwindow;
+
     public DiagramDialogBox(Point2D position, DiagramSubwindow subwindow) throws UIException {
         super(position);
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
-        toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(WIDTH + 20, HEIGHT  + 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
+        toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
+        toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
         selected = toCommunicationDiagram;
+        this.setDiagramSubwindow(subwindow);
+    }
+
+    public DiagramSubwindow getDiagramSubwindow() {
+        return subwindow;
+    }
+
+    public void setDiagramSubwindow(DiagramSubwindow subwindow) {
+        this.subwindow = subwindow;
     }
 
     public static int getWIDTH() {
@@ -40,14 +52,6 @@ public class DiagramDialogBox extends DialogBox {
 
     public static int getHEIGHT() {
         return HEIGHT;
-    }
-
-    public static String getTocommunicationdiagramDespcription() {
-        return TOCOMMUNICATIONDIAGRAM_DESPCRIPTION;
-    }
-
-    public static String getTosequencediagramDescription() {
-        return TOSEQUENCEDIAGRAM_DESCRIPTION;
     }
 
     public RadioButton getToCommunicationDiagram() {

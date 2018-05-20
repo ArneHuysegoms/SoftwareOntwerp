@@ -12,6 +12,6 @@ public class MethodTextBox extends TextBox{
 
     @Override
     public boolean hasValidContents() {
-        return true;
+        return ! this.getContents().isEmpty();
     }
 }

@@ -25,5 +25,6 @@ public class UpdatePartyTypeAction extends Action{
     public void performAction(DiagramSubwindow subwindow) {
         subwindow.getFacade().changePartyTypeInRepo(oldParty, newParty);
         subwindow.setSelected(newParty);
+
     }
 }

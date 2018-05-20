@@ -1,9 +1,6 @@
 package window.dialogbox;
 
-import action.Action;
-import action.EmptyAction;
-import action.RemoveInReposAction;
-import action.UpdateLabelAction;
+import action.*;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
@@ -31,7 +28,10 @@ public class ResultMessageDialogBox extends DialogBox {
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
         this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 30), "Method");
+        this.setHeight(HEIGHT);
+        this.setWidth(WIDTH);
         selected = labelTextBox;
+        updateFields(resultMessage);
     }
 
     public static int getWIDTH() {
@@ -68,35 +68,35 @@ public class ResultMessageDialogBox extends DialogBox {
         try {
             switch (keyEvent.getKeyEventType()) {
                 case CHAR:
-                    handleChar(keyEvent);
-                    break;
+                    return handleChar(keyEvent);
                 case BACKSPACE:
-                    handleBackSpace();
-                    break;
+                    return handleBackSpace();
             }
         } catch (DomainException e) {
             e.printStackTrace();
         }
-        //TODO replace
         return new EmptyAction();
     }
 
-    private void handleBackSpace() throws DomainException {
-        selected.deleteLastCharFromContents();
-        if (selected.hasValidContents()) {
-            changeResultMessageLabel();
+    private Action handleBackSpace() throws DomainException {
+        if(selected.hasValidContents()) {
+            selected.deleteLastCharFromContents();
+            return changeResultMessageLabel();
         }
+        return new EmptyAction();
     }
 
-    private void handleChar(KeyEvent keyEvent) throws DomainException {
+    private Action handleChar(KeyEvent keyEvent) throws DomainException {
         selected.addCharToContents(keyEvent.getKeyChar());
         if (selected.hasValidContents()) {
-            changeResultMessageLabel();
+            return changeResultMessageLabel();
         }
+        return new EmptyAction();
     }
 
-    private void changeResultMessageLabel() throws DomainException {
+    private Action changeResultMessageLabel() throws DomainException {
         getResultMessage().getLabel().setLabel(selected.getContents());
+        return new UpdateLabelContainersAction(getResultMessage().getLabel());
     }
 
     @Override

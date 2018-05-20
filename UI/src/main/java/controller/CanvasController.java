@@ -167,9 +167,9 @@ public class CanvasController {
                 return true;
             }
             if (!getActiveDiagramSubwindow().isInLabelMode()) {
-                for (SubWindowLevel subwindow : subwindows) {
-                    if (subwindow.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                        changeActiveSubwindow(subwindow.getDiagramSubwindow());
+                for (SubWindowLevel window.diagram : subwindows) {
+                    if (window.diagram.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
+                        changeActiveSubwindow(window.diagram.getDiagramSubwindow());
                         return true;
                     }
                 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * subwindow frame, consists of subwindowframe rectangles for ease of use
+ * window.diagram frame, consists of subwindowframe rectangles for ease of use
  */
 public class SubwindowFrame implements Clickable{
 
@@ -25,9 +25,9 @@ public class SubwindowFrame implements Clickable{
 
     /**
      * create a new subwindowframe based on the given properties
-     * @param subWindowPoint the top left corner of the subwindow
-     * @param subwindowHeight the height of the subwindow
-     * @param subwindowWidth the width of the subwindow
+     * @param subWindowPoint the top left corner of the window.diagram
+     * @param subwindowHeight the height of the window.diagram
+     * @param subwindowWidth the width of the window.diagram
      */
     public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth){
         this(subWindowPoint, subwindowHeight, subwindowWidth, null);
@@ -35,9 +35,9 @@ public class SubwindowFrame implements Clickable{
 
     /**
      * create a new subwindowframe based on the given properties
-     * @param subWindowPoint the top left corner of the subwindow
-     * @param subwindowHeight the height of the subwindow
-     * @param subwindowWidth the width of the subwindow
+     * @param subWindowPoint the top left corner of the window.diagram
+     * @param subwindowHeight the height of the window.diagram
+     * @param subwindowWidth the width of the window.diagram
      */
     public SubwindowFrame(Point2D subWindowPoint, int subwindowHeight, int subwindowWidth, Button button){
         this.setSubwindowPoint(subWindowPoint);
@@ -69,14 +69,14 @@ public class SubwindowFrame implements Clickable{
 
     /**
      * sets the subwindowpoint to the given point
-     * @param subwindowPoint the point of the subwindow this frame is the frame off
+     * @param subwindowPoint the point of the window.diagram this frame is the frame off
      */
     private void setSubwindowPoint(Point2D subwindowPoint) {
         this.subwindowPoint = subwindowPoint;
     }
 
     /**
-     * returns point of subwindow
+     * returns point of window.diagram
      * @return subwindowPoint
      */
     public Point2D getSubwindowPoint(){
@@ -92,7 +92,7 @@ public class SubwindowFrame implements Clickable{
     }
 
     /**
-     * returns height of subwindow
+     * returns height of window.diagram
      * @return subwindowHeight
      */
     public int getSubwindowHeight(){
@@ -107,7 +107,7 @@ public class SubwindowFrame implements Clickable{
     }
 
     /**
-     *  returns width of subwindow
+     *  returns width of window.diagram
      * @return subwindowWidth
      */
     public int getSubwindowWidth(){
@@ -149,7 +149,9 @@ public class SubwindowFrame implements Clickable{
     }
 
     public void close(){
-        this.getButton().performAction();
+        if(this.getButton() != null) {
+            this.getButton().performAction();
+        }
     }
 
     /**

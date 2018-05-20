@@ -1,9 +1,6 @@
 package window.dialogbox;
 
-import action.Action;
-import action.EmptyAction;
-import action.RemoveInReposAction;
-import action.UpdateLabelAction;
+import action.*;
 import diagram.label.InvocationMessageLabel;
 import diagram.message.InvocationMessage;
 import exception.UIException;
@@ -53,8 +50,8 @@ public class InvocationMessageDialogBox extends DialogBox {
         argumentTextBox = new ArgumentTextBox(new Point2D.Double(10, 75), "argument");
         addArgument = new TextualFakeButton(new Point2D.Double(100, 60), "Add");
         deleteArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Del");
-        moveDown = new TextualFakeButton(new Point2D.Double(40, 100), "Down");
-        moveUp = new TextualFakeButton(new Point2D.Double(80, 100), "Up");
+        moveDown = new TextualFakeButton(new Point2D.Double(50, 100), "Down");
+        moveUp = new TextualFakeButton(new Point2D.Double(90, 100), "Up");
 
         this.subwindow = subwindow;
 
@@ -69,7 +66,12 @@ public class InvocationMessageDialogBox extends DialogBox {
         dialogboxElements.add(moveUp);
         dialogboxElements.add(argumentListBox);
 
-        selected = null;
+        selected = methodTextBox;
+
+        this.setHeight(HEIGHT);
+        this.setWidth(WIDTH);
+
+        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
     }
 
     public static int getWIDTH() {
@@ -128,34 +130,38 @@ public class InvocationMessageDialogBox extends DialogBox {
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
             case PRESSED:
-                handlePressed(mouseEvent.getPoint());
-                break;
+                return handlePressed(mouseEvent.getPoint());
             default:
                 break;
         }
-        //TODO replace
         return new EmptyAction();
     }
 
-    private void handlePressed(Point2D point) {
+    private Action handlePressed(Point2D point) {
         if (methodTextBox.isClicked(point)) {
             selected = methodTextBox;
         } else if (argumentTextBox.isClicked(point)) {
             selected = argumentTextBox;
         } else if (addArgument.isClicked(point)) {
-            handleAddArgument();
+            selected = addArgument;
+            return handleAddArgument();
         } else if (argumentListBox.isClicked(point)) {
+            selected = argumentListBox;
             handleArgumentListBox(point);
         }
         if (additionalButtonsAreActive()) {
             if (deleteArgument.isClicked(point)) {
-                handleDeleteArgument();
+                selected = deleteArgument;
+                return handleDeleteArgument();
             } else if (moveDown.isClicked(point)) {
-                handleMoveDown();
-            } else if (moveDown.isClicked(point)) {
-                handleMoveUp();
+                selected = moveDown;
+                return handleMoveDown();
+            } else if (moveUp.isClicked(point)) {
+                selected = moveUp;
+                return handleMoveUp();
             }
         }
+        return new EmptyAction();
     }
 
     @Override
@@ -163,11 +169,9 @@ public class InvocationMessageDialogBox extends DialogBox {
         try {
             switch (keyEvent.getKeyEventType()) {
                 case BACKSPACE:
-                    handleBackSpace();
-                    break;
+                    return handleBackSpace();
                 case CHAR:
-                    handleChar(keyEvent);
-                    break;
+                    return handleChar(keyEvent);
                 case ARROWKEYDOWN:
                     handleArrowKeyDown();
                     break;
@@ -175,8 +179,7 @@ public class InvocationMessageDialogBox extends DialogBox {
                     handleArrowKeyUp();
                     break;
                 case SPACE:
-                    handleSpace();
-                    break;
+                    return handleSpace();
                 case TAB:
                     cycleSelectedElement();
                     break;
@@ -187,49 +190,53 @@ public class InvocationMessageDialogBox extends DialogBox {
         catch (Exception e){
             e.printStackTrace();
         }
-        //TODO replace
         return new EmptyAction();
     }
 
-    private void handleBackSpace() throws DomainException{
+    private Action handleBackSpace() throws DomainException{
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.deleteLastCharFromContents();
             if (t == methodTextBox) {
-                changeMethod();
+                return changeMethod();
             }
         }
+        return new EmptyAction();
     }
 
-    private void handleChar(KeyEvent keyEvent) throws DomainException{
+    private Action handleChar(KeyEvent keyEvent) throws DomainException{
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.addCharToContents(keyEvent.getKeyChar());
             if (t == methodTextBox) {
-                changeMethod();
+                return changeMethod();
             }
         }
+        return new EmptyAction();
     }
 
-    private void changeMethod() throws DomainException {
+    private Action changeMethod() throws DomainException {
         if(methodTextBox.hasValidContents()){
             invocationMessageLabel.setLabel(methodTextBox.getContents());
+            return new UpdateLabelContainersAction(invocationMessageLabel);
         }
+        return new EmptyAction();
     }
 
-    private void handleSpace(){
+    private Action handleSpace(){
         if (addArgument == selected) {
-            handleAddArgument();
+            return handleAddArgument();
         }
         else if (additionalButtonsAreActive()) {
             if (deleteArgument == selected) {
-                handleDeleteArgument();
+                return handleDeleteArgument();
             } else if (moveDown == selected) {
-                handleMoveDown();
+                return handleMoveDown();
             } else if (moveUp == selected) {
-                handleMoveUp();
+                return handleMoveUp();
             }
         }
+        return new UpdateLabelContainersAction(invocationMessageLabel);
     }
 
     private boolean additionalButtonsAreActive() {
@@ -237,34 +244,39 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
 
-    private void handleAddArgument() {
+    private Action handleAddArgument() {
         if (argumentTextBox.hasValidContents()) {
             String argumentString = argumentTextBox.getContents();
             argumentListBox.addArgument(argumentString);
             String[] args = argumentString.split(":");
             invocationMessageLabel.addArgument(args[0], args[1]);
+            return new UpdateLabelContainersAction(invocationMessageLabel);
         }
+        return new EmptyAction();
     }
 
     private void handleArgumentListBox(Point2D point) {
         selected = argumentListBox;
-        argumentListBox.selectArgument(argumentListBox.getRelativePoint(point));
+        argumentListBox.selectArgument(point);
         invocationMessageLabel.setIndex(argumentListBox.getSelectedIndex());
     }
 
-    private void handleDeleteArgument() {
+    private Action handleDeleteArgument() {
         invocationMessageLabel.deleteArgument(argumentListBox.getSelectedIndex());
         argumentListBox.removeArgument();
+        return new UpdateLabelContainersAction(invocationMessageLabel);
     }
 
-    private void handleMoveUp() {
+    private Action handleMoveUp() {
         argumentListBox.moveUp();
         invocationMessageLabel.moveUp();
+        return new UpdateLabelContainersAction(invocationMessageLabel);
     }
 
-    private void handleMoveDown() {
+    private Action handleMoveDown() {
         argumentListBox.moveDown();
         invocationMessageLabel.moveDown();
+        return new UpdateLabelContainersAction(invocationMessageLabel);
     }
 
     private void handleArrowKeyDown(){
@@ -301,10 +313,16 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     private void updateFields(InvocationMessage invocationMessage) {
-        InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
-        methodTextBox.setContents(label.getLabel());
-        argumentListBox.setArguments(label.getArguments().stream()
-                                        .map(a -> a.toString())
-                                        .collect(Collectors.toList()));
+        if(invocationMessage != null) {
+            InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
+            methodTextBox.setContents(label.getLabel());
+            argumentListBox.setArguments(label.getArguments().stream()
+                    .map(a -> a.toString())
+                    .collect(Collectors.toList()));
+        }
+    }
+
+    public void setSelected(DialogboxElement dialogboxElement){
+        this.selected = dialogboxElement;
     }
 }

@@ -9,9 +9,9 @@ public class CloseButtonFigure extends Shape{
 
     /**
      * @param x
-     *      the x-coordinate of the top-right corner of the subwindow
+     *      the x-coordinate of the top-right corner of the window.diagram
      * @param y
-     *      the y-coordinate of the top-right corner of the subwindow
+     *      the y-coordinate of the top-right corner of the window.diagram
      */
     public CloseButtonFigure(Point2D position,int width, int height){
         this.x = (int)position.getX();
@@ -44,14 +44,14 @@ public class CloseButtonFigure extends Shape{
     }
 
     /**
-     * @return the x-coordinate of the top-right corner of the subwindow
+     * @return the x-coordinate of the top-right corner of the window.diagram
      */
     public int getX() {
         return this.x;
     }
 
     /**
-     * @return the y-coordinate of the top-right corner of the subwindow
+     * @return the y-coordinate of the top-right corner of the window.diagram
      */
     public int getY() {
         return this.y;

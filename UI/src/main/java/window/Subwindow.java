@@ -14,7 +14,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, ILowController, Comparable<Subwindow>{
+public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>{
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
@@ -57,12 +57,12 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
         this.createFrame(closeWindowButton);
     }
 
-    private void createFrame(){
+    public void createFrame(){
         frame = new SubwindowFrame(this.getPosition(), height, width);
     }
 
-    private void createFrame(CloseWindowButton closeWindowButton){
-        frame = new SubwindowFrame(this.getPosition(), height, width, button);
+    public void createFrame(CloseWindowButton closeWindowButton){
+        frame = new SubwindowFrame(this.getPosition(), height, width, closeWindowButton);
     }
 
     private void recreateFrame(){
@@ -76,23 +76,23 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * @return true if the subwindow is in label mode
+     * @return true if the window.diagram is in label mode
      */
     public boolean isLabelMode() {
         return labelMode;
     }
 
     /**
-     * sets the subwindow in the given labelmode
+     * sets the window.diagram in the given labelmode
      *
-     * @param labelMode the new labelmode for this subwindow
+     * @param labelMode the new labelmode for this window.diagram
      */
     public void setLabelMode(boolean labelMode) {
         this.labelMode = labelMode;
     }
 
     /**
-     * @return wether or not this subwindow is editing
+     * @return wether or not this window.diagram is editing
      */
     public boolean isEditing(){
         return editing;
@@ -107,16 +107,16 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * @return the width of this subwindow
+     * @return the width of this window.diagram
      */
     public int getWidth() {
         return width;
     }
 
     /**
-     * sets the width of this subwindow
+     * sets the width of this window.diagram
      *
-     * @param width the width for this subwindow
+     * @param width the width for this window.diagram
      * @throws IllegalArgumentException if the width is negative
      */
     public void setWidth(int width) {
@@ -127,16 +127,16 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * @return the height of this subwindow
+     * @return the height of this window.diagram
      */
     public int getHeight() {
         return height;
     }
 
     /**
-     * sets the height of this subwindow
+     * sets the height of this window.diagram
      *
-     * @param height the height of this subwindow
+     * @param height the height of this window.diagram
      * @throws IllegalArgumentException if the given height is negative
      */
     public void setHeight(int height) {
@@ -147,16 +147,16 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * @return the position of the upper left corner of this subwindow
+     * @return the position of the upper left corner of this window.diagram
      */
     public Point2D getPosition() {
         return position;
     }
 
     /**
-     * sets the position of the upper left corner for this subwindow
+     * sets the position of the upper left corner for this window.diagram
      *
-     * @param position2D the new position for this subwindow
+     * @param position2D the new position for this window.diagram
      */
     public void setPosition(Point2D position2D) {
         this.position = position2D;
@@ -180,22 +180,22 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
 
     /**
      *
-     * @return the frame of this subwindow
+     * @return the frame of this window.diagram
      */
     public SubwindowFrame getFrame() {
         return frame;
     }
 
     /**
-     * sets the frame for this subwindow
-     * @param frame the new subwindow for this frame
+     * sets the frame for this window.diagram
+     * @param frame the new window.diagram for this frame
      */
     private void setFrame(SubwindowFrame frame) {
         this.frame = frame;
     }
 
     /**
-     * return true if the frame of this subwindow is clicked
+     * return true if the frame of this window.diagram is clicked
      * @param clickLocation the location of the click
      * @return true if the frame is clicked, false otherwise
      */
@@ -205,7 +205,7 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * handles movement of the subwindow
+     * handles movement of the window.diagram
      * @param movedLocation the new location
      */
     public void handleMovement(Point2D movedLocation) {
@@ -230,10 +230,10 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * resize the subwindow when the user drags by the corner
+     * resize the window.diagram when the user drags by the corner
      *
      * @param corner the corner that was resized
-     * @param point the new point of the subwindow
+     * @param point the new point of the window.diagram
      */
     private void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
         Point2D ogPos = this.getPosition();
@@ -281,7 +281,7 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * resize the subwindow when the user drags by one of the borders
+     * resize the window.diagram when the user drags by one of the borders
      *
      * @param rectangle the rectangle that was resized
      * @param point the new point for the rectangle
@@ -313,7 +313,7 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * move the subwindow when the user drags by the titlebar
+     * move the window.diagram when the user drags by the titlebar
      *
      * @param titleBarClick the click on the titlebar
      * @param point the new point of the titlebar
@@ -326,7 +326,7 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * checks if this subwindow is clicked
+     * checks if this window.diagram is clicked
      *
      * @param position the position of the click
      * @return true if this element is clicked, false otherwise
@@ -341,16 +341,16 @@ public abstract class Subwindow implements Clickable, ILowController, Comparable
     }
 
     /**
-     * @return the absolute postion for a relative point within this subwindow
+     * @return the absolute postion for a relative point within this window.diagram
      */
     public Point2D getAbsolutePosition(Point2D relativePoint) {
         return new Point2D.Double(relativePoint.getX() + this.getPosition().getX(), relativePoint.getY() + this.getPosition().getY());
     }
 
     /**
-     * returns a relative point based on the given location and the location of the subwindow
+     * returns a relative point based on the given location and the location of the window.diagram
      * @param location the location that needs to be translated
-     * @return a relative point to this subwindow based on the given location
+     * @return a relative point to this window.diagram based on the given location
      */
     public Point2D getRelativePoint(Point2D location) {
         return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());

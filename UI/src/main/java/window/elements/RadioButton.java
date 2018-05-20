@@ -1,5 +1,6 @@
 package window.elements;
 
+import action.Action;
 import command.Command;
 import exception.UIException;
 import window.Clickable;
@@ -27,8 +28,8 @@ public class RadioButton extends DialogboxElement implements Clickable,ICommanda
     }
 
     @Override
-    public void performAction() {
-        getCommand().performAction();
+    public Action performAction() {
+        return getCommand().performAction();
     }
 
     @Override

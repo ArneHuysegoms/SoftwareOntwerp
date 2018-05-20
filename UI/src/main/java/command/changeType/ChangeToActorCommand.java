@@ -1,5 +1,8 @@
 package command.changeType;
 
+import action.Action;
+import action.EmptyAction;
+import action.UpdatePartyTypeAction;
 import command.Command;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -32,10 +35,11 @@ public class ChangeToActorCommand extends Command {
     }
 
     @Override
-    public void performAction() {
+    public Action performAction() {
         if(party instanceof Object) {
             Party newParty = subwindow.getFacade().changePartyType(party);
-            //TODO change at other positions
+            return new UpdatePartyTypeAction(party, newParty);
         }
+        return new EmptyAction();
     }
 }

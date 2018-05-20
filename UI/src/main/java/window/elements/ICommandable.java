@@ -1,6 +1,8 @@
 package window.elements;
 
+import action.Action;
+
 public interface ICommandable {
 
-    void performAction();
+    Action performAction();
 }

@@ -1,5 +1,7 @@
 package command.closeWindow;
 
+import action.Action;
+import action.EmptyAction;
 import controller.InteractionController;
 import window.diagram.DiagramSubwindow;
 
@@ -22,7 +24,8 @@ public class CloseDiagramSubwindowCommand extends CloseSubwindowCommand{
     }
 
     @Override
-    public void performAction() {
+    public Action performAction() {
         interactionController.removeSubwindow(diagramSubwindow);
+        return new EmptyAction();
     }
 }
