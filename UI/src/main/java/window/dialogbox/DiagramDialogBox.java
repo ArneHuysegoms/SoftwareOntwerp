@@ -7,6 +7,7 @@ import command.changeType.ChangeToSequenceCommand;
 import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.RadioButton;
 
@@ -25,6 +26,8 @@ public class DiagramDialogBox extends DialogBox {
 
     private RadioButton selected;
 
+    private Subwindow subwindow;
+
     public DiagramDialogBox(Point2D position, DiagramSubwindow subwindow) throws UIException {
         super(position);
         this.setHeight(HEIGHT);
@@ -32,6 +35,15 @@ public class DiagramDialogBox extends DialogBox {
         toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
         toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
         selected = toCommunicationDiagram;
+        this.setSubwindow(subwindow);
+    }
+
+    public Subwindow getSubwindow() {
+        return subwindow;
+    }
+
+    public void setSubwindow(Subwindow subwindow) {
+        this.subwindow = subwindow;
     }
 
     public static int getWIDTH() {
