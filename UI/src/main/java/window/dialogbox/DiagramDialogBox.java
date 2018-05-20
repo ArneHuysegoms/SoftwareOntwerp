@@ -54,14 +54,6 @@ public class DiagramDialogBox extends DialogBox {
         return HEIGHT;
     }
 
-    public static String getTocommunicationdiagramDespcription() {
-        return TOCOMMUNICATIONDIAGRAM_DESPCRIPTION;
-    }
-
-    public static String getTosequencediagramDescription() {
-        return TOSEQUENCEDIAGRAM_DESCRIPTION;
-    }
-
     public RadioButton getToCommunicationDiagram() {
         return toCommunicationDiagram;
     }

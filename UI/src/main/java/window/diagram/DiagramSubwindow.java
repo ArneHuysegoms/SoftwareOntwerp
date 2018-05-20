@@ -63,6 +63,10 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         dialogBoxlist = new ArrayList<>();
     }
 
+    public void addDialogBox(DialogBox dialogBox){
+        this.dialogBoxlist.add(dialogBox);
+    }
+
     /**
      *
      * @return true if this is currently a sequence diagram
@@ -488,8 +492,9 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
             //mediator.updateLabelContainers(selectedLabel, this);
-            updateDialogBoxes(new UpdateLabelAction(selected));
-            return new UpdateLabelContainersAction(selectedLabel);
+            DiagramElement diagramElement = this.getFacade().findParentElement(selectedLabel);
+            return updateDialogBoxes(new UpdateLabelAction(diagramElement, selectedLabel));
+            //return new UpdateLabelContainersAction(selectedLabel);
         } else {
             labelMode = true;
             return new EmptyAction();

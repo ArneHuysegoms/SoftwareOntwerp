@@ -58,31 +58,11 @@ public class PartyDialogBox extends DialogBox {
         elementList.add(classTextBox);
         selected = toActor;
 
-        subwindow = subwindow;
-    }
+        this.subwindow = subwindow;
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
-
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public static String getToobjectDespcription() {
-        return TOOBJECT_DESPCRIPTION;
-    }
-
-    public static String getToactorDescription() {
-        return TOACTOR_DESCRIPTION;
-    }
-
-    public static String getInstanceDescription() {
-        return INSTANCE_DESCRIPTION;
-    }
-
-    public static String getClassDescription() {
-        return CLASS_DESCRIPTION;
+        this.setWidth(WIDTH);
+        this.setHeight(HEIGHT);
+        updateFields(party);
     }
 
     public RadioButton getToActor() {
@@ -115,6 +95,10 @@ public class PartyDialogBox extends DialogBox {
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    public DiagramSubwindow getSubwindow() {
+        return subwindow;
     }
 
     @Override
@@ -196,29 +180,37 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private Action changePartyLabel() throws DomainException {
-        if (selected instanceof InstanceTextBox) {
-            TextBox t = (TextBox) selected;
-            String oldLabel = party.getLabel().getLabel();
-            String[] split = oldLabel.split(":");
-            if (split.length == 1) {
-                party.getLabel().setLabel(t.getContents() + " :" + split[0]);
+    private Action changePartyLabel() {
+        try {
+            if (selected instanceof InstanceTextBox) {
+                TextBox t = (TextBox) selected;
+                String oldLabel = party.getLabel().getLabel();
+                String[] split = oldLabel.split(":");
+                if (split.length == 1) {
+                    party.getLabel().setLabel(t.getContents() + ":" + split[0]);
+                } else {
+                    party.getLabel().setLabel(t.getContents() + ":" + split[1]);
+                }
+            } else {
+                TextBox t = (TextBox) selected;
+                String oldLabel = party.getLabel().getLabel();
+                String[] split = oldLabel.split(":");
+                if (split.length == 1) {
+                    if (!this.getInstanceTextBox().getContents().isEmpty() && Character.isLowerCase(this.getInstanceTextBox().getContents().charAt(0))) {
+                        party.getLabel().setLabel(getInstanceTextBox().getContents() + ":" + t.getContents());
+                    } else {
+                        party.getLabel().setLabel(":" + t.getContents());
+                    }
+                } else {
+                    party.getLabel().setLabel(split[0] + " :" + t.getContents());
+                }
             }
-            else{
-                party.getLabel().setLabel(t.getContents() + " :" + split[1]);
-            }
-        } else {
-            TextBox t = (TextBox) selected;
-            String oldLabel = party.getLabel().getLabel();
-            String[] split = oldLabel.split(":");
-            if (split.length == 1) {
-                party.getLabel().setLabel(" :" + t.getContents());
-            }
-            else{
-                party.getLabel().setLabel(split[0] + " :" + t.getContents());
-            }
+            return new UpdateLabelContainersAction(party.getLabel());
         }
-        return new UpdateLabelContainersAction(party.getLabel());
+        catch (Exception e){
+
+        }
+        return new EmptyAction();
     }
 
     @Override
@@ -232,6 +224,7 @@ public class PartyDialogBox extends DialogBox {
         else if(action instanceof UpdatePartyTypeAction){
             UpdatePartyTypeAction a = (UpdatePartyTypeAction) action;
             if(a.getOldParty().equals(party)){
+                this.getFrame().close();
                 subwindow.setSelected(a.getNewParty());
                 try {
                     subwindow.opendialogBox();
@@ -239,7 +232,6 @@ public class PartyDialogBox extends DialogBox {
                 catch (Exception e){
                     e.printStackTrace();
                 }
-                this.getFrame().close();
             }
         }
         if(action instanceof UpdateLabelAction){

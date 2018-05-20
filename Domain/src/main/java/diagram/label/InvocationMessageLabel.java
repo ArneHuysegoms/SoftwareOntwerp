@@ -90,6 +90,9 @@ public class InvocationMessageLabel extends Label implements Serializable {
     @Override
     public boolean isValidLabel(String label) {
 
+        if(label == ""){
+            return true;
+        }
         //Method starts with lowercase
         boolean startsWithLowercase = Character.isLowerCase(label.charAt(0));
 

@@ -5,7 +5,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    DiagramDialogBoxTest.class,
+        DiagramDialogBoxTest.class,
+        ResultMessageDialogBoxText.class,
+        PartyDialogBoxTest.class,
+        InvocationMessageDialogBoxTest.class
 })
 public class DialogBoxTestSuite {
 

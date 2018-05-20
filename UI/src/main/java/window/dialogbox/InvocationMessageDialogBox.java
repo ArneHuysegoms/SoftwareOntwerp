@@ -66,7 +66,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         dialogboxElements.add(moveUp);
         dialogboxElements.add(argumentListBox);
 
-        selected = null;
+        selected = methodTextBox;
+
+        this.setHeight(HEIGHT);
+        this.setWidth(WIDTH);
     }
 
     public static int getWIDTH() {
