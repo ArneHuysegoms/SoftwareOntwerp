@@ -35,7 +35,9 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
 
-    public abstract boolean hasValidContents();
+    public boolean hasValidContents(){
+        return ! this.getContents().isEmpty();
+    }
 
     public void addCharToContents(char toAdd){
         this.contents += toAdd;
@@ -43,7 +45,7 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
 
     public void deleteLastCharFromContents(){
         if(contents.length() > 1){
-            this.setContents(this.getContents().substring(0, this.getContents().length() - 2));
+            this.setContents(this.getContents().substring(0, this.getContents().length() - 1));
         }
         else{
             this.setContents("");

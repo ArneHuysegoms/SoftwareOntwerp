@@ -13,6 +13,6 @@ public class InstanceTextBox extends TextBox {
 
     @Override
     public boolean hasValidContents(){
-        return Party.isValidInstanceString(this.getContents());
+        return super.hasValidContents() && Party.isValidInstanceString(this.getContents());
     }
 }

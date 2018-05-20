@@ -5,7 +5,7 @@ import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 
-public interface IHighController {
+public interface IHighLevelController {
 
     void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
 

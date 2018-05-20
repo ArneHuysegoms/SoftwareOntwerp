@@ -6,6 +6,9 @@ import java.awt.geom.Point2D;
 
 public class FakeButton extends DialogboxElement {
 
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
+
     private Point2D position;
 
     private int width;
@@ -13,8 +16,8 @@ public class FakeButton extends DialogboxElement {
 
     public FakeButton(Point2D position){
         this.setPosition(position);
-        this.setHeight(30);
-        this.setWidth(30);
+        this.setHeight(HEIGHT);
+        this.setWidth(WIDTH);
     }
 
     public Point2D getPosition() {
@@ -47,6 +50,6 @@ public class FakeButton extends DialogboxElement {
         double endX = position.getX() + width;
         double startY = position.getY() ;
         double endY = position.getY() + height;
-        return (startX <= getPosition().getX() && endX >= getPosition().getX()) && (startY <= getPosition().getY() && endY >= getPosition().getY());
+        return (startX <= coordinate.getX() && endX >= coordinate.getX()) && (startY <= coordinate.getY() && endY >= coordinate.getY());
     }
 }

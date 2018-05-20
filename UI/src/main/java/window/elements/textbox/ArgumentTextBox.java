@@ -13,9 +13,12 @@ public class ArgumentTextBox extends TextBox{
 
     @Override
     public boolean hasValidContents() {
-        String[] args = this.getContents().split(":");
-        if(args.length > 1){
-            return Argument.isValidArgument(args[0], args[1]);
+        if(super.hasValidContents()) {
+            String[] args = this.getContents().split(":");
+            if (args.length > 1) {
+                return Argument.isValidArgument(args[0], args[1]);
+            }
+            return false;
         }
         return false;
     }
