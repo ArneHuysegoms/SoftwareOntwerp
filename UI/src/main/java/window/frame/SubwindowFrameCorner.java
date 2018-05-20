@@ -5,7 +5,7 @@ import window.Clickable;
 import java.awt.geom.Point2D;
 
 /**
- * represents a corner of a subwindow
+ * represents a corner of a window.diagram
  */
 public class SubwindowFrameCorner implements Clickable {
 
@@ -42,14 +42,14 @@ public class SubwindowFrameCorner implements Clickable {
 
     /**
      *
-     * @return the center location of the subwindow
+     * @return the center location of the window.diagram
      */
     public Point2D getCenter() {
         return center;
     }
 
     /**
-     * sets the center of this subwindow to the given centerpoint
+     * sets the center of this window.diagram to the given centerpoint
      * @param center
      */
     private void setCenter(Point2D center) {

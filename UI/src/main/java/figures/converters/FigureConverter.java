@@ -45,7 +45,7 @@ public class FigureConverter {
         List<Subwindow> result = new ArrayList<Subwindow>();
 
         for (InteractionController interaction : canvasController.getInteractionControllers()) {
-            temp.addAll(interaction.getDiagramSubwindows());
+            //temp.addAll(interaction.getDiagramSubwindows());
         }
         for (DiagramSubwindow sub : temp) {
             result.addAll(sub.getDialogBoxlist());
@@ -105,6 +105,22 @@ public class FigureConverter {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * method that draws a window.diagram
+     *
+     * @param graphics object used to draw on the program's window
+     *                 //* @param position coordinate of the top-left point of the window.diagram
+     *                 //* @param width    the window.diagram's width
+     *                 //* @param height   the window.diagram's height
+     */
+    private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
+        //TODO replace to specific converters
+        new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
+    }
+
+    /**
+>>>>>>> origin/Sander
      * creates and sets the correct converter
      *
      * @param sub

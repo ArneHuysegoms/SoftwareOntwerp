@@ -4,7 +4,7 @@ import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.Button;
+import window.Subwindow;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 
@@ -167,9 +167,9 @@ public class CanvasController {
                 return true;
             }
             if (!getActiveDiagramSubwindow().isInLabelMode()) {
-                for (SubWindowLevel subwindow : subwindows) {
-                    if (subwindow.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                        changeActiveSubwindow(subwindow.getDiagramSubwindow());
+                for (SubWindowLevel window.diagram : subwindows) {
+                    if (window.diagram.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
+                        changeActiveSubwindow(window.diagram.getDiagramSubwindow());
                         return true;
                     }
                 }
@@ -186,10 +186,11 @@ public class CanvasController {
 
     private void checkForDeleteInteractionController(){
         if(activeInteractionController.getActiveDiagramSubwindow() == null){
-            if(activeInteractionController.getDiagramSubwindows().isEmpty()){
+            if(activeInteractionController.getSubwindows().isEmpty()){
                 this.activeInteractionController = null;
             }
         }
+        //getSubwindows() kan nog dialogboxes bevatten?
     }
 
 
@@ -224,10 +225,10 @@ public class CanvasController {
         InteractionController result = null;
         int level = -1;
         for(InteractionController ic : getInteractionControllers()){
-            DiagramSubwindow ds = ic.getAppropriateSubwindow(clickedLocation);
-            if(ds.getLevel() > level){
+            Subwindow s = ic.getAppropriateSubwindow(clickedLocation);
+            if(s.getLevel() > level){
                 result = ic;
-                level = ds.getLevel();
+                level = s.getLevel();
             }
         }
         return result;
