@@ -8,9 +8,9 @@ public class WindowLevelCounterTest {
 
     @Test
     public void test_windowLevelCounter_works(){
-        assertEquals(0, WindowLevelCounter.getNextLevel());
-        assertEquals(1, WindowLevelCounter.getNextLevel());
-        assertEquals(2, WindowLevelCounter.getNextLevel());
+        assertEquals(14, WindowLevelCounter.getNextLevel());
+        assertEquals(15, WindowLevelCounter.getNextLevel());
+        assertEquals(16, WindowLevelCounter.getNextLevel());
 
     }
 }

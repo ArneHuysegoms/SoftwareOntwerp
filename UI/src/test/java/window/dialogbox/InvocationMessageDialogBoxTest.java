@@ -7,6 +7,8 @@ import diagram.message.InvocationMessage;
 import diagram.party.Actor;
 import org.junit.Before;
 import org.junit.Test;
+import uievents.KeyEvent;
+import uievents.KeyEventType;
 import window.diagram.DiagramSubwindow;
 import window.elements.button.CloseDialogBoxButton;
 import window.elements.button.CloseWindowButton;
@@ -57,5 +59,30 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(InvocationMessageDialogBox.HEIGHT, invocationMessageDialogBox.getHeight());
     }
 
+    @Test
+    public void test_handleTab(){
+        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getArgumentTextBox(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getAddArgument(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getDeleteArgument(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getMoveDown(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getMoveUp(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getArgumentListBox(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
+    }
 
 }
