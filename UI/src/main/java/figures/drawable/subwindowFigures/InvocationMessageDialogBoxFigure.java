@@ -26,9 +26,8 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        //TODO teken list box en contents.
-        List<String> arguments = dialogBox.getArgumentListBox().getArguments();
-        new figures.drawable.basicShapes.Rectangle(dialogBox.getArgumentListBox().getCoordinate(), ListBox.HEIGHT, ListBox.WIDTH);
+        new ListBoxFigure(dialogBox.getArgumentListBox())
+                .draw(graphics, minX, minY, maxX, maxY);
     }
 
     private void drawButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
