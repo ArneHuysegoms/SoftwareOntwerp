@@ -12,6 +12,7 @@ public class ListBox extends DialogboxElement implements Clickable {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 75;
+    public static final int ARGUMENT_HEIGHT = 14;
 
     private List<String> arguments;
 
