@@ -50,8 +50,8 @@ public class InvocationMessageDialogBox extends DialogBox {
         argumentTextBox = new ArgumentTextBox(new Point2D.Double(10, 75), "argument");
         addArgument = new TextualFakeButton(new Point2D.Double(100, 60), "Add");
         deleteArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Del");
-        moveDown = new TextualFakeButton(new Point2D.Double(40, 100), "Down");
-        moveUp = new TextualFakeButton(new Point2D.Double(80, 100), "Up");
+        moveDown = new TextualFakeButton(new Point2D.Double(50, 100), "Down");
+        moveUp = new TextualFakeButton(new Point2D.Double(90, 100), "Up");
 
         this.subwindow = subwindow;
 
@@ -70,6 +70,8 @@ public class InvocationMessageDialogBox extends DialogBox {
 
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
+
+        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
     }
 
     public static int getWIDTH() {
@@ -141,16 +143,21 @@ public class InvocationMessageDialogBox extends DialogBox {
         } else if (argumentTextBox.isClicked(point)) {
             selected = argumentTextBox;
         } else if (addArgument.isClicked(point)) {
+            selected = addArgument;
             return handleAddArgument();
         } else if (argumentListBox.isClicked(point)) {
+            selected = argumentListBox;
             handleArgumentListBox(point);
         }
         if (additionalButtonsAreActive()) {
             if (deleteArgument.isClicked(point)) {
+                selected = deleteArgument;
                 return handleDeleteArgument();
             } else if (moveDown.isClicked(point)) {
+                selected = moveDown;
                 return handleMoveDown();
-            } else if (moveDown.isClicked(point)) {
+            } else if (moveUp.isClicked(point)) {
+                selected = moveUp;
                 return handleMoveUp();
             }
         }
@@ -306,10 +313,16 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     private void updateFields(InvocationMessage invocationMessage) {
-        InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
-        methodTextBox.setContents(label.getLabel());
-        argumentListBox.setArguments(label.getArguments().stream()
-                                        .map(a -> a.toString())
-                                        .collect(Collectors.toList()));
+        if(invocationMessage != null) {
+            InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
+            methodTextBox.setContents(label.getLabel());
+            argumentListBox.setArguments(label.getArguments().stream()
+                    .map(a -> a.toString())
+                    .collect(Collectors.toList()));
+        }
+    }
+
+    public void setSelected(DialogboxElement dialogboxElement){
+        this.selected = dialogboxElement;
     }
 }

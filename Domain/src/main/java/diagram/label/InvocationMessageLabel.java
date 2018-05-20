@@ -90,21 +90,23 @@ public class InvocationMessageLabel extends Label implements Serializable {
     @Override
     public boolean isValidLabel(String label) {
 
-        if(label == ""){
-            return true;
-        }
         //Method starts with lowercase
-        boolean startsWithLowercase = Character.isLowerCase(label.charAt(0));
+        if( ! Character.isLowerCase(label.charAt(0))){
+            return false;
+        }
 
         //only letters digits and underscores
-        boolean onlyLetDigUnd = true;
         for (int i = 0; i < label.length(); i++){
             char c = label.charAt(i);
-            if(!(Character.isLetter(c) || Character.isDigit(c) || c == '_')){
-                onlyLetDigUnd = false;
+            if( ! Character.isLetter(c)){
+                if(! Character.isDigit(c)) {
+                    if(! (c == '_')) {
+                        return false;
+                    }
+                }
             }
         }
-        return startsWithLowercase && onlyLetDigUnd;
+        return true;
     }
 
     @Override

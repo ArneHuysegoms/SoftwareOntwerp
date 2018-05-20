@@ -57,7 +57,7 @@ public class Argument {
      */
     @Override
     public String toString() {
-        return this.getArgumentInstance() + ": " + this.getArgumentClass();
+        return this.getArgumentInstance() + ":" + this.getArgumentClass();
     }
 
     /**
