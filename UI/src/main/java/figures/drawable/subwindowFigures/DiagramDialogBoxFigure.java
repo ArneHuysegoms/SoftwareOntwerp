@@ -1,7 +1,7 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.RadioButtonFigure;
-import figures.drawable.basicShapes.SelectedRadioButtonFigure;
+import figures.drawable.diagramFigures.RadioButtonFigure;
+import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
 import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;

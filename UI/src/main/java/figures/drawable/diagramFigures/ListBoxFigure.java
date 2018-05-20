@@ -1,12 +1,14 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
 
-import figures.drawable.diagramFigures.Figure;
+import figures.drawable.IDrawable;
+import figures.drawable.basicShapes.DashedRectangle;
+import figures.drawable.basicShapes.Rectangle;
 import window.elements.ListBox;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class ListBoxFigure extends Figure{
+public class ListBoxFigure implements IDrawable {
 
     private ListBox listBox;
 

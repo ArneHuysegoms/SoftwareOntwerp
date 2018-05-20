@@ -1,6 +1,6 @@
-package figures.drawable.diagramFigures;
+package figures.drawable.basicShapes;
 
-import figures.drawable.basicShapes.Line;
+import figures.drawable.IDrawable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 /**
  * a class used to draw an arrow
  */
-public class Arrow extends Figure {
+public class Arrow implements IDrawable {
     private Point2D lineStart, lineEnd;
     private Line arrowTop;
     private Line arrowBottom;

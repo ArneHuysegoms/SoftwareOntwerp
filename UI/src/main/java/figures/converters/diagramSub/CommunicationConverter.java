@@ -3,7 +3,7 @@ package figures.converters.diagramSub;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Party;
-import figures.drawable.diagramFigures.Arrow;
+import figures.drawable.basicShapes.Arrow;
 import view.message.CommunicationMessageView;
 import view.message.MessageView;
 import view.party.PartyView;

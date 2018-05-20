@@ -1,12 +1,14 @@
 package figures.drawable.basicShapes;
 
+import figures.drawable.IDrawable;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
 /**
  * a class used to draw a ractangle
  */
-public class Rectangle extends Shape {
+public class Rectangle implements IDrawable {
 
     protected Point2D positionTL;
     protected Point2D cornerTR;

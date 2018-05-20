@@ -1,8 +1,7 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.TextBoxFigure;
+import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.ResultMessageDialogBox;
-import window.elements.textbox.TextBox;
 
 import java.awt.*;
 

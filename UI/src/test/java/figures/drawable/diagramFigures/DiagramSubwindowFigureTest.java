@@ -1,9 +1,7 @@
 package figures.drawable.diagramFigures;
 
-import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
-import org.junit.Before;
 import org.junit.Test;
-import java.awt.geom.Point2D;
+
 import static org.junit.Assert.assertTrue;
 
 public class DiagramSubwindowFigureTest {

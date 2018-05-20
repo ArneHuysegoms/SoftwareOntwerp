@@ -1,12 +1,9 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.*;
+import figures.drawable.diagramFigures.*;
 import window.dialogbox.InvocationMessageDialogBox;
-import window.elements.ListBox;
-import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.util.List;
 
 public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
 

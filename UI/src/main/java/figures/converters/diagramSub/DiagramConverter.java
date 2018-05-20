@@ -10,7 +10,7 @@ import diagram.party.Object;
 import diagram.party.Party;
 
 import figures.converters.SubwindowConverter;
-import figures.drawable.diagramFigures.Box;
+import figures.drawable.basicShapes.Box;
 import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
 import figures.drawable.diagramFigures.SelectionBoxFigure;
 import figures.drawable.diagramFigures.StickMan;

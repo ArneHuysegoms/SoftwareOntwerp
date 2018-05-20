@@ -1,13 +1,13 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
 
-import figures.drawable.diagramFigures.Figure;
-import window.dialogbox.DiagramDialogBox;
+import figures.drawable.IDrawable;
+import figures.drawable.basicShapes.Circle;
 import window.elements.RadioButton;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class RadioButtonFigure extends Figure{
+public class RadioButtonFigure implements IDrawable {
 
     private RadioButton rb;
     private String title;

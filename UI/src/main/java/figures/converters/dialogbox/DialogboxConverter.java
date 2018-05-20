@@ -1,9 +1,8 @@
 package figures.converters.dialogbox;
 
-import diagram.party.Actor;
 import figures.converters.SubwindowConverter;
+import figures.drawable.diagramFigures.DialogBoxSelectionBoxFigure;
 import figures.drawable.subwindowFigures.*;
-import window.dialogbox.*;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.RadioButton;

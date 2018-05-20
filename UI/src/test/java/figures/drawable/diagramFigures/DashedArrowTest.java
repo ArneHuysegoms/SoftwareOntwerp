@@ -1,5 +1,6 @@
 package figures.drawable.diagramFigures;
 
+import figures.drawable.basicShapes.DashedArrow;
 import org.junit.Before;
 import org.junit.Test;
 

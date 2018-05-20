@@ -1,9 +1,11 @@
 package figures.drawable.basicShapes;
 
+import figures.drawable.IDrawable;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class FilledCircle {
+public class FilledCircle implements IDrawable {
 
     private Point2D upperLeft;
     private double radius;
@@ -58,6 +60,7 @@ public class FilledCircle {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
+    @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         graphics.fillOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);
     }

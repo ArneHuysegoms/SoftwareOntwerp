@@ -1,13 +1,13 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
 
-import figures.drawable.diagramFigures.Figure;
-import window.dialogbox.PartyDialogBox;
+import figures.drawable.IDrawable;
+import figures.drawable.basicShapes.Rectangle;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class TextBoxFigure extends Figure{
+public class TextBoxFigure implements IDrawable {
 
     private TextBox textBox;
     private String title;
