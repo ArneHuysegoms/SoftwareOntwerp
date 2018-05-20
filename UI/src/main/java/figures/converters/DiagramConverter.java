@@ -61,7 +61,7 @@ public abstract class DiagramConverter extends SubwindowConverter{
      */
     @Override
     public void draw(Graphics graphics) {
-        DiagramView repo = diagramSubwindow.getFacade().getActiveRepo();
+        DiagramView repo = diagramSubwindow.getFacade().getActiveView();
         Diagram diagram = diagramSubwindow.getFacade().getDiagram();
         DiagramElement selectedElement = diagramSubwindow.getSelected();
 

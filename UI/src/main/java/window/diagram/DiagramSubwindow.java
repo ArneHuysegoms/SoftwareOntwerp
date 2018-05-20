@@ -4,7 +4,6 @@ import action.*;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
-import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.message.ResultMessage;
 import diagram.party.Party;
@@ -65,11 +64,27 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
+     *
+     * @return true if this is currently a sequence diagram
+     */
+    public boolean isSequenceDiagram(){
+        return this.getFacade().activeDiagramIsSequence();
+    }
+
+    /**
+     *
+     * @return true if this is currently a communication diagram
+     */
+    public boolean isCommunicationDiagram(){
+        return this.getFacade().activeDiagramIsCommunication();
+    }
+
+    /**
      * @return a copy of the facade
      */
     public DomainFacade getCopyOfFacade() {
-        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramView.copy(getFacade().getSequenceRepo()), DiagramView.copy(getFacade().getCommunicationRepo()));
-        if(this.getFacade().getActiveRepo() instanceof CommunicationView){
+        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramView.copy(getFacade().getSequenceView()), DiagramView.copy(getFacade().getCommunicationView()));
+        if(this.getFacade().getActiveView() instanceof CommunicationView){
             f.changeActiveDiagram();
         }
         return f;
