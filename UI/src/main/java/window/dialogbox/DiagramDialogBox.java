@@ -26,7 +26,7 @@ public class DiagramDialogBox extends DialogBox {
 
     private RadioButton selected;
 
-    private Subwindow subwindow;
+    private DiagramSubwindow subwindow;
 
     public DiagramDialogBox(Point2D position, DiagramSubwindow subwindow) throws UIException {
         super(position);
@@ -35,14 +35,14 @@ public class DiagramDialogBox extends DialogBox {
         toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
         toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
         selected = toCommunicationDiagram;
-        this.setSubwindow(subwindow);
+        this.setDiagramSubwindow(subwindow);
     }
 
-    public Subwindow getSubwindow() {
+    public DiagramSubwindow getDiagramSubwindow() {
         return subwindow;
     }
 
-    public void setSubwindow(Subwindow subwindow) {
+    public void setDiagramSubwindow(DiagramSubwindow subwindow) {
         this.subwindow = subwindow;
     }
 
