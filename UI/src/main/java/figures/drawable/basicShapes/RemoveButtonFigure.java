@@ -52,14 +52,14 @@ public class RemoveButtonFigure extends Shape {
         }
 
         /**
-         * @return the x-coordinate of the top-right corner of the subwindow
+         * @return the x-coordinate of the top-right corner of the window.diagram
          */
         public int getX() {
             return this.x;
         }
 
         /**
-         * @return the y-coordinate of the top-right corner of the subwindow
+         * @return the y-coordinate of the top-right corner of the window.diagram
          */
         public int getY() {
             return this.y;

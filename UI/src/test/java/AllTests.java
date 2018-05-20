@@ -1,4 +1,3 @@
-import mediator.InteractionMediatorTest;
 import suites.FiguresTests;
 import suites.DiagramSubwindowTests;
 import suites.UIEventTests;
@@ -15,7 +14,6 @@ import org.junit.runners.Suite;
         InteractrCanvasTest.class,
         CanvasControllerTest.class,
         FiguresTests.class,
-        InteractionMediatorTest.class,
         DiagramSubwindowTests.class,
         UIEventTests.class,
         WindowElementsTests.class,

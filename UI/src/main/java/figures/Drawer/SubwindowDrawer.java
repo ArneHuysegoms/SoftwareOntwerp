@@ -13,8 +13,8 @@ public class SubwindowDrawer implements Drawer {
 
     /**
      * @param graphics object used to draw on the program's window
-     * @param start    top-left point of the subwindow
-     * @param end      bottom-right point of the subwindow
+     * @param start    top-left point of the window.diagram
+     * @param end      bottom-right point of the window.diagram
      * @param label    null in this implementation
      * @param minX     minimum possible x coördinate value
      * @param minY     minimum possible y coördinate value

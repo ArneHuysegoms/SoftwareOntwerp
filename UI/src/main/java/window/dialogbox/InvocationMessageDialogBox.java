@@ -247,7 +247,7 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     private void handleArgumentListBox(Point2D point) {
         selected = argumentListBox;
-        argumentListBox.selectArgument(argumentListBox.getRelativePoint(point));
+        argumentListBox.selectArgument(point);
         invocationMessageLabel.setIndex(argumentListBox.getSelectedIndex());
     }
 
