@@ -20,8 +20,8 @@ public class ListBox extends DialogboxElement implements Clickable {
 
     public ListBox(Point2D coordinate, String description) throws UIException {
         super(coordinate, description);
-        arguments = new ArrayList<>();
-        selectedIndex = -1;
+        this.setArguments(new ArrayList<>());
+        this.setSelectedIndex(-1);
     }
 
     public int getSelectedIndex() {
@@ -29,10 +29,7 @@ public class ListBox extends DialogboxElement implements Clickable {
     }
 
     public void setSelectedIndex(int selectedIndex) {
-        if(selectedIndex < 0){
-            this.selectedIndex = 0;
-        }
-        else if( selectedIndex > arguments.size() - 1){
+        if( selectedIndex > arguments.size() - 1){
             this.selectedIndex = arguments.size() - 1;
         }
         else {
@@ -54,16 +51,17 @@ public class ListBox extends DialogboxElement implements Clickable {
     }
 
     /**
-     * returns a relative point based on the given location and the location of the subwindow
+     * returns a relative point based on the given location and the location of the window.diagram
      * @param location the location that needs to be translated
-     * @return a relative point to this subwindow based on the given location
+     * @return a relative point to this window.diagram based on the given location
      */
     public Point2D getRelativePoint(Point2D location) {
         return new Point2D.Double(location.getX() - this.getCoordinate().getX(), location.getY() - this.getCoordinate().getY());
     }
 
     public void selectArgument(Point2D location){
-        selectedIndex = (int) location.getY()/14;
+        Point2D relative = getRelativePoint(location);
+        selectedIndex = (int) relative.getY()/14;
         if(selectedIndex > arguments.size() - 1){
             selectedIndex = arguments.size() - 1;
         }
@@ -80,14 +78,14 @@ public class ListBox extends DialogboxElement implements Clickable {
     public void moveUp(){
         if(selectedIndex != 0) {
             Collections.swap(arguments, selectedIndex, selectedIndex - 1);
-            selectedIndex++;
+            selectedIndex--;
         }
     }
 
     public void moveDown(){
         if(selectedIndex != arguments.size() - 1) {
             Collections.swap(arguments, selectedIndex, selectedIndex + 1);
-            selectedIndex--;
+            selectedIndex++;
         }
     }
 

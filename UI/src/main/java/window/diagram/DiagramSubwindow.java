@@ -40,9 +40,9 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     private DialogBox activeDialogBox;
 
     /**
-     * default contructor for subwindow with default width and height
+     * default contructor for window.diagram with default width and height
      *
-     * @param pos the position of the subwindow
+     * @param pos the position of the window.diagram
      */
     public DiagramSubwindow(Point2D pos) {
         super(pos, WindowLevelCounter.getNextLevel());
@@ -52,10 +52,10 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
-     * contructor for subwindow with default width and height
+     * contructor for window.diagram with default width and height
      *
-     * @param pos the position of the subwindow
-     * @param facade the facade for this subwindow
+     * @param pos the position of the window.diagram
+     * @param facade the facade for this window.diagram
      */
     public DiagramSubwindow(Point2D pos, DomainFacade facade) {
         super(pos, WindowLevelCounter.getNextLevel());
@@ -95,23 +95,23 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     /**
      * sets the active label
      *
-     * @param label the new label for this subwindow
+     * @param label the new label for this window.diagram
      */
     public void setLabel(Label label) {
         this.label = label;
     }
 
     /**
-     * @return the facade for this subwindow
+     * @return the facade for this window.diagram
      */
     public DomainFacade getFacade() {
         return facade;
     }
 
     /**
-     * sets the facade for this subwindow
+     * sets the facade for this window.diagram
      *
-     * @param facade the new facade for this subwindow
+     * @param facade the new facade for this window.diagram
      */
     private void setFacade(DomainFacade facade) {
         this.facade = facade;
@@ -127,7 +127,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     /**
      * sets the labelcontainer for the active label
      *
-     * @param labelContainer the new labelcontainer for this subwindow
+     * @param labelContainer the new labelcontainer for this window.diagram
      */
     public void setLabelContainer(String labelContainer) {
         this.labelContainer = labelContainer;
@@ -135,7 +135,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     /**
      *
-     * @return the selected element of this subwindow
+     * @return the selected element of this window.diagram
      */
     public DiagramElement getSelected() {
         return selected;
@@ -143,7 +143,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     /**
      *
-     * @param selected the new selected element for this subwindow
+     * @param selected the new selected element for this window.diagram
      */
     public void setSelected(DiagramElement selected) {
         this.selected = selected;
@@ -394,7 +394,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
-     * start editing a label in the subwindow
+     * start editing a label in the window.diagram
      */
     private void startEditingLabel() {
         labelMode = true;
@@ -420,7 +420,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
-     * start editing a label in the subwindow
+     * start editing a label in the window.diagram
      */
     public void stopEditingLabel() {
         labelMode = false;

@@ -28,7 +28,7 @@ public class CommunicationConverter extends DiagramConverter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageView  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param messageView  repository containing all the coordinates of the messages in the window.diagram's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */

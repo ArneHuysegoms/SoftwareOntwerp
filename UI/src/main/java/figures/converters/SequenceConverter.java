@@ -44,7 +44,7 @@ public class SequenceConverter extends DiagramConverter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageView  repository containing all the coordinates of the messages in the subwindow's diagram
+     * @param messageView  repository containing all the coordinates of the messages in the window.diagram's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
@@ -64,7 +64,7 @@ public class SequenceConverter extends DiagramConverter {
      * @param graphics        object used to draw on the program's window
      * @param repo            repository containing all the coordinates of a diagram
      * @param diagram         the diagram that will be drawn
-     * @param selectedElement the currently selected element in the subwindow
+     * @param selectedElement the currently selected element in the window.diagram
      */
     @Override
     protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView repo, Diagram diagram, DiagramElement selectedElement) {

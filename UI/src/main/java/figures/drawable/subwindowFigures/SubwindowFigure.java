@@ -16,8 +16,8 @@ public abstract class SubwindowFigure extends Figure {
     private Button closeButton;
 
     /**
-//     * @param start top-left point of the subwindow
-//     * @param end   bottom-right point of the subwindow
+//     * @param start top-left point of the window.diagram
+//     * @param end   bottom-right point of the window.diagram
      */
     public SubwindowFigure(SubwindowFrame subwindow) {
         this.subwindow = subwindow;
