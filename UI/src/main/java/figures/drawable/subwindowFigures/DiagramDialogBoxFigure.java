@@ -2,6 +2,7 @@ package figures.drawable.subwindowFigures;
 
 import figures.drawable.basicShapes.Circle;
 import figures.drawable.basicShapes.FilledCircle;
+import figures.drawable.basicShapes.RadioButtonFigure;
 import window.dialogbox.DiagramDialogBox;
 import window.elements.RadioButton;
 
@@ -26,15 +27,19 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
 
-        Point2D comm=dialogBox.getToCommunicationDiagram().getCoordinate(), seq=dialogBox.getToSequenceDiagram().getCoordinate();
-        //TODO class RadioButtonFigue? want coordinate is MISSCHIEN nie midden van radio button
-        //TODO miss Class maken voor radiobuttion, public RadioButton(Point2D, descripton)
-        new Circle(comm,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
-        graphics.drawString(DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION, (int)comm.getX(), (int)comm.getY());
+        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(),DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
+        .draw(graphics, minX, minY, maxX, maxY);
+        new RadioButtonFigure(dialogBox.getToSequenceDiagram(),DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
+        .draw(graphics, minX, minY, maxX, maxY);
 
-        new Circle(seq,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
-        graphics.drawString(DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION, (int)seq.getX(), (int)seq.getY());
-
+       drawSelectedRadioButton(graphics, minX, minY, maxX, maxY)
         new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);;
     }
+
+    private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        //TODO NEXT
+        //if(dialogBox.getDiagramSubwindow() instanceof Communication)
+    }
+
+
 }
