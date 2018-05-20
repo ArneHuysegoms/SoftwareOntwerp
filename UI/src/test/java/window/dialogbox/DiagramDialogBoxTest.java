@@ -56,19 +56,19 @@ public class DiagramDialogBoxTest {
     public void test_Space_executes_selected_radioButton(){
         assertEquals(diagramDialogBox.getToCommunicationDiagram(), diagramDialogBox.getSelected());
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo() instanceof CommunicationView);
+        assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof CommunicationView);
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         assertEquals(diagramDialogBox.getToSequenceDiagram(), diagramDialogBox.getSelected());
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo() instanceof SequenceView);
+        assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof SequenceView);
     }
 
     @Test
     public void test_MousePress_works(){
         assertEquals(diagramDialogBox.getToCommunicationDiagram(), diagramDialogBox.getSelected());
         diagramDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(20, 30)));
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo() instanceof CommunicationView);
+        assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof CommunicationView);
         diagramDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(20, 60)));
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo() instanceof SequenceView);
+        assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof SequenceView);
     }
 }

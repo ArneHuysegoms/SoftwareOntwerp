@@ -54,13 +54,8 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     /**
      * contructor for window.diagram with default width and height
      *
-<<<<<<< HEAD
-     * @param pos    the position of the subwindow
-     * @param facade the facade for this subwindow
-=======
      * @param pos the position of the window.diagram
      * @param facade the facade for this window.diagram
->>>>>>> origin/Sander
      */
     public DiagramSubwindow(Point2D pos, DomainFacade facade) {
         super(pos, WindowLevelCounter.getNextLevel());
@@ -70,11 +65,29 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
+     *
+     * @return true if this is currently a sequence diagram
+     */
+    public boolean isSequenceDiagram(){
+        return this.getFacade().activeDiagramIsSequence();
+    }
+
+    /**
+     *
+     * @return true if this is currently a communication diagram
+     */
+    public boolean isCommunicationDiagram(){
+        return this.getFacade().activeDiagramIsCommunication();
+    }
+
+    /**
      * @return a copy of the facade
      */
     public DomainFacade getCopyOfFacade() {
         DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramView.copy(getFacade().getSequenceRepo()), DiagramView.copy(getFacade().getCommunicationRepo()));
-        if (this.getFacade().getActiveRepo() instanceof CommunicationView) {
+        if(this.getFacade().getActiveRepo() instanceof CommunicationView){
+        DomainFacade f = new DomainFacade(this.getFacade().getDiagram(), DiagramView.copy(getFacade().getSequenceView()), DiagramView.copy(getFacade().getCommunicationView()));
+        if(this.getFacade().getActiveView() instanceof CommunicationView){
             f.changeActiveDiagram();
         }
         return f;
@@ -139,24 +152,16 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
-<<<<<<< HEAD
-     * @return the selected element of this subwindow
-=======
      *
      * @return the selected element of this window.diagram
->>>>>>> origin/Sander
      */
     public DiagramElement getSelected() {
         return selected;
     }
 
     /**
-<<<<<<< HEAD
-     * @param selected the new selected element for this subwindow
-=======
      *
      * @param selected the new selected element for this window.diagram
->>>>>>> origin/Sander
      */
     public void setSelected(DiagramElement selected) {
         this.selected = selected;
@@ -166,6 +171,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      * handle the given keyevent accordingly
      *
      * @param keyEvent the keyevent to handle
+     *
      * @return an action to be handled higher up
      */
     public Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
@@ -205,34 +211,38 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         return new EmptyAction();
     }
 
-    public void removeDialogBox(DialogBox dialogBox) {
+    public void removeDialogBox(DialogBox dialogBox){
         this.dialogBoxlist.remove(dialogBox);
-        if (activeDialogBox == dialogBox) {
+        if(activeDialogBox == dialogBox){
             this.activeDialogBox = null;
         }
     }
 
     public void opendialogBox() throws UIException {
-        if (selected == null) {
+        if(selected == null){
             DiagramDialogBox diagramBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
             closeOldDialogBoxes(diagramBox);
             dialogBoxlist.add(diagramBox);
             activeDialogBox = diagramBox;
-        } else if (selectedElementIsParty()) {
+        }
+        else if(selectedElementIsParty()){
             Party p = (Party) selected;
             openPartyDialogBox(p);
-        } else if (selectedElementIsLabel()) {
+        }
+        else if(selectedElementIsLabel()){
             DiagramElement element = this.getFacade().findParentElement((Label) selected);
-            if (element instanceof Party) {
+            if(element instanceof Party){
                 Party p = (Party) element;
                 openPartyDialogBox(p);
-            } else if (selected instanceof InvocationMessageLabel) {
+            }
+            else if(selected instanceof InvocationMessageLabel){
                 InvocationMessageDialogBox invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(100, 100), (InvocationMessageLabel) selected, this);
                 closeOldDialogBoxes(invocationMessageDialogBox);
                 dialogBoxlist.add(invocationMessageDialogBox);
                 activeDialogBox = invocationMessageDialogBox;
-            } else if (element instanceof ResultMessage) {
-                ResultMessageDialogBox resultMessageDialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element, this);
+            }
+            else if(element instanceof ResultMessage){
+                ResultMessageDialogBox resultMessageDialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element , this);
                 closeOldDialogBoxes(resultMessageDialogBox);
                 dialogBoxlist.add(resultMessageDialogBox);
                 activeDialogBox = resultMessageDialogBox;
@@ -240,22 +250,22 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
     }
 
-    private void openPartyDialogBox(Party p) throws UIException {
-        PartyDialogBox partyDialogBox = new PartyDialogBox(new Point2D.Double(100, 100), p, this);
+    private void openPartyDialogBox(Party p) throws UIException{
+        PartyDialogBox partyDialogBox = new PartyDialogBox(new Point2D.Double(100,100), p, this);
         closeOldDialogBoxes(partyDialogBox);
         closeOtherPartyDialogBoxes(partyDialogBox);
         dialogBoxlist.add(partyDialogBox);
         activeDialogBox = partyDialogBox;
     }
 
-    private void closeOldDialogBoxes(DialogBox newBox) {
+    private void closeOldDialogBoxes(DialogBox newBox){
         List<DialogBox> olds = dialogBoxlist.stream()
-                .filter(d -> d.getClass() != newBox.getClass())
-                .collect(Collectors.toList());
+                                    .filter(d -> d.getClass() != newBox.getClass())
+                                    .collect(Collectors.toList());
         dialogBoxlist.removeAll(olds);
     }
 
-    private void closeOtherPartyDialogBoxes(PartyDialogBox dialogBox) {
+    private void closeOtherPartyDialogBoxes(PartyDialogBox dialogBox){
         List<DialogBox> olds = dialogBoxlist.stream()
                 .filter(d -> d.getClass() != dialogBox.getClass())
                 .map(d -> (PartyDialogBox) d)
@@ -264,15 +274,15 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         dialogBoxlist.removeAll(olds);
     }
 
-    public void changeActiveDiagram() {
+    public void changeActiveDiagram(){
         this.getFacade().changeActiveDiagram();
     }
 
-    public boolean activeDiagamIsSequence() {
+    public boolean activeDiagamIsSequence(){
         return getFacade().activeDiagramIsSequence();
     }
 
-    public boolean activeDiagramIsCommunication() {
+    public boolean activeDiagramIsCommunication(){
         return getFacade().activeDiagramIsCommunication();
     }
 
@@ -280,6 +290,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      * Reads a mouse event and alters the active diagram based on it
      *
      * @param mouseEvent the MouseEvent that happened in the UI, comes from the InteractrCanvas
+     *
      * @return an action to be handled higher up
      */
     public Action handleMouseEvent(MouseEvent mouseEvent) {
@@ -328,6 +339,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      * handle a left click on the UI
      *
      * @param mouseEvent the MouseEvent containing the information of the event
+     *
      * @return an action detailing that the messages have to be added elsewhere
      */
     private Action handleReleaseClick(MouseEvent mouseEvent) {
@@ -346,7 +358,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     /**
      * handles a leftclick for the given mouseEvent
-     *
      * @param mouseEvent the mouseEvent to handle
      */
     private void handleLeftClick(MouseEvent mouseEvent) {
@@ -354,6 +365,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
+     *
      * @return true if the selected element is a party, false otherwise
      */
     private boolean selectedElementIsParty() {
@@ -361,6 +373,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
+     *
      * @return true if the selected element is a party, false otherwise
      */
     private boolean selectedElementIsLabel() {
@@ -368,6 +381,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
     /**
+     *
      * @return true if the selected element is a party, false otherwise
      */
     private boolean selectedElementIsMessageStart() {
@@ -386,10 +400,11 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             editing = true;
             selected = newSelected;
             this.startEditingLabel();
-        } else {
+        } 
+        else{
             editing = false;
             stopEditingLabel();
-            if (newSelected instanceof Label) {
+            if(newSelected instanceof Label){
                 labelContainer = ((Label) newSelected).getLabel() + "I";
             }
             selected = newSelected;
@@ -468,7 +483,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     /**
      * handle a change in the active label
-     *
      * @return an action detailing what needs to happen in other subwindows
      */
     private Action handleChangeInLabel() throws DomainException {
@@ -501,38 +515,24 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         return true;
     }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/Sander
     @Override
     public void handleAction(Action action) {
         action.performAction(this);
-        for (DialogBox dialogBox : dialogBoxlist) {
+        for(DialogBox dialogBox : dialogBoxlist){
             dialogBox.handleAction(action);
         }
     }
 
-<<<<<<< HEAD
-    public Action updateDialogBoxes (Action action){
-=======
 
     public Action updateDialogBoxes(Action action) {
->>>>>>> origin/Sander
         for (DialogBox dialogBox : dialogBoxlist) {
             dialogBox.handleAction(action);
         }
         return action;
-<<<<<<< HEAD
-=======
     }
 
     public List<DialogBox> getDialogBoxlist(){
-        return dialogBoxlist;
->>>>>>> origin/Sander
-    }
-
-    public List<DialogBox> getDialogBoxlist() {
         return dialogBoxlist;
     }
 }
