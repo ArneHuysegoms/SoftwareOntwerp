@@ -1,8 +1,7 @@
-package suites;
+package window.frame;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import window.frame.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -10,8 +9,7 @@ import window.frame.*;
         FrameRectangleTest.class,
         FrameTest.class,
         TitleBarClickTest.class,
-        TitleBarTest.class
+        TitleBarTest.class,
 })
-
-public class WindowElementsTests {
+public class FrameTestSuite {
 }

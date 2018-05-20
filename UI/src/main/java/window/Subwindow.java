@@ -14,7 +14,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, ILowController, Comparable<Subwindow>{
+public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>{
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;

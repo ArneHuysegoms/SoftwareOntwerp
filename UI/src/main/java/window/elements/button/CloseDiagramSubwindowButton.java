@@ -1,10 +1,10 @@
 package window.elements.button;
 
-import command.closeWindow.CloseSubwindowCommand;
+import command.closeWindow.CloseDiagramSubwindowCommand;
 
 public class CloseDiagramSubwindowButton extends CloseWindowButton {
 
-    public CloseDiagramSubwindowButton(CloseSubwindowCommand closeDiagramSubwindowCommand) {
+    public CloseDiagramSubwindowButton(CloseDiagramSubwindowCommand closeDiagramSubwindowCommand) {
         super(closeDiagramSubwindowCommand);
     }
 }

@@ -1,10 +1,10 @@
 package window.elements.button;
 
-import command.closeWindow.CloseSubwindowCommand;
+import command.closeWindow.CloseDialogBoxCommand;
 
 public class CloseDialogBoxButton extends CloseWindowButton{
 
-    public CloseDialogBoxButton(CloseSubwindowCommand closeSubwindowCommand) {
-        super(closeSubwindowCommand);
+    public CloseDialogBoxButton(CloseDialogBoxCommand closeDialogBoxCommand) {
+        super(closeDialogBoxCommand);
     }
 }

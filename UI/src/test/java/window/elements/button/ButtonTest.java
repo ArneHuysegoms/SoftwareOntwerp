@@ -1,45 +1,29 @@
 package window.elements.button;
 
-import controller.CanvasController;
 import org.junit.Test;
-import window.elements.button.Button;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.awt.geom.Point2D;
+
+import static org.junit.Assert.*;
 
 public class ButtonTest {
-    private Button button1;
-    private Button button2;
-    private CanvasController canvasController;
 
-    //    @Before
-//    public void setUp(){
-//        button1 = new Button();
-//        canvasController = new CanvasController();
-//        button2 = new Button(new CloseDiagramSubwindowCommand((canvasController, null));
-//    }
-//
-//    @Test
-//    public void test_width_button1(){
-//        assertEquals(button1.getWidth(), 30);
-//    }
-//    @Test
-//    public void test_width_button2(){
-//        assertEquals(button2.getWidth(), 30);
-//    }
-//    @Test
-//    public void test_height_button1(){
-//        assertEquals(button1.getHeight(), 30);
-//    }
-//    @Test
-//    public void test_height_button2(){
-//        assertEquals(button2.getHeight(), 30);
-//    }
     @Test
-    public void emptyTest() {
-
+    public void test_constructor() {
+        Button button = new CloseDiagramSubwindowButton(null);
+        assertTrue(button.getHeight() == Button.HEIGHT);
+        assertTrue(button.getWidth() == Button.WIDTH);
+        assertTrue(button.getCommand() == null);
     }
 
-
+    @Test
+    public void test_isClicked(){
+        Button button = new CloseDialogBoxButton(null);
+        button.setPosition( new Point2D.Double(50, 50));
+        assertTrue(button.isClicked(new Point2D.Double(60, 60)));
+        assertFalse(button.isClicked(new Point2D.Double(49, 49)));
+        assertFalse(button.isClicked(new Point2D.Double(90, 90)));
+        assertFalse(button.isClicked(new Point2D.Double(60, 90)));
+        assertFalse(button.isClicked(new Point2D.Double(90, 60)));
+    }
 }

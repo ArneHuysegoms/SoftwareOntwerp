@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class DiagramSubwindowFrameTest {
+public class FrameTest {
 
     private SubwindowFrame subwindowFrame;
 
