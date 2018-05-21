@@ -42,15 +42,21 @@ public class DownButtonFigure implements IDrawable {
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new Rectangle(x - width, y, width, height).draw(graphics, minX, minY, maxX, maxY);
-        drawUpShape(graphics, minX, minY, maxX, maxY);
+        drawUpShape(graphics);
     }
 
-    private void drawUpShape(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+    @Override
+    public void draw(Graphics graphics) {
+        new Rectangle(x - width, y, width, height).draw(graphics);
+        drawUpShape(graphics);
+    }
+
+    private void drawUpShape(Graphics graphics) {
         int offsetCenter = (int) Math.ceil(((double) width) / 2),
                 offsetX = (int) Math.floor(width / 5),
                 offsetY = (int) Math.floor(height / 5);
-        new Line(x+offsetCenter,y+(offsetY*4),x+offsetX,y+(offsetY)).draw(graphics,minX,minY,maxX,maxY);
-        new Line(x+offsetCenter,y+(offsetY*4),x+(offsetX*4),y+(offsetY)).draw(graphics,minX,minY,maxX,maxY);
+        new Line(x+offsetCenter,y+(offsetY*4),x+offsetX,y+(offsetY)).draw(graphics);
+        new Line(x+offsetCenter,y+(offsetY*4),x+(offsetX*4),y+(offsetY)).draw(graphics);
     }
 
     /**

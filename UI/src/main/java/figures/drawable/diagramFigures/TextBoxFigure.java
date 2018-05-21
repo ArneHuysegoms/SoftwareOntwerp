@@ -23,7 +23,18 @@ public class TextBoxFigure implements IDrawable {
                 titlePos = new Point2D.Double(textBoxPos.getX()+TextBox.WIDTH+3,textBoxPos.getY()),
                 contentPos = new Point2D.Double(textBoxPos.getX()+3,textBoxPos.getY());
 
-        drawBox(graphics,textBoxPos, minX, minY, maxX, maxY);
+        new Rectangle(textBoxPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
+        drawTitle(graphics, titlePos);
+        drawContents(graphics, contentPos);
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        Point2D textBoxPos=textBox.getCoordinate(),
+                titlePos = new Point2D.Double(textBoxPos.getX()+TextBox.WIDTH+3,textBoxPos.getY()),
+                contentPos = new Point2D.Double(textBoxPos.getX()+3,textBoxPos.getY());
+
+        new Rectangle(textBoxPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics);
         drawTitle(graphics, titlePos);
         drawContents(graphics, contentPos);
     }
@@ -36,7 +47,5 @@ public class TextBoxFigure implements IDrawable {
         graphics.drawString(textBox.getContents(), (int)contentPos.getX(), (int)contentPos.getY());
     }
 
-    private void drawBox(Graphics graphics, Point2D textBoxPos, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(textBoxPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
-    }
+
 }

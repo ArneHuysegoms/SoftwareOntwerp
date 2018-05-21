@@ -47,6 +47,13 @@ public class CloseButtonFigure implements IDrawable {
         new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        new Rectangle(x-width, y, width, height).draw(graphics);
+        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics);
+        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics);
+    }
+
     /**
      * @return the x-coordinate of the top-right corner of the window.diagram
      */

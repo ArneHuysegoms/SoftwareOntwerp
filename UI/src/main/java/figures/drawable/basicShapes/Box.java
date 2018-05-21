@@ -70,4 +70,10 @@ public class Box implements IDrawable {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new Rectangle(this.getTl(), this.getBr()).draw(graphics, minX, minY, maxX, maxY);
     }
+
+    @Override
+    public void draw(Graphics graphics) {
+        new Rectangle(this.getTl(), this.getBr()).draw(graphics);
+
+    }
 }

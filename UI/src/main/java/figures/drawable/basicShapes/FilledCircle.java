@@ -1,6 +1,7 @@
 package figures.drawable.basicShapes;
 
 import figures.drawable.IDrawable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -62,6 +63,11 @@ public class FilledCircle implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
         graphics.fillOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);
     }
 }

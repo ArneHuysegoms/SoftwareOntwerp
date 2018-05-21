@@ -27,7 +27,7 @@ public abstract class DialogboxConverter extends SubwindowConverter {
             Point2D tbPos = tb.getCoordinate();
             Point2D start = new Point2D.Double(tbPos.getX() - 3, tbPos.getY() - 3),
                     end = new Point2D.Double(tbPos.getX() + TextBox.WIDTH + 3, tbPos.getY() + TextBox.HEIGHT + 3);
-            new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
+            new DialogBoxSelectionBoxFigure(start, end).draw(graphics);
         } else if (selected instanceof RadioButton) {
             RadioButton rb = (RadioButton) selected;
             Point2D rbPos = rb.getCoordinate();

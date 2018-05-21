@@ -93,4 +93,9 @@ public class Line implements IDrawable {
 
         graphics.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
     }
+
+    @Override
+    public void draw(Graphics graphics) {
+        graphics.drawLine((int) getStart().getX(), (int) getStart().getY(), (int) getEnd().getX(), (int) getEnd().getY());
+    }
 }

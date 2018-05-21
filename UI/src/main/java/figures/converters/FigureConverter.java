@@ -77,14 +77,13 @@ public class FigureConverter {
 
     public void drawDialogBoxStructure(Graphics graphics, DialogBox sub) {
         if (sub instanceof PartyDialogBox) {
-            new PartyDialogBoxFigure((PartyDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new PartyDialogBoxFigure((PartyDialogBox) sub).draw(graphics);
         } else if (sub instanceof DiagramDialogBox) {
-            new DiagramDialogBoxFigure((DiagramDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new DiagramDialogBoxFigure((DiagramDialogBox) sub).draw(graphics);
         } else if (sub instanceof InvocationMessageDialogBox) {
-            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
-
+            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox) sub).draw(graphics);
         } else if (sub instanceof ResultMessageDialogBox) {
-            new ResultMessageDialogBoxFigure((ResultMessageDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new ResultMessageDialogBoxFigure((ResultMessageDialogBox) sub).draw(graphics);
 
         }
     }
@@ -112,7 +111,7 @@ public class FigureConverter {
      */
     private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
         //TODO replace to specific converters
-        new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
+        new DiagramSubwindowFigure(sub).draw(graphics);
     }
 
     /**
