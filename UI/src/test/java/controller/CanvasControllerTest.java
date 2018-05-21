@@ -46,7 +46,7 @@ public class CanvasControllerTest {
         InteractionController ic = new InteractionController();
         canvasController.addInteractionController(ic);
         canvasController.removeInteractionController(ic);
-        assertEquals(canvasController.getActiveInteractionController(),null);
+        assertTrue(canvasController.getActiveInteractionController() ==null);
         assertTrue(canvasController.getInteractionControllers().isEmpty());
     }
 

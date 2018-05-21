@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class InteractionController {
+public class InteractionController implements IHighLevelController{
     private List<Subwindow> subwindows;
     private Subwindow activeSubwindow;
     //private List<DiagramSubwindow> diagramSubwindows;
