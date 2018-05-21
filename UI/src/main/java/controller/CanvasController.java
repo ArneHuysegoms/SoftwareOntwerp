@@ -104,11 +104,12 @@ public class CanvasController implements IHighLevelController{
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
+
         if(activeInteractionController != null && activeInteractionController.isDragging()){
             activeInteractionController.handleMouseEvent(mouseEvent);
         }
-        else if (ic != null) {
+        else if (getAppropriateInteractionController(mouseEvent.getPoint()) != null) {
+            InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
             if (!ic.equals(getActiveInteractionController())) {
                 changeActiveInteractionController(ic);
             }
