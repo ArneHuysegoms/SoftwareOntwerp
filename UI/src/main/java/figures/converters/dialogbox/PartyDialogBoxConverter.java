@@ -5,11 +5,11 @@ import window.dialogbox.PartyDialogBox;
 
 import java.awt.*;
 
-public class PartyDialogboxConverter extends DialogboxConverter {
+public class PartyDialogBoxConverter extends DialogBoxConverter {
 
     private PartyDialogBox dialogBox;
 
-    public PartyDialogboxConverter(PartyDialogBox dialogBox) {
+    public PartyDialogBoxConverter(PartyDialogBox dialogBox) {
         this.dialogBox = dialogBox;
         setFigure();
     }

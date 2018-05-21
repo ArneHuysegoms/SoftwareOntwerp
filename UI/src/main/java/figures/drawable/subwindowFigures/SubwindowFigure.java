@@ -42,6 +42,14 @@ public abstract class SubwindowFigure implements IDrawable {
         drawCloseButton(graphics, minX, minY, maxX, maxY);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        drawBackgroundColor(graphics, Color.WHITE);
+        drawFrame(graphics);
+        drawTitleBar(graphics);
+        drawCloseButton(graphics);
+    }
+
 
     public void drawBackgroundColor(Graphics graphics, Color c) {
         graphics.setColor(c);
@@ -54,10 +62,24 @@ public abstract class SubwindowFigure implements IDrawable {
     }
 
     public void drawTitleBar(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(titleBar.getPosition(),TitleBar.HEIGHT,titleBar.getWidth()).draw(graphics, minX, minY, maxX, maxY);
+        new Rectangle(titleBar.getPosition(),titleBar.getWidth(),TitleBar.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
     }
 
     public void drawCloseButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new CloseButtonFigure(closeButton.getPosition(),closeButton.getHeight(),closeButton.getWidth()).draw(graphics, minX, minY, maxX, maxY);
+    }
+    public void drawFrame(Graphics graphics) {
+        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth())
+                .draw(graphics);
+    }
+
+    public void drawTitleBar(Graphics graphics) {
+        new Rectangle(titleBar.getPosition(),titleBar.getWidth(),TitleBar.HEIGHT)
+                .draw(graphics);
+    }
+
+    public void drawCloseButton(Graphics graphics) {
+        new CloseButtonFigure(closeButton.getPosition(),closeButton.getHeight(),closeButton.getWidth())
+                .draw(graphics);
     }
 }

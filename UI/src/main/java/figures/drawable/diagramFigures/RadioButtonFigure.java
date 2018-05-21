@@ -27,8 +27,22 @@ public class RadioButtonFigure implements IDrawable {
         drawCirle(graphics, circlePosition, minX, minY, maxX, maxY);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        //TODO might have to tweek coordinates
+        Point2D circlePosition=rb.getCoordinate();
+        Point2D textPosition = new Point2D.Double(circlePosition.getX()+RadioButton.WIDTH+3,circlePosition.getY());
+
+        drawTitle(graphics, textPosition);
+        drawCirle(graphics, circlePosition);
+    }
+
     protected void drawCirle(Graphics graphics, Point2D circlePosition, int minX, int minY, int maxX, int maxY) {
         new Circle(circlePosition,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
+    }
+
+    protected void drawCirle(Graphics graphics, Point2D circlePosition) {
+        new Circle(circlePosition,RadioButton.HEIGHT).draw(graphics);
     }
 
     private void drawTitle(Graphics graphics, Point2D titlePosition) {

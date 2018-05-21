@@ -88,6 +88,13 @@ public class Arrow implements IDrawable {
         this.getArrowBottom().draw(graphics, minX, minY, maxX, maxY);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        new Line(this.getLineStart(), this.getLineEnd()).draw(graphics);
+        this.getArrowTop().draw(graphics);
+        this.getArrowBottom().draw(graphics);
+    }
+
     /**
      * returns the arrow's start point
      *

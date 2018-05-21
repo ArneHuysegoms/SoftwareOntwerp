@@ -45,6 +45,12 @@ public class AddButtonFigure implements IDrawable {
         drawAddShape(graphics);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        new Rectangle(x-width, y, width, height).draw(graphics);
+        drawAddShape(graphics);
+    }
+
     private void drawAddShape(Graphics graphics){
         int offsetX = (int)Math.floor(width/5),
                 offsetY = (int)Math.floor(height/5);

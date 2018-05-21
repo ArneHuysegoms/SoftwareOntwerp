@@ -39,11 +39,11 @@ public class Rectangle implements IDrawable {
         setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
-    public Rectangle(Point2D subwindowPoint, int subwindowHeight, int subwindowWidth) {
+    public Rectangle(Point2D subwindowPoint, int subwindowWidth, int subwindowHeight) {
         setPositionTL(subwindowPoint);
-        setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()+subwindowWidth));
-        setCornerBL(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()));
-        setCornerTR(new Point2D.Double(subwindowPoint.getX(), subwindowPoint.getY()+subwindowWidth));
+        setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowWidth, subwindowPoint.getY()+subwindowHeight));
+        setCornerBL(new Point2D.Double(subwindowPoint.getX()+subwindowWidth, subwindowPoint.getY()));
+        setCornerTR(new Point2D.Double(subwindowPoint.getX(), subwindowPoint.getY()+subwindowHeight));
     }
 
     /**
@@ -134,5 +134,13 @@ public class Rectangle implements IDrawable {
         new Line(cornerTR, cornerBR).draw(graphics, minX, minY, maxX, maxY);
         new Line(cornerBR, cornerBL).draw(graphics, minX, minY, maxX, maxY);
         new Line(cornerBL, positionTL).draw(graphics, minX, minY, maxX, maxY);
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        new Line(positionTL, cornerTR).draw(graphics);
+        new Line(cornerTR, cornerBR).draw(graphics);
+        new Line(cornerBR, cornerBL).draw(graphics);
+        new Line(cornerBL, positionTL).draw(graphics);
     }
 }

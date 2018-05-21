@@ -5,11 +5,11 @@ import window.dialogbox.InvocationMessageDialogBox;
 
 import java.awt.*;
 
-public class InvocationMessageDialogboxConverter extends DialogboxConverter {
+public class InvocationMessageDialogBoxConverter extends DialogBoxConverter {
 
     private InvocationMessageDialogBox dialogBox;
 
-    public InvocationMessageDialogboxConverter(InvocationMessageDialogBox dialogBox) {
+    public InvocationMessageDialogBoxConverter(InvocationMessageDialogBox dialogBox) {
         this.dialogBox = dialogBox;
         setFigure();
     }

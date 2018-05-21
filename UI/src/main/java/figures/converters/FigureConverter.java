@@ -3,7 +3,6 @@ package figures.converters;
 import controller.CanvasController;
 
 import controller.InteractionController;
-import exception.UIException;
 import figures.converters.diagramSub.CommunicationConverter;
 import figures.converters.diagramSub.SequenceConverter;
 import figures.converters.dialogbox.*;
@@ -41,13 +40,12 @@ public class FigureConverter {
     }
 
     private List<Subwindow> sortDiagramSubwindows(CanvasController canvasController) {
-        List<DiagramSubwindow> temp = new ArrayList<DiagramSubwindow>();
         List<Subwindow> result = new ArrayList<Subwindow>();
 
         for (InteractionController interaction : canvasController.getInteractionControllers()) {
             result.addAll(interaction.getSubwindows());
         }
-        result.addAll(temp);
+
         Collections.sort(result);
         return result;
     }
@@ -78,14 +76,13 @@ public class FigureConverter {
 
     public void drawDialogBoxStructure(Graphics graphics, DialogBox sub) {
         if (sub instanceof PartyDialogBox) {
-            new PartyDialogBoxFigure((PartyDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new PartyDialogBoxFigure((PartyDialogBox) sub).draw(graphics);
         } else if (sub instanceof DiagramDialogBox) {
-            new DiagramDialogBoxFigure((DiagramDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new DiagramDialogBoxFigure((DiagramDialogBox) sub).draw(graphics);
         } else if (sub instanceof InvocationMessageDialogBox) {
-            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
-
+            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox) sub).draw(graphics);
         } else if (sub instanceof ResultMessageDialogBox) {
-            new ResultMessageDialogBoxFigure((ResultMessageDialogBox) sub).draw(graphics, 0, 0, 2000, 2000);
+            new ResultMessageDialogBoxFigure((ResultMessageDialogBox) sub).draw(graphics);
 
         }
     }
@@ -102,8 +99,6 @@ public class FigureConverter {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * method that draws a window.diagram
      *
      * @param graphics object used to draw on the program's window
@@ -113,11 +108,10 @@ public class FigureConverter {
      */
     private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
         //TODO replace to specific converters
-        new DiagramSubwindowFigure(sub).draw(graphics, 0, 0, 2000, 2000);
+        new DiagramSubwindowFigure(sub).draw(graphics);
     }
 
     /**
->>>>>>> origin/Sander
      * creates and sets the correct converter
      *
      * @param sub
@@ -131,13 +125,13 @@ public class FigureConverter {
                 converter = new CommunicationConverter(temp);
             }
         } else if (sub instanceof PartyDialogBox) {
-            converter = new PartyDialogboxConverter((PartyDialogBox) sub);
+            converter = new PartyDialogBoxConverter((PartyDialogBox) sub);
         }else if (sub instanceof InvocationMessageDialogBox) {
-            converter = new InvocationMessageDialogboxConverter((InvocationMessageDialogBox) sub);
+            converter = new InvocationMessageDialogBoxConverter((InvocationMessageDialogBox) sub);
         }else if (sub instanceof ResultMessageDialogBox) {
-            converter = new ResultMessageDialogboxConverter((ResultMessageDialogBox) sub);
+            converter = new ResultMessageDialogBoxConverter((ResultMessageDialogBox) sub);
         }else if (sub instanceof DiagramDialogBox) {
-            converter = new DiagramDialogboxConverter((DiagramDialogBox) sub);
+            converter = new DiagramDialogBoxConverter((DiagramDialogBox) sub);
         }
     }
 }

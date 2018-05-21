@@ -14,4 +14,10 @@ public interface IDrawable {
      * @param maxY     maximum possible y coördinate value
      */
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY);
+
+    /**
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    public void draw(Graphics graphics);
 }
