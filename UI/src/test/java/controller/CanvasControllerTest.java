@@ -1,6 +1,10 @@
 package controller;
+import exception.UIException;
+import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
+import uievents.KeyEvent;
+import uievents.KeyEventType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -51,8 +55,10 @@ public class CanvasControllerTest {
     }
 
     @Test
-    public void test_createNewInteractionController(){
-
+    public void test_handleKeyEvent_createNewInteractionController() throws DomainException, UIException{
+        KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
+        canvasController.handleKeyEvent(ke);
+        assertEquals(canvasController.getInteractionControllers().size(),1);
     }
 
     @Test

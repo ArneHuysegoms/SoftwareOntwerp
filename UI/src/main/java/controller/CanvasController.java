@@ -184,6 +184,7 @@ public class CanvasController implements IHighLevelController{
 
     private void createNewInteractionController(){
         InteractionController interactionController = new InteractionController();
+        this.getInteractionControllers().add(interactionController);
         this.changeActiveInteractionController(interactionController);
     }
 
