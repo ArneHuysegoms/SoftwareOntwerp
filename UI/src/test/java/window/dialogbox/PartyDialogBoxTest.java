@@ -4,11 +4,10 @@ import action.Action;
 import action.RemoveInReposAction;
 import action.UpdateLabelAction;
 import action.UpdatePartyTypeAction;
-import command.closeWindow.CloseDialogBoxCommand;
+import command.closeWindow.CloseSubwindowCommand;
+import controller.InteractionController;
 import diagram.DiagramElement;
 import diagram.label.PartyLabel;
-import diagram.label.ResultMessageLabel;
-import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Party;
 import exceptions.DomainException;
@@ -19,7 +18,6 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.CloseDialogBoxButton;
 import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
@@ -34,18 +32,20 @@ public class PartyDialogBoxTest {
     Party party;
     DiagramSubwindow diagramSubwindow;
     PartyDialogBox partyDialogBox;
+    InteractionController interactionController;
 
     @Before
     public void setUp(){
         try{
+            interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
 
             party = diagramSubwindow.getFacade().addNewParty(new Point2D.Double(75, 75));
 
             partyDialogBox = new PartyDialogBox(new Point2D.Double(50, 50), party, diagramSubwindow);
-            CloseWindowButton closeWindowButton = new CloseDialogBoxButton(new CloseDialogBoxCommand(diagramSubwindow, partyDialogBox));
+            CloseWindowButton closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, interactionController));
             partyDialogBox.createFrame(closeWindowButton);
-            diagramSubwindow.addDialogBox(partyDialogBox);
+            interactionController.addSubwindow(partyDialogBox);
         }
         catch (Exception e){
             fail();
@@ -156,7 +156,7 @@ public class PartyDialogBoxTest {
         diagramElementSet.add(party);
         Action action = new RemoveInReposAction(diagramElementSet);
         partyDialogBox.handleAction(action);
-        assertTrue(! diagramSubwindow.getDialogBoxlist().contains(partyDialogBox));
+        assertTrue(! interactionController.getSubwindows().contains(partyDialogBox));
     }
 
     @Test
@@ -173,6 +173,6 @@ public class PartyDialogBoxTest {
         Party other = new Actor(new PartyLabel("b:B"));
         Action action = new UpdatePartyTypeAction(party, other);
         partyDialogBox.handleAction(action);
-        assertTrue(! diagramSubwindow.getDialogBoxlist().contains(partyDialogBox));
+        assertTrue(! interactionController.getSubwindows().contains(partyDialogBox));
     }
 }

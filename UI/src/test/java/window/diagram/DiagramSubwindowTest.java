@@ -1,13 +1,10 @@
 package window.diagram;
 
-import command.Command;
-import command.closeWindow.CloseDiagramSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import facade.DomainFacade;
 import org.junit.Before;
 import org.junit.Test;
 import window.Subwindow;
-import window.elements.button.Button;
-import window.elements.button.CloseDiagramSubwindowButton;
 import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
@@ -27,7 +24,7 @@ public class DiagramSubwindowTest {
     @Before
     public void setUp(){
         point = new Point2D.Double(200,200);
-        button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(null, diagramSubwindow));
+        button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, null));
         diagramSubwindow = new DiagramSubwindow(point);
         diagramSubwindow.createFrame(button);
     }

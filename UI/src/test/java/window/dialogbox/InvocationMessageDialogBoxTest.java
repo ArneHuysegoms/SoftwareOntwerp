@@ -3,8 +3,8 @@ package window.dialogbox;
 import action.Action;
 import action.RemoveInReposAction;
 import action.UpdateLabelAction;
-import command.closeWindow.CloseDialogBoxCommand;
-import diagram.Argument;
+import command.closeWindow.CloseSubwindowCommand;
+import controller.InteractionController;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.label.PartyLabel;
@@ -18,7 +18,7 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.CloseDialogBoxButton;
+import window.elements.button.Button;
 import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
@@ -36,16 +36,17 @@ public class InvocationMessageDialogBoxTest {
     InvocationMessageLabel invocationMessageLabel;
     DiagramSubwindow diagramSubwindow;
     InvocationMessageDialogBox invocationMessageDialogBox;
+    InteractionController interactionController;
 
     @Before
     public void setUp(){
         try {
+            interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
             invocationMessageLabel = new InvocationMessageLabel("a", new ArrayList<>());
             invocationMessage = new InvocationMessage(null, invocationMessageLabel, new Actor(new PartyLabel("a:A")), new Actor(new PartyLabel("b:B")));
             invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(50, 50), invocationMessageLabel, diagramSubwindow);
-            diagramSubwindow.addDialogBox(invocationMessageDialogBox);
-            CloseWindowButton closeWindowButton = new CloseDialogBoxButton(new CloseDialogBoxCommand(diagramSubwindow, invocationMessageDialogBox));
+            Button closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(invocationMessageDialogBox, interactionController));
             invocationMessageDialogBox.createFrame(closeWindowButton);
             invocationMessageDialogBox.getMethodTextBox().setContents("a");
         }

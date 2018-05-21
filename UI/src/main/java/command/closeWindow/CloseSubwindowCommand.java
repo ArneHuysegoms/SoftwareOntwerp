@@ -1,25 +1,41 @@
 package command.closeWindow;
 
 import action.Action;
+import action.EmptyAction;
 import command.Command;
+import controller.InteractionController;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 
-public abstract class CloseSubwindowCommand extends Command {
+public class CloseSubwindowCommand extends Command {
 
-    private DiagramSubwindow diagramSubwindow;
+    private Subwindow subwindow;
+    private InteractionController interactionController;
 
-    public CloseSubwindowCommand(DiagramSubwindow diagramSubwindow){
-        this.setDiagramSubwindow(diagramSubwindow);
+    public CloseSubwindowCommand(Subwindow subwindow, InteractionController interactionController){
+       this.setSubwindow(subwindow);
+       this.setInteractionController(interactionController);
     }
 
-    public DiagramSubwindow getDiagramSubwindow() {
-        return diagramSubwindow;
+    public Subwindow getSubwindow() {
+        return subwindow;
     }
 
-    private void setDiagramSubwindow(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
+    public void setSubwindow(Subwindow subwindow) {
+        this.subwindow = subwindow;
+    }
+
+    public InteractionController getInteractionController() {
+        return interactionController;
+    }
+
+    public void setInteractionController(InteractionController interactionController) {
+        this.interactionController = interactionController;
     }
 
     @Override
-    public abstract Action performAction();
+    public Action performAction(){
+        getInteractionController().removeSubwindow(getSubwindow());
+        return new EmptyAction();
+    }
 }

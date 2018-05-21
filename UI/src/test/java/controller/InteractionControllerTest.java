@@ -1,15 +1,14 @@
 package controller;
-import command.closeWindow.CloseDiagramSubwindowCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
 import uievents.KeyEventType;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.button.Button;
-import window.elements.button.CloseDiagramSubwindowButton;
+import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 
@@ -38,7 +37,7 @@ public class InteractionControllerTest {
     @Test
     public void test_addSubwindow(){
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
         diagramSubwindow.getFrame().setButton(button);
         interactionController.addSubwindow(diagramSubwindow);
         assertEquals(interactionController.getActiveSubwindow(),diagramSubwindow);
@@ -48,7 +47,7 @@ public class InteractionControllerTest {
     @Test
     public void test_addSubwindow_twice(){
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
         diagramSubwindow.getFrame().setButton(button);
         interactionController.addSubwindow(diagramSubwindow);
         interactionController.addSubwindow(diagramSubwindow);
@@ -59,7 +58,7 @@ public class InteractionControllerTest {
     @Test
     public void test_removeSubwindow(){
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
         diagramSubwindow.getFrame().setButton(button);
         interactionController.addSubwindow(diagramSubwindow);
         interactionController.removeSubwindow(diagramSubwindow);

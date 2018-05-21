@@ -1,11 +1,7 @@
 package controller;
 
 import action.Action;
-import command.closeWindow.CloseDiagramSubwindowCommand;
-import diagram.DiagramElement;
-import diagram.label.Label;
-import diagram.message.Message;
-import diagram.party.Party;
+import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -13,14 +9,12 @@ import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
 import window.diagram.DiagramSubwindow;
-import window.dialogbox.DialogBox;
 import window.elements.button.Button;
-import window.elements.button.CloseDiagramSubwindowButton;
+import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InteractionController implements IHighLevelController{
@@ -340,7 +334,7 @@ public class InteractionController implements IHighLevelController{
      */
     private void createNewDiagramSubwindow() {
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
+        Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
         diagramSubwindow.getFrame().setButton(button);
         //int level = getCorrectLevel();
         addSubwindow(diagramSubwindow);
@@ -353,7 +347,7 @@ public class InteractionController implements IHighLevelController{
     private void copyActiveDiagramSubwindow() {
         if (this.getActiveDiagramSubwindow() != null) {
             DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade());
-            Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(this, diagramSubwindow));
+            Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
             diagramSubwindow.getFrame().setButton(button);
             //int level = getCorrectLevel();
             addSubwindow(diagramSubwindow);
