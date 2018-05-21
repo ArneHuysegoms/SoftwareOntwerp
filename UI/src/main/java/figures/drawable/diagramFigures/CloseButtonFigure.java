@@ -32,7 +32,7 @@ public class CloseButtonFigure implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw fucntion that draws a close button on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX minimum possible x coördinate value
@@ -47,6 +47,11 @@ public class CloseButtonFigure implements IDrawable {
         new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
     }
 
+    /**
+     * a draw fucntion that draws a close button on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Rectangle(x-width, y, width, height).draw(graphics);

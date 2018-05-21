@@ -12,9 +12,30 @@ public class SelectedRadioButtonFigure extends RadioButtonFigure {
         super(rb, title);
     }
 
+    /**
+     * a draw function that draws a the circle of a radio button on the Graphics parameter object
+     *
+     * @param graphics       object used to draw on the program's window
+     * @param circlePosition coordinate of the top left point of this button
+     * @param minX           minimum possible x coördinate value
+     * @param minY           minimum possible y coördinate value
+     * @param maxX           maximum possible x coördinate value
+     * @param maxY           maximum possible y coördinate value
+     */
     @Override
-    protected void drawCirle(Graphics graphics, Point2D circlePosition, int minX, int minY, int maxX, int maxY) {
+    protected void drawCircle(Graphics graphics, Point2D circlePosition, int minX, int minY, int maxX, int maxY) {
         new FilledCircle(circlePosition,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
+    }
+
+    /**
+     * a draw function that draws a the circle of a radio button on the Graphics parameter object
+     *
+     * @param graphics       object used to draw on the program's window
+     * @param circlePosition coordinate of the top left point of this button
+     */
+    @Override
+    protected void drawCircle(Graphics graphics, Point2D circlePosition) {
+        new FilledCircle(circlePosition,RadioButton.HEIGHT).draw(graphics);
     }
 
 }
