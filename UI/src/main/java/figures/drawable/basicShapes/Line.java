@@ -1,12 +1,14 @@
 package figures.drawable.basicShapes;
 
+import figures.drawable.IDrawable;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
 /**
  * a class used to draw a line
  */
-public class Line extends Shape {
+public class Line implements IDrawable {
 
     protected Point2D start;
     protected Point2D end;

@@ -1,12 +1,12 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.Circle;
+import diagram.party.Actor;
+import figures.drawable.diagramFigures.RadioButtonFigure;
+import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
+import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
-import window.elements.RadioButton;
-import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 // TODO dialog box for a party shows
 //two text boxes and two radio buttons, for editing the instance name and the class
@@ -31,25 +31,27 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
     }
 
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        Point2D instPos=dialogBox.getInstanceTextBox().getCoordinate(), clasPos=dialogBox.getClassTextBox().getCoordinate();
-
-        new figures.drawable.basicShapes.Rectangle(instPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
-        graphics.drawString(PartyDialogBox.INSTANCE_DESCRIPTION, (int)instPos.getX(), (int)instPos.getY());
-
-        new  figures.drawable.basicShapes.Rectangle(clasPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
-        graphics.drawString(PartyDialogBox.CLASS_DESCRIPTION, (int)clasPos.getX(), (int)clasPos.getY());
+        new TextBoxFigure(dialogBox.getInstanceTextBox(), PartyDialogBox.INSTANCE_DESCRIPTION)
+                .draw(graphics, minX, minY, maxX, maxY);
+        new TextBoxFigure(dialogBox.getClassTextBox(), PartyDialogBox.CLASS_DESCRIPTION)
+                .draw(graphics, minX, minY, maxX, maxY);
     }
 
     public void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY){
-        Point2D acc=dialogBox.getToActor().getCoordinate(), obj=dialogBox.getToObject().getCoordinate();
-        //TODO class RadioButtonFigue? want coordinate is MISSCHIEN nie midden van radio button
-        //TODO miss Class maken voor radiobuttion, public RadioButton(Point2D, descripton)
-        new Circle(acc, RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
-        graphics.drawString(PartyDialogBox.TOACTOR_DESCRIPTION, (int)acc.getX(), (int)acc.getY());
+        new RadioButtonFigure(dialogBox.getToActor(), PartyDialogBox.TOACTOR_DESCRIPTION)
+                .draw(graphics, minX, minY, maxX, maxY);
+        new RadioButtonFigure(dialogBox.getToObject(), PartyDialogBox.TOOBJECT_DESPCRIPTION)
+                .draw(graphics, minX, minY, maxX, maxY);
+        drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
+    }
 
-        new Circle(obj,RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);;
-        graphics.drawString(PartyDialogBox.TOOBJECT_DESPCRIPTION, (int)obj.getX(), (int)obj.getY());
-
-        //new FilledCircle(dialogBox.getSelected().getCoordinate(), RadioButton.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
+    private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        if (dialogBox.getParty() instanceof Actor) {
+            new SelectedRadioButtonFigure(dialogBox.getToActor(), "")
+                    .draw(graphics, minX, minY, maxX, maxY);
+        } else if (dialogBox.getParty() instanceof  Object) {
+            new SelectedRadioButtonFigure(dialogBox.getToObject(),"")
+                    .draw(graphics, minX, minY, maxX, maxY);
+        }
     }
 }

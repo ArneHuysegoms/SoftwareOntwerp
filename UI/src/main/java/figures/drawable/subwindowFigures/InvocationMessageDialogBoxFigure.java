@@ -1,15 +1,9 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.AddButtonFigure;
-import figures.drawable.basicShapes.DownButtonFigure;
-import figures.drawable.basicShapes.RemoveButtonFigure;
-import figures.drawable.basicShapes.UpButtonFigure;
+import figures.drawable.diagramFigures.*;
 import window.dialogbox.InvocationMessageDialogBox;
-import window.elements.ListBox;
-import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.util.List;
 
 public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
 
@@ -29,9 +23,8 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        //TODO teken list box en contents.
-        List<String> arguments = dialogBox.getArgumentListBox().getArguments();
-        new figures.drawable.basicShapes.Rectangle(dialogBox.getArgumentListBox().getCoordinate(), ListBox.HEIGHT, ListBox.WIDTH);
+        new ListBoxFigure(dialogBox.getArgumentListBox())
+                .draw(graphics, minX, minY, maxX, maxY);
     }
 
     private void drawButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
@@ -47,9 +40,10 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        //TODO description of static title dingetje toevoegen. EN .Wat er in de textBox sta/getypt wordt
-        new figures.drawable.basicShapes.Rectangle(dialogBox.getArgumentTextBox().getCoordinate(), TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
-        new figures.drawable.basicShapes.Rectangle(dialogBox.getMethodTextBox().getCoordinate(), TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
+        new TextBoxFigure(dialogBox.getMethodTextBox(), "? invokeDBFigure meth")
+                .draw(graphics, minX, minY, maxX, maxY);
+        new TextBoxFigure(dialogBox.getArgumentTextBox(), "? invokeDBFigure arg")
+                .draw(graphics, minX, minY, maxX, maxY);
     }
 
 

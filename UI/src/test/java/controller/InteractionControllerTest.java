@@ -1,64 +1,77 @@
 package controller;
+import command.closeWindow.CloseDiagramSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
 import uievents.KeyEventType;
+import window.Subwindow;
+import window.diagram.DiagramSubwindow;
+import window.elements.button.Button;
+import window.elements.button.CloseDiagramSubwindowButton;
+
+import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class CanvasControllerTest {
+public class InteractionControllerTest {
 
-    private CanvasController canvasController;
+    private InteractionController interactionController;
 
     @Before
     public void setUp() {
-        canvasController = new CanvasController();
+        interactionController = new InteractionController();
     }
 
     @Test
     public void test_list_empty_after_init(){
-        assertTrue(canvasController.getInteractionControllers().isEmpty());
+        assertTrue(interactionController.getSubwindows().isEmpty());
     }
 
     @Test
     public void test_active_interactioncontroller_is_null_after_init(){
-        assertTrue(canvasController.getActiveInteractionController() == null);
+        assertTrue(interactionController.getActiveSubwindow() == null);
     }
 
     @Test
-    public void test_addInteractionController(){
-        InteractionController ic = new InteractionController();
-        canvasController.addInteractionController(ic);
-        assertEquals(canvasController.getActiveInteractionController(),ic);
-        assertEquals(canvasController.getInteractionControllers().size(),1);
+    public void test_addSubwindow(){
+        DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
+        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        diagramSubwindow.getFrame().setButton(button);
+        interactionController.addSubwindow(diagramSubwindow);
+        assertEquals(interactionController.getActiveSubwindow(),diagramSubwindow);
+        assertEquals(interactionController.getSubwindows().size(),1);
     }
 
     @Test
-    public void test_addInteractionController_twice(){
-        InteractionController ic = new InteractionController();
-        canvasController.addInteractionController(ic);
-        canvasController.addInteractionController(ic);
-        assertEquals(canvasController.getActiveInteractionController(),ic);
-        assertEquals(canvasController.getInteractionControllers().size(),1);
+    public void test_addSubwindow_twice(){
+        DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
+        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        diagramSubwindow.getFrame().setButton(button);
+        interactionController.addSubwindow(diagramSubwindow);
+        interactionController.addSubwindow(diagramSubwindow);
+        assertEquals(interactionController.getActiveSubwindow(),diagramSubwindow);
+        assertEquals(interactionController.getSubwindows().size(),1);
     }
 
     @Test
-    public void test_removeInteractionController(){
-        InteractionController ic = new InteractionController();
-        canvasController.addInteractionController(ic);
-        canvasController.removeInteractionController(ic);
-        assertTrue(canvasController.getActiveInteractionController() ==null);
-        assertTrue(canvasController.getInteractionControllers().isEmpty());
+    public void test_removeSubwindow(){
+        DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
+        Button button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(interactionController, diagramSubwindow));
+        diagramSubwindow.getFrame().setButton(button);
+        interactionController.addSubwindow(diagramSubwindow);
+        interactionController.removeSubwindow(diagramSubwindow);
+        assertEquals(interactionController.getActiveSubwindow(),null);
+        assertEquals(interactionController.getSubwindows().size(),0);
     }
 
     @Test
-    public void test_handleKeyEvent_createNewInteractionController() throws DomainException, UIException{
+    public void test_handleKeyEvent_createNewDiagramSubwindow() throws DomainException, UIException{
         KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
-        canvasController.handleKeyEvent(ke);
-        assertEquals(canvasController.getInteractionControllers().size(),1);
+        interactionController.handleKeyEvent(ke);
+        assertEquals(interactionController.getSubwindows().size(),1);
     }
 
     @Test

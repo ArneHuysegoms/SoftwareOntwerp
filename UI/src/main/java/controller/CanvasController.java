@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  *
  * Interprets UIEvents and addresses the appropriate functions in the diagram.
  */
-public class CanvasController {
+public class CanvasController implements IHighLevelController{
 
     //private List<SubWindowLevel> subwindows;
     //private DiagramSubwindow activeDiagramSubwindow;
@@ -61,6 +61,9 @@ public class CanvasController {
 
     public void removeInteractionController(InteractionController interactionController){
         this.interactionControllers.remove(interactionController);
+        if(this.getActiveInteractionController().equals(interactionController)){
+            setActiveInteractionController(findHighestLevelInteractionController());
+        }
         //iets active setten?
     }
 
@@ -181,6 +184,7 @@ public class CanvasController {
 
     private void createNewInteractionController(){
         InteractionController interactionController = new InteractionController();
+        this.getInteractionControllers().add(interactionController);
         this.changeActiveInteractionController(interactionController);
     }
 
@@ -194,6 +198,14 @@ public class CanvasController {
     }
 
 
+    public InteractionController findHighestLevelInteractionController(){
+        InteractionController result = null;
+        for (InteractionController ic : getInteractionControllers()) {
+            ic.getHighestLevelSubwindow();
+            result = ic;
+        }
+        return result;
+    }
     /**
      * creates a new diagramSubwindow with the correct level, adds it to the list of subwindows and sets it as active
      */

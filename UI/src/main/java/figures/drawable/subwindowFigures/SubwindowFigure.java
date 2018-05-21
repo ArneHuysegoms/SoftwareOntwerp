@@ -1,15 +1,15 @@
 package figures.drawable.subwindowFigures;
 
-import figures.drawable.basicShapes.CloseButtonFigure;
+import figures.drawable.IDrawable;
 import figures.drawable.basicShapes.Rectangle;
-import figures.drawable.diagramFigures.Figure;
+import figures.drawable.diagramFigures.CloseButtonFigure;
 import window.elements.button.Button;
 import window.frame.SubwindowFrame;
 import window.frame.TitleBar;
 
 import java.awt.*;
 
-public abstract class SubwindowFigure extends Figure {
+public abstract class SubwindowFigure implements IDrawable {
 
     private SubwindowFrame subwindow;
     private TitleBar titleBar;

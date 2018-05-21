@@ -1,6 +1,6 @@
 package figures.drawable.basicShapes;
 
-import org.junit.Before;
+import figures.drawable.diagramFigures.CloseButtonFigure;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,9 +1,13 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
+
+import figures.drawable.IDrawable;
+import figures.drawable.basicShapes.Line;
+import figures.drawable.basicShapes.Rectangle;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class UpButtonFigure extends Shape {
+public class UpButtonFigure implements IDrawable {
 
     private int x, y, width, height;
 

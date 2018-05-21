@@ -1,10 +1,9 @@
 package main;
 
 import canvaswindow.CanvasWindow;
-import canvaswindow.InteractrCanvas;
 import figures.drawable.basicShapes.Circle;
 import figures.drawable.basicShapes.FilledCircle;
-import figures.drawable.basicShapes.RemoveButtonFigure;
+import figures.drawable.diagramFigures.RemoveButtonFigure;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

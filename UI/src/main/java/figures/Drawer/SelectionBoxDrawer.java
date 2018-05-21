@@ -1,6 +1,6 @@
 package figures.Drawer;
 
-import figures.drawable.diagramFigures.Box;
+import figures.drawable.basicShapes.Box;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

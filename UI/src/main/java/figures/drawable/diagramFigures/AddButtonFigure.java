@@ -1,19 +1,22 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
+
+import figures.drawable.IDrawable;
+import figures.drawable.basicShapes.Rectangle;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class CloseButtonFigure extends Shape{
+public class AddButtonFigure implements IDrawable {
 
     private int x,y,width,height;
 
     /**
-     * @param x
-     *      the x-coordinate of the top-right corner of the window.diagram
-     * @param y
-     *      the y-coordinate of the top-right corner of the window.diagram
+     *
+     * @param position
+     * @param width
+     * @param height
      */
-    public CloseButtonFigure(Point2D position,int width, int height){
+    public AddButtonFigure(Point2D position, int width, int height){
         this.x = (int)position.getX();
         this.y = (int)position.getY();
         this.width = width;
@@ -39,8 +42,17 @@ public class CloseButtonFigure extends Shape{
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new Rectangle(x-width, y, width, height).draw(graphics,minX,minY,maxX,maxY);
-        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
-        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
+        drawAddShape(graphics);
+    }
+
+    private void drawAddShape(Graphics graphics){
+        int offsetX = (int)Math.floor(width/5),
+                offsetY = (int)Math.floor(height/5);
+        Color temp = graphics.getColor();
+        graphics.setColor(Color.green);
+        graphics.fillRect(offsetX+getX(),(offsetY*2)+getY(),3*offsetX,offsetY);
+        graphics.fillRect((offsetX*2)+getX(),(offsetY)+getY(),offsetY, 3*offsetX);
+        graphics.setColor(temp);
     }
 
     /**
