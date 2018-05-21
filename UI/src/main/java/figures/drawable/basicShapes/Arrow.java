@@ -73,7 +73,7 @@ public class Arrow implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws an arrow on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -88,6 +88,11 @@ public class Arrow implements IDrawable {
         this.getArrowBottom().draw(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws an arrow on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Line(this.getLineStart(), this.getLineEnd()).draw(graphics);

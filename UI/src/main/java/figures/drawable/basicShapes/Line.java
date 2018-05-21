@@ -52,7 +52,7 @@ public class Line implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a line on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -60,7 +60,6 @@ public class Line implements IDrawable {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
-
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         double x1 = getStart().getX(), x2 = getEnd().getX(), y1 = getStart().getY(), y2 = getEnd().getY();
@@ -94,6 +93,11 @@ public class Line implements IDrawable {
         graphics.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
     }
 
+    /**
+     * a draw function that draws a line on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         graphics.drawLine((int) getStart().getX(), (int) getStart().getY(), (int) getEnd().getX(), (int) getEnd().getY());
