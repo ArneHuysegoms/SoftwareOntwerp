@@ -427,13 +427,31 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      * @return an action detailing what needs to happen in other subwindows
      */
     private Action handleChangeInLabel() throws DomainException {
-        if (checkIfValidLable()) {
+        if(selected instanceof InvocationMessageLabel){
+            return handleInvocationMessageLabel();
+        }
+        else if (checkIfValidLable()) {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
             DiagramElement diagramElement = this.getFacade().findParentElement(selectedLabel);
             return new UpdateLabelAction(diagramElement, selectedLabel);
         } else {
+            labelMode = true;
+            return new EmptyAction();
+        }
+    }
+
+    private Action handleInvocationMessageLabel() throws DomainException{
+        InvocationMessageLabel inv = (InvocationMessageLabel) selected;
+        String toParse = labelContainer.substring(0, getLabelContainer().length() - 1);
+        if(inv.isValidCompleteLabel(toParse)){
+            labelMode = false;
+            inv.setCompleteLabel(toParse);
+            DiagramElement diagramElement = this.getFacade().findParentElement(inv);
+            return new UpdateLabelAction(diagramElement, inv);
+        }
+        else{
             labelMode = true;
             return new EmptyAction();
         }

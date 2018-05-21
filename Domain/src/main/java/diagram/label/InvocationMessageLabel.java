@@ -133,4 +133,42 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
             index--;
         }
     }
+
+    public void setCompleteLabel(String label) throws DomainException{
+        int open = label.indexOf('(');
+        int close = label.indexOf(')');
+        this.setLabel(label.substring(0, open));
+        String[] args = label.substring(open +1, close).split(",");
+        for(String s : args){
+            String[] ele = s.split(":");
+            arguments.add(new Argument(ele[0], ele[1]));
+        }
+    }
+
+    public boolean isValidCompleteLabel(String label){
+        int open = label.indexOf('(');
+        if(open < 0){
+            return false;
+        }
+        int close = label.indexOf(')');
+        if(close < 0 || label.charAt(label.length() - 1) != ')'){
+            return false;
+        }
+        if( ! isValidLabel(label.substring(0, open))){
+            return false;
+        }
+        String[] args = label.substring(open +1, close).split(",");
+        for(String s : args){
+            String[] ele = s.split(":");
+            if(ele.length == 2){
+                if(! Argument.isValidArgument(ele[0], ele[1])){
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+    }
 }
