@@ -304,16 +304,16 @@ public class InteractionController implements IHighLevelController{
             if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
             }
-            if (!getActiveSubwindow().isLabelMode()) {
-                /*for (SubWindowLevel window.diagram : subwindows) {
+            /*if (!getActiveSubwindow().isLabelMode()) {
+                for (SubWindowLevel window.diagram : subwindows) {
                     if (window.diagram.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
                         changeActiveSubwindow(window.diagram.getDiagramSubwindow());
                         return true;
                     }
-                }*/
+                }
                 changeActiveSubwindow(getAppropriateSubwindow(mouseEvent.getPoint()));
                 return true;
-            }
+            }*/
         }
         return false;
     }
