@@ -29,7 +29,7 @@ public class CanvasControllerTest {
         InteractionController ic = new InteractionController();
         canvasController.addInteractionController(ic);
         assertEquals(canvasController.getActiveInteractionController(),ic);
-        assertTrue(canvasController.getInteractionControllers().isEmpty());
+        assertEquals(canvasController.getInteractionControllers().size(),1);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class CanvasControllerTest {
         canvasController.addInteractionController(ic);
         canvasController.addInteractionController(ic);
         assertEquals(canvasController.getActiveInteractionController(),ic);
-        assertTrue(canvasController.getInteractionControllers().isEmpty());
+        assertEquals(canvasController.getInteractionControllers().size(),1);
     }
 
     @Test
