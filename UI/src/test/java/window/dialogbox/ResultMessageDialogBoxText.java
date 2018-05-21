@@ -1,7 +1,8 @@
 package window.dialogbox;
 
 import action.*;
-import command.closeWindow.CloseDialogBoxCommand;
+import command.closeWindow.CloseSubwindowCommand;
+import controller.InteractionController;
 import diagram.DiagramElement;
 import diagram.label.PartyLabel;
 import diagram.label.ResultMessageLabel;
@@ -10,19 +11,15 @@ import diagram.party.Actor;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
-import sun.invoke.empty.Empty;
 import uievents.KeyEvent;
 import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.CloseDialogBoxButton;
 import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
@@ -33,16 +30,19 @@ public class ResultMessageDialogBoxText {
     DiagramSubwindow diagramSubwindow;
     ResultMessage resultMessage;
     ResultMessageDialogBox resultMessageDialogBox;
+    InteractionController interactionController;
 
     @Before
     public void setUp(){
         try{
+            interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
             resultMessage = new ResultMessage(null, new ResultMessageLabel(""), new Actor(new PartyLabel("a:A")), new Actor(new PartyLabel("b:B")));
             resultMessageDialogBox = new ResultMessageDialogBox(new Point2D.Double(50, 50), resultMessage, diagramSubwindow);
-            diagramSubwindow.addDialogBox(resultMessageDialogBox);
-            CloseWindowButton closeWindowButton = new CloseDialogBoxButton(new CloseDialogBoxCommand(diagramSubwindow, resultMessageDialogBox));
+            //diagramSubwindow.addDialogBox(resultMessageDialogBox);
+            CloseWindowButton closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(resultMessageDialogBox, interactionController));
             resultMessageDialogBox.createFrame(closeWindowButton);
+            interactionController.addSubwindow(resultMessageDialogBox);
         }
         catch (Exception e){
             fail();
@@ -105,6 +105,6 @@ public class ResultMessageDialogBoxText {
         el.add(resultMessage);
         RemoveInReposAction action = new RemoveInReposAction(el);
         resultMessageDialogBox.handleAction(action);
-        assertFalse(diagramSubwindow.getDialogBoxlist().contains(resultMessageDialogBox));
+        assertFalse(interactionController.getSubwindows().contains(resultMessageDialogBox));
     }
 }

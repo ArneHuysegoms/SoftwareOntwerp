@@ -10,7 +10,7 @@ public class ButtonTest {
 
     @Test
     public void test_constructor() {
-        Button button = new CloseDiagramSubwindowButton(null);
+        Button button = new CloseWindowButton(null);
         assertTrue(button.getHeight() == Button.HEIGHT);
         assertTrue(button.getWidth() == Button.WIDTH);
         assertTrue(button.getCommand() == null);
@@ -18,7 +18,7 @@ public class ButtonTest {
 
     @Test
     public void test_isClicked(){
-        Button button = new CloseDialogBoxButton(null);
+        Button button = new CloseWindowButton(null);
         button.setPosition( new Point2D.Double(50, 50));
         assertTrue(button.isClicked(new Point2D.Double(60, 60)));
         assertFalse(button.isClicked(new Point2D.Double(49, 49)));
