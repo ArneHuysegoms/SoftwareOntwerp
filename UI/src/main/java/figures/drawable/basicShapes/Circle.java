@@ -97,4 +97,9 @@ public class Circle implements IDrawable {
         }
 
     }
+
+    @Override
+    public void draw(Graphics graphics) {
+        graphics.drawOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);
+    }
 }

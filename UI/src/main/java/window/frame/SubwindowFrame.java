@@ -63,7 +63,7 @@ public class SubwindowFrame implements Clickable{
     public void setButton(Button button) {
         this.button = button;
         if(button != null) {
-            this.button.setPosition(new Point2D.Double(getSubwindowPoint().getX() + subwindowWidth - 30, getSubwindowPoint().getY()));
+            this.button.setPosition(new Point2D.Double(getSubwindowPoint().getX() + subwindowWidth, getSubwindowPoint().getY()));
         }
     }
 

@@ -5,11 +5,11 @@ import window.dialogbox.ResultMessageDialogBox;
 
 import java.awt.*;
 
-public class ResultMessageDialogboxConverter extends DialogboxConverter {
+public class ResultMessageDialogBoxConverter extends DialogBoxConverter {
 
     private ResultMessageDialogBox dialogBox;
 
-    public ResultMessageDialogboxConverter(ResultMessageDialogBox dialogBox) {
+    public ResultMessageDialogBoxConverter(ResultMessageDialogBox dialogBox) {
         this.dialogBox = dialogBox;
         setFigure();
     }

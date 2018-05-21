@@ -30,6 +30,18 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
     }
 
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+
+        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
+                .draw(graphics);
+        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
+                .draw(graphics);
+
+        drawSelectedRadioButton(graphics);
+    }
+
     private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
@@ -37,6 +49,16 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         } else if (dialogBox.getDiagramSubwindow().isSequenceDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(),"")
                     .draw(graphics, minX, minY, maxX, maxY);
+        }
+    }
+
+    private void drawSelectedRadioButton(Graphics graphics) {
+        if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
+            new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
+                    .draw(graphics);
+        } else if (dialogBox.getDiagramSubwindow().isSequenceDiagram()) {
+            new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(),"")
+                    .draw(graphics);
         }
     }
 }
