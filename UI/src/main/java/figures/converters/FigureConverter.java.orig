@@ -128,9 +128,9 @@ public class FigureConverter {
     public void setConverter(Subwindow sub){
         if (sub instanceof DiagramSubwindow) {
             DiagramSubwindow temp = ((DiagramSubwindow) sub);
-            if (temp.getFacade().getActiveView() instanceof SequenceView) {
+            if (temp.getFacade().getActiveRepo() instanceof SequenceView) {
                 converter = new SequenceConverter(temp);
-            } else if (temp.getFacade().getActiveView() instanceof CommunicationView) {
+            } else if (temp.getFacade().getActiveRepo() instanceof CommunicationView) {
                 converter = new CommunicationConverter(temp);
             }
         } else if (sub instanceof PartyDialogBox) {

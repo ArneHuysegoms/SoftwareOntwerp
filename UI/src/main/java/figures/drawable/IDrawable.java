@@ -1,4 +1,4 @@
-package figures;
+package figures.drawable;
 
 import java.awt.*;
 

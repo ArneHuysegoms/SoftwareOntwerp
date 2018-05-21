@@ -11,10 +11,10 @@ public class DashedRectangle extends Rectangle {
      * @param x      the x-coordinate of the rectangle's center point
      * @param y      the y-coordinate of the rectangle's center point
      * @param width  the rectangles width
-     * @param length the rectangles height
+     * @param height the rectangles height
      */
-    public DashedRectangle(int x, int y, int width, int length) {
-        super(x, y, width, length);
+    public DashedRectangle(int x, int y, int width, int height) {
+        super(x, y, width, height);
     }
 
     /**

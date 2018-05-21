@@ -1,12 +1,14 @@
 package figures.drawable.basicShapes;
 
+import figures.drawable.IDrawable;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
 /**
  * a class used to draw a circle
  */
-public class Circle extends Shape {
+public class Circle implements IDrawable {
 
     private Point2D upperLeft;
     private double radius;

@@ -1,4 +1,4 @@
-package figures.converters;
+package figures.converters.diagramSub;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
@@ -10,9 +10,9 @@ import diagram.party.Party;
 import figures.Drawer.DiagramSpecificDrawers.*;
 import figures.Drawer.Drawer;
 import figures.drawable.basicShapes.DashedLine;
-import figures.drawable.diagramFigures.Arrow;
-import figures.drawable.diagramFigures.Box;
-import figures.drawable.diagramFigures.DashedArrow;
+import figures.drawable.basicShapes.Arrow;
+import figures.drawable.basicShapes.Box;
+import figures.drawable.basicShapes.DashedArrow;
 import figures.drawable.diagramFigures.LifeLineFigure;
 import view.diagram.DiagramView;
 import view.message.MessageView;

@@ -1,5 +1,6 @@
 package figures.drawable.diagramFigures;
 
+import figures.drawable.IDrawable;
 import figures.drawable.basicShapes.Circle;
 import figures.drawable.basicShapes.Line;
 
@@ -9,7 +10,7 @@ import java.awt.geom.Point2D;
 /**
  * a class used to draw a stickman
  */
-public class StickMan extends Figure {
+public class StickMan implements IDrawable {
     private Point2D topOfHead;
 
     private Point2D connectionHead;

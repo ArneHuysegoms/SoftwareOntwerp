@@ -1,6 +1,6 @@
-package figures.drawable.diagramFigures;
+package figures.drawable.basicShapes;
 
-import figures.drawable.basicShapes.Rectangle;
+import figures.drawable.IDrawable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 /**
  * a class used to draw a rectangle box
  */
-public class Box extends Figure {
+public class Box implements IDrawable {
 
     private Point2D tl, br;
 

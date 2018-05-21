@@ -1,7 +1,7 @@
 package figures.Drawer.DiagramSpecificDrawers;
 
 import figures.Drawer.Drawer;
-import figures.drawable.diagramFigures.DashedArrow;
+import figures.drawable.basicShapes.DashedArrow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
