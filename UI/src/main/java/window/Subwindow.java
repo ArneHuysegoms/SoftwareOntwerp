@@ -57,12 +57,12 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
         this.createFrame(closeWindowButton);
     }
 
-    private void createFrame(){
+    public void createFrame(){
         frame = new SubwindowFrame(this.getPosition(), height, width);
     }
 
-    private void createFrame(CloseWindowButton closeWindowButton){
-        frame = new SubwindowFrame(this.getPosition(), height, width, button);
+    public void createFrame(CloseWindowButton closeWindowButton){
+        frame = new SubwindowFrame(this.getPosition(), height, width, closeWindowButton);
     }
 
     private void recreateFrame(){

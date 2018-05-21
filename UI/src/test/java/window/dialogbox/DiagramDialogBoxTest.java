@@ -40,8 +40,6 @@ public class DiagramDialogBoxTest {
         assertNotNull(diagramDialogBox.getToSequenceDiagram());
         assertNotNull(diagramDialogBox.getSelected());
         assertEquals(diagramDialogBox.getToCommunicationDiagram(), diagramDialogBox.getSelected());
-        assertEquals(DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION,DiagramDialogBox.getTocommunicationdiagramDespcription());
-        assertEquals(DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION, DiagramDialogBox.getTosequencediagramDescription());
     }
 
     @Test

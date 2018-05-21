@@ -93,7 +93,7 @@ public class TextBoxTest {
         instanceTextBox.setContents("Aa");
         assertFalse(instanceTextBox.hasValidContents());
         instanceTextBox.setContents("");
-        assertFalse(instanceTextBox.hasValidContents());
+        assertTrue(instanceTextBox.hasValidContents());
     }
 
     @Test

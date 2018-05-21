@@ -28,7 +28,10 @@ public class ResultMessageDialogBox extends DialogBox {
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
         this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 30), "Method");
+        this.setHeight(HEIGHT);
+        this.setWidth(WIDTH);
         selected = labelTextBox;
+        updateFields(resultMessage);
     }
 
     public static int getWIDTH() {
@@ -76,8 +79,8 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
     private Action handleBackSpace() throws DomainException {
-        selected.deleteLastCharFromContents();
-        if (selected.hasValidContents()) {
+        if(selected.hasValidContents()) {
+            selected.deleteLastCharFromContents();
             return changeResultMessageLabel();
         }
         return new EmptyAction();

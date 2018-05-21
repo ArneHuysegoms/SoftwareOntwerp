@@ -149,7 +149,9 @@ public class SubwindowFrame implements Clickable{
     }
 
     public void close(){
-        this.getButton().performAction();
+        if(this.getButton() != null) {
+            this.getButton().performAction();
+        }
     }
 
     /**

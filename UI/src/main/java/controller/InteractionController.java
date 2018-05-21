@@ -1,5 +1,6 @@
 package controller;
 
+import action.Action;
 import command.closeWindow.CloseDiagramSubwindowCommand;
 import diagram.DiagramElement;
 import diagram.label.Label;
@@ -302,7 +303,8 @@ public class InteractionController {
                 break;
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
-                    activeSubwindow.handleKeyEvent(keyEvent);
+                    Action action = activeSubwindow.handleKeyEvent(keyEvent);
+                    actionForEachDiagramSubwindow(action);
                 }
                 break;
         }
@@ -345,7 +347,17 @@ public class InteractionController {
                 }
                 Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
-                subwindow.handleMouseEvent(mouseEvent);
+                Action action = subwindow.handleMouseEvent(mouseEvent);
+                actionForEachDiagramSubwindow(action);
+
+            }
+        }
+    }
+
+    public void actionForEachDiagramSubwindow(Action action){
+        for(Subwindow s : getSubwindows()){
+            if(s instanceof DiagramSubwindow){
+                ((DiagramSubwindow)s).handleAction(action);
             }
         }
     }
