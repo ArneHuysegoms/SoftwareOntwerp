@@ -34,29 +34,17 @@ public class DiagramSubwindowTest {
         assertEquals(point, diagramSubwindow.getPosition());
         assertEquals(Subwindow.WINDOWHEIGHT, diagramSubwindow.getHeight());
         assertEquals(Subwindow.WINDOWWIDTH, diagramSubwindow.getWidth());
+        assertFalse(diagramSubwindow.isCommunicationDiagram());
+        assertTrue(diagramSubwindow.isSequenceDiagram());
+    }
+
+    @Test
+    public void test_copy_of_facade_works(){
+        DomainFacade facade = diagramSubwindow.getCopyOfFacade();
+        assertEquals(diagramSubwindow.getFacade().getActiveView().getClass(), facade.getActiveView().getClass());
     }
 
     /*
-    @Test
-    public void test_subwindow_width(){
-        assertEquals(diagramSubwindow.getWidth(), 600);
-    }
-    @Test
-    public void test_subwindow_height(){
-        assertEquals(diagramSubwindow.getHeight(), 600);
-    }
-    @Test
-    public void test_subwindow_position(){
-        assertTrue(diagramSubwindow.getPosition().equals(point));
-    }
-    @Test
-    public void test_subwindow_mediator(){
-        assertTrue(diagramSubwindow.getMediator().equals(interactionMediator));
-    }
-    @Test
-    public void test_mediator_subwindow(){
-        assertTrue(diagramSubwindow.getMediator().getDiagramSubwindows().contains(diagramSubwindow));
-    }
     @Test
     public void test_subwindow_labelmode(){
         assertFalse(diagramSubwindow.isInLabelMode());
@@ -254,10 +242,4 @@ public class DiagramSubwindowTest {
     public void test_subwindow_isClicked(){
         assertTrue(diagramSubwindow.isClicked(new Point2D.Double(200,200)));
     }*/
-
-    @Test
-    public void Test(){
-
-    }
-
 }

@@ -34,10 +34,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
     private DiagramElement selected;
 
-    //private List<DialogBox> dialogBoxlist;
-
-    //private DialogBox activeDialogBox;
-
     /**
      * default contructor for window.diagram with default width and height
      *
@@ -47,7 +43,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         super(pos, WindowLevelCounter.getNextLevel());
         setLabelMode(false);
         setFacade(new DomainFacade());
-        //dialogBoxlist = new ArrayList<>();
     }
 
     /**
@@ -60,12 +55,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         super(pos, WindowLevelCounter.getNextLevel());
         setLabelMode(false);
         setFacade(facade);
-        //dialogBoxlist = new ArrayList<>();
     }
-
-    /*public void addDialogBox(DialogBox dialogBox){
-        this.dialogBoxlist.add(dialogBox);
-    }*/
 
     /**
      *
@@ -194,8 +184,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
                     }
                     break;
                 case CTRLENTER:
-                    opendialogBox();
-                    break;
+                    return opendialogBox();
                 default:
                     break;
             }
@@ -212,20 +201,10 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         return new EmptyAction();
     }
 
-    /*public void removeDialogBox(DialogBox dialogBox){
-        this.dialogBoxlist.remove(dialogBox);
-        if(activeDialogBox == dialogBox){
-            this.activeDialogBox = null;
-        }
-    }*/
-
     public Action opendialogBox() throws UIException {
         DialogBox dialogBox = null;
         if(selected == null){
             dialogBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
-            //closeOldDialogBoxes(dialogBox);
-            //dialogBoxlist.add(dialogBox);
-            //activeDialogBox = dialogBox;
         }
         else if(selectedElementIsParty()){
             Party p = (Party) selected;
@@ -239,15 +218,9 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             }
             else if(selected instanceof InvocationMessageLabel){
                 dialogBox = new InvocationMessageDialogBox(new Point2D.Double(100, 100), (InvocationMessageLabel) selected, this);
-                //closeOldDialogBoxes(dialogBox);
-                //dialogBoxlist.add(dialogBox);
-                //activeDialogBox = dialogBox;
             }
             else if(element instanceof ResultMessage){
                 dialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element , this);
-                //closeOldDialogBoxes(resultMessageDialogBox);
-                //dialogBoxlist.add(resultMessageDialogBox);
-                //activeDialogBox = resultMessageDialogBox;
             }
         }
         if(dialogBox != null) {
@@ -255,31 +228,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
         return new EmptyAction();
     }
-
-    /*private Action openPartyDialogBox(Party p) throws UIException{
-        DialogBox partyDialogBox = new PartyDialogBox(new Point2D.Double(100,100), p, this);
-        //closeOldDialogBoxes(partyDialogBox);
-        //closeOtherPartyDialogBoxes(partyDialogBox);
-        //dialogBoxlist.add(partyDialogBox);
-        //activeDialogBox = partyDialogBox;
-        return new DialogBoxOpenedAction(partyDialogBox);
-    }
-
-    private void closeOldDialogBoxes(DialogBox newBox){
-        List<DialogBox> olds = dialogBoxlist.stream()
-                .filter(d -> d.getClass() != newBox.getClass())
-                .collect(Collectors.toList());
-        dialogBoxlist.removeAll(olds);
-    }
-
-    private void closeOtherPartyDialogBoxes(PartyDialogBox dialogBox){
-        List<DialogBox> olds = dialogBoxlist.stream()
-                .filter(d -> d.getClass() != dialogBox.getClass())
-                .map(d -> (PartyDialogBox) d)
-                .filter(d -> d.getParty() != dialogBox.getParty())
-                .collect(Collectors.toList());
-        dialogBoxlist.removeAll(olds);
-    }*/
 
     public void changeActiveDiagram(){
         this.getFacade().changeActiveDiagram();
@@ -324,7 +272,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
                         Party newParty = this.getFacade().changePartyType(oldParty);
                         selected = newParty;
                         return new UpdatePartyTypeAction(oldParty, newParty);
-                        //mediator.updatePartyTypeInOtherSubwindows(oldParty, newParty, this);
                     }
                     if (this.selected == null) {
                         Party newParty = this.getFacade().addNewParty(mouseEvent.getPoint());
@@ -332,7 +279,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
                         startEditingLabel();
                         editing = true;
                         return new AddNewPartyToReposAction(newParty, mouseEvent.getPoint());
-                        //mediator.addNewPartyToOtherSubwindowRepos(newParty, mouseEvent.getPoint(), this);
                     }
                     break;
                 default:
@@ -357,9 +303,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
             editing = true;
-            //TODO open dialogboxes?
             return new AddNewMessagesInRepos(newMessages);
-            //mediator.addNewMessagesToOtherSubwindowRepos(newMessages, this);
         }
         return new EmptyAction();
     }
@@ -437,7 +381,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         if (selectedElementIsLabel()) {
             Label l = (Label) selected;
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
-            //mediator.removeInReposInOtherSubwindows(deletedElements, this);
             stopEditingLabel();
             selected = null;
             return new RemoveInReposAction(deletedElements);
@@ -498,10 +441,8 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
-            //mediator.updateLabelContainers(selectedLabel, this);
             DiagramElement diagramElement = this.getFacade().findParentElement(selectedLabel);
             return new UpdateLabelAction(diagramElement, selectedLabel);
-            //return new UpdateLabelContainersAction(selectedLabel);
         } else {
             labelMode = true;
             return new EmptyAction();
@@ -530,15 +471,4 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         action.performAction(this);
     }
 
-
-    /*public Action updateDialogBoxes(Action action) {
-        for (DialogBox dialogBox : dialogBoxlist) {
-            dialogBox.handleAction(action);
-        }
-        return action;
-    }
-
-    public List<DialogBox> getDialogBoxlist(){
-        return dialogBoxlist;
-    }*/
 }

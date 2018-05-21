@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class InvocationMessageLabel extends Label implements Serializable {
+public class InvocationMessageLabel extends MessageLabel implements Serializable {
 
     private List<Argument> arguments;
     private int index;
@@ -19,7 +19,7 @@ public class InvocationMessageLabel extends Label implements Serializable {
      *         a method name has to start with a lowercase character and can only contain letters, digits and underscores
      */
     public InvocationMessageLabel(String label, List<Argument> arguments) throws DomainException {
-        this.setLabel(label);
+        super(label);
         this.setArguments(arguments);
         index = -1;
     }

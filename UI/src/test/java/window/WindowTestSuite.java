@@ -10,7 +10,6 @@ import window.frame.FrameTestSuite;
 @Suite.SuiteClasses({
         ElementsTestSuite.class,
         FrameTestSuite.class,
-        WindowLevelCounterTest.class,
         DialogBoxTestSuite.class
 })
 public class WindowTestSuite {
