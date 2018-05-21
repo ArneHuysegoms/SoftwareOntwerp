@@ -28,7 +28,7 @@ public class InteractionController implements IHighLevelController{
      * default constructor
      */
     public InteractionController(){
-        this.subwindows = new ArrayList<>();
+        setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
     }
 
@@ -276,8 +276,8 @@ public class InteractionController implements IHighLevelController{
 
     public void actionForEachDiagramSubwindow(Action action){
         for(Subwindow s : getSubwindows()){
-            if(s instanceof DiagramSubwindow){
-                ((DiagramSubwindow)s).handleAction(action);
+            if(s != getActiveSubwindow()){
+                s.handleAction(action);
             }
         }
     }

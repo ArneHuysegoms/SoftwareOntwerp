@@ -55,15 +55,43 @@ public class CanvasControllerTest {
     }
 
     @Test
-    public void test_handleKeyEvent_createNewInteractionController() throws DomainException, UIException{
+    public void test_handleKeyEvent_CTRLN() throws DomainException, UIException{
         KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
         canvasController.handleKeyEvent(ke);
         assertEquals(canvasController.getInteractionControllers().size(),1);
     }
 
     @Test
-    public void test_checkForDeleteInteractionController(){
+    public void test_handleKeyEvent_CTRLD() throws DomainException, UIException{
+        KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
+        canvasController.handleKeyEvent(ke);
+        assertEquals(canvasController.getInteractionControllers().size(),1);
+        assertEquals(canvasController.getActiveInteractionController().getSubwindows().size(),1);
+        KeyEvent ke2 = new KeyEvent(KeyEventType.CTRLD);
+        canvasController.handleKeyEvent(ke2);
+        assertEquals(canvasController.getInteractionControllers().size(),1);
+        assertEquals(canvasController.getActiveInteractionController().getSubwindows().size(),2);
+    }
 
+    @Test
+    public void test_handleKeyEvent_CTRLD_after_delete() throws DomainException, UIException{
+        KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
+        canvasController.handleKeyEvent(ke);
+        assertEquals(canvasController.getInteractionControllers().size(),1);
+        assertEquals(canvasController.getActiveInteractionController().getSubwindows().size(),1);
+        canvasController.removeInteractionController(canvasController.getActiveInteractionController());
+        KeyEvent ke2 = new KeyEvent(KeyEventType.CTRLD);
+        canvasController.handleKeyEvent(ke2);
+        assertEquals(canvasController.getInteractionControllers().size(),0);
+    }
+
+    @Test
+    public void test_findHighestLevelInteractionController() throws DomainException, UIException{
+        KeyEvent ke = new KeyEvent(KeyEventType.CTRLN);
+        canvasController.handleKeyEvent(ke);
+        KeyEvent ke2 = new KeyEvent(KeyEventType.CTRLD);
+        canvasController.handleKeyEvent(ke2);
+        assertEquals(canvasController.findHighestLevelInteractionController(), canvasController.getActiveInteractionController());
     }
 
     @Test
