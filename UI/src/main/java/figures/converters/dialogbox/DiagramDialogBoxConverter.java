@@ -5,10 +5,10 @@ import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;
 
-public class DiagramDialogboxConverter extends DialogboxConverter {
+public class DiagramDialogBoxConverter extends DialogBoxConverter {
     private DiagramDialogBox dialogBox;
 
-    public DiagramDialogboxConverter(DiagramDialogBox dialogBox) {
+    public DiagramDialogBoxConverter(DiagramDialogBox dialogBox) {
         this.dialogBox = dialogBox;
         setFigure();
     }

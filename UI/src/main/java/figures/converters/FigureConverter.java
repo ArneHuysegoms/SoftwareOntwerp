@@ -3,7 +3,6 @@ package figures.converters;
 import controller.CanvasController;
 
 import controller.InteractionController;
-import exception.UIException;
 import figures.converters.diagramSub.CommunicationConverter;
 import figures.converters.diagramSub.SequenceConverter;
 import figures.converters.dialogbox.*;
@@ -129,13 +128,13 @@ public class FigureConverter {
                 converter = new CommunicationConverter(temp);
             }
         } else if (sub instanceof PartyDialogBox) {
-            converter = new PartyDialogboxConverter((PartyDialogBox) sub);
+            converter = new PartyDialogBoxConverter((PartyDialogBox) sub);
         }else if (sub instanceof InvocationMessageDialogBox) {
-            converter = new InvocationMessageDialogboxConverter((InvocationMessageDialogBox) sub);
+            converter = new InvocationMessageDialogBoxConverter((InvocationMessageDialogBox) sub);
         }else if (sub instanceof ResultMessageDialogBox) {
-            converter = new ResultMessageDialogboxConverter((ResultMessageDialogBox) sub);
+            converter = new ResultMessageDialogBoxConverter((ResultMessageDialogBox) sub);
         }else if (sub instanceof DiagramDialogBox) {
-            converter = new DiagramDialogboxConverter((DiagramDialogBox) sub);
+            converter = new DiagramDialogBoxConverter((DiagramDialogBox) sub);
         }
     }
 }

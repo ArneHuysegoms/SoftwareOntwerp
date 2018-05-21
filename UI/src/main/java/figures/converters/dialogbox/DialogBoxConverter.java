@@ -12,7 +12,7 @@ import window.elements.textbox.TextBox;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class DialogboxConverter extends SubwindowConverter {
+public abstract class DialogBoxConverter extends SubwindowConverter {
 
     protected SubwindowFigure figure;
 
