@@ -1,8 +1,14 @@
 package window.diagram;
 
+import command.Command;
+import command.closeWindow.CloseDiagramSubwindowCommand;
 import facade.DomainFacade;
+import org.junit.Before;
 import org.junit.Test;
+import window.Subwindow;
 import window.elements.button.Button;
+import window.elements.button.CloseDiagramSubwindowButton;
+import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 
@@ -11,23 +17,29 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DiagramSubwindowTest {
+
     private DiagramSubwindow diagramSubwindow;
     private DiagramSubwindow diagramSubwindow2;
-    private Button button;
+    private CloseWindowButton button;
     private Point2D point;
     private DomainFacade facade;
 
-    /*@Before
+    @Before
     public void setUp(){
         point = new Point2D.Double(200,200);
-        button = new Button();
-        interactionMediator = new InteractionMediator();
-        diagramSubwindow = new DiagramSubwindow(point, interactionMediator);
-        facade = new DomainFacade();
-        diagramSubwindow2 = new DiagramSubwindow(point, facade, interactionMediator);
-
+        button = new CloseDiagramSubwindowButton(new CloseDiagramSubwindowCommand(null, diagramSubwindow));
+        diagramSubwindow = new DiagramSubwindow(point);
+        diagramSubwindow.createFrame(button);
     }
 
+    @Test
+    public void test_default_constructor(){
+        assertEquals(point, diagramSubwindow.getPosition());
+        assertEquals(Subwindow.WINDOWHEIGHT, diagramSubwindow.getHeight());
+        assertEquals(Subwindow.WINDOWWIDTH, diagramSubwindow.getWidth());
+    }
+
+    /*
     @Test
     public void test_subwindow_width(){
         assertEquals(diagramSubwindow.getWidth(), 600);
