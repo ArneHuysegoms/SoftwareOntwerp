@@ -1,8 +1,6 @@
 package diagram;
 
-import diagram.label.Label;
-import diagram.label.MessageLabel;
-import diagram.label.PartyLabel;
+import diagram.label.*;
 import diagram.message.ResultMessage;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
@@ -420,8 +418,8 @@ public class Diagram implements Serializable {
                     } else {
                         next = previousMessage.getNextMessage();
                     }
-                    Message resultMessage = new ResultMessage(next, new MessageLabel(""), sender, receiver);
-                    MessageLabel messageLabel = new MessageLabel("");
+                    Message resultMessage = new ResultMessage(next, new ResultMessageLabel("cM"), sender, receiver);
+                    MessageLabel messageLabel = new InvocationMessageLabel("cM", new ArrayList<>());
                     Message invocation = new InvocationMessage(resultMessage, messageLabel, receiver, sender);
                     if (previousMessage != null) {
                         previousMessage.setNextMessage(invocation);

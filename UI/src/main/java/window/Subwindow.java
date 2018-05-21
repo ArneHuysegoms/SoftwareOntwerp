@@ -14,7 +14,7 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>{
+public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>, IActionHandler{
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
@@ -42,11 +42,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
     }
 
     public Subwindow(Point2D coordinate, int level){
-        this.setPosition(coordinate);
-        this.setWidth(Subwindow.WINDOWWIDTH);
-        this.setHeight(Subwindow.WINDOWHEIGHT);
-        this.setLevel(level);
-        this.createFrame();
+        this(coordinate, null, level);
     }
 
     public Subwindow(Point2D coordinate, CloseWindowButton closeWindowButton, int level){
@@ -54,14 +50,19 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
         this.setWidth(Subwindow.WINDOWWIDTH);
         this.setHeight(Subwindow.WINDOWHEIGHT);
         this.setLevel(level);
-        this.createFrame(closeWindowButton);
+        if(closeWindowButton != null) {
+            this.createFrame(closeWindowButton);
+        }
+        else{
+            this.createFrame();
+        }
     }
 
     public void createFrame(){
         frame = new SubwindowFrame(this.getPosition(), height, width);
     }
 
-    public void createFrame(CloseWindowButton closeWindowButton){
+    public void createFrame(Button closeWindowButton){
         frame = new SubwindowFrame(this.getPosition(), height, width, closeWindowButton);
     }
 
@@ -186,13 +187,17 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
         return frame;
     }
 
-    /**
+    public Clickable getFrameElement() {
+        return frameElement;
+    }
+
+    /*    *//*
      * sets the frame for this window.diagram
      * @param frame the new window.diagram for this frame
-     */
+     *//*
     private void setFrame(SubwindowFrame frame) {
         this.frame = frame;
-    }
+    }*/
 
     /**
      * return true if the frame of this window.diagram is clicked

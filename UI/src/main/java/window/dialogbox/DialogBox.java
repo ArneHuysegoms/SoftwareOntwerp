@@ -9,7 +9,7 @@ import window.WindowLevelCounter;
 
 import java.awt.geom.Point2D;
 
-public abstract class DialogBox extends Subwindow implements IActionHandler {
+public abstract class DialogBox extends Subwindow {
 
     public DialogBox(Point2D pos){
         super(pos, WindowLevelCounter.getNextLevel());

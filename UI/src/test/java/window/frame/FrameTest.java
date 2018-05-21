@@ -3,7 +3,7 @@ package window.frame;
 import org.junit.Before;
 import org.junit.Test;
 import window.elements.button.Button;
-import window.elements.button.CloseDiagramSubwindowButton;
+import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 
@@ -19,7 +19,7 @@ public class FrameTest {
         Point2D point = new Point2D.Double(21,22);
         int height = 23;
         int width = 24;
-        Button button = new CloseDiagramSubwindowButton(null);
+        Button button = new CloseWindowButton(null);
         subwindowFrame = new SubwindowFrame(point, height, width, button);
     }
 

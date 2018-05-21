@@ -1,4 +1,4 @@
-package figures.converters;
+package fickage figures.converters;
 
 import controller.CanvasController;
 
@@ -6,6 +6,7 @@ import controller.InteractionController;
 import figures.converters.diagramSub.CommunicationConverter;
 import figures.converters.diagramSub.SequenceConverter;
 import figures.converters.dialogbox.*;
+import figures.drawable.subwindowFigures.*;
 import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import view.diagram.CommunicationView;
@@ -24,11 +25,13 @@ import java.util.List;
 public class FigureConverter {
 
     private SubwindowConverter converter;
+    //private Drawer subwindowDrawer;
 
     /**
      * main draw function
      *
      * @param graphics         object used to draw on the program's window
+     *                 //* @param subwindowLevels the subwindows to be drawn on the controller
      * @param canvasController the controller that has acces to all the stuff to be drawn
      */
     public void draw(Graphics graphics, CanvasController canvasController) {
@@ -67,6 +70,35 @@ public class FigureConverter {
         for (Subwindow sub : allSubwindows) {
             setConverter(sub);
             converter.draw(graphics);
+
+            /*
+            if (sub instanceof DiagramSubwindow) {
+                tempDS = (DiagramSubwindow) sub;
+                setConverter(tempDS);
+                drawSubwindow(graphics, tempDS);
+                converter.draw(graphics);
+            } else {
+                drawDialogBoxes(graphics, (DialogBox) sub);
+        }
+            */
+    }
+    }
+
+    private void drawDialogBoxes(Graphics graphics, DialogBox sub) {
+        drawDialogBoxStructure(graphics, sub);
+
+    }
+
+    public void drawDialogBoxStructure(Graphics graphics, DialogBox sub) {
+        if (sub instanceof PartyDialogBox) {
+            new PartyDialogBoxFigure((PartyDialogBox) sub).draw(graphics);
+        } else if (sub instanceof DiagramDialogBox) {
+            new DiagramDialogBoxFigure((DiagramDialogBox) sub).draw(graphics);
+        } else if (sub instanceof InvocationMessageDialogBox) {
+            new InvocationMessageDialogBoxFigure((InvocationMessageDialogBox) sub).draw(graphics);
+        } else if (sub instanceof ResultMessageDialogBox) {
+            new ResultMessageDialogBoxFigure((ResultMessageDialogBox) sub).draw(graphics);
+
         }
     }
 
@@ -84,10 +116,38 @@ public class FigureConverter {
     //TODO in DiagramSubwindow methode "public boolean isSequence() en ... isCommunication"
     //TODO instance van conveters?
     /**
+<<<<<<< HEAD
+=======
+     * method that draws a window.diagram
      * creates and sets the correct converter for a subwindow
      *
+     * @param graphics object used to draw on the program's window
+     *                 //* @param position coordinate of the top-left point of the window.diagram
+     *                 //* @param width    the window.diagram's width
+     *                 //* @param height   the window.diagram's height
      * @param sub subwindow that we want a converter for
      */
+    private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
+        //TODO replace to specific converters
+        new DiagramSubwindowFigure(sub).draw(graphics);
+    }
+
+    /**
+>>>>>>> origin/Sander
+     * creates and sets the correct converter
+     *
+     * @param sub
+     */
+
+
+
+
+
+
+
+
+
+
     public void setConverter(Subwindow sub) {
         if (sub instanceof DiagramSubwindow) {
             DiagramSubwindow temp = ((DiagramSubwindow) sub);

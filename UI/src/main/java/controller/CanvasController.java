@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
  */
 public class CanvasController implements IHighLevelController{
 
-    //private List<SubWindowLevel> subwindows;
-    //private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
     private InteractionController activeInteractionController;
     private List<InteractionController> interactionControllers;
@@ -30,8 +28,6 @@ public class CanvasController implements IHighLevelController{
      * constructs a new empty canvascontroller
      */
     public CanvasController() {
-        //this.setSubwindows(new ArrayList<>());
-        //this.activeDiagramSubwindow = null;
         this.activeInteractionController = null;
         this.setInteractionControllers(new ArrayList<>());
     }
@@ -64,7 +60,6 @@ public class CanvasController implements IHighLevelController{
         if(this.getActiveInteractionController().equals(interactionController)){
             setActiveInteractionController(findHighestLevelInteractionController());
         }
-        //iets active setten?
     }
 
     public void changeActiveInteractionController(InteractionController interactionController){
@@ -78,26 +73,19 @@ public class CanvasController implements IHighLevelController{
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                checkForDeleteInteractionController();
+                //checkForDeleteInteractionController();
                 if(getActiveInteractionController() != null){
                     activeInteractionController.handleKeyEvent(keyEvent);
                 }
-                /*if (getActiveDiagramSubwindow() != null) {
-                    copyActiveSubWindow();
-                }*/
                 break;
             case CTRLN:
                 createNewInteractionController();
                 activeInteractionController.handleKeyEvent(keyEvent);
-                //createNewSubwindow();
                 break;
             default:
                 if(this.getActiveInteractionController() != null){
                     activeInteractionController.handleKeyEvent(keyEvent);
                 }
-                /*if (this.getActiveDiagramSubwindow() != null) {
-                    activeDiagramSubwindow.handleKeyEvent(keyEvent);
-                }*/
                 break;
         }
     }
@@ -116,33 +104,17 @@ public class CanvasController implements IHighLevelController{
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        /*if (!dragging) {
-            dragging = checkFordragging(mouseEvent);
+
+        if(activeInteractionController != null && activeInteractionController.isDragging()){
+            activeInteractionController.handleMouseEvent(mouseEvent);
         }
-        if (dragging) {
-            switch (mouseEvent.getMouseEventType()) {
-                case RELEASE:
-                    activeDiagramSubwindow.handleMovement(mouseEvent.getPoint());
-                    dragging = false;
-                    break;
-                case LEFTCLICK:
-                    dragging = false;
-                    break;
-                default:
-                    break;
-            }
-        } else {*/
+        else if (getAppropriateInteractionController(mouseEvent.getPoint()) != null) {
             InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
-            if (ic != null) {
-                if (!ic.equals(getActiveInteractionController())) {
-                    changeActiveInteractionController(ic);
-                }
-                ic.handleMouseEvent(mouseEvent);
-                /*Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
-                mouseEvent.setPoint(relativePoint);
-                diagramSubwindow.handleMouseEvent(mouseEvent);*/
+            if (!ic.equals(getActiveInteractionController())) {
+                changeActiveInteractionController(ic);
             }
-        //}
+            ic.handleMouseEvent(mouseEvent);
+        }
     }
 
 
@@ -200,47 +172,28 @@ public class CanvasController implements IHighLevelController{
 
     public InteractionController findHighestLevelInteractionController(){
         InteractionController result = null;
+        int level = -1;
         for (InteractionController ic : getInteractionControllers()) {
-            ic.getHighestLevelSubwindow();
-            result = ic;
+            Subwindow s = ic.getHighestLevelSubwindow();
+            if(s.getLevel() > level){
+                level = s.getLevel();
+                result = ic;
+            }
         }
         return result;
     }
-    /**
-     * creates a new diagramSubwindow with the correct level, adds it to the list of subwindows and sets it as active
-     */
- /*   private void createNewSubwindow() {
-        DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), new InteractionMediator());
-        Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
-        diagramSubwindow.getFrame().setButton(button);
-        int level = getCorrectLevel();
-        addSubwindow(diagramSubwindow, level);
-        this.changeActiveSubwindow(diagramSubwindow);
-    }*/
-
-    /**
-     * copies the active diagramSubwindow, sets the correct level, adds it to the list of subwindows and sets it active
-     */
-   /* private void copyActiveSubWindow() {
-        if (this.getActiveDiagramSubwindow() != null) {
-            DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade(), activeDiagramSubwindow.getMediator());
-            Button button = new Button(new CloseSubwindowCommand(this, diagramSubwindow));
-            diagramSubwindow.getFrame().setButton(button);
-            int level = getCorrectLevel();
-            addSubwindow(diagramSubwindow, level);
-            this.changeActiveSubwindow(diagramSubwindow);
-        }
-    }*/
 
 
     public InteractionController getAppropriateInteractionController(Point2D clickedLocation){
         InteractionController result = null;
         int level = -1;
         for(InteractionController ic : getInteractionControllers()){
-            Subwindow s = ic.getAppropriateSubwindow(clickedLocation);
-            if(s.getLevel() > level){
-                result = ic;
-                level = s.getLevel();
+            if(ic.getAppropriateSubwindow(clickedLocation) != null){
+                Subwindow s = ic.getAppropriateSubwindow(clickedLocation);
+                if(s.getLevel() > level){
+                    result = ic;
+                    level = s.getLevel();
+                }
             }
         }
         return result;

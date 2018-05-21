@@ -62,7 +62,7 @@ public class KeyEventFactory {
                 }
             }
         } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b') {
-            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ') {
+            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ' || keyChar == ')' || keyChar == '(' || keyChar == ',') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {
                 return new KeyEvent(KeyEventType.CHAR);

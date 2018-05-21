@@ -2,6 +2,7 @@ package window;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import window.diagram.DiagramSubwindowTest;
 import window.dialogbox.DialogBoxTestSuite;
 import window.elements.ElementsTestSuite;
 import window.frame.FrameTestSuite;
@@ -10,8 +11,9 @@ import window.frame.FrameTestSuite;
 @Suite.SuiteClasses({
         ElementsTestSuite.class,
         FrameTestSuite.class,
-        WindowLevelCounterTest.class,
-        DialogBoxTestSuite.class
+        DialogBoxTestSuite.class,
+        DiagramSubwindowTest.class,
+        SubwindowTest.class
 })
 public class WindowTestSuite {
 }
