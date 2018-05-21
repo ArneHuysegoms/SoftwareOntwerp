@@ -39,11 +39,11 @@ public class Rectangle implements IDrawable {
         setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
-    public Rectangle(Point2D subwindowPoint, int subwindowHeight, int subwindowWidth) {
+    public Rectangle(Point2D subwindowPoint, int subwindowWidth, int subwindowHeight) {
         setPositionTL(subwindowPoint);
-        setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()+subwindowWidth));
-        setCornerBL(new Point2D.Double(subwindowPoint.getX()+subwindowHeight, subwindowPoint.getY()));
-        setCornerTR(new Point2D.Double(subwindowPoint.getX(), subwindowPoint.getY()+subwindowWidth));
+        setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowWidth, subwindowPoint.getY()+subwindowHeight));
+        setCornerBL(new Point2D.Double(subwindowPoint.getX()+subwindowWidth, subwindowPoint.getY()));
+        setCornerTR(new Point2D.Double(subwindowPoint.getX(), subwindowPoint.getY()+subwindowHeight));
     }
 
     /**

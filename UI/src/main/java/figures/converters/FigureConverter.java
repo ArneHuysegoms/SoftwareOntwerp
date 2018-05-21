@@ -41,16 +41,12 @@ public class FigureConverter {
     }
 
     private List<Subwindow> sortDiagramSubwindows(CanvasController canvasController) {
-        List<DiagramSubwindow> temp = new ArrayList<DiagramSubwindow>();
         List<Subwindow> result = new ArrayList<Subwindow>();
 
         for (InteractionController interaction : canvasController.getInteractionControllers()) {
-            //temp.addAll(interaction.getDiagramSubwindows());
+            result.addAll(interaction.getSubwindows());
         }
-        for (DiagramSubwindow sub : temp) {
-            result.addAll(sub.getDialogBoxlist());
-        }
-        result.addAll(temp);
+
         Collections.sort(result);
         return result;
     }

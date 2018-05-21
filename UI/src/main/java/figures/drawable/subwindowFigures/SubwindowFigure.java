@@ -54,7 +54,7 @@ public abstract class SubwindowFigure implements IDrawable {
     }
 
     public void drawTitleBar(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(titleBar.getPosition(),TitleBar.HEIGHT,titleBar.getWidth()).draw(graphics, minX, minY, maxX, maxY);
+        new Rectangle(titleBar.getPosition(),titleBar.getWidth(),TitleBar.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
     }
 
     public void drawCloseButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {

@@ -12,10 +12,10 @@ public class CloseButtonFigure implements IDrawable {
     private int x,y,width,height;
 
     /**
-     * @param x
-     *      the x-coordinate of the top-right corner of the window.diagram
-     * @param y
-     *      the y-coordinate of the top-right corner of the window.diagram
+     *
+     * @param position Top-left point of the closebutton
+     * @param width
+     * @param height
      */
     public CloseButtonFigure(Point2D position,int width, int height){
         this.x = (int)position.getX();

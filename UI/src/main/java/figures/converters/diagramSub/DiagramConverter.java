@@ -275,7 +275,8 @@ public abstract class DiagramConverter extends SubwindowConverter {
 
     @Override
     public void drawSubwindow(Graphics graphics){
-        new DiagramSubwindowFigure(diagramSubwindow).draw(graphics, 0, 0, 2000, 2000);
+        new DiagramSubwindowFigure(diagramSubwindow)
+                .draw(graphics, 0, 0, 2000, 2000);
     }
 
     /**
