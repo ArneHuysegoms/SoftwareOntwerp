@@ -42,9 +42,11 @@ public class CloseButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(x-width, y, width, height).draw(graphics,minX,minY,maxX,maxY);
-        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
-        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics,minX,minY,maxX,maxY);
+        new Rectangle(x, y, width, height).draw(graphics,minX,minY,maxX,maxY);
+        new Line(x +(int)Math.floor(width/3),y+(int)Math.floor(height/4),x + ((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3))
+                .draw(graphics,minX,minY,maxX,maxY);
+        new Line(x+((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x+(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3))
+                .draw(graphics,minX,minY,maxX,maxY);
     }
 
     /**
@@ -54,9 +56,9 @@ public class CloseButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        new Rectangle(x-width, y, width, height).draw(graphics);
-        new Line(x-(int)Math.floor(width/3),y+(int)Math.floor(height/4),x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics);
-        new Line(x-((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x-(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics);
+        new Rectangle(x, y, width, height).draw(graphics);
+        new Line(x+(int)Math.floor(width/3),y+(int)Math.floor(height/4),x+((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)*3)).draw(graphics);
+        new Line(x+((int)Math.floor(width/3)*2),y+((int)Math.floor(height/4)),x+(int)Math.floor(width/3),y+((int)Math.floor(height/4)*3)).draw(graphics);
     }
 
     /**
