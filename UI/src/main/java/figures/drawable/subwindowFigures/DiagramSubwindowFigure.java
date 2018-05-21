@@ -5,8 +5,8 @@ import window.diagram.DiagramSubwindow;
 public class DiagramSubwindowFigure extends SubwindowFigure {
 
     /**
-     //* @param start top-left point of the window.diagram
-     //* @param end   bottom-right point of the window.diagram
+     * draws a diagram subwindow
+     * @param subwindow diagram subwindow to be drawn
      */
     public DiagramSubwindowFigure(DiagramSubwindow subwindow) {
         super(subwindow.getFrame());
