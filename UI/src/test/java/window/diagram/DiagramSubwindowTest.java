@@ -1,9 +1,15 @@
 package window.diagram;
 
 import command.closeWindow.CloseSubwindowCommand;
+import diagram.label.PartyLabel;
+import diagram.party.Actor;
+import exception.UIException;
+import exceptions.DomainException;
 import facade.DomainFacade;
 import org.junit.Before;
 import org.junit.Test;
+import uievents.KeyEvent;
+import uievents.KeyEventType;
 import window.Subwindow;
 import window.elements.button.CloseWindowButton;
 
@@ -18,15 +24,21 @@ public class DiagramSubwindowTest {
     private DiagramSubwindow diagramSubwindow;
     private DiagramSubwindow diagramSubwindow2;
     private CloseWindowButton button;
+    private CloseWindowButton button2;
     private Point2D point;
-    private DomainFacade facade;
+
 
     @Before
     public void setUp(){
         point = new Point2D.Double(200,200);
-        button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, null));
         diagramSubwindow = new DiagramSubwindow(point);
+        button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, null));
         diagramSubwindow.createFrame(button);
+
+        diagramSubwindow2 = new DiagramSubwindow(point);
+        button2 = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow2, null));
+        diagramSubwindow2.createFrame(button2);
+
     }
 
     @Test
@@ -44,15 +56,24 @@ public class DiagramSubwindowTest {
         assertEquals(diagramSubwindow.getFacade().getActiveView().getClass(), facade.getActiveView().getClass());
     }
 
-    /*
+    @Test
+    public void test_handleTab() throws UIException, DomainException {
+        diagramSubwindow.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+    }
+
+
+    /////////////////////////////////////////
+    // old tests                           //
+    /////////////////////////////////////////
+
     @Test
     public void test_subwindow_labelmode(){
-        assertFalse(diagramSubwindow.isInLabelMode());
+        assertFalse(diagramSubwindow.isLabelMode());
     }
     @Test
     public void test_subwindow_facade_repos_are_empty(){
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
-        assertTrue(diagramSubwindow.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
+        assertTrue(diagramSubwindow.getFacade().getActiveView().getPartyView().getAllParties().isEmpty());
+        assertTrue(diagramSubwindow.getFacade().getActiveView().getLabelView().getMap().isEmpty());
     }
 
     @Test
@@ -118,11 +139,6 @@ public class DiagramSubwindowTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void test_setMediator_null(){
-        DiagramSubwindow s = new DiagramSubwindow(point, null);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
     public void test_setHeight_negative(){
         diagramSubwindow.setHeight(-1);
     }
@@ -145,31 +161,24 @@ public class DiagramSubwindowTest {
     public void test_subwindow2_position(){
         assertTrue(diagramSubwindow2.getPosition().equals(point));
     }
-    @Test
-    public void test_subwindow2_mediator(){
-        assertTrue(diagramSubwindow2.getMediator().equals(interactionMediator));
-    }
-    @Test
-    public void test_mediator_subwindow2(){
-        assertTrue(diagramSubwindow2.getMediator().getDiagramSubwindows().contains(diagramSubwindow2));
-    }
+
     @Test
     public void test_subwindow2_labelmode(){
-        assertFalse(diagramSubwindow2.isInLabelMode());
+        assertFalse(diagramSubwindow2.isLabelMode());
     }
     @Test
     public void test_subwindow2_facade_repos_are_empty(){
-        assertTrue(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
-        assertTrue(diagramSubwindow2.getFacade().getActiveRepo().getLabelView().getMap().isEmpty());
+        assertTrue(diagramSubwindow2.getFacade().getActiveView().getPartyView().getAllParties().isEmpty());
+        assertTrue(diagramSubwindow2.getFacade().getActiveView().getLabelView().getMap().isEmpty());
     }
     @Test
-    public void test_subwindow2_facade_repos_are_not_empty_after_fill() {
+    public void test_subwindow2_facade_repos_are_not_empty_after_fill() throws DomainException {
         try {
-            diagramSubwindow2.getFacade().getActiveRepo().getPartyView().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
+            diagramSubwindow2.getFacade().getActiveView().getPartyView().addPartyWithLocation(new Actor(new PartyLabel(":Actor")), new Point2D.Double(30, 30));
         } catch (DomainException d) {
             System.out.println(d.getMessage());
         }
-        assertFalse(diagramSubwindow2.getFacade().getActiveRepo().getPartyView().getAllParties().isEmpty());
+        assertFalse(diagramSubwindow2.getFacade().getActiveView().getPartyView().getAllParties().isEmpty());
     }
 
     @Test
@@ -241,5 +250,5 @@ public class DiagramSubwindowTest {
     @Test
     public void test_subwindow_isClicked(){
         assertTrue(diagramSubwindow.isClicked(new Point2D.Double(200,200)));
-    }*/
+    }
 }
