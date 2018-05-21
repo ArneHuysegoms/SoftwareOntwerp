@@ -104,33 +104,17 @@ public class CanvasController implements IHighLevelController{
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
-        /*if (!dragging) {
-            dragging = checkFordragging(mouseEvent);
+
+        if(activeInteractionController != null && activeInteractionController.isDragging()){
+            activeInteractionController.handleMouseEvent(mouseEvent);
         }
-        if (dragging) {
-            switch (mouseEvent.getMouseEventType()) {
-                case RELEASE:
-                    activeDiagramSubwindow.handleMovement(mouseEvent.getPoint());
-                    dragging = false;
-                    break;
-                case LEFTCLICK:
-                    dragging = false;
-                    break;
-                default:
-                    break;
-            }
-        } else {*/
+        else if (getAppropriateInteractionController(mouseEvent.getPoint()) != null) {
             InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
-            if (ic != null) {
-                if (!ic.equals(getActiveInteractionController())) {
-                    changeActiveInteractionController(ic);
-                }
-                ic.handleMouseEvent(mouseEvent);
-                /*Point2D relativePoint = getActiveDiagramSubwindow().getRelativePoint(mouseEvent.getPoint());
-                mouseEvent.setPoint(relativePoint);
-                diagramSubwindow.handleMouseEvent(mouseEvent);*/
+            if (!ic.equals(getActiveInteractionController())) {
+                changeActiveInteractionController(ic);
             }
-        //}
+            ic.handleMouseEvent(mouseEvent);
+        }
     }
 
 

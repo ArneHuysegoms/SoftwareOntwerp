@@ -51,6 +51,10 @@ public class InteractionController implements IHighLevelController{
         this.activeSubwindow = activeSubwindow;
     }
 
+    public boolean isDragging(){
+        return dragging;
+    }
+
     public Subwindow getHighestLevelSubwindow(){
         Subwindow highest = null;
         int level = -1;
