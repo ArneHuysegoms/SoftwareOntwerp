@@ -1,4 +1,4 @@
-package figures.drawable.diagramFigures;
+package figures.drawable.subwindowFigures;
 
 import org.junit.Test;
 

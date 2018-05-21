@@ -7,12 +7,10 @@ import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
-import figures.Drawer.DiagramSpecificDrawers.*;
-import figures.Drawer.Drawer;
-import figures.drawable.basicShapes.DashedLine;
 import figures.drawable.basicShapes.Arrow;
 import figures.drawable.basicShapes.Box;
 import figures.drawable.basicShapes.DashedArrow;
+import figures.drawable.basicShapes.DashedLine;
 import figures.drawable.diagramFigures.LifeLineFigure;
 import view.diagram.DiagramView;
 import view.message.MessageView;
@@ -28,16 +26,13 @@ import java.util.Map;
 
 public class SequenceConverter extends DiagramConverter {
 
-    private Drawer responseMessageDrawingStrategy,
-            lifeLineDrawer;
-
     public SequenceConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
-        lifeLineDrawer = new SequenceLifelineDrawer();
+        //lifeLineDrawer = new SequenceLifelineDrawer();
         //actorDrawingStrategy = new SequenceActorDrawer();
         //objectDrawingStrategy = new SequenceObjectDrawer();
         //invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
-        responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
+        //responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
     }
 
     /**

@@ -31,15 +31,8 @@ public abstract class DiagramConverter extends SubwindowConverter {
     private DiagramSubwindow diagramSubwindow;
     protected int x1, y1, x2, y2;
 
-    /*protected Drawer boxDrawingStrategy,
-            labelDrawingStrategy,
-            selectionBoxDrawingStrategy,
-            actorDrawingStrategy,
-            objectDrawingStrategy,
-            invokeMessageDrawingStrategy;*/
-
     /**
-     * @param diagramSubwindow the diagramSubwindow to be drawn
+     * @param diagramSubwindow the diagramSubwindow that will be drawn
      */
     public DiagramConverter(DiagramSubwindow diagramSubwindow) {
         this.diagramSubwindow = diagramSubwindow;
@@ -47,18 +40,12 @@ public abstract class DiagramConverter extends SubwindowConverter {
         y1 = (int) getDiagramSubwindow().getPosition().getY();
         x2 = x1 + getDiagramSubwindow().getWidth();
         y2 = y1 + getDiagramSubwindow().getHeight();
-        //boxDrawingStrategy = new BoxDrawer();
-        //selectionBoxDrawingStrategy = new SelectionBoxDrawer();
-        //labelDrawingStrategy = new LabelDrawer();
     }
 
     /**
-     * draw method for sequence diagrams
+     * template draw method that draws the diagram subwindow, order of drawing is decided here
      *
-     * @param graphics        object used to draw on the program's window
-     //* @param repo            repository containing all the coordinates of a diagram
-     //* @param diagram         the diagram that will be drawn
-     //* @param selectedElement the currently selected element in the diagramSubwindow
+     * @param graphics object used to draw on the program's window
      */
     @Override
     public void draw(Graphics graphics) {
@@ -68,7 +55,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
 
         drawSubwindow(graphics);
         drawDiagramSpecificStuff(graphics, repo, diagram, selectedElement);
-        //drawParties(graphics, repo.getPartyView(), actorDrawingStrategy, objectDrawingStrategy);
         drawParties(graphics, repo.getPartyView());
         drawPartyLabels(graphics, repo.getPartyView().getAllParties(), repo.getLabelView());
         drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelView());
@@ -78,7 +64,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * default hook method, for drawing diagram specific stuff, that does nothing
+     * default hook method, for drawing diagram specific stuff if subclass needs it, that does nothing in this class
      *
      * @param graphics        object used to draw on the program's window
      * @param repo            repository containing all the coordinates of a diagram
@@ -91,10 +77,10 @@ public abstract class DiagramConverter extends SubwindowConverter {
     /**
      * method that draws parties
      *
-     * @param graphics     object used to draw on the program's window
-     * @param partyView    repository containing all the coordinates of the parties in the diagramSubwindow's diagram
-     //@param actorDrawer  a drawer object to be used to draw actor parties
-     //@param objectDrawer a drawer object to be used to draw object parties
+     * @param graphics  object used to draw on the program's window
+     * @param partyView repository containing all the coordinates of the parties in the diagramSubwindow's diagram
+     *                  //@param actorDrawer  a drawer object to be used to draw actor parties
+     *                  //@param objectDrawer a drawer object to be used to draw object parties
      */
     //protected void drawParties(Graphics graphics, PartyView partyView, Drawer actorDrawer, Drawer objectDrawer) {
     protected void drawParties(Graphics graphics, PartyView partyView) {
@@ -105,19 +91,16 @@ public abstract class DiagramConverter extends SubwindowConverter {
             Point2D end;
 
             if (entry.getKey() instanceof Actor) {
-                end = new Point2D.Double(start.getX() + PartyView.ACTORWIDTH, start.getY() + PartyView.ACTORHEIGHT);
                 new StickMan(start).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                //actorDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             } else {
                 end = new Point2D.Double(start.getX() + PartyView.OBJECTWIDTH, start.getY() + PartyView.OBJECTHEIGHT);
                 new Box(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                // /objectDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
 
     /**
-     * method that draws the diagramSubwindow's label container over the selected label it's position
+     * method that draws the diagramSubwindow's 'String labelContainer'-object over the selected label it's position
      *
      * @param graphics     object used to draw on the program's window
      * @param firstMessage
@@ -134,19 +117,16 @@ public abstract class DiagramConverter extends SubwindowConverter {
                 }
                 msg = msg.getNextMessage();
             }
-
             if (msg instanceof InvocationMessage) {
                 messageNumber = ((InvocationMessage) msg).getMessageNumber() + " ";
             }
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
             if (!getDiagramSubwindow().checkIfValidLable()) {
                 graphics.setColor(Color.RED);
-                drawLabel(graphics, start,  messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
-                //labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
                 graphics.setColor(Color.BLACK);
             } else {
-                drawLabel(graphics, start,  messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
-                //labelDrawingStrategy.draw(graphics, start, null, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
+                drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
             }
 
         }
@@ -165,7 +145,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
         for (Party party : allParties) {
             start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(party.getLabel()));
             drawLabel(graphics, start, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
-            //labelDrawingStrategy.draw(graphics, start, null, party.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
         }
     }
 
@@ -184,7 +163,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * method that draws a label a message
+     * method that draws the label of a message
      *
      * @param graphics  object used to draw on the program's window
      * @param message   message to be drawn
@@ -198,21 +177,32 @@ public abstract class DiagramConverter extends SubwindowConverter {
 
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
             drawLabel(graphics, start, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
-            //labelDrawingStrategy.draw(graphics, start, null, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
         }
     }
 
-    private void drawLabel(Graphics graphics, Point2D start, String label, int minX, int minY, int maxX, int maxY) {
+    //TODO maak hier een figure voor? 'LabelFigure'
+    /**
+     * method that draws a label
+     * @param graphics  object used to draw on the program's window
+     * @param start coordniate of the label box's top left corner
+     * @param labelText text for in the label
+     * @param minX
+     * @param minY
+     * @param maxX
+     * @param maxY
+     */
+    private void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
+        //TODO javaDoc (met of zonder Figure class)
         double x1 = start.getX(), y1 = start.getY(), stringPixelEstimate = 50;
-        if ((label.length()) * 5 > stringPixelEstimate) {
-            stringPixelEstimate = (label.length()) * 5;
+        if ((labelText.length()) * 5 > stringPixelEstimate) {
+            stringPixelEstimate = (labelText.length()) * 5;
         }
         if (x1 > minX && y1 > minY && x1 + stringPixelEstimate < maxX && y1 < maxY) {
             Color c = graphics.getColor();
             graphics.setColor(Color.WHITE);
             graphics.fillRect((int) x1, (int) y1, 50, 15);
             graphics.setColor(c);
-            graphics.drawString(label, (int) start.getX() + 3, (int) start.getY() + 10);
+            graphics.drawString(labelText, (int) start.getX() + 3, (int) start.getY() + 10);
         }
     }
 
@@ -227,7 +217,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     protected abstract void drawMessages(Graphics graphics, MessageView messageView, Map<Party, Point2D> partyMap, Message firstMessage);
 
     /**
-     * method that uses the selection box drawer to draw a box around the currently selected selectable parts of the diagram
+     * method that draws a selection box around the currently selected selectable part of the diagram
      *
      * @param graphics        object used to draw on the program's window
      * @param selectedElement the diagramSubwindow's selected element
@@ -241,12 +231,10 @@ public abstract class DiagramConverter extends SubwindowConverter {
             Point2D start = new Point2D.Double(actorPos.getX() - (PartyView.ACTORWIDTH / 2), actorPos.getY()),
                     end = new Point2D.Double(actorPos.getX() + (PartyView.ACTORWIDTH / 2), actorPos.getY() + PartyView.ACTORWIDTH);
             new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-            //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Label) {
             Label l = (Label) selectedElement;
             Point2D start = diagramSubwindow.getAbsolutePosition(repo.getLabelView().getLocationOfLabel(l));
             new SelectionBoxFigure(start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT)).draw(graphics, getX1(), getY1(), getX2(), getY2());
-            //selectionBoxDrawingStrategy.draw(graphics, start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT), "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Object) {
             Object o = (Object) selectedElement;
             Map<Party, Point2D> partyMap = repo.getPartyView().getMap();
@@ -255,7 +243,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
             Point2D start = new Point2D.Double(objectPos.getX() - selectionBoxSize, objectPos.getY() - selectionBoxSize);
             Point2D end = new Point2D.Double(objectPos.getX() + PartyView.OBJECTWIDTH + selectionBoxSize, objectPos.getY() + PartyView.OBJECTHEIGHT + selectionBoxSize);
             new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-            //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Message) {
             Message m = (Message) selectedElement;
             Point2D start;
@@ -268,13 +255,16 @@ public abstract class DiagramConverter extends SubwindowConverter {
                 start = new Point2D.Double(senderPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) - (MessageView.HEIGHT / 2));
                 end = new Point2D.Double(receiverPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) + (MessageView.HEIGHT / 2));
                 new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                //selectionBoxDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }
 
+    /**
+     * method that draws the subwindow's seleton, an empty subwindow
+     * @param graphics        object used to draw on the program's window
+     */
     @Override
-    public void drawSubwindow(Graphics graphics){
+    public void drawSubwindow(Graphics graphics) {
         new DiagramSubwindowFigure(diagramSubwindow)
                 .draw(graphics);
     }
