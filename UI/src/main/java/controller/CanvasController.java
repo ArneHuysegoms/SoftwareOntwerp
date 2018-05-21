@@ -60,6 +60,9 @@ public class CanvasController {
     }
 
     public void removeInteractionController(InteractionController interactionController){
+        if(this.getActiveInteractionController().equals(interactionController)){
+            setActiveInteractionController(null);
+        }
         this.interactionControllers.remove(interactionController);
         //iets active setten?
     }
