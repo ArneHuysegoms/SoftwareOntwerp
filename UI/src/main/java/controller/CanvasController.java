@@ -188,10 +188,12 @@ public class CanvasController implements IHighLevelController{
         InteractionController result = null;
         int level = -1;
         for(InteractionController ic : getInteractionControllers()){
-            Subwindow s = ic.getAppropriateSubwindow(clickedLocation);
-            if(s.getLevel() > level){
-                result = ic;
-                level = s.getLevel();
+            if(ic.getAppropriateSubwindow(clickedLocation) != null){
+                Subwindow s = ic.getAppropriateSubwindow(clickedLocation);
+                if(s.getLevel() > level){
+                    result = ic;
+                    level = s.getLevel();
+                }
             }
         }
         return result;
