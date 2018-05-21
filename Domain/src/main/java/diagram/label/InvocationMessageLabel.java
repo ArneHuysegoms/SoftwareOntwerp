@@ -88,6 +88,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
      *        True if label starts with a lowercase character, and contains only letters digits and underscores
      */
     @Override
+    //TODO fix
     public boolean isValidLabel(String label) {
 
         //Method starts with lowercase

@@ -13,6 +13,7 @@ import window.frame.FrameTestSuite;
         FrameTestSuite.class,
         DialogBoxTestSuite.class,
         DiagramSubwindowTest.class,
+        SubwindowTest.class
 })
 public class WindowTestSuite {
 }
