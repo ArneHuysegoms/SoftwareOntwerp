@@ -99,8 +99,6 @@ public class FigureConverter {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * method that draws a window.diagram
      *
      * @param graphics object used to draw on the program's window
@@ -114,7 +112,6 @@ public class FigureConverter {
     }
 
     /**
->>>>>>> origin/Sander
      * creates and sets the correct converter
      *
      * @param sub
