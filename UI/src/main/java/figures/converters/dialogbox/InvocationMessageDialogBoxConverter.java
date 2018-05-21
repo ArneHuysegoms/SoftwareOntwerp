@@ -11,13 +11,14 @@ public class InvocationMessageDialogBoxConverter extends DialogBoxConverter {
 
     public InvocationMessageDialogBoxConverter(InvocationMessageDialogBox dialogBox) {
         this.dialogBox = dialogBox;
-        setFigure();
-    }
-
-    protected void setFigure() {
         this.figure = new InvocationMessageDialogBoxFigure(dialogBox);
     }
 
+    /**
+     * method that draws the dialog box's contents
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics){
         super.draw(graphics);

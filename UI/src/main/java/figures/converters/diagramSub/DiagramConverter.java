@@ -43,7 +43,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * template draw method that draws the diagram subwindow, order of drawing is decided here
+     * template draw method that draws the diagram subwindow's contents, order of drawing is decided here
      *
      * @param graphics object used to draw on the program's window
      */

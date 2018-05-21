@@ -48,7 +48,6 @@ public class SequenceConverter extends DiagramConverter {
         SequenceActivationBarAndMessageHelper helper;
         if (firstMessage != null) {
             helper = new SequenceActivationBarAndMessageHelper(firstMessage);
-            //helper.draw(graphics, boxDrawingStrategy, invokeMessageDrawingStrategy, responseMessageDrawingStrategy, partyMap, ((SequenceMessageView) messageView).getMap());
             helper.draw(graphics, partyMap, ((SequenceMessageView) messageView).getMap());
         }
     }
@@ -102,12 +101,10 @@ public class SequenceConverter extends DiagramConverter {
                     start = new Point2D.Double(point.getX(), (messageMap.get(first) + getDiagramSubwindow().getPosition().getY()) - MessageView.HEIGHT);
                     end = new Point2D.Double(point.getX(), (messageMap.get(last) + getDiagramSubwindow().getPosition().getY()) + MessageView.HEIGHT * 2);
                     new LifeLineFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    //lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 } else {
                     start = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), (messageMap.get(first) + getDiagramSubwindow().getPosition().getY()) - MessageView.HEIGHT);
                     end = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), (messageMap.get(last) + getDiagramSubwindow().getPosition().getY()) + MessageView.HEIGHT * 2);
                     new LifeLineFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    //lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 }
             }
         } else {
@@ -117,12 +114,10 @@ public class SequenceConverter extends DiagramConverter {
                     start = new Point2D.Double(point.getX(), point.getY() + PartyView.OBJECTHEIGHT);
                     end = new Point2D.Double(point.getX(), point.getY() + point.getY() + PartyView.OBJECTHEIGHT * 4);
                     new LifeLineFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    //lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 } else {
                     start = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), point.getY() + PartyView.OBJECTHEIGHT);
                     end = new Point2D.Double(point.getX() + (PartyView.OBJECTWIDTH / 2), point.getY() + PartyView.OBJECTHEIGHT * 4);
                     new LifeLineFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    //lifeLineDrawer.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
                 }
             }
         }
@@ -174,13 +169,9 @@ public class SequenceConverter extends DiagramConverter {
          * method that draws activation bars
          *
          * @param graphics       object used to draw on the program's window
-         //* @param boxDrawer      a box drawer object to be used to draw the activation bars
-         //* @param invokeDrawer   a drawer object to be used to draw invocation messages
-         //* @param responseDrawer a drawer object to be used to draw response messages
          * @param partyMap       list of Party and Point2D entries
          * @param messageMap     list of Message and y-coördinate entries
          */
-        //public void draw(Graphics graphics, Drawer boxDrawer, Drawer invokeDrawer, Drawer responseDrawer, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
         public void draw(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
             for (ActivationBar a : bars) {
                 a.draw(graphics, partyMap, messageMap);
@@ -293,17 +284,11 @@ public class SequenceConverter extends DiagramConverter {
             public void draw(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
                 new Box(calculateOwnBarStart(partyMap, messageMap), calculateOwnBarEnd(partyMap, messageMap)).draw(graphics, getX1(), getY1(), getX2(), getY2());
                 new Box(calculateBrotherBarStart(partyMap, messageMap), calculateBrotherBarEnd(partyMap, messageMap)).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                //boxDrawer.draw(graphics, calculateOwnBarStart(partyMap, messageMap), calculateOwnBarEnd(partyMap, messageMap), "", getX1(), getY1(), getX2(), getY2());
-                //boxDrawer.draw(graphics, calculateBrotherBarStart(partyMap, messageMap), calculateBrotherBarEnd(partyMap, messageMap), null, getX1(), getY1(), getX2(), getY2());
-
 
                 new Arrow(new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarStartY(messageMap)), new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarStartY(messageMap)))
                         .draw(graphics,  getX1(), getY1(), getX2(), getY2());
                 new DashedArrow(new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarEndY(messageMap)), new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarEndY(messageMap)))
                         .draw(graphics, getX1(), getY1(), getX2(), getY2());
-
-                //invokeDrawer.draw(graphics, new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarStartY(messageMap)), new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarStartY(messageMap)), null, getX1(), getY1(), getX2(), getY2());
-                //responseDrawer.draw(graphics, new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarEndY(messageMap)), new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarEndY(messageMap)), null, getX1(), getY1(), getX2(), getY2());
 
                 for (ActivationBar a : bars) {
                     a.draw(graphics, partyMap, messageMap);
