@@ -20,8 +20,8 @@ public class InvocationMessageLabelTest {
         String argumentInstance2 = "instance2";
         String argumentClass1 = "Class1";
         String argumentClass2 = "Class2";
-        String argument1 = "instance1: Class1";
-        String argument2 = "instance2: Class2";
+        String argument1 = "instance1:Class1";
+        String argument2 = "instance2:Class2";
         ArrayList<Argument> argumentsList = new ArrayList<>();
         Argument a1 = new Argument(argumentInstance1, argumentClass1);
         Argument a2 = new Argument(argumentInstance2, argumentClass2);
