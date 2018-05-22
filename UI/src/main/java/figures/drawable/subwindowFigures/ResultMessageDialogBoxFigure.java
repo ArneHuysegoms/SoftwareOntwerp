@@ -37,7 +37,7 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getLabelTextBox(), "??? ResultDBFigure")
+        new TextBoxFigure(dialogBox.getLabelTextBox(), dialogBox.getAbsolutePosition(dialogBox.getLabelTextBox().getCoordinate()), "??? ResultDBFigure")
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 }
