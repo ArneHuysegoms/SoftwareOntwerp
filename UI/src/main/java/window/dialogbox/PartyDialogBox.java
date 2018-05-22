@@ -3,6 +3,7 @@ package window.dialogbox;
 import action.*;
 import command.changeType.ChangeToActorCommand;
 import command.changeType.ChangeToObjectCommand;
+import command.closeWindow.CloseSubwindowCommand;
 import diagram.party.Party;
 import exception.UIException;
 import exceptions.DomainException;
@@ -11,6 +12,7 @@ import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.RadioButton;
+import window.elements.button.CloseWindowButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
@@ -134,10 +136,14 @@ public class PartyDialogBox extends DialogBox {
     private Action handleMousePress(MouseEvent mouseEvent) {
         if (toActor.isClicked(mouseEvent.getPoint())) {
             selected = toActor;
-            return toActor.performAction();
+            UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toActor.performAction();
+            handleAction(updatePartyTypeAction);
+            return updatePartyTypeAction;
         } else if (toObject.isClicked(mouseEvent.getPoint())) {
             selected = toObject;
-            return toObject.performAction();
+            UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toObject.performAction();
+            handleAction(updatePartyTypeAction);
+            return updatePartyTypeAction;
         } else if (instanceTextBox.isClicked(mouseEvent.getPoint())) {
             selected = instanceTextBox;
         } else if (classTextBox.isClicked(mouseEvent.getPoint())) {
@@ -224,14 +230,20 @@ public class PartyDialogBox extends DialogBox {
         else if(action instanceof UpdatePartyTypeAction){
             UpdatePartyTypeAction a = (UpdatePartyTypeAction) action;
             if(a.getOldParty().equals(party)){
-                this.getFrame().close();
                 subwindow.setSelected(a.getNewParty());
                 try {
-                    subwindow.opendialogBox();
+                    Action action1 =  subwindow.opendialogBox();
+                    if(action1 instanceof DialogBoxOpenedAction) {
+                        DialogBoxOpenedAction action2 = (DialogBoxOpenedAction) action1;
+                        CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
+                        CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
+                        close.getInteractionController().addSubwindow(action2.getDialogBox());
+                    }
                 }
                 catch (Exception e){
                     e.printStackTrace();
                 }
+                this.getFrame().close();
             }
         }
         if(action instanceof UpdateLabelAction){
