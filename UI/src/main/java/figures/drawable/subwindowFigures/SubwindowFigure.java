@@ -39,6 +39,19 @@ public abstract class SubwindowFigure implements IDrawable {
     }
 
     /**
+     * a draw function that draws a subwindow on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    @Override
+    public void draw(Graphics graphics) {
+        drawBackgroundColor(graphics, Color.WHITE);
+        drawFrame(graphics);
+        drawTitleBar(graphics);
+        drawCloseButton(graphics);
+    }
+
+    /**
      * paints on the subwindow's backgrouind color
      *
      * @param graphics object used to draw on the program's window
@@ -105,6 +118,11 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawTitleBar(Graphics graphics) {
+        Color temp = graphics.getColor();
+        graphics.setColor(new Color(71, 129, 158));
+        graphics.fillRect((int) titleBar.getPosition().getX(), (int) titleBar.getPosition().getY(), titleBar.getWidth(), TitleBar.HEIGHT);
+        graphics.setColor(Color.BLACK);
+
         new Rectangle(titleBar.getPosition(), titleBar.getWidth(), TitleBar.HEIGHT)
                 .draw(graphics);
     }

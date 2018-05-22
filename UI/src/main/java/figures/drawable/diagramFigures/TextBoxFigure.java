@@ -46,6 +46,7 @@ public class TextBoxFigure implements IDrawable {
      */
     private void drawTitle(Graphics graphics, Point2D titlePos) {
         graphics.drawString(title, (int) titlePos.getX() + 3, (int) titlePos.getY() + 11);
+
     }
 
     /**
