@@ -136,14 +136,20 @@ public class PartyDialogBox extends DialogBox {
     private Action handleMousePress(MouseEvent mouseEvent) {
         if (toActor.isClicked(mouseEvent.getPoint())) {
             selected = toActor;
-            UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toActor.performAction();
-            handleAction(updatePartyTypeAction);
-            return updatePartyTypeAction;
+            Action action = toActor.performAction();
+            if(action instanceof UpdatePartyTypeAction) {
+                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
+                handleAction(updatePartyTypeAction);
+            }
+            return action;
         } else if (toObject.isClicked(mouseEvent.getPoint())) {
             selected = toObject;
-            UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toObject.performAction();
-            handleAction(updatePartyTypeAction);
-            return updatePartyTypeAction;
+            Action action = toObject.performAction();
+            if(action instanceof UpdatePartyTypeAction) {
+                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
+                handleAction(updatePartyTypeAction);
+            }
+            return action;
         } else if (instanceTextBox.isClicked(mouseEvent.getPoint())) {
             selected = instanceTextBox;
         } else if (classTextBox.isClicked(mouseEvent.getPoint())) {
@@ -182,13 +188,19 @@ public class PartyDialogBox extends DialogBox {
     private Action handleSpace() {
         if (selected instanceof RadioButton) {
             if (selected == toActor) {
-                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toActor.performAction();
-                handleAction(updatePartyTypeAction);
-                return updatePartyTypeAction;
+                Action action = toActor.performAction();
+                if(action instanceof UpdatePartyTypeAction) {
+                    UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
+                    handleAction(updatePartyTypeAction);
+                    return updatePartyTypeAction;
+                }
             } else if (selected == toObject) {
-                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toObject.performAction();
-                handleAction(updatePartyTypeAction);
-                return updatePartyTypeAction;
+                Action action = toObject.performAction();
+                if(action instanceof UpdatePartyTypeAction) {
+                    UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
+                    handleAction(updatePartyTypeAction);
+                    return updatePartyTypeAction;
+                }
             }
         }
         return new EmptyAction();
@@ -236,9 +248,7 @@ public class PartyDialogBox extends DialogBox {
         } else if (action instanceof UpdatePartyTypeAction) {
             UpdatePartyTypeAction a = (UpdatePartyTypeAction) action;
             if (a.getOldParty().equals(party)) {
-                subwindow.setSelected(a.getNewParty());
                 try {
-                    //TODO add at interactioncontroller mapping
                     PartyDialogBox partyDialogBox = new PartyDialogBox(this.getPosition(), a.getNewParty(), subwindow);
 
                     CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
@@ -246,7 +256,9 @@ public class PartyDialogBox extends DialogBox {
                     close.getInteractionController().addSubwindow(partyDialogBox);
                     close.getInteractionController().addToMap(subwindow, partyDialogBox);
                     partyDialogBox.createFrame(new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, close.getInteractionController())));
-
+                    if(subwindow.getSelected() == a.getOldParty()){
+                        subwindow.setSelected(a.getNewParty());
+                    }
                    /* Action action1 = subwindow.opendialogBox();
                     if (action1 instanceof DialogBoxOpenedAction) {
 
