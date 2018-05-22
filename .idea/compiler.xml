@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/UI/src/test/java/window/elements/button/FakeButtonTest.java" />
-      <file url="file://$PROJECT_DIR$/UI/src/test/java/window/elements/button/ButtonTestSuite.java" />
-    </excludeFromCompile>
     <annotationProcessing>
       <profile name="Maven default annotation processors profile">
         <sourceOutputDir name="target/generated-sources/annotations" />
