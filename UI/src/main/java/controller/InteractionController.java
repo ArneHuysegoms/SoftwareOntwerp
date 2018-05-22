@@ -10,11 +10,14 @@ import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
 import window.diagram.DiagramSubwindow;
+import window.dialogbox.DialogBox;
 import window.elements.button.Button;
 import window.elements.button.CloseWindowButton;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,7 @@ public class InteractionController implements IHighLevelController{
     private Subwindow activeSubwindow;
     private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
+    private HashMap<DiagramSubwindow,List<DialogBox>> map;
 
     /**
      * constructs an empty interactionController
@@ -32,6 +36,19 @@ public class InteractionController implements IHighLevelController{
     public InteractionController(){
         setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
+        this.map = new HashMap<>();
+    }
+
+    public HashMap<DiagramSubwindow, List<DialogBox>> getMap() {
+        return map;
+    }
+
+    public void setMap(HashMap<DiagramSubwindow, List<DialogBox>> map) {
+        this.map = map;
+    }
+
+    public List<DialogBox> getCorrespondingDialogBoxes(DiagramSubwindow diagramSubwindow){
+        return this.getMap().get(diagramSubwindow);
     }
 
     /**
@@ -116,8 +133,23 @@ public class InteractionController implements IHighLevelController{
      * @param subwindow the diagramSubwindow to remove
      */
     public void removeSubwindow(Subwindow subwindow){
+        if(subwindow instanceof DialogBox){
+            deleteInMap((DialogBox) subwindow);
+        }else{
+            deleteInMap((DiagramSubwindow) subwindow);
+        }
         subwindows.remove(subwindow);
         setActiveSubwindow(getHighestLevelSubwindow());
+    }
+
+    public void deleteInMap(DialogBox dialogBox){
+        map.values().remove(dialogBox);
+    }
+    public void deleteInMap(DiagramSubwindow diagramSubwindow){
+        for(DialogBox d : map.get(diagramSubwindow)){
+            subwindows.remove(d);
+        }
+        map.remove(diagramSubwindow);
     }
 
     /**
@@ -198,9 +230,7 @@ public class InteractionController implements IHighLevelController{
         } else {
             Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
             if (subwindow != null) {
-                if (!subwindow.equals(getActiveSubwindow())) {
-                    changeActiveSubwindow(subwindow);
-                }
+                changeActiveSubwindow(subwindow);
                 Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
                 Action action = subwindow.handleMouseEvent(mouseEvent);
@@ -226,13 +256,22 @@ public class InteractionController implements IHighLevelController{
             }
         }
         else{
-            Subwindow s = ((DialogBoxOpenedAction)action).getDialogBox();
+            DialogBox s = ((DialogBoxOpenedAction)action).getDialogBox();
             Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
             s.getFrame().setButton(button);
             this.getSubwindows().add(s);
+            addToMap(this.getActiveDiagramSubwindow(),s);
             this.changeActiveSubwindow(s);
         }
 
+    }
+
+    public void addToMap(DiagramSubwindow diagramSubwindow, DialogBox dialogBox){
+        if(this.getMap().get(diagramSubwindow) == null){
+            ArrayList<DialogBox> list = new ArrayList<>();
+            this.getMap().put(diagramSubwindow, list);
+        }
+        this.getMap().get(diagramSubwindow).add(dialogBox);
     }
 
     /**
@@ -291,6 +330,7 @@ public class InteractionController implements IHighLevelController{
         diagramSubwindow.getFrame().setButton(button);
         addSubwindow(diagramSubwindow);
         //this.changeActiveSubwindow(diagramSubwindow);
+        this.getMap().put(diagramSubwindow, new ArrayList<>());
     }
 
     /**
@@ -303,6 +343,7 @@ public class InteractionController implements IHighLevelController{
             diagramSubwindow.getFrame().setButton(button);
             addSubwindow(diagramSubwindow);
             //this.changeActiveSubwindow(diagramSubwindow);
+            this.getMap().put(diagramSubwindow, new ArrayList<>());
         }
     }
 

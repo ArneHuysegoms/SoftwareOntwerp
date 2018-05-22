@@ -141,7 +141,7 @@ public class CanvasController implements IHighLevelController{
             if (!ic.equals(getActiveInteractionController())) {
                 changeActiveInteractionController(ic);
             }
-            ic.handleMouseEvent(mouseEvent);
+            activeInteractionController.handleMouseEvent(mouseEvent);
         }
     }
 
@@ -150,8 +150,7 @@ public class CanvasController implements IHighLevelController{
      */
     private void createNewInteractionController(){
         InteractionController interactionController = new InteractionController();
-        this.getInteractionControllers().add(interactionController);
-        this.changeActiveInteractionController(interactionController);
+        addInteractionController(interactionController);
     }
 
     /*private void checkForDeleteInteractionController(){
