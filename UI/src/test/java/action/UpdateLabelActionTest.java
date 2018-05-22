@@ -1,5 +1,6 @@
 package action;
 
+import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.label.MessageLabel;
 import diagram.label.PartyLabel;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class UpdateLabelActionTest {
     private UpdateLabelAction updateLabelAction;
-    private Party party1;
+    private DiagramElement party1;
     private Label label1;
     private DiagramSubwindow diagramSubwindow;
 

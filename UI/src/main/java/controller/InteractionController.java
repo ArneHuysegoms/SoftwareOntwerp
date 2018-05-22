@@ -287,6 +287,11 @@ public class InteractionController implements IHighLevelController{
                 }
             }
         }
+        else{
+            Subwindow s = ((DialogBoxOpenedAction)action).getDialogBox();
+            this.getSubwindows().add(s);
+            this.changeActiveSubwindow(s);
+        }
 
     }
 
