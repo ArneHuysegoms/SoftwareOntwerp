@@ -198,9 +198,7 @@ public class InteractionController implements IHighLevelController{
         } else {
             Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
             if (subwindow != null) {
-                if (!subwindow.equals(getActiveSubwindow())) {
-                    changeActiveSubwindow(subwindow);
-                }
+                changeActiveSubwindow(subwindow);
                 Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                 mouseEvent.setPoint(relativePoint);
                 Action action = subwindow.handleMouseEvent(mouseEvent);
