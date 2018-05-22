@@ -59,7 +59,7 @@ public abstract class SubwindowFigure implements IDrawable {
      */
     private void drawBackgroundColor(Graphics graphics, Color c) {
         graphics.setColor(c);
-        graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth());
+        graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight());
         graphics.setColor(Color.BLACK);
     }
 
@@ -108,7 +108,7 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawFrame(Graphics graphics) {
-        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth())
+        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight())
                 .draw(graphics);
     }
 

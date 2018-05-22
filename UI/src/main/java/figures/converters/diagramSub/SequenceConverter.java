@@ -2,6 +2,7 @@ package figures.converters.diagramSub;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
+import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
@@ -13,6 +14,7 @@ import figures.drawable.basicShapes.DashedArrow;
 import figures.drawable.basicShapes.DashedLine;
 import figures.drawable.diagramFigures.LifeLineFigure;
 import view.diagram.DiagramView;
+import view.label.LabelView;
 import view.message.MessageView;
 import view.message.SequenceMessageView;
 import view.party.PartyView;
@@ -50,6 +52,27 @@ public class SequenceConverter extends DiagramConverter {
             helper = new SequenceActivationBarAndMessageHelper(firstMessage);
             helper.draw(graphics, partyMap, ((SequenceMessageView) messageView).getMap());
         }
+    }
+
+    /**
+     * method that draws the label of a message
+     *
+     * @param graphics  object used to draw on the program's window
+     * @param message   message to be drawn
+     * @param labelView repository containing all the coordinates of the labels in the diagramSubwindow's diagram
+     */
+    @Override
+    protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
+        String messageNumber = "";
+
+        if (message instanceof InvocationMessage) {
+            messageNumber = ((InvocationMessage) message).getMessageNumber();
+        }
+        Map<Label, Point2D> labelMap = labelView.getMap();
+
+        Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
+        drawLabel(graphics, start, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+
     }
 
     /**
@@ -168,9 +191,9 @@ public class SequenceConverter extends DiagramConverter {
         /**
          * method that draws activation bars
          *
-         * @param graphics       object used to draw on the program's window
-         * @param partyMap       list of Party and Point2D entries
-         * @param messageMap     list of Message and y-coördinate entries
+         * @param graphics   object used to draw on the program's window
+         * @param partyMap   list of Party and Point2D entries
+         * @param messageMap list of Message and y-coördinate entries
          */
         public void draw(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
             for (ActivationBar a : bars) {
@@ -277,16 +300,17 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * method that draws anactivation bars
-             *  @param graphics       object used to draw on the program's window
-             * @param partyMap       list of Party and Point2D entries
-             * @param messageMap     list of Message and y-coördinate entries
+             *
+             * @param graphics   object used to draw on the program's window
+             * @param partyMap   list of Party and Point2D entries
+             * @param messageMap list of Message and y-coördinate entries
              */
             public void draw(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
                 new Box(calculateOwnBarStart(partyMap, messageMap), calculateOwnBarEnd(partyMap, messageMap)).draw(graphics, getX1(), getY1(), getX2(), getY2());
                 new Box(calculateBrotherBarStart(partyMap, messageMap), calculateBrotherBarEnd(partyMap, messageMap)).draw(graphics, getX1(), getY1(), getX2(), getY2());
 
                 new Arrow(new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarStartY(messageMap)), new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarStartY(messageMap)))
-                        .draw(graphics,  getX1(), getY1(), getX2(), getY2());
+                        .draw(graphics, getX1(), getY1(), getX2(), getY2());
                 new DashedArrow(new Point2D.Double(calculateBrotherBarStartX(partyMap), calculateBarEndY(messageMap)), new Point2D.Double(calculateOwnBarStartX(partyMap) + barWidth, calculateBarEndY(messageMap)))
                         .draw(graphics, getX1(), getY1(), getX2(), getY2());
 
@@ -333,7 +357,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns x-coordinate for the start point of this activation bar
-             * @param partyMap     list of Party and Point2D entries
+             *
+             * @param partyMap list of Party and Point2D entries
              * @return x-coordinate for the start point of this activation bar
              */
             private double calculateOwnBarStartX(Map<Party, Point2D> partyMap) {
@@ -350,7 +375,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns y-coordinate for the start point of this activation bar and for the one that is created because of the outgoing message
-             * @param messageMap   list of Message and y-coördinate entries
+             *
+             * @param messageMap list of Message and y-coördinate entries
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarStartY(Map<Message, Integer> messageMap) {
@@ -359,7 +385,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns y-coordinate for the end point of this activation bar and for the one that is created because of the outgoing message
-             * @param messageMap   list of Message and y-coördinate entries
+             *
+             * @param messageMap list of Message and y-coördinate entries
              * @return y-coordinate for the start point of this activation bar
              */
             private double calculateBarEndY(Map<Message, Integer> messageMap) {
@@ -368,7 +395,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns x-coordinate for the end point of this activation bar
-             * @param partyMap     list of Party and Point2D entries
+             *
+             * @param partyMap list of Party and Point2D entries
              * @return x-coordinate for the end point of this activation bar
              */
             private double calculateOwnBarEndX(Map<Party, Point2D> partyMap) {
@@ -385,7 +413,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns x-coordinate for the end point of the activation bar that is created because of the outgoing message
-             * @param partyMap     list of Party and Point2D entries
+             *
+             * @param partyMap list of Party and Point2D entries
              * @return x-coordinate for the end point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarEndX(Map<Party, Point2D> partyMap) {
@@ -398,7 +427,8 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * returns x-coordinate for the start point of the activation bar that is created because of the outgoing message
-             * @param partyMap     list of Party and Point2D entries
+             *
+             * @param partyMap list of Party and Point2D entries
              * @return x-coordinate for the start point of the activation bar that is created because of the outgoing message
              */
             private double calculateBrotherBarStartX(Map<Party, Point2D> partyMap) {
@@ -411,8 +441,9 @@ public class SequenceConverter extends DiagramConverter {
 
             /**
              * calculates the start point of this activation bar
-             * @param partyMap     list of Party and Point2D entries
-             * @param messageMap   list of Message and y-coördinate entries
+             *
+             * @param partyMap   list of Party and Point2D entries
+             * @param messageMap list of Message and y-coördinate entries
              * @return the start point of this activation bar
              */
             private Point2D calculateOwnBarStart(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -422,8 +453,8 @@ public class SequenceConverter extends DiagramConverter {
             /**
              * calculates the end point of this activation bar
              *
-             * @param partyMap     list of Party and Point2D entries
-             * @param messageMap   list of Message and y-coördinate entries
+             * @param partyMap   list of Party and Point2D entries
+             * @param messageMap list of Message and y-coördinate entries
              * @return the end point of this activation bar
              */
             private Point2D calculateOwnBarEnd(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -433,8 +464,8 @@ public class SequenceConverter extends DiagramConverter {
             /**
              * calculates the start point of the activation bar that is created because of the outgoing message
              *
-             * @param partyMap     list of Party and Point2D entries
-             * @param messageMap   list of Message and y-coördinate entries
+             * @param partyMap   list of Party and Point2D entries
+             * @param messageMap list of Message and y-coördinate entries
              * @return the start point of the activation bar that is created because of the outgoing message
              */
             private Point2D calculateBrotherBarStart(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
@@ -444,8 +475,8 @@ public class SequenceConverter extends DiagramConverter {
             /**
              * calculates the end point of the activation bar that is created because of the outgoing message
              *
-             * @param partyMap     list of Party and Point2D entries
-             * @param messageMap   list of Message and y-coördinate entries
+             * @param partyMap   list of Party and Point2D entries
+             * @param messageMap list of Message and y-coördinate entries
              * @return the end point of the activation bar that is created because of the outgoing message
              */
             private Point2D calculateBrotherBarEnd(Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
