@@ -11,8 +11,10 @@ public class TextBoxFigure implements IDrawable {
 
     private TextBox textBox;
     private String title;
+    private Point2D absolutePosition;
 
-    public TextBoxFigure(TextBox textBox, String title){
+    public TextBoxFigure(TextBox textBox, Point2D absolutePosition, String title) {
+        this.absolutePosition = absolutePosition;
         this.textBox = textBox;
         this.title = title;
     }
@@ -28,11 +30,10 @@ public class TextBoxFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        Point2D textBoxPos=textBox.getCoordinate(),
-                titlePos = new Point2D.Double(textBoxPos.getX()+TextBox.WIDTH+3,textBoxPos.getY()),
-                contentPos = new Point2D.Double(textBoxPos.getX()+3,textBoxPos.getY());
+        Point2D titlePos = new Point2D.Double(absolutePosition.getX() + TextBox.WIDTH + 3, absolutePosition.getY()),
+                contentPos = new Point2D.Double(absolutePosition.getX() + 3, absolutePosition.getY());
 
-        new Rectangle(textBoxPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics, minX, minY, maxX, maxY);
+        new Rectangle(absolutePosition, TextBox.WIDTH, TextBox.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
         drawTitle(graphics, titlePos);
         drawContents(graphics, contentPos);
     }
@@ -44,11 +45,10 @@ public class TextBoxFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        Point2D textBoxPos=textBox.getCoordinate(),
-                titlePos = new Point2D.Double(textBoxPos.getX()+TextBox.WIDTH+3,textBoxPos.getY()),
-                contentPos = new Point2D.Double(textBoxPos.getX()+3,textBoxPos.getY());
+        Point2D titlePos = new Point2D.Double(absolutePosition.getX() + TextBox.WIDTH + 3, absolutePosition.getY()),
+                contentPos = new Point2D.Double(absolutePosition.getX() + 3, absolutePosition.getY());
 
-        new Rectangle(textBoxPos, TextBox.HEIGHT, TextBox.WIDTH).draw(graphics);
+        new Rectangle(absolutePosition, TextBox.WIDTH, TextBox.HEIGHT).draw(graphics);
         drawTitle(graphics, titlePos);
         drawContents(graphics, contentPos);
     }
@@ -60,16 +60,18 @@ public class TextBoxFigure implements IDrawable {
      * @param titlePos startingposition of the title
      */
     private void drawTitle(Graphics graphics, Point2D titlePos) {
-        graphics.drawString(title, (int)titlePos.getX(), (int)titlePos.getY());
+        graphics.drawString(title, (int) titlePos.getX() + 3, (int) titlePos.getY() + 11);
     }
 
     /**
      * draws what's being typed in the TextBox
-     * @param graphics object used to draw on the program's window
+     *
+     * @param graphics   object used to draw on the program's window
      * @param contentPos
      */
     private void drawContents(Graphics graphics, Point2D contentPos) {
-        graphics.drawString(textBox.getContents(), (int)contentPos.getX(), (int)contentPos.getY());
+        graphics.drawString(textBox.getContents(), (int) contentPos.getX() + 3, (int) contentPos.getY() + 12);
+
     }
 
 

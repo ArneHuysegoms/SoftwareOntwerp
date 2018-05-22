@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
 import uievents.KeyEventType;
+import uievents.MouseEvent;
+import uievents.MouseEventType;
 import view.diagram.CommunicationView;
 import view.diagram.SequenceView;
 import window.Subwindow;
@@ -27,6 +29,7 @@ public class InteractionControllerTest {
     @Before
     public void setUp() {
         interactionController = new InteractionController();
+
         diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
         Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
         diagramSubwindow.getFrame().setButton(button);
@@ -134,7 +137,6 @@ public class InteractionControllerTest {
 
         KeyEvent ke = new KeyEvent(KeyEventType.CTRLENTER);
         interactionController.handleKeyEvent(ke);
-        Subwindow s = interactionController.getActiveSubwindow();
         assertTrue(interactionController.getActiveSubwindow() instanceof DialogBox);
     }
 
@@ -164,6 +166,33 @@ public class InteractionControllerTest {
         assertEquals(interactionController.getAppropriateSubwindow(new Point2D.Double(100,100)), diagramSubwindow);
         interactionController.removeSubwindow(diagramSubwindow);
         assertEquals(interactionController.getAppropriateSubwindow(new Point2D.Double(100,100)), null);
+    }
+
+    @Test
+    public void test_levels(){
+        interactionController.addSubwindow(diagramSubwindow);
+        interactionController.addSubwindow(diagramSubwindow2);
+        interactionController.addSubwindow(diagramSubwindow3);
+
+        assertTrue(diagramSubwindow.getLevel() < diagramSubwindow2.getLevel());
+        assertTrue(diagramSubwindow.getLevel() < diagramSubwindow3.getLevel());
+        assertTrue(diagramSubwindow2.getLevel() < diagramSubwindow3.getLevel());
+
+
+        DiagramSubwindow diagramSubwindow4 = new DiagramSubwindow(new Point2D.Double(500, 500));
+        Button button4 = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
+        diagramSubwindow4.getFrame().setButton(button4);
+        interactionController.addSubwindow(diagramSubwindow4);
+
+        assertTrue(diagramSubwindow3.getLevel() < diagramSubwindow4.getLevel());
+        System.out.println(diagramSubwindow3.getLevel());
+        System.out.println(diagramSubwindow4.getLevel());
+        interactionController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED,new Point2D.Double(100,100)));
+        System.out.println(diagramSubwindow3.getLevel());
+        System.out.println(diagramSubwindow4.getLevel());
+        assertTrue(diagramSubwindow3.getLevel() > diagramSubwindow4.getLevel());
+
+
     }
 
 }
