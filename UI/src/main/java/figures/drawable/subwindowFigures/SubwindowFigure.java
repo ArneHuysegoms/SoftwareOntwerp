@@ -59,6 +59,7 @@ public abstract class SubwindowFigure implements IDrawable {
      */
     private void drawBackgroundColor(Graphics graphics, Color c) {
         graphics.setColor(c);
+        System.out.println("Point2D: "+subwindow.getSubwindowPoint());
         graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight());
         graphics.setColor(Color.BLACK);
     }
@@ -73,7 +74,7 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawFrame(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth()).draw(graphics, minX, minY, maxX, maxY);
+        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight()).draw(graphics, minX, minY, maxX, maxY);
     }
 
     /**

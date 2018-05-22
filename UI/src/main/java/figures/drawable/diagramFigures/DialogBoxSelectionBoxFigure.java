@@ -19,7 +19,7 @@ public class DialogBoxSelectionBoxFigure extends Box {
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         Color temp = graphics.getColor();
-        graphics.setColor(Color.CYAN);
+        graphics.setColor(Color.BLUE);
         super.draw(graphics,minX,minY,maxX,maxY);
         graphics.setColor(temp);
     }
