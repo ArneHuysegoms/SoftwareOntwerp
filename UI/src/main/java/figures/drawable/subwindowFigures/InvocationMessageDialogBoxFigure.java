@@ -73,14 +73,14 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        
+
         new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new RemoveButtonFigure(dialogBox.getDeleteArgument().getPosition(), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
+        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new UpButtonFigure(dialogBox.getMoveUp().getPosition(), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
+        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new DownButtonFigure(dialogBox.getMoveDown().getPosition(), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
+        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
 
     }
@@ -90,13 +90,13 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawButtons(Graphics graphics) {
-        new AddButtonFigure(dialogBox.getAddArgument().getPosition(), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
+        new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
                 .draw(graphics);
-        new RemoveButtonFigure(dialogBox.getDeleteArgument().getPosition(), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
+        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
                 .draw(graphics);
-        new UpButtonFigure(dialogBox.getMoveUp().getPosition(), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
+        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
                 .draw(graphics);
-        new DownButtonFigure(dialogBox.getMoveDown().getPosition(), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
+        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
                 .draw(graphics);
 
     }
