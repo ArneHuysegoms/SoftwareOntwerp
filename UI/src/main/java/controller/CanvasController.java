@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main layer between pure UI and the domain
+ * Layer between UI and the domain
  *
- * Interprets UIEvents and addresses the appropriate functions in the diagram.
+ * Interprets UIEvents and passes these on to the appropriate interactionController.
  */
 public class CanvasController implements IHighLevelController{
 
@@ -24,28 +24,49 @@ public class CanvasController implements IHighLevelController{
 
     /**
      * constructs a new empty canvascontroller
+     * initialises activeInteractionController and the list of interactionControllers
      */
     public CanvasController() {
         this.activeInteractionController = null;
         this.setInteractionControllers(new ArrayList<>());
     }
 
+    /**
+     *
+     * @return activeInteractionController
+     */
     public InteractionController getActiveInteractionController() {
         return activeInteractionController;
     }
 
+    /**
+     * sets activeInteractionController to the given param
+     * @param activeInteractionController
+     */
     public void setActiveInteractionController(InteractionController activeInteractionController) {
         this.activeInteractionController = activeInteractionController;
     }
 
+    /**
+     *
+     * @return the list of interactionControllers
+     */
     public List<InteractionController> getInteractionControllers() {
         return interactionControllers;
     }
 
+    /**
+     * sets the list of interactionControllers to the given param
+     * @param interactionControllers
+     */
     public void setInteractionControllers(List<InteractionController> interactionControllers) {
         this.interactionControllers = interactionControllers;
     }
 
+    /**
+     * adds the param to the list of interactionControllers if it doesn't contain it already
+     * @param interactionController
+     */
     public void addInteractionController(InteractionController interactionController){
         if(!this.getInteractionControllers().contains(interactionController)){
             this.interactionControllers.add(interactionController);
@@ -53,6 +74,11 @@ public class CanvasController implements IHighLevelController{
         setActiveInteractionController(interactionController);
     }
 
+    /**
+     * removes the param of the list of interactionControllers
+     * if the interactionController was active, set the interactionController with the highest level as active
+     * @param interactionController
+     */
     public void removeInteractionController(InteractionController interactionController){
         this.interactionControllers.remove(interactionController);
         if(this.getActiveInteractionController().equals(interactionController)){
@@ -60,6 +86,10 @@ public class CanvasController implements IHighLevelController{
         }
     }
 
+    /**
+     * changes the active interactionController to the param
+     * @param interactionController
+     */
     public void changeActiveInteractionController(InteractionController interactionController){
         setActiveInteractionController(interactionController);
     }
@@ -115,23 +145,28 @@ public class CanvasController implements IHighLevelController{
         }
     }
 
-
+    /**
+     * creates a new interactionController, adds it to the list of interactionControllers, and sets it active
+     */
     private void createNewInteractionController(){
         InteractionController interactionController = new InteractionController();
         this.getInteractionControllers().add(interactionController);
         this.changeActiveInteractionController(interactionController);
     }
 
-    private void checkForDeleteInteractionController(){
+    /*private void checkForDeleteInteractionController(){
         if(activeInteractionController.getActiveDiagramSubwindow() == null){
             if(activeInteractionController.getSubwindows().isEmpty()){
                 this.activeInteractionController = null;
             }
         }
         //getSubwindows() kan nog dialogboxes bevatten?
-    }
+    }*/
 
-
+    /**
+     *
+     * @return the interactionController with the subwindow with the highest level
+     */
     public InteractionController findHighestLevelInteractionController(){
         InteractionController result = null;
         int level = -1;
@@ -145,7 +180,11 @@ public class CanvasController implements IHighLevelController{
         return result;
     }
 
-
+    /**
+     *
+     * @param clickedLocation
+     * @return the interactionController with the subwindow with the highest level on the clickedLocation
+     */
     public InteractionController getAppropriateInteractionController(Point2D clickedLocation){
         InteractionController result = null;
         int level = -1;

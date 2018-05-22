@@ -27,6 +27,7 @@ public class InteractionControllerTest {
     @Before
     public void setUp() {
         interactionController = new InteractionController();
+
         diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
         Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
         diagramSubwindow.getFrame().setButton(button);
