@@ -1,4 +1,4 @@
-package suites;
+package figures;
 
 import figures.drawable.basicShapes.*;
 import figures.drawable.diagramFigures.*;
