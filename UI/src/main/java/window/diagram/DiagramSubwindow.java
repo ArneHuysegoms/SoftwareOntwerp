@@ -21,11 +21,12 @@ import window.WindowLevelCounter;
 import window.dialogbox.*;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+/**
+ * subwindow that contains a diagram
+ */
 public class DiagramSubwindow extends Subwindow implements IActionHandler {
 
 
@@ -82,15 +83,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
         return f;
     }
-
-    /*
-     * update the container with the label
-     *
-     * @param c the new char for the label
-     *//*
-    public void updateLabelContainer(char c) {
-        setLabelContainer(labelContainer + c);
-    }*/
 
 
     /**
@@ -199,6 +191,12 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         return new EmptyAction();
     }
 
+    /**
+     * opens a dialogbox
+     *
+     * @return an action detailing the handling of this method
+     * @throws UIException if illegal modifications are made
+     */
     public Action opendialogBox() throws UIException {
         DialogBox dialogBox = null;
         if (selected == null) {
@@ -223,14 +221,23 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         return new EmptyAction();
     }
 
+    /**
+     * change the diagram type of this diagramsubwindow
+     */
     public void changeActiveDiagram() {
         this.getFacade().changeActiveDiagram();
     }
 
+    /**
+     * @return true if the active diagram is a sequencediagram
+     */
     public boolean activeDiagamIsSequence() {
         return getFacade().activeDiagramIsSequence();
     }
 
+    /**
+     * @return true if the active diagram is a communicationdiagram
+     */
     public boolean activeDiagramIsCommunication() {
         return getFacade().activeDiagramIsCommunication();
     }
@@ -271,7 +278,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
                         selected = newParty.getLabel();
                         startEditingLabel();
                         editing = true;
-                        return new AddNewPartyToReposAction(newParty, mouseEvent.getPoint());
+                        return new AddNewPartyToViewsAction(newParty, mouseEvent.getPoint());
                     }
                     break;
                 default:
@@ -295,7 +302,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             selected = newMessages.get(0).getLabel();
             startEditingLabel();
             editing = true;
-            return new AddNewMessagesInRepos(newMessages);
+            return new AddNewMessagesInViewsAction(newMessages);
         }
         return new EmptyAction();
     }
@@ -372,7 +379,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             stopEditingLabel();
             selected = null;
-            return new RemoveInReposAction(deletedElements);
+            return new RemoveInViewsAction(deletedElements);
         }
         return new EmptyAction();
     }
@@ -383,7 +390,6 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     public void stopEditingLabel() {
         labelMode = false;
         labelContainer = "";
-        //selected = null;
     }
 
     /**
@@ -427,10 +433,9 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
      * @return an action detailing what needs to happen in other subwindows
      */
     private Action handleChangeInLabel() throws DomainException {
-        if(selected instanceof InvocationMessageLabel){
-            return handleInvocationMessageLabel();
-        }
-        else if (checkIfValidLable()) {
+        if (selected instanceof InvocationMessageLabel) {
+            return handleInvocationMessageLabelChange();
+        } else if (checkIfValidLable()) {
             labelMode = false;
             Label selectedLabel = (Label) selected;
             selectedLabel.setLabel(labelContainer.substring(0, getLabelContainer().length() - 1));
@@ -442,16 +447,21 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
     }
 
-    private Action handleInvocationMessageLabel() throws DomainException{
+    /**
+     * handles the change in a invocationMessage label
+     *
+     * @return an action detailing what happenend by execting this method
+     * @throws DomainException if illegal modifications are made
+     */
+    private Action handleInvocationMessageLabelChange() throws DomainException {
         InvocationMessageLabel inv = (InvocationMessageLabel) selected;
         String toParse = labelContainer.substring(0, getLabelContainer().length() - 1);
-        if(inv.isValidCompleteLabel(toParse)){
+        if (inv.isValidCompleteLabel(toParse)) {
             labelMode = false;
             inv.setCompleteLabel(toParse);
             DiagramElement diagramElement = this.getFacade().findParentElement(inv);
             return new UpdateLabelAction(diagramElement, inv);
-        }
-        else{
+        } else {
             labelMode = true;
             return new EmptyAction();
         }
@@ -474,6 +484,11 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     }
 
 
+    /**
+     * handles the given action
+     *
+     * @param action the action to handle
+     */
     @Override
     public void handleAction(Action action) {
         action.performAction(this);

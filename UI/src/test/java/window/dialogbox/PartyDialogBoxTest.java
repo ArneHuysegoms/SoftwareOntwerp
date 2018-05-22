@@ -1,7 +1,7 @@
 package window.dialogbox;
 
 import action.Action;
-import action.RemoveInReposAction;
+import action.RemoveInViewsAction;
 import action.UpdateLabelAction;
 import action.UpdatePartyTypeAction;
 import command.closeWindow.CloseSubwindowCommand;
@@ -154,7 +154,7 @@ public class PartyDialogBoxTest {
     public void test_handleAction_RemoveInReposAction(){
         Set<DiagramElement> diagramElementSet = new HashSet<>();
         diagramElementSet.add(party);
-        Action action = new RemoveInReposAction(diagramElementSet);
+        Action action = new RemoveInViewsAction(diagramElementSet);
         partyDialogBox.handleAction(action);
         assertTrue(! interactionController.getSubwindows().contains(partyDialogBox));
     }

@@ -1,10 +1,16 @@
 package window;
 
+/**
+ * static class for getting the next level for a window
+ */
 public class WindowLevelCounter {
 
     private static int counter = 0;
 
-    public static int getNextLevel(){
+    /**
+     * @return the next level to be used for the subwindow level
+     */
+    public static int getNextLevel() {
         return counter++;
     }
 }

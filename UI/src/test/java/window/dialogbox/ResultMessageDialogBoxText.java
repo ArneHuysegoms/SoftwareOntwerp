@@ -103,7 +103,7 @@ public class ResultMessageDialogBoxText {
     public void test_handleAction_RemoveInReposAction(){
         Set<DiagramElement> el = new HashSet<>();
         el.add(resultMessage);
-        RemoveInReposAction action = new RemoveInReposAction(el);
+        RemoveInViewsAction action = new RemoveInViewsAction(el);
         resultMessageDialogBox.handleAction(action);
         assertFalse(interactionController.getSubwindows().contains(resultMessageDialogBox));
     }

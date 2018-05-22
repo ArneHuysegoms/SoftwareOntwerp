@@ -5,11 +5,11 @@ import window.diagram.DiagramSubwindow;
 
 import java.util.Set;
 
-public class RemoveInReposAction extends Action {
+public class RemoveInViewsAction extends Action {
 
     private Set<DiagramElement> deletedElements;
 
-    public RemoveInReposAction(Set<DiagramElement> deletedElements){
+    public RemoveInViewsAction(Set<DiagramElement> deletedElements){
         this.deletedElements = deletedElements;
     }
 
