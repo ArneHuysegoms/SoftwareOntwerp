@@ -278,7 +278,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
                         selected = newParty.getLabel();
                         startEditingLabel();
                         editing = true;
-                        return new AddNewPartyToReposAction(newParty, mouseEvent.getPoint());
+                        return new AddNewPartyToViewsAction(newParty, mouseEvent.getPoint());
                     }
                     break;
                 default:
@@ -379,7 +379,7 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
             Set<DiagramElement> deletedElements = facade.deleteElementByLabel(l);
             stopEditingLabel();
             selected = null;
-            return new RemoveInReposAction(deletedElements);
+            return new RemoveInViewsAction(deletedElements);
         }
         return new EmptyAction();
     }
