@@ -14,13 +14,29 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
         this.dialogBox = dialogBox;
     }
 
+    /**
+     * draws a result message dialog box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
         drawTextBox(graphics, minX, minY, maxX, maxY);
     }
 
-    public void drawTextBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+    /**
+     * draws a text box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawTextBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new TextBoxFigure(dialogBox.getLabelTextBox(), "??? ResultDBFigure")
                 .draw(graphics, minX, minY, maxX, maxY);
     }

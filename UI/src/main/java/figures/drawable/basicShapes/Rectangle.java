@@ -119,7 +119,7 @@ public class Rectangle implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a rectangle on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -136,6 +136,11 @@ public class Rectangle implements IDrawable {
         new Line(cornerBL, positionTL).draw(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a rectangle on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Line(positionTL, cornerTR).draw(graphics);

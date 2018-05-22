@@ -46,7 +46,6 @@ public class CommunicationConverter extends DiagramConverter {
                 start = calculateStart(i * spread, pair, partyMap);
                 end = calculateEnd(i * spread, pair, partyMap);
                 new Arrow(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
-                //invokeMessageDrawingStrategy.draw(graphics, start, end, "", getX1(), getY1(), getX2(), getY2());
             }
         }
     }

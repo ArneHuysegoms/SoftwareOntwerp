@@ -1,4 +1,4 @@
-package figures.drawable.basicShapes;
+package figures.drawable.diagramFigures;
 
 import figures.drawable.diagramFigures.CloseButtonFigure;
 import org.junit.Test;

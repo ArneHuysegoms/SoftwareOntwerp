@@ -10,11 +10,6 @@ public class RemoveButtonFigure implements IDrawable {
 
     private int x, y, width, height;
 
-    /**
-     * @param position
-     * @param width
-     * @param height
-     */
     public RemoveButtonFigure(Point2D position, int width, int height) {
         this.x = (int) position.getX();
         this.y = (int) position.getY();
@@ -30,7 +25,7 @@ public class RemoveButtonFigure implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a button on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -44,12 +39,22 @@ public class RemoveButtonFigure implements IDrawable {
         drawRemoveShape(graphics);
     }
 
+    /**
+     * a draw function that draws a button on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Rectangle(x - width, y, width, height).draw(graphics);
         drawRemoveShape(graphics);
     }
 
+    /**
+     * draw the button's icon
+     *
+     * @param graphics object used to draw on the program's window
+     */
     private void drawRemoveShape(Graphics graphics) {
         int offsetX = (int) Math.floor(width / 5),
                 offsetY = (int) Math.floor(height / 5);

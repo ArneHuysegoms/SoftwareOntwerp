@@ -11,13 +11,14 @@ public class ResultMessageDialogBoxConverter extends DialogBoxConverter {
 
     public ResultMessageDialogBoxConverter(ResultMessageDialogBox dialogBox) {
         this.dialogBox = dialogBox;
-        setFigure();
-    }
-
-    protected void setFigure() {
         this.figure = new ResultMessageDialogBoxFigure(dialogBox);
     }
 
+    /**
+     * method that draws the dialog box's contents
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);

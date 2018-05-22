@@ -16,51 +16,87 @@ public class ListBoxFigure implements IDrawable {
         this.listBox = listBox;
     }
 
+    /**
+     * a draw function that draws a ListBox on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        Point2D listBoxPos = listBox.getCoordinate();
-        drawBox(graphics, listBoxPos, minX, minY, maxX, maxY);
-        drawArguments(graphics, listBoxPos);
-        drawArgumentSelection(graphics, listBoxPos, minX, minY, maxX, maxY);
+        drawBox(graphics, minX, minY, maxX, maxY);
+        drawArguments(graphics);
+        drawArgumentSelection(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a ListBox on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
-        Point2D listBoxPos = listBox.getCoordinate();
-        drawBox(graphics, listBoxPos);
-        drawArguments(graphics, listBoxPos);
-        drawArgumentSelection(graphics, listBoxPos);
+        drawBox(graphics);
+        drawArguments(graphics);
+        drawArgumentSelection(graphics);
     }
 
-    private void drawBox(Graphics graphics, Point2D listBoxPos) {
+    /**
+     * draws the box of a list box
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawBox(Graphics graphics) {
         Color temp = graphics.getColor();
         graphics.setColor(Color.GRAY);
-        new Rectangle(listBoxPos, ListBox.HEIGHT, ListBox.WIDTH)
+        new Rectangle(listBox.getCoordinate(), ListBox.HEIGHT, ListBox.WIDTH)
                 .draw(graphics);
         graphics.setColor(temp);
     }
 
-    private void drawArgumentSelection(Graphics graphics, Point2D listBoxPos, int minX, int minY, int maxX, int maxY) {
+    /**
+     * marks an argument
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawArgumentSelection(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         //TODO tweak coordinates
         Color temp = graphics.getColor();
         graphics.setColor(Color.LIGHT_GRAY);
-        new DashedRectangle((int) listBoxPos.getX() + 2, (int) listBoxPos.getY() + (listBox.getSelectedIndex() * ListBox.ARGUMENT_HEIGHT), ListBox.WIDTH - 2, ListBox.ARGUMENT_HEIGHT)
+        new DashedRectangle((int) listBox.getCoordinate().getX() + 2, (int) listBox.getCoordinate().getY() + (listBox.getSelectedIndex() * ListBox.ARGUMENT_HEIGHT), ListBox.WIDTH - 2, ListBox.ARGUMENT_HEIGHT)
                 .draw(graphics, minX, minY, maxX, maxY);
         graphics.setColor(temp);
     }
 
-    private void drawArgumentSelection(Graphics graphics, Point2D listBoxPos) {
+    /**
+     * marks an argument
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawArgumentSelection(Graphics graphics) {
         //TODO tweak coordinates
         Color temp = graphics.getColor();
         graphics.setColor(Color.LIGHT_GRAY);
-        new DashedRectangle((int) listBoxPos.getX() + 2, (int) listBoxPos.getY() + (listBox.getSelectedIndex() * ListBox.ARGUMENT_HEIGHT), ListBox.WIDTH - 2, ListBox.ARGUMENT_HEIGHT)
+        new DashedRectangle((int) listBox.getCoordinate().getX() + 2, (int) listBox.getCoordinate().getY() + (listBox.getSelectedIndex() * ListBox.ARGUMENT_HEIGHT), ListBox.WIDTH - 2, ListBox.ARGUMENT_HEIGHT)
                 .draw(graphics);
         graphics.setColor(temp);
     }
 
-    private void drawArguments(Graphics graphics, Point2D startingPos) {
+    /**
+     * draws the argument in the list box
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawArguments(Graphics graphics) {
         //TODO tweak coordinates
-        int x = (int) startingPos.getX() + 3, y = (int) startingPos.getY();
+        int x = (int) listBox.getCoordinate().getX() + 3, y = (int) listBox.getCoordinate().getY();
         int argumentHeight = ListBox.ARGUMENT_HEIGHT;
 
         for (String str : listBox.getArguments()) {
@@ -69,10 +105,19 @@ public class ListBoxFigure implements IDrawable {
         }
     }
 
-    private void drawBox(Graphics graphics, Point2D listBoxPos, int minX, int minY, int maxX, int maxY) {
+    /**
+     * draws the box of a list box
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         Color temp = graphics.getColor();
         graphics.setColor(Color.GRAY);
-        new Rectangle(listBoxPos, ListBox.HEIGHT, ListBox.WIDTH)
+        new Rectangle(listBox.getCoordinate(), ListBox.HEIGHT, ListBox.WIDTH)
                 .draw(graphics, minX, minY, maxX, maxY);
         graphics.setColor(temp);
     }

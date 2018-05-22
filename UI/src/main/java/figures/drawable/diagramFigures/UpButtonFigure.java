@@ -11,11 +11,6 @@ public class UpButtonFigure implements IDrawable {
 
     private int x, y, width, height;
 
-    /**
-     * @param position
-     * @param width
-     * @param height
-     */
     public UpButtonFigure(Point2D position, int width, int height) {
         this.x = (int) position.getX();
         this.y = (int) position.getY();
@@ -24,14 +19,14 @@ public class UpButtonFigure implements IDrawable {
     }
 
     /**
-     * @return the hight of the close button
+     * @return the height of the close button
      */
     public int getHeight() {
         return height;
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a button on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -45,12 +40,22 @@ public class UpButtonFigure implements IDrawable {
         drawUpShape(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a button on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Rectangle(x - width, y, width, height).draw(graphics);
         drawUpShape(graphics);
     }
 
+    /**
+     * draws the button's icon
+     *
+     * @param graphics object used to draw on the program's window
+     */
     private void drawUpShape(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         int offsetCenter = (int) Math.ceil(((double) width) / 2),
                 offsetX = (int) Math.floor(width / 5),
@@ -58,6 +63,11 @@ public class UpButtonFigure implements IDrawable {
         new Line(x+offsetCenter,y+offsetY,x+offsetX,y+(offsetY*4)).draw(graphics,minX,minY,maxX,maxY);
         new Line(x+offsetCenter,y+offsetY,x+(offsetX*4),y+(offsetY*4)).draw(graphics,minX,minY,maxX,maxY);
     }
+
+    /**
+     * draw the button's icon
+     * @param graphics object used to draw on the program's window
+     */
     private void drawUpShape(Graphics graphics) {
         int offsetCenter = (int) Math.ceil(((double) width) / 2),
                 offsetX = (int) Math.floor(width / 5),

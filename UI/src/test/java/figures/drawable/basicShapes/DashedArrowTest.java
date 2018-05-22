@@ -1,4 +1,4 @@
-package figures.drawable.diagramFigures;
+package figures.drawable.basicShapes;
 
 import figures.drawable.basicShapes.DashedArrow;
 import org.junit.Before;
