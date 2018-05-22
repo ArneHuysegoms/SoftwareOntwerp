@@ -66,7 +66,7 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
         new RadioButtonFigure(dialogBox.getToObject(), PartyDialogBox.TOOBJECT_DESPCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
-        drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
+        drawSelectedRadioButton(graphics);
     }
 
     /**
