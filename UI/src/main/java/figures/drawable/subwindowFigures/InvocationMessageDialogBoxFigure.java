@@ -32,19 +32,6 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
-     * draws an invocation message dialog box
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        drawTextBoxes(graphics);
-        drawButtons(graphics, dialogBox.getArgumentListBox().getSelectedIndex());
-        drawListBox(graphics);
-    }
-
-    /**
      * draws the list box on the dialog box
      *
      * @param graphics object used to draw on the program's window

@@ -39,19 +39,6 @@ public abstract class SubwindowFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a subwindow on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        drawBackgroundColor(graphics, Color.WHITE);
-        drawFrame(graphics);
-        drawTitleBar(graphics);
-        drawCloseButton(graphics);
-    }
-
-    /**
      * paints on the subwindow's backgrouind color
      *
      * @param graphics object used to draw on the program's window

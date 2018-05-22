@@ -92,14 +92,4 @@ public class Line implements IDrawable {
 
         graphics.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
     }
-
-    /**
-     * a draw function that draws a line on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        graphics.drawLine((int) getStart().getX(), (int) getStart().getY(), (int) getEnd().getX(), (int) getEnd().getY());
-    }
 }

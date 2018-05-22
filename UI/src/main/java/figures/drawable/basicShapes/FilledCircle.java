@@ -66,13 +66,4 @@ public class FilledCircle implements IDrawable {
         throw new NotImplementedException();
     }
 
-    /**
-     * a draw function that draws a filled circle on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        graphics.fillOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);
-    }
 }

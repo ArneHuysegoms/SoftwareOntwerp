@@ -41,17 +41,6 @@ public class UpButtonFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a button on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new Rectangle(x, y, width, height).draw(graphics);
-        drawUpShape(graphics);
-    }
-
-    /**
      * draws the button's icon
      *
      * @param graphics object used to draw on the program's window

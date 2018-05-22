@@ -23,17 +23,4 @@ public class DialogBoxSelectionBoxFigure extends Box {
         super.draw(graphics,minX,minY,maxX,maxY);
         graphics.setColor(temp);
     }
-
-    /**
-     * a draw fucntion that draws a selection box on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        Color temp = graphics.getColor();
-        graphics.setColor(Color.BLUE);
-        super.draw(graphics);
-        graphics.setColor(temp);
-    }
 }

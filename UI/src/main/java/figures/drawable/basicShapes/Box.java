@@ -70,15 +70,4 @@ public class Box implements IDrawable {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new Rectangle(this.getTl(), this.getBr()).draw(graphics, minX, minY, maxX, maxY);
     }
-
-    /**
-     * a draw function that draws a rectangle on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new Rectangle(this.getTl(), this.getBr()).draw(graphics);
-
-    }
 }

@@ -36,18 +36,6 @@ public class ListBoxFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a ListBox on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        drawBox(graphics);
-        drawArguments(graphics);
-        drawArgumentSelection(graphics);
-    }
-
-    /**
      * draws the box of a list box
      *
      * @param graphics object used to draw on the program's window

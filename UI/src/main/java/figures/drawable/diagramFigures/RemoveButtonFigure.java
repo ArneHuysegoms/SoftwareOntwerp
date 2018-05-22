@@ -40,17 +40,6 @@ public class RemoveButtonFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a button on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new Rectangle(x, y, width, height).draw(graphics);
-        drawRemoveShape(graphics);
-    }
-
-    /**
      * draw the button's icon
      *
      * @param graphics object used to draw on the program's window
