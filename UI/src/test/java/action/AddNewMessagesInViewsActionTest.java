@@ -5,7 +5,6 @@ import diagram.label.MessageLabel;
 import diagram.label.PartyLabel;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
-import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Party;
 import exceptions.DomainException;
@@ -17,8 +16,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddNewMessagesInReposTest {
-    private AddNewMessagesInRepos addNewMessagesInRepos;
+public class AddNewMessagesInViewsActionTest {
+    private AddNewMessagesInViewsAction addNewMessagesInViewsAction;
     private Message message1,message2;
     private DiagramSubwindow diagramSubwindow;
 
@@ -35,13 +34,13 @@ public class AddNewMessagesInReposTest {
         List<Message> messages = new ArrayList<>();
         messages.add(message1);
         messages.add(message2);
-        addNewMessagesInRepos = new AddNewMessagesInRepos(messages);
+        addNewMessagesInViewsAction = new AddNewMessagesInViewsAction(messages);
         diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100,100));
     }
 
     @Test
     public void test_performAction(){
-        addNewMessagesInRepos.performAction(diagramSubwindow);
+        addNewMessagesInViewsAction.performAction(diagramSubwindow);
         System.out.println(diagramSubwindow.getFacade().getDiagram().getFirstMessage());
         //System.out.println(diagramSubwindow.getFacade().getActiveView().getMessageView().g);
     }

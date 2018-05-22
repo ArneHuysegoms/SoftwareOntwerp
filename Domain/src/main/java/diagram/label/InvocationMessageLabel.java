@@ -4,6 +4,7 @@ import diagram.Argument;
 import exceptions.DomainException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,7 +115,12 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public String toString(){
         String toString = this.getLabel() + "(";
         for(Argument a : getArguments()){
-            toString += a.toString() + ",";
+            if(arguments.indexOf(a) == arguments.size() - 1) {
+                toString += a.toString();
+            }
+            else{
+                toString += a.toString() + ",";
+            }
         }
         toString += ")";
         return toString;
@@ -135,6 +141,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     }
 
     public void setCompleteLabel(String label) throws DomainException{
+        arguments = new ArrayList<>();
         int open = label.indexOf('(');
         int close = label.indexOf(')');
         this.setLabel(label.substring(0, open));

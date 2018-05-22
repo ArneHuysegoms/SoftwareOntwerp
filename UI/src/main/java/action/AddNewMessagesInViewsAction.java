@@ -5,11 +5,11 @@ import window.diagram.DiagramSubwindow;
 
 import java.util.List;
 
-public class AddNewMessagesInRepos extends Action {
+public class AddNewMessagesInViewsAction extends Action {
 
     private List<Message> messageList;
 
-    public AddNewMessagesInRepos(List<Message> messages){
+    public AddNewMessagesInViewsAction(List<Message> messages){
         this.messageList = messages;
     }
 
