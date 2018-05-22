@@ -28,34 +28,30 @@ public abstract class DialogBoxConverter extends SubwindowConverter {
 
     /**
      * method that draws a selection box around the currently selected selectable part of the dialog box
-     *
-     * @param graphics object used to draw on the program's window
+     *  @param graphics object used to draw on the program's window
      * @param selected The selected element in the dialogbox, this can be any DialogBoxElement
+     * @param absolutePosition
      */
-    protected void drawSelectionBox(Graphics graphics, DialogboxElement selected) {
+    protected void drawSelectionBox(Graphics graphics, DialogboxElement selected, Point2D absolutePosition) {
         if (selected instanceof TextBox) {
             TextBox tb = (TextBox) selected;
-            Point2D tbPos = tb.getCoordinate();
-            Point2D start = new Point2D.Double(tbPos.getX() - 3, tbPos.getY() - 3),
-                    end = new Point2D.Double(tbPos.getX() + TextBox.WIDTH + 3, tbPos.getY() + TextBox.HEIGHT + 3);
+            Point2D start = new Point2D.Double(absolutePosition.getX() - 3, absolutePosition.getY() - 3),
+                    end = new Point2D.Double(absolutePosition.getX() + TextBox.WIDTH + 3, absolutePosition.getY() + TextBox.HEIGHT + 3);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics);
         } else if (selected instanceof RadioButton) {
             RadioButton rb = (RadioButton) selected;
-            Point2D rbPos = rb.getCoordinate();
-            Point2D start = new Point2D.Double(rbPos.getX() - 3, rbPos.getY() - 3),
-                    end = new Point2D.Double(rbPos.getX() + RadioButton.WIDTH + 2, rbPos.getY() + RadioButton.HEIGHT + 2);
+            Point2D start = new Point2D.Double(absolutePosition.getX() - 3, absolutePosition.getY() - 3),
+                    end = new Point2D.Double(absolutePosition.getX() + RadioButton.WIDTH + 2, absolutePosition.getY() + RadioButton.HEIGHT + 2);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
         } else if (selected instanceof FakeButton) {
             FakeButton fb = (FakeButton) selected;
-            Point2D fbPos = fb.getCoordinate();
-            Point2D start = new Point2D.Double(fbPos.getX() - 2, fbPos.getY() - 2),
-                    end = new Point2D.Double(fbPos.getX() + fb.getWidth() + 2, fbPos.getY() + fb.getHeight() + 2);
+            Point2D start = new Point2D.Double(absolutePosition.getX() - 2, absolutePosition.getY() - 2),
+                    end = new Point2D.Double(absolutePosition.getX() + fb.getWidth() + 2, absolutePosition.getY() + fb.getHeight() + 2);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
         } else if (selected instanceof ListBox) {
             ListBox lb = (ListBox) selected;
-            Point2D lbPos = lb.getCoordinate();
-            Point2D start = new Point2D.Double(lbPos.getX() - 3, lbPos.getY() - 3),
-                    end = new Point2D.Double(lbPos.getX() + ListBox.WIDTH + 3, lbPos.getY() + ListBox.HEIGHT + 3);
+            Point2D start = new Point2D.Double(absolutePosition.getX() - 3, absolutePosition.getY() - 3),
+                    end = new Point2D.Double(absolutePosition.getX() + ListBox.WIDTH + 3, absolutePosition.getY() + ListBox.HEIGHT + 3);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
         }
 
@@ -69,6 +65,6 @@ public abstract class DialogBoxConverter extends SubwindowConverter {
      */
     @Override
     public void drawSubwindow(Graphics graphics) {
-        figure.draw(graphics, 0, 0, 2000, 2000);
+        figure.draw(graphics);
     }
 }

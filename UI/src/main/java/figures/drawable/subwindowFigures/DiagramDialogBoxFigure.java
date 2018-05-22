@@ -5,7 +5,6 @@ import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
 import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class DiagramDialogBoxFigure extends SubwindowFigure {
 
@@ -31,25 +30,25 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
-
-        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
+        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
-        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
+        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToSequenceDiagram().getCoordinate()), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
 
-        drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
+        drawSelectedRadioButton(graphics);
     }
 
     /**
      * draws a diagram dialog box
+     *
      * @param graphics object used to draw on the program's window
      */
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
+        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
                 .draw(graphics);
-        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
+        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToSequenceDiagram().getCoordinate()), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
                 .draw(graphics);
         drawSelectedRadioButton(graphics);
     }
@@ -65,11 +64,11 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
      */
     private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
-            new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
-                    .draw(graphics);
+            new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), "")
+                    .draw(graphics, minX, minY, maxX, maxY);
         } else if (dialogBox.getDiagramSubwindow().isSequenceDiagram()) {
-            new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(),"")
-                    .draw(graphics);
+            new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToSequenceDiagram().getCoordinate()), "")
+                    .draw(graphics, minX, minY, maxX, maxY);
         }
     }
 
@@ -80,10 +79,10 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
      */
     private void drawSelectedRadioButton(Graphics graphics) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
-            new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
+            new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
                     .draw(graphics);
         } else if (dialogBox.getDiagramSubwindow().isSequenceDiagram()) {
-            new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(),"")
+            new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToSequenceDiagram().getCoordinate()), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
                     .draw(graphics);
         }
     }
