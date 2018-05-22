@@ -29,6 +29,16 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
+     * draws a result message dialog box
+     * @param graphics object used to draw on the program's window
+     */
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        drawTextBox(graphics);
+    }
+
+    /**
      * draws a text box
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -39,5 +49,14 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
     private void drawTextBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new TextBoxFigure(dialogBox.getLabelTextBox(), dialogBox.getAbsolutePosition(dialogBox.getLabelTextBox().getCoordinate()), "??? ResultDBFigure")
                 .draw(graphics, minX, minY, maxX, maxY);
+    }
+
+    /**
+     * draws a text box
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawTextBox(Graphics graphics) {
+        new TextBoxFigure(dialogBox.getLabelTextBox(), dialogBox.getAbsolutePosition(dialogBox.getLabelTextBox().getCoordinate()), "??? ResultDBFigure")
+                .draw(graphics);
     }
 }
