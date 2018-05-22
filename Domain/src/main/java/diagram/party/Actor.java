@@ -13,4 +13,9 @@ public class Actor extends Party implements Serializable {
     public Actor(Label label){
         super(label);
     }
+
+    @Override
+    public String toString() {
+        return this.getLabel().toString();
+    }
 }
