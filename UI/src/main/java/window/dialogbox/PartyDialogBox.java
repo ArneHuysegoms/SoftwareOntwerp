@@ -47,10 +47,10 @@ public class PartyDialogBox extends DialogBox {
     public PartyDialogBox(Point2D pos, Party party, DiagramSubwindow subwindow) throws UIException {
         super(pos);
         this.setParty(party);
-        toActor = new RadioButton(new ChangeToActorCommand(subwindow, party), new Point2D.Double(10, 20), TOACTOR_DESCRIPTION);
-        toObject = new RadioButton(new ChangeToObjectCommand(subwindow, party), new Point2D.Double(85, 20), TOOBJECT_DESPCRIPTION);
-        instanceTextBox = new InstanceTextBox(new Point2D.Double(10, 50), INSTANCE_DESCRIPTION);
-        classTextBox = new ClassTextBox(new Point2D.Double(10, 75), CLASS_DESCRIPTION);
+        toActor = new RadioButton(new ChangeToActorCommand(subwindow, party), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION);
+        toObject = new RadioButton(new ChangeToObjectCommand(subwindow, party), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION);
+        instanceTextBox = new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION);
+        classTextBox = new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION);
         elementList = new ArrayList<>();
         elementList.add(toActor);
         elementList.add(toObject);

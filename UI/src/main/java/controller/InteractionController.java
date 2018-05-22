@@ -21,41 +21,72 @@ import java.util.stream.Collectors;
 public class InteractionController implements IHighLevelController{
     private List<Subwindow> subwindows;
     private Subwindow activeSubwindow;
-    //private List<DiagramSubwindow> diagramSubwindows;
     private DiagramSubwindow activeDiagramSubwindow;
     private boolean dragging = false;
 
     /**
-     * default constructor
+     * constructs an empty interactionController
+     * initialises a new list of subwindows
+     * initialises an active subwindow
      */
     public InteractionController(){
         setSubwindows(new ArrayList<>());
         this.activeSubwindow = null;
     }
 
+    /**
+     *
+     * @return the list of subwindows
+     */
     public List<Subwindow> getSubwindows() {
         return subwindows;
     }
 
+    /**
+     * sets the list of subwindows to the param
+     * @param subwindows
+     */
     public void setSubwindows(List<Subwindow> subwindows) {
         this.subwindows = subwindows;
     }
 
+    /**
+     *
+     * @return the active subwindow
+     */
     public Subwindow getActiveSubwindow() {
         return activeSubwindow;
     }
 
+    /**
+     * sets the active subwindow to the param
+     * @param activeSubwindow
+     */
     public void setActiveSubwindow(Subwindow activeSubwindow) {
-        if(activeSubwindow instanceof DiagramSubwindow){
-            setActiveDiagramSubwindow((DiagramSubwindow) activeSubwindow);
+        if(activeSubwindow != null){
+            activeSubwindow.setLevel(WindowLevelCounter.getNextLevel());
+            if(activeSubwindow instanceof DiagramSubwindow){
+                setActiveDiagramSubwindow((DiagramSubwindow) activeSubwindow);
+            }
+            this.activeSubwindow = activeSubwindow;
         }
-        this.activeSubwindow = activeSubwindow;
+        else{
+            this.activeSubwindow = null;
+        }
     }
 
+    /**
+     *
+     * @return dragging
+     */
     public boolean isDragging(){
         return dragging;
     }
 
+    /**
+     *
+     * @return the subwindow with the highest level
+     */
     public Subwindow getHighestLevelSubwindow(){
         Subwindow highest = null;
         int level = -1;
@@ -68,48 +99,7 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     * add a new party to all the diagramSubwindows repos except for the given diagramSubwindow
-     *
-     * @param party  the party to add
-     * @param location the location of the new Party
-     * @param diagramSubwindow the original diagramSubwindow
-     */
-    /*public void addNewPartyToOtherSubwindowRepos(Party party, Point2D location, DiagramSubwindow diagramSubwindow){
-        for(Subwindow s : this.subwindows){
-            if(s instanceof DiagramSubwindow) {
-                if (!s.equals(diagramSubwindow)) {
-                    ((DiagramSubwindow) s).getFacade().addPartyToRepo(party, location);
-                    //TODO ook dialogboxes updaten?
-                }
-            }
-        }
-        setActiveSubwindow(diagramSubwindow);
-    }*/
-
-    /**
-     * remove a set of elements from the the diagramSubwindow repos except for the given diagramSubwindow
-     *
-     * @param deletedElements the elements to delete
-     * @param diagramSubwindow the original diagramSubwindow
-     */
-    /*public void removeInReposInOtherSubwindows(Set<DiagramElement> deletedElements, DiagramSubwindow diagramSubwindow){
-        for(Subwindow s : this.subwindows){
-            if(s instanceof DiagramSubwindow){
-                if(! s.equals(diagramSubwindow)) {
-                    ((DiagramSubwindow)s).getFacade().deleteElementsInRepos(deletedElements);
-                    if(deletedElements.contains(((DiagramSubwindow)s).getSelected())){
-                        ((DiagramSubwindow)s).setSelected(null);
-                        // TODO ook dialogboxes updaten??
-                    }
-                }
-            }
-
-        }
-        setActiveSubwindow(getHighestLevelSubwindow());
-    }*/
-
-    /**
-     * add a diagramSubwindow
+     * adds a diagramSubwindow and sets it active
      *
      * @param subwindow the diagramSubwindow to add
      */
@@ -121,79 +111,14 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     * remove a diagramSubwindow
+     * remove a diagramSubwindow and sets the highest level subwindow active
      *
      * @param subwindow the diagramSubwindow to remove
      */
-
     public void removeSubwindow(Subwindow subwindow){
         subwindows.remove(subwindow);
         setActiveSubwindow(getHighestLevelSubwindow());
     }
-
-    /**
-     * add a set of messages to all the diagramSubwindows repos except for the given diagramSubwindow
-     *
-     * @param newMessages the newmesssages to add
-     * @param diagramSubwindow the original diagramSubwindow
-     */
-    /*public void addNewMessagesToOtherSubwindowRepos(List<Message> newMessages, DiagramSubwindow diagramSubwindow) {
-        for(Subwindow s : this.subwindows){
-            if(s instanceof DiagramSubwindow){
-                if( ! s.equals(diagramSubwindow)){
-                    ((DiagramSubwindow)s).getFacade().addMessagesToRepos(newMessages);
-                }
-            }
-
-        }
-    }*/
-
-    /**
-     *
-     * @return all diagramSubwindows this mediator  mediates
-     */
-    /*public List<DiagramSubwindow> getDiagramSubwindows() {
-        return diagramSubwindows;
-    }*/
-
-    /**
-     * updates the party type in all other diagramSubwindows
-     * @param oldParty the old type
-     * @param newParty the new type
-     * @param diagramSubwindow the original diagramSubwindow
-     */
-    /*public void updatePartyTypeInOtherSubwindows(Party oldParty, Party newParty, DiagramSubwindow diagramSubwindow)  {
-        for(Subwindow s : this.subwindows){
-            if(s instanceof DiagramSubwindow) {
-                if (!s.equals(diagramSubwindow)) {
-                    ((DiagramSubwindow) s).getFacade().changePartyTypeInRepo(oldParty, newParty);
-                    ((DiagramSubwindow) s).setSelected(newParty);
-                }
-            }
-        }
-        setActiveSubwindow(diagramSubwindow);
-    }*/
-
-    /**
-     * updates the labelcontainers of the other diagramSubwindows and sets the correct flags for label editing
-     * @param selectedLabel the label that has been edited
-     * @param diagramSubwindow the original diagramSubwindow
-     */
-    /*public void updateLabelContainers(Label selectedLabel, DiagramSubwindow diagramSubwindow) {
-        for(Subwindow s : this.subwindows){
-            if(s instanceof DiagramSubwindow){
-                if (! s.equals(diagramSubwindow)){
-                    if(((DiagramSubwindow) s).getSelected() instanceof Label && ( ((DiagramSubwindow) s).getSelected()).equals(selectedLabel)){
-                        ((DiagramSubwindow) s).stopEditingLabel();
-                        ((DiagramSubwindow) s).setLabelMode(false);
-                        ((DiagramSubwindow) s).setEditing(false);
-                    }
-                }
-            }
-
-        }
-        setActiveSubwindow(diagramSubwindow);
-    }*/
 
     /**
      *
@@ -208,12 +133,17 @@ public class InteractionController implements IHighLevelController{
      * @param activeDiagramSubwindow the new active diagramSubwindow
      */
     private void setActiveDiagramSubwindow(DiagramSubwindow activeDiagramSubwindow){
-        activeDiagramSubwindow.setLevel(WindowLevelCounter.getNextLevel());
         this.activeDiagramSubwindow = activeDiagramSubwindow;
     }
 
     /**
      * handles a key event
+     * if keyEvent is CTRLD:
+     *      copy the active diagramSubwindow if it's not null
+     * if keyEvent is CTRLN:
+     *      create a new diagramSubwindow
+     * else:
+     *      get the action from the activeSubwindow and do it for every diagramSubwindow in the list
      * @param keyEvent the keyEvent to handle
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
@@ -246,6 +176,7 @@ public class InteractionController implements IHighLevelController{
      *                              | if the diagramSubwindow is not the active one, set it as the active one
      *                              get the coordinates of the click on the diagramSubwindow, relative to the diagramSubwindow
      *                              pass the mouseEvent to the appropriate diagramSubwindow
+     *                              and do this action for each diagramSubwindow
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
@@ -279,6 +210,13 @@ public class InteractionController implements IHighLevelController{
         }
     }
 
+    /**
+     * if the param action is not a DialogBoxOpenedAction
+     *      handle the param action for each subwindow except the active subwindow
+     * else
+     *      make a new dialogBox and add it to the list of subwindows
+     * @param action
+     */
     public void actionForEachDiagramSubwindow(Action action){
         if(! (action instanceof DialogBoxOpenedAction)){
             for(Subwindow s : getSubwindows()){
@@ -351,9 +289,8 @@ public class InteractionController implements IHighLevelController{
         DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
         Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
         diagramSubwindow.getFrame().setButton(button);
-        //int level = getCorrectLevel();
         addSubwindow(diagramSubwindow);
-        this.changeActiveSubwindow(diagramSubwindow);
+        //this.changeActiveSubwindow(diagramSubwindow);
     }
 
     /**
@@ -364,9 +301,8 @@ public class InteractionController implements IHighLevelController{
             DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade());
             Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
             diagramSubwindow.getFrame().setButton(button);
-            //int level = getCorrectLevel();
             addSubwindow(diagramSubwindow);
-            this.changeActiveSubwindow(diagramSubwindow);
+            //this.changeActiveSubwindow(diagramSubwindow);
         }
     }
 

@@ -118,7 +118,9 @@ public abstract class Message extends DiagramElement  implements Serializable {
      * @return a string description of this message
      */
     @Override
-    public abstract String toString();
+    public String toString(){
+        return this.label.toString();
+    }
 
     /**
      *

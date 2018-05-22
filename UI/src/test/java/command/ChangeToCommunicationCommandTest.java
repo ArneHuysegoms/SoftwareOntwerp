@@ -27,7 +27,7 @@ public class ChangeToCommunicationCommandTest {
 
     @Test
     public void test_performAction(){
-        assertTrue(subwindow.activeDiagramIsCommunication());
+        assertTrue(subwindow.activeDiagamIsSequence());
         changeToCommunicationCommand.performAction();
         assertTrue(subwindow.activeDiagramIsCommunication());
     }
