@@ -35,7 +35,7 @@ public class RemoveButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(x - width, y, width, height).draw(graphics, minX, minY, maxX, maxY);
+        new Rectangle(x, y, width, height).draw(graphics, minX, minY, maxX, maxY);
         drawRemoveShape(graphics);
     }
 
@@ -46,7 +46,7 @@ public class RemoveButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        new Rectangle(x - width, y, width, height).draw(graphics);
+        new Rectangle(x, y, width, height).draw(graphics);
         drawRemoveShape(graphics);
     }
 

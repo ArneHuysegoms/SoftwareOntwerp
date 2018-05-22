@@ -36,7 +36,7 @@ public class UpButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(x - width, y, width, height).draw(graphics, minX, minY, maxX, maxY);
+        new Rectangle(x, y, width, height).draw(graphics, minX, minY, maxX, maxY);
         drawUpShape(graphics, minX, minY, maxX, maxY);
     }
 
@@ -47,7 +47,7 @@ public class UpButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        new Rectangle(x - width, y, width, height).draw(graphics);
+        new Rectangle(x, y, width, height).draw(graphics);
         drawUpShape(graphics);
     }
 

@@ -51,7 +51,7 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new ListBoxFigure(dialogBox.getArgumentListBox())
+        new ListBoxFigure(dialogBox.getArgumentListBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentListBox().getCoordinate()))
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 
@@ -60,7 +60,7 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawListBox(Graphics graphics) {
-        new ListBoxFigure(dialogBox.getArgumentListBox())
+        new ListBoxFigure(dialogBox.getArgumentListBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentListBox().getCoordinate()))
                 .draw(graphics);
     }
 
