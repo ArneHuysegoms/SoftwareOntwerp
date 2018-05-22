@@ -14,7 +14,10 @@ import window.frame.TitleBarClick;
 
 import java.awt.geom.Point2D;
 
-public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>, IActionHandler{
+/**
+ * abstract superclass for all subwindows
+ */
+public abstract class Subwindow implements Clickable, ILowLevelController, Comparable<Subwindow>, IActionHandler {
 
     public static final int WINDOWHEIGHT = 600;
     public static final int WINDOWWIDTH = 600;
@@ -33,44 +36,66 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
 
     private Clickable frameElement;
 
-    private Subwindow(){
+    private Subwindow() {
 
     }
 
-    private Subwindow(CloseWindowButton closeWindowButton){
+    private Subwindow(CloseWindowButton closeWindowButton) {
 
     }
 
-    public Subwindow(Point2D coordinate, int level){
+    /**
+     * makes a new SubWindow with the given coordinate and level
+     *
+     * @param coordinate the new coordinate for the subwindow
+     * @param level      the level for this subwindow
+     */
+    public Subwindow(Point2D coordinate, int level) {
         this(coordinate, null, level);
     }
 
-    public Subwindow(Point2D coordinate, CloseWindowButton closeWindowButton, int level){
+    /**
+     * makes a new subwindow
+     *
+     * @param coordinate        the coordinate for the subwindow
+     * @param closeWindowButton the button to close this subwindow width
+     * @param level             the level for this subwindow
+     */
+    public Subwindow(Point2D coordinate, CloseWindowButton closeWindowButton, int level) {
         this.setPosition(coordinate);
         this.setWidth(Subwindow.WINDOWWIDTH);
         this.setHeight(Subwindow.WINDOWHEIGHT);
         this.setLevel(level);
-        if(closeWindowButton != null) {
+        if (closeWindowButton != null) {
             this.createFrame(closeWindowButton);
-        }
-        else{
+        } else {
             this.createFrame();
         }
     }
 
-    public void createFrame(){
+    /**
+     * create the frame for this subwindow
+     */
+    public void createFrame() {
         frame = new SubwindowFrame(this.getPosition(), height, width);
     }
 
-    public void createFrame(Button closeWindowButton){
+    /**
+     * create the frame with the given button
+     *
+     * @param closeWindowButton the button to use in the frame
+     */
+    public void createFrame(Button closeWindowButton) {
         frame = new SubwindowFrame(this.getPosition(), height, width, closeWindowButton);
     }
 
-    private void recreateFrame(){
-        if(frame == null) {
+    /**
+     * recreates the frame based on the old frame and potentially new values
+     */
+    private void recreateFrame() {
+        if (frame == null) {
             frame = new SubwindowFrame(this.getPosition(), height, width);
-        }
-        else{
+        } else {
             Button button = frame.getButton();
             frame = new SubwindowFrame(this.getPosition(), height, width, button);
         }
@@ -95,15 +120,14 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
     /**
      * @return wether or not this window.diagram is editing
      */
-    public boolean isEditing(){
+    public boolean isEditing() {
         return editing;
     }
 
     /**
-     *
      * @param editing the new mode for the editing flag
      */
-    public void setEditing(boolean editing){
+    public void setEditing(boolean editing) {
         this.editing = editing;
     }
 
@@ -165,44 +189,55 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
         this.position = position2D;
     }
 
+    /**
+     * @return the level of this subwindow
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * sets the level of this subwindow to the given level
+     *
+     * @param level the level to to set the level of this subwindow too
+     */
     public void setLevel(int level) {
         this.level = level;
     }
 
+    /**
+     * @return true if this subwindow is dragging
+     */
     public boolean isDragging() {
         return dragging;
     }
 
+    /**
+     * sets the dragging flag to the given value
+     *
+     * @param dragging the value for the dragging flag
+     */
     public void setDragging(boolean dragging) {
         this.dragging = dragging;
     }
 
     /**
-     *
      * @return the frame of this window.diagram
      */
     public SubwindowFrame getFrame() {
         return frame;
     }
 
+    /**
+     * @return the selected frameElement
+     */
     public Clickable getFrameElement() {
         return frameElement;
     }
 
-    /*    *//*
-     * sets the frame for this window.diagram
-     * @param frame the new window.diagram for this frame
-     *//*
-    private void setFrame(SubwindowFrame frame) {
-        this.frame = frame;
-    }*/
-
     /**
      * return true if the frame of this window.diagram is clicked
+     *
      * @param clickLocation the location of the click
      * @return true if the frame is clicked, false otherwise
      */
@@ -213,6 +248,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
 
     /**
      * handles movement of the window.diagram
+     *
      * @param movedLocation the new location
      */
     public void handleMovement(Point2D movedLocation) {
@@ -240,13 +276,13 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
      * resize the window.diagram when the user drags by the corner
      *
      * @param corner the corner that was resized
-     * @param point the new point of the window.diagram
+     * @param point  the new point of the window.diagram
      */
     private void resizeByCorner(SubwindowFrameCorner corner, Point2D point) {
         Point2D ogPos = this.getPosition();
         switch (corner.getType()) {
             case TOPLEFT:
-                if(! (point.getX() > (ogPos.getX() + width) || point.getY() > (ogPos.getY() + height))) {
+                if (!(point.getX() > (ogPos.getX() + width) || point.getY() > (ogPos.getY() + height))) {
                     double deltaTopleftX = -(corner.getCenter().getX() - point.getX());
                     double deltaTopleftY = -(corner.getCenter().getY() - point.getY());
                     this.setPosition(new Point2D.Double(ogPos.getX() + deltaTopleftX, ogPos.getY() + deltaTopleftY));
@@ -255,7 +291,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
                 }
                 break;
             case TOPRIGHT:
-                if(! (point.getX() < (ogPos.getX() - width) || point.getY() > (ogPos.getY() + height))) {
+                if (!(point.getX() < (ogPos.getX() - width) || point.getY() > (ogPos.getY() + height))) {
                     double deltaToprightX = -(corner.getCenter().getX() - point.getX());
                     double deltaToprightY = -(corner.getCenter().getY() - point.getY());
                     this.setPosition(new Point2D.Double(ogPos.getX(), ogPos.getY() + deltaToprightY));
@@ -264,7 +300,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
                 }
                 break;
             case BOTTOMLEFT:
-                if(! (point.getX() > (ogPos.getX() + width) || point.getY() < (ogPos.getY() - height))) {
+                if (!(point.getX() > (ogPos.getX() + width) || point.getY() < (ogPos.getY() - height))) {
                     double deltaBottomleftX = -(corner.getCenter().getX() - point.getX());
                     double deltaBottomleftY = -(corner.getCenter().getY() - point.getY());
                     this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomleftX, ogPos.getY()));
@@ -273,7 +309,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
                 }
                 break;
             case BOTTOMRIGHT:
-                if(! (point.getX() < (ogPos.getX() - width) || point.getY() < (ogPos.getY() - height))) {
+                if (!(point.getX() < (ogPos.getX() - width) || point.getY() < (ogPos.getY() - height))) {
                     double deltaBottomrightX = -(corner.getCenter().getX() - point.getX());
                     double deltaBottomrightY = -(corner.getCenter().getY() - point.getY());
                     //this.setPosition(new Point2D.Double(ogPos.getX() + deltaBottomrightX, ogPos.getY() + deltaBottomrightY));
@@ -291,7 +327,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
      * resize the window.diagram when the user drags by one of the borders
      *
      * @param rectangle the rectangle that was resized
-     * @param point the new point for the rectangle
+     * @param point     the new point for the rectangle
      */
     private void resizeByFrameRectangle(SubwindowFrameRectangle rectangle, Point2D point) {
         switch (rectangle.getType()) {
@@ -323,7 +359,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
      * move the window.diagram when the user drags by the titlebar
      *
      * @param titleBarClick the click on the titlebar
-     * @param point the new point of the titlebar
+     * @param point         the new point of the titlebar
      */
     private void moveSubwindow(TitleBarClick titleBarClick, Point2D point) {
         double x = point.getX() - titleBarClick.getInitialClickPosition().getX();
@@ -356,6 +392,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
 
     /**
      * returns a relative point based on the given location and the location of the window.diagram
+     *
      * @param location the location that needs to be translated
      * @return a relative point to this window.diagram based on the given location
      */
@@ -363,12 +400,32 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
         return new Point2D.Double(location.getX() - this.getPosition().getX(), location.getY() - this.getPosition().getY());
     }
 
+    /**
+     * compares the subwindow to the other subwindow based on level, the implementation is the same as for Integer.compareTo
+     *
+     * @param other the subwindow to compare too
+     * @return Integer.compare(this.getLevel (), other.getLevel());
+     */
     @Override
-    public int compareTo(Subwindow other){
+    public int compareTo(Subwindow other) {
         return Integer.compare(this.getLevel(), other.getLevel());
     }
 
+    /**
+     * handle the given mouseEvent
+     *
+     * @param mouseEvent the mouseEvent to handle
+     * @return an action detailing what happened in the handling of the event
+     */
     public abstract Action handleMouseEvent(MouseEvent mouseEvent);
 
+    /**
+     * handles the given keyEvent
+     *
+     * @param keyEvent the keyEvent to handle
+     * @return an action detailing what happened in the handling of the event
+     * @throws DomainException if illegal modifications in domain
+     * @throws UIException     if illegal modifications in UI
+     */
     public abstract Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException;
 }
