@@ -31,6 +31,18 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
+     * draws an invocation message dialog box
+     * @param graphics object used to draw on the program's window
+     */
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        drawTextBoxes(graphics);
+        drawButtons(graphics);
+        drawListBox(graphics);
+    }
+
+    /**
      * draws the list box on the dialog box
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -44,6 +56,15 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
+     * draws the list box on the dialog box
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawListBox(Graphics graphics) {
+        new ListBoxFigure(dialogBox.getArgumentListBox())
+                .draw(graphics);
+    }
+
+    /**
      * draws the buttons on the dialog box
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -52,14 +73,31 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new AddButtonFigure(dialogBox.getAddArgument().getPosition(), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
+
+        new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new RemoveButtonFigure(dialogBox.getDeleteArgument().getPosition(), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
+        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new UpButtonFigure(dialogBox.getMoveUp().getPosition(), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
+        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
-        new DownButtonFigure(dialogBox.getMoveDown().getPosition(), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
+        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
+
+    }
+
+    /**
+     * draws the buttons on the dialog box
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawButtons(Graphics graphics) {
+        new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
+                .draw(graphics);
+        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
+                .draw(graphics);
+        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
+                .draw(graphics);
+        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
+                .draw(graphics);
 
     }
 
@@ -76,5 +114,16 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
         new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "? invokeDBFigure arg")
                 .draw(graphics, minX, minY, maxX, maxY);
+    }
+
+    /**
+     * draws the text boxes on the dialog box
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawTextBoxes(Graphics graphics) {
+        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "? invokeDBFigure meth")
+                .draw(graphics);
+        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "? invokeDBFigure arg")
+                .draw(graphics);
     }
 }
