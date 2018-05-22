@@ -191,7 +191,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * @param maxX
      * @param maxY
      */
-    private void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
+    protected void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
         //TODO javaDoc (met of zonder Figure class)
         double x1 = start.getX(), y1 = start.getY(), stringPixelEstimate = 50;
         if ((labelText.length()) * 5 > stringPixelEstimate) {
