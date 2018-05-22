@@ -1,5 +1,3 @@
-package suite;
-
 import diagram.suite.DiagramTestSuite;
 import facade.FacadeSuite;
 import org.junit.runner.RunWith;
