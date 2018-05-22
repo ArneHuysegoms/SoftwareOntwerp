@@ -13,6 +13,7 @@ public class AddButtonFigure implements IDrawable {
     public AddButtonFigure(Point2D position, int width, int height){
         this.x = (int)position.getX();
         this.y = (int)position.getY();
+        System.out.println("x dan y: "+ x + " "+ y);
         this.width = width;
         this.height = height;
     }
@@ -35,7 +36,7 @@ public class AddButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(x-width, y, width, height).draw(graphics,minX,minY,maxX,maxY);
+        new Rectangle(x, y, width, height).draw(graphics,minX,minY,maxX,maxY);
         drawAddShape(graphics);
     }
 
@@ -46,7 +47,7 @@ public class AddButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        new Rectangle(x-width, y, width, height).draw(graphics);
+        new Rectangle(x, y, width, height).draw(graphics);
         drawAddShape(graphics);
     }
 
