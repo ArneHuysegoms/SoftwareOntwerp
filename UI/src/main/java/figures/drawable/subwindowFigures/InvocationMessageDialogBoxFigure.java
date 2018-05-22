@@ -14,6 +14,14 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
         this.dialogBox = dialogBox;
     }
 
+    /**
+     * draws an invocation message dialog box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
@@ -22,11 +30,27 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
         drawListBox(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * draws the list box on the dialog box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new ListBoxFigure(dialogBox.getArgumentListBox())
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * draws the buttons on the dialog box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new AddButtonFigure(dialogBox.getAddArgument().getPosition(), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
                 .draw(graphics, minX, minY, maxX, maxY);
@@ -39,16 +63,18 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
 
     }
 
+    /**
+     * draws the text boxes on the dialog box
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new TextBoxFigure(dialogBox.getMethodTextBox(), "? invokeDBFigure meth")
                 .draw(graphics, minX, minY, maxX, maxY);
         new TextBoxFigure(dialogBox.getArgumentTextBox(), "? invokeDBFigure arg")
                 .draw(graphics, minX, minY, maxX, maxY);
     }
-
-
-    //TODO A dialog box for an invocation message shows a text box for the method name, a list box
-    //for the arguments, a text box and a button for adding a new argument to the end
-    //of the argument list, buttons for moving the selected argument up or down in the
-    //argument list, and a button for deleting the selected argument.
 }

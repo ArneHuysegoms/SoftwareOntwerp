@@ -15,10 +15,6 @@ public abstract class SubwindowFigure implements IDrawable {
     private TitleBar titleBar;
     private Button closeButton;
 
-    /**
-//     * @param start top-left point of the window.diagram
-//     * @param end   bottom-right point of the window.diagram
-     */
     public SubwindowFigure(SubwindowFrame subwindow) {
         this.subwindow = subwindow;
         this.titleBar = subwindow.getTitleBar();
@@ -26,7 +22,7 @@ public abstract class SubwindowFigure implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a subwindow on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -42,6 +38,11 @@ public abstract class SubwindowFigure implements IDrawable {
         drawCloseButton(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a subwindow on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         drawBackgroundColor(graphics, Color.WHITE);
@@ -50,36 +51,84 @@ public abstract class SubwindowFigure implements IDrawable {
         drawCloseButton(graphics);
     }
 
-
-    public void drawBackgroundColor(Graphics graphics, Color c) {
+    /**
+     * paints on the subwindow's backgrouind color
+     *
+     * @param graphics object used to draw on the program's window
+     * @param c        subwindows background color
+     */
+    private void drawBackgroundColor(Graphics graphics, Color c) {
         graphics.setColor(c);
-        graphics.fillRect((int)subwindow.getSubwindowPoint().getX(),(int)subwindow.getSubwindowPoint().getY(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth());
+        graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth());
         graphics.setColor(Color.BLACK);
     }
 
-    public void drawFrame(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth()).draw(graphics, minX, minY, maxX, maxY);
+    /**
+     * draws the subwindow it's frame
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawFrame(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth()).draw(graphics, minX, minY, maxX, maxY);
     }
 
-    public void drawTitleBar(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(titleBar.getPosition(),titleBar.getWidth(),TitleBar.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
+    /**
+     * draws the subwindow it's title bar
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawTitleBar(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new Rectangle(titleBar.getPosition(), titleBar.getWidth(), TitleBar.HEIGHT).draw(graphics, minX, minY, maxX, maxY);
     }
 
-    public void drawCloseButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new CloseButtonFigure(closeButton.getPosition(),closeButton.getHeight(),closeButton.getWidth()).draw(graphics, minX, minY, maxX, maxY);
+    /**
+     * draws the subwindow it's close button
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawCloseButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        new CloseButtonFigure(closeButton.getPosition(), closeButton.getHeight(), closeButton.getWidth()).draw(graphics, minX, minY, maxX, maxY);
     }
-    public void drawFrame(Graphics graphics) {
-        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(),subwindow.getSubwindowHeight(),subwindow.getSubwindowWidth())
+
+    /**
+     * draws the subwindow it's frame
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawFrame(Graphics graphics) {
+        new figures.drawable.basicShapes.Rectangle(subwindow.getSubwindowPoint(), subwindow.getSubwindowHeight(), subwindow.getSubwindowWidth())
                 .draw(graphics);
     }
 
-    public void drawTitleBar(Graphics graphics) {
-        new Rectangle(titleBar.getPosition(),titleBar.getWidth(),TitleBar.HEIGHT)
+    /**
+     * draws the subwindow it's title bar
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawTitleBar(Graphics graphics) {
+        new Rectangle(titleBar.getPosition(), titleBar.getWidth(), TitleBar.HEIGHT)
                 .draw(graphics);
     }
 
-    public void drawCloseButton(Graphics graphics) {
-        new CloseButtonFigure(closeButton.getPosition(),closeButton.getHeight(),closeButton.getWidth())
+    /**
+     * draws the subwindow it's close button
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    private void drawCloseButton(Graphics graphics) {
+        new CloseButtonFigure(closeButton.getPosition(), closeButton.getHeight(), closeButton.getWidth())
                 .draw(graphics);
     }
 }

@@ -13,4 +13,9 @@ public class Object extends Party implements Serializable {
     public Object(Label label){
         super(label);
     }
+
+    @Override
+    public String toString() {
+        return this.getLabel().toString();
+    }
 }

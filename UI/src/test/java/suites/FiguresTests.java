@@ -2,6 +2,7 @@ package suites;
 
 import figures.drawable.basicShapes.*;
 import figures.drawable.diagramFigures.*;
+import figures.drawable.subwindowFigures.DiagramSubwindowFigureTest;
 import figures.helperClasses.PairTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

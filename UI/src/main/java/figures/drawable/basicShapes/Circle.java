@@ -55,7 +55,7 @@ public class Circle implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a circle on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -98,6 +98,11 @@ public class Circle implements IDrawable {
 
     }
 
+    /**
+     * a draw function that draws a circle on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         graphics.drawOval((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) width);

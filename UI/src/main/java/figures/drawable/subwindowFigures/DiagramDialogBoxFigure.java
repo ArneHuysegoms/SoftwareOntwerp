@@ -18,6 +18,15 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         this.dialogBox = dialogBox;
     }
 
+    /**
+     * draws a diagram dialog box
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
@@ -30,18 +39,29 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * draws a diagram dialog box
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-
         new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
                 .draw(graphics);
         new RadioButtonFigure(dialogBox.getToSequenceDiagram(), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
                 .draw(graphics);
-
         drawSelectedRadioButton(graphics);
     }
 
+    /**
+     * draws the selected radio button
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
@@ -52,6 +72,11 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
         }
     }
 
+    /**
+     * draws the selected radio button
+     *
+     * @param graphics object used to draw on the program's window
+     */
     private void drawSelectedRadioButton(Graphics graphics) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")

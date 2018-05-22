@@ -74,7 +74,7 @@ public class StickMan implements IDrawable {
      *
      * @param topOfHead the point of the top of the stickman's head
      */
-    public void setTopOfHead(Point2D topOfHead) {
+    private void setTopOfHead(Point2D topOfHead) {
         this.topOfHead = topOfHead;
     }
 
@@ -92,7 +92,7 @@ public class StickMan implements IDrawable {
      *
      * @param connectionHead the point where the stickman's body and head meet
      */
-    public void setConnectionHead(Point2D connectionHead) {
+    private void setConnectionHead(Point2D connectionHead) {
         this.connectionHead = connectionHead;
     }
 
@@ -110,7 +110,7 @@ public class StickMan implements IDrawable {
      *
      * @param connectionLegs the point where the stickman's body and legs meet
      */
-    public void setConnectionLegs(Point2D connectionLegs) {
+    private void setConnectionLegs(Point2D connectionLegs) {
         this.connectionLegs = connectionLegs;
     }
 
@@ -128,7 +128,7 @@ public class StickMan implements IDrawable {
      *
      * @param connectionArms the point where the stickman's body and arms meet
      */
-    public void setConnectionArms(Point2D connectionArms) {
+    private void setConnectionArms(Point2D connectionArms) {
         this.connectionArms = connectionArms;
     }
 
@@ -146,7 +146,7 @@ public class StickMan implements IDrawable {
      *
      * @param head a Circle that is the stickman's head
      */
-    public void setHead(Circle head) {
+    private void setHead(Circle head) {
         this.head = head;
     }
 
@@ -164,7 +164,7 @@ public class StickMan implements IDrawable {
      *
      * @param body a Line that is the stickman's body
      */
-    public void setBody(Line body) {
+    private void setBody(Line body) {
         this.body = body;
     }
 
@@ -182,7 +182,7 @@ public class StickMan implements IDrawable {
      *
      * @param arms one line that are the two arms of a stickman
      */
-    public void setArms(Line arms) {
+    private void setArms(Line arms) {
         this.arms = arms;
     }
 
@@ -200,7 +200,7 @@ public class StickMan implements IDrawable {
      *
      * @param legL the stickman's left leg
      */
-    public void setLegL(Line legL) {
+    private void setLegL(Line legL) {
         this.legL = legL;
     }
 
@@ -218,12 +218,12 @@ public class StickMan implements IDrawable {
      *
      * @param legR the stickman's right leg
      */
-    public void setLegR(Line legR) {
+    private void setLegR(Line legR) {
         this.legR = legR;
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a stick man on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -240,6 +240,11 @@ public class StickMan implements IDrawable {
         this.getLegR().draw(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a stick man on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         this.getHead().draw(graphics);

@@ -15,14 +15,20 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
 
     private PartyDialogBox dialogBox;
 
-    /**
-     * @param dialogBox
-     */
     public PartyDialogBoxFigure(PartyDialogBox dialogBox) {
         super(dialogBox.getFrame());
         this.dialogBox = dialogBox;
     }
 
+    /**
+     * draws a party dialog box
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         super.draw(graphics, minX, minY, maxX, maxY);
@@ -30,6 +36,15 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * draws the dialog box's text boxes
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new TextBoxFigure(dialogBox.getInstanceTextBox(), PartyDialogBox.INSTANCE_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
@@ -37,7 +52,16 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 
-    public void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY){
+    /**
+     * draws the dialog box's radio buttons
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    private void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         new RadioButtonFigure(dialogBox.getToActor(), PartyDialogBox.TOACTOR_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
         new RadioButtonFigure(dialogBox.getToObject(), PartyDialogBox.TOOBJECT_DESPCRIPTION)
@@ -45,12 +69,21 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
         drawSelectedRadioButton(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * draws the dialog box's selected radio button
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getParty() instanceof Actor) {
             new SelectedRadioButtonFigure(dialogBox.getToActor(), "")
                     .draw(graphics, minX, minY, maxX, maxY);
-        } else if (dialogBox.getParty() instanceof  Object) {
-            new SelectedRadioButtonFigure(dialogBox.getToObject(),"")
+        } else if (dialogBox.getParty() instanceof Object) {
+            new SelectedRadioButtonFigure(dialogBox.getToObject(), "")
                     .draw(graphics, minX, minY, maxX, maxY);
         }
     }

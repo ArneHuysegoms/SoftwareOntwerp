@@ -58,7 +58,7 @@ public class Box implements IDrawable {
     }
 
     /**
-     * a draw fucntion that draws on the Graphics parameter object
+     * a draw function that draws a rectangle on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value
@@ -71,6 +71,11 @@ public class Box implements IDrawable {
         new Rectangle(this.getTl(), this.getBr()).draw(graphics, minX, minY, maxX, maxY);
     }
 
+    /**
+     * a draw function that draws a rectangle on the Graphics parameter object
+     *
+     * @param graphics object used to draw on the program's window
+     */
     @Override
     public void draw(Graphics graphics) {
         new Rectangle(this.getTl(), this.getBr()).draw(graphics);
