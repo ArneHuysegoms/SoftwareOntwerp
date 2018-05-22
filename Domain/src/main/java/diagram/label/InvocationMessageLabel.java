@@ -114,7 +114,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public String toString(){
         String toString = this.getLabel() + "(";
         for(Argument a : getArguments()){
-            toString += a.toString() + " ";
+            toString += a.toString() + ",";
         }
         toString += ")";
         return toString;
@@ -140,8 +140,10 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
         this.setLabel(label.substring(0, open));
         String[] args = label.substring(open +1, close).split(",");
         for(String s : args){
-            String[] ele = s.split(":");
-            arguments.add(new Argument(ele[0], ele[1]));
+            if(! s.isEmpty() ) {
+                String[] ele = s.split(":");
+                arguments.add(new Argument(ele[0], ele[1]));
+            }
         }
     }
 
@@ -159,14 +161,15 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
         }
         String[] args = label.substring(open +1, close).split(",");
         for(String s : args){
-            String[] ele = s.split(":");
-            if(ele.length == 2){
-                if(! Argument.isValidArgument(ele[0], ele[1])){
+            if(! s.isEmpty()) {
+                String[] ele = s.split(":");
+                if (ele.length == 2) {
+                    if (!Argument.isValidArgument(ele[0], ele[1])) {
+                        return false;
+                    }
+                } else {
                     return false;
                 }
-            }
-            else{
-                return false;
             }
         }
         return true;

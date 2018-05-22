@@ -125,6 +125,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
             throw new IllegalArgumentException("Width can't be less than zero");
         }
         this.width = width;
+        recreateFrame();
     }
 
     /**
@@ -145,6 +146,7 @@ public abstract class Subwindow implements Clickable, ILowLevelController, Compa
             throw new IllegalArgumentException("Height can't be less than zero");
         }
         this.height = height;
+        recreateFrame();
     }
 
     /**
