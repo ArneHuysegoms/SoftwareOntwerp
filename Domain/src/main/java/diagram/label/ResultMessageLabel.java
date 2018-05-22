@@ -22,4 +22,9 @@ public class ResultMessageLabel extends MessageLabel {
     public boolean isValidLabel(String label) {
         return true;
     }
+
+    @Override
+    public String toString(){
+        return this.getLabel();
+    }
 }
