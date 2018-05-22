@@ -72,9 +72,9 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getMethodTextBox(), "? invokeDBFigure meth")
+        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "? invokeDBFigure meth")
                 .draw(graphics, minX, minY, maxX, maxY);
-        new TextBoxFigure(dialogBox.getArgumentTextBox(), "? invokeDBFigure arg")
+        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "? invokeDBFigure arg")
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 }

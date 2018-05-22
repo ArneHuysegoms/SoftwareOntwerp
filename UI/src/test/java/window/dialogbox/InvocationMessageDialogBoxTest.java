@@ -1,7 +1,7 @@
 package window.dialogbox;
 
 import action.Action;
-import action.RemoveInReposAction;
+import action.RemoveInViewsAction;
 import action.UpdateLabelAction;
 import command.closeWindow.CloseSubwindowCommand;
 import controller.InteractionController;
@@ -245,7 +245,7 @@ public class InvocationMessageDialogBoxTest {
     public void test_handleAction_RemoveInReposAction(){
         Set<DiagramElement> diagramElementSet = new HashSet<>();
         diagramElementSet.add(invocationMessage);
-        Action action = new RemoveInReposAction(diagramElementSet);
+        Action action = new RemoveInViewsAction(diagramElementSet);
         invocationMessageDialogBox.handleAction(action);
     }
 

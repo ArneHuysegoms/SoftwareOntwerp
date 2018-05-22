@@ -13,6 +13,9 @@ import window.elements.RadioButton;
 
 import java.awt.geom.Point2D;
 
+/**
+ * construct a new dialogbox for diagrams
+ */
 public class DiagramDialogBox extends DialogBox {
 
     public static final int WIDTH = 200;
@@ -28,6 +31,12 @@ public class DiagramDialogBox extends DialogBox {
 
     private DiagramSubwindow subwindow;
 
+    /**
+     * creates a new diagramdialogbox
+     * @param position the new position
+     * @param subwindow the subwindow this dialogbox is for
+     * @throws UIException if the position is null
+     */
     public DiagramDialogBox(Point2D position, DiagramSubwindow subwindow) throws UIException {
         super(position);
         this.setHeight(HEIGHT);
@@ -38,10 +47,18 @@ public class DiagramDialogBox extends DialogBox {
         this.setDiagramSubwindow(subwindow);
     }
 
+    /**
+     *
+     * @return the diagramsubwindow for this dialogbox
+     */
     public DiagramSubwindow getDiagramSubwindow() {
         return subwindow;
     }
 
+    /**
+     * sets the subwindow to the given subwindow
+     * @param subwindow the new subwindow
+     */
     public void setDiagramSubwindow(DiagramSubwindow subwindow) {
         this.subwindow = subwindow;
     }

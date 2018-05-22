@@ -6,8 +6,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AddNewMessagesInViewsActionTest.class,
-        AddNewPartyToReposActionTest.class,
-        RemoveInReposActionTest.class,
+        AddNewPartyToViewsActionTest.class,
+        RemoveInViewsActionTest.class,
         UpdateLabelActionTest.class,
         UpdateLabelContainersActionTest.class,
         UpdatePartyTypeActionTest.class

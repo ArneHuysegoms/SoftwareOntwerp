@@ -215,8 +215,8 @@ public class PartyDialogBox extends DialogBox {
 
     @Override
     public void handleAction(Action action) {
-        if(action instanceof RemoveInReposAction) {
-            RemoveInReposAction a = (RemoveInReposAction) action;
+        if(action instanceof RemoveInViewsAction) {
+            RemoveInViewsAction a = (RemoveInViewsAction) action;
             if(a.getDeletedElements().contains(party)){
                 this.getFrame().close();
             }
