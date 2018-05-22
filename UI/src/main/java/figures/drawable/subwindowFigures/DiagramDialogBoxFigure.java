@@ -5,6 +5,7 @@ import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
 import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class DiagramDialogBoxFigure extends SubwindowFigure {
 
