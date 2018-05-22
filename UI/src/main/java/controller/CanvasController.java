@@ -11,7 +11,6 @@ import uievents.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Main layer between pure UI and the domain
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
  */
 public class CanvasController implements IHighLevelController{
 
-    private boolean dragging = false;
     private InteractionController activeInteractionController;
     private List<InteractionController> interactionControllers;
 
@@ -116,42 +114,6 @@ public class CanvasController implements IHighLevelController{
             ic.handleMouseEvent(mouseEvent);
         }
     }
-
-
-
-    /*
-     * checks if  the mouseEvent results in a drag
-     *
-     * @param mouseEvent the mouseEvent to check for
-     * @return if the active diagramSubwindow exists
-     *              | if the active diagramSubwindow is being dragged
-     *                  return false
-     *              | if the active diagramSubwindow's frame has been clicked
-     *                  return true
-     *              | if the active diagramSubwindow is not in label mode
-     *                  if a diagramSubwindow has been clicked
-     *                  return true
-     *         else return false
-     */
-/*    private boolean checkFordragging(MouseEvent mouseEvent) {
-        if (activeDiagramSubwindow != null) {
-            if (getActiveDiagramSubwindow().isDragging()) {
-                return false;
-            }
-            if (activeDiagramSubwindow.frameIsClicked(mouseEvent.getPoint())) {
-                return true;
-            }
-            if (!getActiveDiagramSubwindow().isInLabelMode()) {
-                for (SubWindowLevel window.diagram : subwindows) {
-                    if (window.diagram.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                        changeActiveSubwindow(window.diagram.getDiagramSubwindow());
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
 
 
     private void createNewInteractionController(){
