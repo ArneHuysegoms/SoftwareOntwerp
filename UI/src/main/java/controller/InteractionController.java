@@ -289,6 +289,8 @@ public class InteractionController implements IHighLevelController{
         }
         else{
             Subwindow s = ((DialogBoxOpenedAction)action).getDialogBox();
+            Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
+            s.getFrame().setButton(button);
             this.getSubwindows().add(s);
             this.changeActiveSubwindow(s);
         }
