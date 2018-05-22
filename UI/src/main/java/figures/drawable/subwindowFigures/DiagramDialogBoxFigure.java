@@ -65,10 +65,10 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
     private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), "")
-                    .draw(graphics, minX, minY, maxX, maxY);
+                    .draw(graphics);
         } else if (dialogBox.getDiagramSubwindow().isSequenceDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToSequenceDiagram(),"")
-                    .draw(graphics, minX, minY, maxX, maxY);
+                    .draw(graphics);
         }
     }
 

@@ -71,7 +71,7 @@ public class SequenceConverter extends DiagramConverter {
         Map<Label, Point2D> labelMap = labelView.getMap();
 
         Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
-        drawLabel(graphics, start, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
+        drawLabel(graphics, start, messageNumber + " " + message.toString(), getX1(), getY1(), getX2(), getY2());
 
     }
 
