@@ -1,5 +1,6 @@
 package window.elements.button;
 
+import exception.UIException;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
@@ -12,8 +13,6 @@ public class FakeButton extends DialogboxElement {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
 
-    private Point2D position;
-
     private int width;
     private int height;
 
@@ -21,27 +20,12 @@ public class FakeButton extends DialogboxElement {
      * create a new fakeButton at the given position
      *
      * @param position the position for the fakebutton
+     * @throws UIException if position is null
      */
-    public FakeButton(Point2D position) {
-        this.setPosition(position);
+    public FakeButton(Point2D position) throws UIException {
+        super(position, "");
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-    }
-
-    /**
-     * @return the position of the fakebutton
-     */
-    public Point2D getPosition() {
-        return position;
-    }
-
-    /**
-     * sets the position to the given position
-     *
-     * @param position the new position for the fakeButton
-     */
-    public void setPosition(Point2D position) {
-        this.position = position;
     }
 
     /**
@@ -84,10 +68,10 @@ public class FakeButton extends DialogboxElement {
      */
     @Override
     public boolean isClicked(Point2D coordinate) {
-        double startX = position.getX();
-        double endX = position.getX() + width;
-        double startY = position.getY();
-        double endY = position.getY() + height;
+        double startX = getCoordinate().getX();
+        double endX = getCoordinate().getX() + width;
+        double startY = getCoordinate().getY();
+        double endY = getCoordinate().getY() + height;
         return (startX <= coordinate.getX() && endX >= coordinate.getX()) && (startY <= coordinate.getY() && endY >= coordinate.getY());
     }
 }
