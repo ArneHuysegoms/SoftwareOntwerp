@@ -63,10 +63,16 @@ public class InteractionController implements IHighLevelController{
      * @param activeSubwindow
      */
     public void setActiveSubwindow(Subwindow activeSubwindow) {
-        if(activeSubwindow instanceof DiagramSubwindow){
-            setActiveDiagramSubwindow((DiagramSubwindow) activeSubwindow);
+        if(activeSubwindow != null){
+            activeSubwindow.setLevel(WindowLevelCounter.getNextLevel());
+            if(activeSubwindow instanceof DiagramSubwindow){
+                setActiveDiagramSubwindow((DiagramSubwindow) activeSubwindow);
+            }
+            this.activeSubwindow = activeSubwindow;
         }
-        this.activeSubwindow = activeSubwindow;
+        else{
+            this.activeSubwindow = null;
+        }
     }
 
     /**
@@ -127,7 +133,6 @@ public class InteractionController implements IHighLevelController{
      * @param activeDiagramSubwindow the new active diagramSubwindow
      */
     private void setActiveDiagramSubwindow(DiagramSubwindow activeDiagramSubwindow){
-        activeDiagramSubwindow.setLevel(WindowLevelCounter.getNextLevel());
         this.activeDiagramSubwindow = activeDiagramSubwindow;
     }
 
@@ -285,7 +290,7 @@ public class InteractionController implements IHighLevelController{
         Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
         diagramSubwindow.getFrame().setButton(button);
         addSubwindow(diagramSubwindow);
-        this.changeActiveSubwindow(diagramSubwindow);
+        //this.changeActiveSubwindow(diagramSubwindow);
     }
 
     /**
@@ -297,7 +302,7 @@ public class InteractionController implements IHighLevelController{
             Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
             diagramSubwindow.getFrame().setButton(button);
             addSubwindow(diagramSubwindow);
-            this.changeActiveSubwindow(diagramSubwindow);
+            //this.changeActiveSubwindow(diagramSubwindow);
         }
     }
 
