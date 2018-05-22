@@ -9,6 +9,7 @@ import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.RadioButton;
@@ -126,8 +127,7 @@ public class PartyDialogBox extends DialogBox {
                 case BACKSPACE:
                     return handleBackSpace();
             }
-        }
-        catch (DomainException e){
+        } catch (DomainException e) {
             e.printStackTrace();
         }
         return new EmptyAction();
@@ -152,7 +152,7 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private Action handleBackSpace() throws DomainException{
+    private Action handleBackSpace() throws DomainException {
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.deleteLastCharFromContents();
@@ -163,7 +163,7 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private Action handleChar(KeyEvent keyEvent) throws DomainException{
+    private Action handleChar(KeyEvent keyEvent) throws DomainException {
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.addCharToContents(keyEvent.getKeyChar());
@@ -181,7 +181,15 @@ public class PartyDialogBox extends DialogBox {
 
     private Action handleSpace() {
         if (selected instanceof RadioButton) {
-            return ((RadioButton) selected).performAction();
+            if (selected == toActor) {
+                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toActor.performAction();
+                handleAction(updatePartyTypeAction);
+                return updatePartyTypeAction;
+            } else if (selected == toObject) {
+                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) toObject.performAction();
+                handleAction(updatePartyTypeAction);
+                return updatePartyTypeAction;
+            }
         }
         return new EmptyAction();
     }
@@ -212,8 +220,7 @@ public class PartyDialogBox extends DialogBox {
                 }
             }
             return new UpdateLabelContainersAction(party.getLabel());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         return new EmptyAction();
@@ -221,34 +228,46 @@ public class PartyDialogBox extends DialogBox {
 
     @Override
     public void handleAction(Action action) {
-        if(action instanceof RemoveInViewsAction) {
+        if (action instanceof RemoveInViewsAction) {
             RemoveInViewsAction a = (RemoveInViewsAction) action;
-            if(a.getDeletedElements().contains(party)){
+            if (a.getDeletedElements().contains(party)) {
                 this.getFrame().close();
             }
-        }
-        else if(action instanceof UpdatePartyTypeAction){
+        } else if (action instanceof UpdatePartyTypeAction) {
             UpdatePartyTypeAction a = (UpdatePartyTypeAction) action;
-            if(a.getOldParty().equals(party)){
+            if (a.getOldParty().equals(party)) {
                 subwindow.setSelected(a.getNewParty());
                 try {
-                    Action action1 =  subwindow.opendialogBox();
-                    if(action1 instanceof DialogBoxOpenedAction) {
+                    //TODO add at interactioncontroller mapping
+                    PartyDialogBox partyDialogBox = new PartyDialogBox(this.getPosition(), a.getNewParty(), subwindow);
+
+                    CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
+                    CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
+                    close.getInteractionController().addSubwindow(partyDialogBox);
+                    partyDialogBox.createFrame(new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, close.getInteractionController())));
+
+                   /* Action action1 = subwindow.opendialogBox();
+                    if (action1 instanceof DialogBoxOpenedAction) {
+
                         DialogBoxOpenedAction action2 = (DialogBoxOpenedAction) action1;
                         CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
                         CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
                         close.getInteractionController().addSubwindow(action2.getDialogBox());
-                    }
-                }
-                catch (Exception e){
+                        action2.getDialogBox().setPosition(this.getPosition());
+                        ((PartyDialogBox) action2.getDialogBox()).setParty(a.getNewParty());
+                        action2.getDialogBox().createFrame(this.getFrame().getButton());
+                        action2.getDialogBox().getFrame().getButton().setPosition(this.getFrame().getButton().getPosition());
+                        action2.getDialogBox().getFrame().getButton().setCommand(new CloseSubwindowCommand(action2.getDialogBox(), close.getInteractionController()));
+                    }*/
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 this.getFrame().close();
             }
         }
-        if(action instanceof UpdateLabelAction){
+        if (action instanceof UpdateLabelAction) {
             UpdateLabelAction a = (UpdateLabelAction) action;
-            if(a.getElement().equals(party)){
+            if (a.getElement().equals(party)) {
                 updateFields((Party) a.getElement());
             }
         }
@@ -256,11 +275,10 @@ public class PartyDialogBox extends DialogBox {
 
     private void updateFields(Party party) {
         String[] labels = party.getLabel().getLabel().split(":");
-        if(labels.length == 2){
+        if (labels.length == 2) {
             instanceTextBox.setContents(labels[0]);
             classTextBox.setContents(labels[1]);
-        }
-        else{
+        } else {
             classTextBox.setContents(labels[0]);
         }
     }
