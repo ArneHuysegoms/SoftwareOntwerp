@@ -244,6 +244,7 @@ public class PartyDialogBox extends DialogBox {
                     CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
                     CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
                     close.getInteractionController().addSubwindow(partyDialogBox);
+                    close.getInteractionController().addToMap(subwindow, partyDialogBox);
                     partyDialogBox.createFrame(new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, close.getInteractionController())));
 
                    /* Action action1 = subwindow.opendialogBox();
