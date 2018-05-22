@@ -25,7 +25,7 @@ public class UpdateLabelAction extends Action {
     @Override
     public void performAction(DiagramSubwindow subwindow) {
         if(subwindow.getSelected().equals(element)){
-            subwindow.setLabelContainer(element.toString());
+            subwindow.setLabelContainer(element.toString() + "I");
         }
         if(subwindow.getSelected() instanceof Label && ( subwindow.getSelected()).equals(selectedLabel)){
             subwindow.stopEditingLabel();

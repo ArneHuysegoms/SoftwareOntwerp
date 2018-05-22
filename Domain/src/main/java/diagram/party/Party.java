@@ -48,4 +48,7 @@ public abstract class Party extends DiagramElement implements Serializable {
     public static boolean isValidInstanceString(String toCheck){
         return Character.isLowerCase(toCheck.charAt(0));
     }
+
+    @Override
+    public abstract String toString();
 }

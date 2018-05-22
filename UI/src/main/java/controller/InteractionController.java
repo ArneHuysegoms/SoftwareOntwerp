@@ -1,6 +1,7 @@
 package controller;
 
 import action.Action;
+import action.DialogBoxOpenedAction;
 import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
@@ -279,11 +280,21 @@ public class InteractionController implements IHighLevelController{
     }
 
     public void actionForEachDiagramSubwindow(Action action){
-        for(Subwindow s : getSubwindows()){
-            if(s != getActiveSubwindow()){
-                s.handleAction(action);
+        if(! (action instanceof DialogBoxOpenedAction)){
+            for(Subwindow s : getSubwindows()){
+                if(s != getActiveSubwindow()){
+                    s.handleAction(action);
+                }
             }
         }
+        else{
+            Subwindow s = ((DialogBoxOpenedAction)action).getDialogBox();
+            Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
+            s.getFrame().setButton(button);
+            this.getSubwindows().add(s);
+            this.changeActiveSubwindow(s);
+        }
+
     }
 
     /**
