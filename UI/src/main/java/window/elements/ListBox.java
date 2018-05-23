@@ -47,7 +47,10 @@ public class ListBox extends DialogboxElement implements Clickable {
      * @param selectedIndex the index to set the index too, can't be higher than the argument list size
      */
     public void setSelectedIndex(int selectedIndex) {
-        if (selectedIndex > arguments.size() - 1) {
+        if(selectedIndex < -1){
+            this.setSelectedIndex(-1);
+        }
+        else if (selectedIndex > arguments.size() - 1) {
             this.selectedIndex = arguments.size() - 1;
         } else {
             this.selectedIndex = selectedIndex;
@@ -95,6 +98,7 @@ public class ListBox extends DialogboxElement implements Clickable {
         if (selectedIndex > arguments.size() - 1) {
             selectedIndex = arguments.size() - 1;
         }
+
     }
 
     /**
@@ -111,15 +115,16 @@ public class ListBox extends DialogboxElement implements Clickable {
      */
     public void removeArgument() {
         arguments.remove(selectedIndex);
+        setSelectedIndex( selectedIndex - 1);
     }
 
     /**
      * swaps the selected argument with the argument above it
      */
     public void moveUp() {
-        if (selectedIndex != 0) {
+        if (selectedIndex > 0) {
             Collections.swap(arguments, selectedIndex, selectedIndex - 1);
-            selectedIndex--;
+            setSelectedIndex(selectedIndex - 1);
         }
     }
 
@@ -127,9 +132,9 @@ public class ListBox extends DialogboxElement implements Clickable {
      * swaps the selected argument with the argument below it
      */
     public void moveDown() {
-        if (selectedIndex != arguments.size() - 1) {
+        if (selectedIndex < arguments.size() - 1) {
             Collections.swap(arguments, selectedIndex, selectedIndex + 1);
-            selectedIndex++;
+            setSelectedIndex(selectedIndex + 1);
         }
     }
 
