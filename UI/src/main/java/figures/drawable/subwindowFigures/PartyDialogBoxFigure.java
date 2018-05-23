@@ -1,12 +1,16 @@
 package figures.drawable.subwindowFigures;
 
 import diagram.party.Actor;
-import figures.drawable.diagramFigures.RadioButtonFigure;
-import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
-import figures.drawable.diagramFigures.TextBoxFigure;
+import figures.drawable.diagramFigures.*;
 import window.dialogbox.PartyDialogBox;
+import window.elements.DialogboxElement;
+import window.elements.ListBox;
+import window.elements.RadioButton;
+import window.elements.button.FakeButton;
+import window.elements.textbox.TextBox;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 // TODO dialog box for a party shows
 //two text boxes and two radio buttons, for editing the instance name and the class
@@ -34,6 +38,7 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
         drawWindowFrame(graphics);
         drawRadioButtons(graphics, minX, minY, maxX, maxY);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**
