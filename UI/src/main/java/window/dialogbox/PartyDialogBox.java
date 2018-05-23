@@ -133,6 +133,7 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    //TODO refactor
     private Action handleMousePress(MouseEvent mouseEvent) {
         if (toActor.isClicked(mouseEvent.getPoint())) {
             selected = toActor;
@@ -185,6 +186,7 @@ public class PartyDialogBox extends DialogBox {
         selected = elementList.get((oldIndex + 1) % 4);
     }
 
+    //TODO refactor
     private Action handleSpace() {
         if (selected instanceof RadioButton) {
             if (selected == toActor) {
