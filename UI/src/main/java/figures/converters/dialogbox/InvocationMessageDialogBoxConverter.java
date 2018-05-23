@@ -22,6 +22,6 @@ public class InvocationMessageDialogBoxConverter extends DialogBoxConverter {
     @Override
     public void draw(Graphics graphics){
         super.draw(graphics);
-        drawSelectionBox(graphics, dialogBox.getSelected(), dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        //drawSelectionBox(graphics, dialogBox.getSelected(), dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 }

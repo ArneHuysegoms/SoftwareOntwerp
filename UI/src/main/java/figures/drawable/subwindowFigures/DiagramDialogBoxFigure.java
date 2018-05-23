@@ -37,6 +37,7 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
 
         drawSelectedRadioButton(graphics);
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**

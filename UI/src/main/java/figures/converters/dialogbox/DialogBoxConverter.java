@@ -31,7 +31,7 @@ public abstract class DialogBoxConverter extends SubwindowConverter {
      *  @param graphics object used to draw on the program's window
      * @param selected The selected element in the dialogbox, this can be any DialogBoxElement
      * @param absolutePosition
-     */
+     *
     protected void drawSelectionBox(Graphics graphics, DialogboxElement selected, Point2D absolutePosition) {
         if (selected instanceof TextBox) {
             TextBox tb = (TextBox) selected;
@@ -54,7 +54,7 @@ public abstract class DialogBoxConverter extends SubwindowConverter {
                     end = new Point2D.Double(absolutePosition.getX() + ListBox.WIDTH + 3, absolutePosition.getY() + ListBox.HEIGHT + 3);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
         }
-    }
+    }*/
 
 
     /**
