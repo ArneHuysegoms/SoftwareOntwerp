@@ -33,43 +33,20 @@ public class Arrow implements IDrawable {
      */
     private void calculateArrowHead(int x, int y, int x2, int y2) {
         if (x < x2) {
-            if (y == y2) {
-                arrowTop = new Line(x2, y, x2 - 10, y - 10);
-                arrowBottom = new Line(x2, y, x2 - 10, y + 10);
-            } else if (y < y2) {
-                //ZuidOost
-                arrowTop = new Line(x2, y2, x2, y2 - 10);
-                arrowBottom = new Line(x2, y2, x2 - 10, y2);
-            } else if (y > y2) {
-                //NoordOost
-                arrowTop = new Line(x2, y2, x2 - 10, y2);
-                arrowBottom = new Line(x2, y2, x2, y2 + 10);
-            }
+            arrowTop = new Line(x2, y2, x2 - 10, y2 - 10);
+            arrowBottom = new Line(x2, y2, x2 - 10, y2 + 10);
         } else if (x > x2) {
-            if (y == y2) {
-                arrowTop = new Line(x2, y2, x2 + 10, y2 - 10);
-                arrowBottom = new Line(x2, y2, x2 + 10, y2 + 10);
-            } else if (y < y2) {
-                //ZuiWest
-                arrowTop = new Line(x2, y2, x2, y2 - 10);
-                arrowBottom = new Line(x2, y2, x2 + 10, y2);
-            } else if (y > y2) {
-                //NoordWest
-                arrowTop = new Line(x2, y2, x2 + 10, y2);
-                arrowBottom = new Line(x2, y2, x2, y2 + 10);
-            }
+            arrowTop = new Line(x2, y2, x2 + 10, y2 - 10);
+            arrowBottom = new Line(x2, y2, x2 + 10, y2 + 10);
         } else if (x == x2) {
             if (y < y2) {
-                //South
                 arrowTop = new Line(x2, y2, x2 + 10, y2 - 10);
                 arrowBottom = new Line(x2, y2, x2 - 10, y2 - 10);
             } else if (y > y2) {
-                //North
                 arrowTop = new Line(x2, y2, x2 - 10, y2 + 10);
                 arrowBottom = new Line(x2, y2, x2 + 10, y2 + 10);
             }
         }
-
     }
 
     /**
