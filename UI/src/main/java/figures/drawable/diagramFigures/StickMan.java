@@ -239,18 +239,4 @@ public class StickMan implements IDrawable {
         this.getLegL().draw(graphics, minX, minY, maxX, maxY);
         this.getLegR().draw(graphics, minX, minY, maxX, maxY);
     }
-
-    /**
-     * a draw function that draws a stick man on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        this.getHead().draw(graphics);
-        this.getBody().draw(graphics);
-        this.getArms().draw(graphics);
-        this.getLegL().draw(graphics);
-        this.getLegR().draw(graphics);
-    }
 }

@@ -38,20 +38,6 @@ public class RadioButtonFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a button on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        //TODO might have to tweek coordinates
-        Point2D textPosition = new Point2D.Double(absolutePosition.getX() + RadioButton.WIDTH + 3, absolutePosition.getY());
-
-        drawTitle(graphics, textPosition);
-        drawCircle(graphics, absolutePosition);
-    }
-
-    /**
      * a draw function that draws the circle of a radio button on the Graphics parameter object
      *
      * @param graphics       object used to draw on the program's window

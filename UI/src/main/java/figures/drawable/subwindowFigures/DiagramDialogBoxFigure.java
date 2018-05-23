@@ -39,21 +39,6 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
-     * draws a diagram dialog box
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        new RadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), DiagramDialogBox.TOCOMMUNICATIONDIAGRAM_DESPCRIPTION)
-                .draw(graphics);
-        new RadioButtonFigure(dialogBox.getToSequenceDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToSequenceDiagram().getCoordinate()), DiagramDialogBox.TOSEQUENCEDIAGRAM_DESCRIPTION)
-                .draw(graphics);
-        drawSelectedRadioButton(graphics);
-    }
-
-    /**
      * draws the selected radio button
      *
      * @param graphics object used to draw on the program's window

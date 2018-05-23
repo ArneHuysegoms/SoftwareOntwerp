@@ -41,18 +41,7 @@ public class DownButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new Rectangle(x - width, y, width, height).draw(graphics, minX, minY, maxX, maxY);
-        drawUpShape(graphics);
-    }
-
-    /**
-     * a draw function that draws a button on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new Rectangle(x - width, y, width, height).draw(graphics);
+        new Rectangle(x, y, width, height).draw(graphics, minX, minY, maxX, maxY);
         drawUpShape(graphics);
     }
 

@@ -33,16 +33,4 @@ public class DashedArrow extends Arrow {
         this.getArrowTop().draw(graphics, minX, minY, maxX, maxY);
         this.getArrowBottom().draw(graphics, minX, minY, maxX, maxY);
     }
-
-    /**
-     * a draw function that draws a dashed arrow on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new DashedLine(this.getLineStart(), this.getLineEnd()).draw(graphics);
-        this.getArrowTop().draw(graphics);
-        this.getArrowBottom().draw(graphics);
-    }
 }

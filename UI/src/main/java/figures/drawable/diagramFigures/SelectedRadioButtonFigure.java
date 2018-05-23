@@ -20,7 +20,6 @@ public class SelectedRadioButtonFigure extends RadioButtonFigure {
     @Override
     protected void drawCircle(Graphics graphics, Point2D circlePosition) {
         graphics.fillOval((int)absolutePosition.getX(), (int)absolutePosition.getY(),RadioButton.WIDTH, RadioButton.HEIGHT);
-        //new FilledCircle(circlePosition,RadioButton.HEIGHT).draw(graphics);
     }
 
 }

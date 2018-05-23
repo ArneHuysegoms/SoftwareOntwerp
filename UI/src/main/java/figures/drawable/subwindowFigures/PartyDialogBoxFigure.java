@@ -37,18 +37,6 @@ public class PartyDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
-     * draws a party dialog box
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        drawRadioButtons(graphics);
-        drawTextBoxes(graphics);
-    }
-
-    /**
      * draws the dialog box's text boxes
      *
      * @param graphics object used to draw on the program's window

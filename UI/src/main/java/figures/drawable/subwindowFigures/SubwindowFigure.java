@@ -118,6 +118,11 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawTitleBar(Graphics graphics) {
+        Color temp = graphics.getColor();
+        graphics.setColor(new Color(71, 129, 158));
+        graphics.fillRect((int) titleBar.getPosition().getX(), (int) titleBar.getPosition().getY(), titleBar.getWidth(), TitleBar.HEIGHT);
+        graphics.setColor(Color.BLACK);
+
         new Rectangle(titleBar.getPosition(), titleBar.getWidth(), TitleBar.HEIGHT)
                 .draw(graphics);
     }
