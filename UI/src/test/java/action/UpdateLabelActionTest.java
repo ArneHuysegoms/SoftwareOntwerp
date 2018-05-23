@@ -36,8 +36,6 @@ public class UpdateLabelActionTest {
     public void test_performAction(){
         updateLabelAction.performAction(diagramSubwindow);
         System.out.println(party1.toString());
-        //TODO UpdateLabelAction doet element.toString()? -> diagram.party.Actor@..
-        //System.out.println(diagramSubwindow.getFacade().getActiveView().getMessageView().g);
     }
 
 }
