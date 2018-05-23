@@ -6,7 +6,7 @@ import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;
 
-public class DiagramDialogBoxFigure extends SubwindowFigure {
+public class DiagramDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private DiagramDialogBox dialogBox;
 
@@ -37,6 +37,7 @@ public class DiagramDialogBoxFigure extends SubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
 
         drawSelectedRadioButton(graphics);
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**

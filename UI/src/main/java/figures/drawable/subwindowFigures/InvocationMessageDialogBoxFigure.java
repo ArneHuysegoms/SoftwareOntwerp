@@ -5,7 +5,7 @@ import window.dialogbox.InvocationMessageDialogBox;
 
 import java.awt.*;
 
-public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
+public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private InvocationMessageDialogBox dialogBox;
 
