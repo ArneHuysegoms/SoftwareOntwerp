@@ -55,7 +55,7 @@ public class CloseButtonFigure implements IDrawable {
         graphics.setColor(new Color(221, 82, 82));
         graphics.fillRect(x, y, width, height);
         graphics.setColor(Color.BLACK);
-
+        
         new Rectangle(x, y, width, height)
                 .draw(graphics);
     }
