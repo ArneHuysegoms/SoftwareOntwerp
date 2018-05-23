@@ -5,6 +5,7 @@ import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
 import diagram.label.ResultMessageLabel;
+import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.message.ResultMessage;
 import diagram.party.Party;
@@ -366,6 +367,10 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         labelMode = true;
         Label labelInEdit = (Label) selected;
         labelContainer = labelInEdit.getLabel() + "I";
+        if(labelInEdit instanceof InvocationMessageLabel){
+            InvocationMessageLabel invocationMessageLabel = (InvocationMessageLabel) labelInEdit;
+            labelContainer = invocationMessageLabel.toString() + "I";
+        }
     }
 
     /**
