@@ -304,7 +304,7 @@ public class PartyDialogBox extends DialogBox {
                     }
                 }
             }
-            return new UpdateLabelContainersAction(party.getLabel());
+            return new UpdateLabelAction(party, party.getLabel());
         } catch (Exception e) {
             e.printStackTrace();
         }
