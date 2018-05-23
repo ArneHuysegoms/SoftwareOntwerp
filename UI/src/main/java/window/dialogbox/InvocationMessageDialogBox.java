@@ -347,8 +347,7 @@ public class InvocationMessageDialogBox extends DialogBox {
         if (argumentTextBox.hasValidContents()) {
             String argumentString = argumentTextBox.getContents();
             argumentListBox.addArgument(argumentString);
-            String[] args = argumentString.split(":");
-            invocationMessageLabel.addArgument(args[0], args[1]);
+            invocationMessageLabel.addArgument(argumentString);
             return new UpdateLabelContainersAction(invocationMessageLabel);
         }
         return new EmptyAction();
