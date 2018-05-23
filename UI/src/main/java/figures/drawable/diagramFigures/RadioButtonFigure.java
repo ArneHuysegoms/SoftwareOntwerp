@@ -30,7 +30,6 @@ public class RadioButtonFigure implements IDrawable {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        //TODO might have to tweek coordinates
         Point2D textPosition = new Point2D.Double(absolutePosition.getX() + RadioButton.WIDTH + 3, absolutePosition.getY());
 
         drawTitle(graphics, textPosition);

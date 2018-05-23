@@ -84,24 +84,6 @@ public class FigureConverter {
         graphics.setColor(Color.BLACK);
     }
 
-    //TODO in DiagramSubwindow methode "public boolean isSequence() en ... isCommunication"
-    //TODO instance van conveters?
-
-    /**
-     * method that draws a window.diagram
-     * creates and sets the correct converter for a subwindow
-     *
-     * @param graphics object used to draw on the program's window
-     *                 //* @param position coordinate of the top-left point of the window.diagram
-     *                 //* @param width    the window.diagram's width
-     *                 //* @param height   the window.diagram's height
-     * @param sub      subwindow that we want a converter for
-     */
-    private void drawSubwindow(Graphics graphics, DiagramSubwindow sub) {
-        //TODO replace to specific converters
-        new DiagramSubwindowFigure(sub).draw(graphics);
-    }
-
     /**
      * creates and sets the correct converter
      *
