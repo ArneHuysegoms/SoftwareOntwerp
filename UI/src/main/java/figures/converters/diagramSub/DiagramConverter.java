@@ -122,15 +122,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
                 messageNumber = ((InvocationMessage) msg).getMessageNumber() + " ";
             }
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(selectedLabel));
-            /*
-            if (selectedLabel instanceof InvocationMessageLabel && !(((InvocationMessageLabel)selectedLabel).isValidCompleteLabel(selectedLabel.getLabel()))) {
-                graphics.setColor(Color.RED);
-                drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
-                graphics.setColor(Color.BLACK);
-            } else {
-                drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
-            }
-            */
+
             if (!getDiagramSubwindow().checkIfValidLable()) {
                 graphics.setColor(Color.RED);
                 drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());

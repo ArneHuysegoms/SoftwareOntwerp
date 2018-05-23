@@ -54,7 +54,6 @@ public abstract class DialogBoxConverter extends SubwindowConverter {
                     end = new Point2D.Double(absolutePosition.getX() + ListBox.WIDTH + 3, absolutePosition.getY() + ListBox.HEIGHT + 3);
             new DialogBoxSelectionBoxFigure(start, end).draw(graphics, 0, 0, 2000, 2000);
         }
-
     }
 
 
