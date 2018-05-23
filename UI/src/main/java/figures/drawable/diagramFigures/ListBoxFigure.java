@@ -74,15 +74,7 @@ public class ListBoxFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawArgumentSelection(Graphics graphics) {
-        //TODO tweak coordinates
-        if (listBox.getSelectedIndex() >= 0) {
-            Color temp = graphics.getColor();
-            graphics.setColor(Color.GRAY);
-            int index = (listBox.getSelectedIndex() * ListBox.ARGUMENT_HEIGHT);
-            new DashedRectangle((int) absolutePosition.getX() + 2, (int) absolutePosition.getY() + index, ListBox.WIDTH - 2, ListBox.ARGUMENT_HEIGHT)
-                    .draw(graphics);
-            graphics.setColor(temp);
-        }
+        this.drawArgumentSelection(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
@@ -91,7 +83,6 @@ public class ListBoxFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawArguments(Graphics graphics) {
-        //TODO tweak coordinates
         int x = (int) absolutePosition.getX() + 3, y = (int) absolutePosition.getY();
         int argumentHeight = ListBox.ARGUMENT_HEIGHT;
 
