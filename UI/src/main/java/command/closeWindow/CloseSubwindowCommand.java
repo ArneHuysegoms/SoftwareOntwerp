@@ -36,7 +36,7 @@ public class CloseSubwindowCommand extends Command {
     @Override
     public Action performAction(){
         getInteractionController().removeSubwindow(getSubwindow());
-        //if DiagramSubwindow -> delete alle bijhorende Dialogboxes
+        System.out.println("Deleted a subwindow");
         return new EmptyAction();
     }
 }

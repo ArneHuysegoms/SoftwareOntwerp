@@ -110,6 +110,7 @@ public class InteractionController implements IHighLevelController{
         for(Subwindow s : subwindows){
             if(s.getLevel() > level){
                 highest = s;
+                level = s.getLevel();
             }
         }
         return highest;
@@ -242,15 +243,21 @@ public class InteractionController implements IHighLevelController{
                     break;
             }
         } else {
-            Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
-            if (subwindow != null) {
-                changeActiveSubwindow(subwindow);
-                Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
-                mouseEvent.setPoint(relativePoint);
-                Action action = subwindow.handleMouseEvent(mouseEvent);
-                actionForEachDiagramSubwindow(action);
+            switch(mouseEvent.getMouseEventType()){
+                case LEFTCLICK:
+                    break;
+                default:
+                    Subwindow subwindow = getAppropriateSubwindow(mouseEvent.getPoint());
+                    if (subwindow != null) {
+                        changeActiveSubwindow(subwindow);
+                        Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
+                        mouseEvent.setPoint(relativePoint);
+                        Action action = subwindow.handleMouseEvent(mouseEvent);
+                        actionForEachDiagramSubwindow(action);
 
+                    }
             }
+
         }
     }
 
