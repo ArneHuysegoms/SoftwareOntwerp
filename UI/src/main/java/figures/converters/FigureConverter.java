@@ -72,17 +72,6 @@ public class FigureConverter {
         for (Subwindow sub : allSubwindows) {
             setConverter(sub);
             converter.draw(graphics);
-
-            /*
-            if (sub instanceof DiagramSubwindow) {
-                tempDS = (DiagramSubwindow) sub;
-                setConverter(tempDS);
-                drawSubwindow(graphics, tempDS);
-                converter.draw(graphics);
-            } else {
-                drawDialogBoxes(graphics, (DialogBox) sub);
-        }
-            */
         }
     }
 
@@ -138,7 +127,7 @@ public class FigureConverter {
      *
      * @param sub
      */
-    public void setConverter(Subwindow sub) {
+    private void setConverter(Subwindow sub) {
         if (sub instanceof DiagramSubwindow) {
             DiagramSubwindow temp = ((DiagramSubwindow) sub);
             if (temp.getFacade().getActiveView() instanceof SequenceView) {

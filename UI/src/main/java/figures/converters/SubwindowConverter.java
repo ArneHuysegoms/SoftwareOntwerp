@@ -2,7 +2,7 @@ package figures.converters;
 
 import java.awt.*;
 
-public abstract class SubwindowConverter {
+public abstract class SubwindowConverter{
     /**
      * method that draws the subwindow's skeleton, an empty subwindow
      *
