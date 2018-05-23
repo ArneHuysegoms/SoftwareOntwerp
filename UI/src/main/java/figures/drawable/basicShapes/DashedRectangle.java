@@ -33,17 +33,4 @@ public class DashedRectangle extends Rectangle {
         new DashedLine(cornerBR, cornerBL).draw(graphics, minX, minY, maxX, maxY);
         new DashedLine(cornerBL, positionTL).draw(graphics, minX, minY, maxX, maxY);
     }
-
-    /**
-     * a draw function that draws a dashed rectangle on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new DashedLine(positionTL, cornerTR).draw(graphics);
-        new DashedLine(cornerTR, cornerBR).draw(graphics);
-        new DashedLine(cornerBR, cornerBL).draw(graphics);
-        new DashedLine(cornerBL, positionTL).draw(graphics);
-    }
 }

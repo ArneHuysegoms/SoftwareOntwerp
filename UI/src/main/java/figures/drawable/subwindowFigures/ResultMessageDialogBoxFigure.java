@@ -29,16 +29,6 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
     }
 
     /**
-     * draws a result message dialog box
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        drawTextBox(graphics);
-    }
-
-    /**
      * draws a text box
      * @param graphics object used to draw on the program's window
      * @param minX     minimum possible x coördinate value

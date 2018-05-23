@@ -39,21 +39,6 @@ public class TextBoxFigure implements IDrawable {
     }
 
     /**
-     * a draw function that draws a TextBox on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        Point2D titlePos = new Point2D.Double(absolutePosition.getX() + TextBox.WIDTH + 3, absolutePosition.getY()),
-                contentPos = new Point2D.Double(absolutePosition.getX() + 3, absolutePosition.getY());
-
-        new Rectangle(absolutePosition, TextBox.WIDTH, TextBox.HEIGHT).draw(graphics);
-        drawTitle(graphics, titlePos);
-        drawContents(graphics, contentPos);
-    }
-
-    /**
      * draws the text box's title
      *
      * @param graphics object used to draw on the program's window
@@ -61,6 +46,7 @@ public class TextBoxFigure implements IDrawable {
      */
     private void drawTitle(Graphics graphics, Point2D titlePos) {
         graphics.drawString(title, (int) titlePos.getX() + 3, (int) titlePos.getY() + 11);
+
     }
 
     /**

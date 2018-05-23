@@ -135,17 +135,4 @@ public class Rectangle implements IDrawable {
         new Line(cornerBR, cornerBL).draw(graphics, minX, minY, maxX, maxY);
         new Line(cornerBL, positionTL).draw(graphics, minX, minY, maxX, maxY);
     }
-
-    /**
-     * a draw function that draws a rectangle on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        new Line(positionTL, cornerTR).draw(graphics);
-        new Line(cornerTR, cornerBR).draw(graphics);
-        new Line(cornerBR, cornerBL).draw(graphics);
-        new Line(cornerBL, positionTL).draw(graphics);
-    }
 }

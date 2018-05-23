@@ -16,8 +16,9 @@ public interface IDrawable {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY);
 
     /**
-     *
      * @param graphics object used to draw on the program's window
      */
-    public void draw(Graphics graphics);
+    default public void draw(Graphics graphics) {
+        this.draw(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
 }

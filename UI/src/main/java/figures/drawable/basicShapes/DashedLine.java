@@ -109,44 +109,4 @@ public class DashedLine extends Line {
         }
     }
 
-    /**
-     * a draw function that draws a dashed line on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        double x1 = getStart().getX(), x2 = getEnd().getX(), y1 = getStart().getY(), y2 = getEnd().getY();
-
-        updateLength(x1, y1, x2, y2);
-
-        boolean toggleDraw = true;
-        final int dashLen = 5;
-
-        double currentX = x1;
-        double currentY = y1;
-        double nextX;
-        double nextY;
-
-        double temp;
-
-        while (lengthLeft >= 5) {
-
-            temp = dashLen / lengthLeft;
-
-            nextX = (1 - temp) * currentX + temp * x2;
-            nextY = (1 - temp) * currentY + temp * y2;
-
-            if (toggleDraw) {
-                graphics.drawLine((int) currentX, (int) currentY, (int) nextX, (int) nextY);
-                toggleDraw = false;
-            } else {
-                toggleDraw = true;
-            }
-
-            currentX = nextX;
-            currentY = nextY;
-            updateLength(nextX, nextY, x2, y2);
-        }    }
-
 }
