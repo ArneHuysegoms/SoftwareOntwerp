@@ -42,6 +42,10 @@ public class MessageLabel extends Label implements Serializable {
         super.label = label;
     }
 
+    /**
+     *
+     * @return a textual description of this message label
+     */
     @Override
     public String toString(){
         return this.getLabel();

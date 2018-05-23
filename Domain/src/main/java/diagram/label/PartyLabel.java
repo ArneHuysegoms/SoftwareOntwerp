@@ -62,6 +62,10 @@ public class PartyLabel extends Label implements Serializable {
         super.label = label;
     }
 
+    /**
+     *
+     * @return a textual description of this party label
+     */
     @Override
     public String toString(){
         return this.getLabel();
