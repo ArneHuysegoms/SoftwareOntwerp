@@ -36,7 +36,6 @@ public class CloseSubwindowCommand extends Command {
     @Override
     public Action performAction(){
         getInteractionController().removeSubwindow(getSubwindow());
-        System.out.println("Deleted a subwindow");
         return new EmptyAction();
     }
 }

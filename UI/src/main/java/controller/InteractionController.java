@@ -14,7 +14,6 @@ import window.dialogbox.DialogBox;
 import window.elements.button.Button;
 import window.elements.button.CloseWindowButton;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +31,7 @@ public class InteractionController implements IHighLevelController{
      * constructs an empty interactionController
      * initialises a new list of subwindows
      * initialises an active subwindow
+     * initialises a map with DiagramSubwindow as key, and a list of DialogBoxes as entry
      */
     public InteractionController(){
         setSubwindows(new ArrayList<>());
@@ -39,20 +39,30 @@ public class InteractionController implements IHighLevelController{
         this.map = new HashMap<>();
     }
 
+    /**
+     * @return the map with DiagramSubwindow as key, and a list of DialogBoxes as entry
+     */
     public HashMap<DiagramSubwindow, List<DialogBox>> getMap() {
         return map;
     }
 
+    /**
+     * sets the map with DiagramSubwindow as key, and a list of DialogBoxes as entry to the param
+     * @param map
+     */
     public void setMap(HashMap<DiagramSubwindow, List<DialogBox>> map) {
         this.map = map;
     }
 
+    /**
+     * @param diagramSubwindow
+     * @return the corresponding list of DialogBoxes for the given diagramSubwindow
+     */
     public List<DialogBox> getCorrespondingDialogBoxes(DiagramSubwindow diagramSubwindow){
         return this.getMap().get(diagramSubwindow);
     }
 
     /**
-     *
      * @return the list of subwindows
      */
     public List<Subwindow> getSubwindows() {
@@ -93,7 +103,6 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     *
      * @return dragging
      */
     public boolean isDragging(){
@@ -101,7 +110,6 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     *
      * @return the subwindow with the highest level
      */
     public Subwindow getHighestLevelSubwindow(){
@@ -133,6 +141,12 @@ public class InteractionController implements IHighLevelController{
         setActiveSubwindow(subwindow);
     }
 
+    /**
+     * adds a dialogbox to the given diagramSubwindow
+     * if the diagramSubwindow is not in the map, it adds the diagramSubwindow to the map
+     * @param diagramSubwindow, where the dialogbox should be added to
+     * @param dialogBox, to be added to the given diagramSubwindow
+     */
     public void addToMap(DiagramSubwindow diagramSubwindow, DialogBox dialogBox){
         if(this.getMap().get(diagramSubwindow) == null){
             ArrayList<DialogBox> list = new ArrayList<>();
@@ -143,6 +157,7 @@ public class InteractionController implements IHighLevelController{
 
     /**
      * remove a diagramSubwindow and sets the highest level subwindow active
+     * if it is a DiagramSubwindow, the activeDiagramSubwindow is set to null
      *
      * @param subwindow the diagramSubwindow to remove
      */
@@ -157,9 +172,18 @@ public class InteractionController implements IHighLevelController{
         setActiveSubwindow(getHighestLevelSubwindow());
     }
 
+    /**
+     * deletes a DialogBox in the map
+     * @param dialogBox
+     */
     public void deleteInMap(DialogBox dialogBox){
         map.values().remove(dialogBox);
     }
+
+    /**
+     * deletes a diagramSubwindow in the map, including all the dialogboxes for that diagramSubwindow
+     * @param diagramSubwindow, to be deleted
+     */
     public void deleteInMap(DiagramSubwindow diagramSubwindow){
         for(DialogBox d : getCorrespondingDialogBoxes(diagramSubwindow)){
             subwindows.remove(d);
@@ -168,7 +192,6 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     *
      * @return active diagramSubwindow
      */
     public DiagramSubwindow getActiveDiagramSubwindow() {
@@ -176,7 +199,6 @@ public class InteractionController implements IHighLevelController{
     }
 
     /**
-     *
      * @param activeDiagramSubwindow the new active diagramSubwindow
      */
     private void setActiveDiagramSubwindow(DiagramSubwindow activeDiagramSubwindow){
@@ -218,9 +240,11 @@ public class InteractionController implements IHighLevelController{
      *          | if dragged == true, check the mouseEventType
      *                          | if RELEASE, pass the mouseEvent to activeDiagramSubwindow and set dragging == false
      *                          | if LEFTCLICK, set dragging == false
+     *                          | else, do nothing
      *          | otherwise the appropriate diagramSubwindow that was clicked
-     *                          | if the diagramSubwindow exists
-     *                              | if the diagramSubwindow is not the active one, set it as the active one
+     *                          | if LEFTCLICK, do nothing
+     *                          | else if a diagramSubwindow is clicked
+     *                              set it as the active one
      *                              get the coordinates of the click on the diagramSubwindow, relative to the diagramSubwindow
      *                              pass the mouseEvent to the appropriate diagramSubwindow
      *                              and do this action for each diagramSubwindow
@@ -293,9 +317,6 @@ public class InteractionController implements IHighLevelController{
      *              | if the active diagramSubwindow is being dragged
      *                  return false
      *              | if the active diagramSubwindow's frame has been clicked
-     *                  return true
-     *              | if the active diagramSubwindow is not in label mode
-     *                  if a diagramSubwindow has been clicked
      *                  return true
      *         else return false
      */

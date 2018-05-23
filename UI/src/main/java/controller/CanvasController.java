@@ -1,9 +1,7 @@
 package controller;
 
-import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
-import window.diagram.DiagramSubwindow;
 import window.Subwindow;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
@@ -32,7 +30,6 @@ public class CanvasController implements IHighLevelController{
     }
 
     /**
-     *
      * @return activeInteractionController
      */
     public InteractionController getActiveInteractionController() {
@@ -48,7 +45,6 @@ public class CanvasController implements IHighLevelController{
     }
 
     /**
-     *
      * @return the list of interactionControllers
      */
     public List<InteractionController> getInteractionControllers() {
@@ -77,7 +73,7 @@ public class CanvasController implements IHighLevelController{
     /**
      * removes the param of the list of interactionControllers
      * if the interactionController was active, set the interactionController with the highest level as active
-     * @param interactionController
+     * @param interactionController to be removed
      */
     public void removeInteractionController(InteractionController interactionController){
         this.interactionControllers.remove(interactionController);
@@ -88,7 +84,7 @@ public class CanvasController implements IHighLevelController{
 
     /**
      * changes the active interactionController to the param
-     * @param interactionController
+     * @param interactionController to be changed to active
      */
     public void changeActiveInteractionController(InteractionController interactionController){
         setActiveInteractionController(interactionController);
@@ -96,12 +92,18 @@ public class CanvasController implements IHighLevelController{
 
     /**
      * handles a key event
+     *      | if CTRLD
+     *          if the activeInteractionController exists, let it handle the keyEvent
+     *      | if CTRLN
+     *          create a new interactionController
+     *          and let it handle the keyEvent
+     *      | else if the activeInteractionController exists
+     *          let it handle the keyEvent
      * @param keyEvent the keyEvent to handle
      */
     public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
-                //checkForDeleteInteractionController();
                 if(getActiveInteractionController() != null){
                     activeInteractionController.handleKeyEvent(keyEvent);
                 }
@@ -120,15 +122,10 @@ public class CanvasController implements IHighLevelController{
 
     /**
      * handles MouseEvent that affects the diagramSubwindow
-     *          | if dragged == false, check if diagramSubwindow currently is being dragged (update the dragging boolean)
-     *          | if dragged == true, check the mouseEventType
-     *                          | if RELEASE, pass the mouseEvent to activeDiagramSubwindow and set dragging == false
-     *                          | if LEFTCLICK, set dragging == false
-     *          | otherwise the appropriate diagramSubwindow that was clicked
-     *                          | if the diagramSubwindow exists
-     *                              | if the diagramSubwindow is not the active one, set it as the active one
-     *                              get the coordinates of the click on the diagramSubwindow, relative to the diagramSubwindow
-     *                              pass the mouseEvent to the appropriate diagramSubwindow
+     *          | if the activeInteractionController exists and it's dragging
+     *              the activeInteractionController handles the mouseEvent
+     *          | else if there is a clicked interactionController
+     *              change it to active and let it handle the mouseEvent
      * @param mouseEvent the mouseEvent to handle
      */
     public void handleMouseEvent(MouseEvent mouseEvent) {
@@ -143,7 +140,6 @@ public class CanvasController implements IHighLevelController{
             }
             activeInteractionController.handleMouseEvent(mouseEvent);
         }
-        //checkForDeleteInteractionController();
     }
 
     /**
@@ -154,19 +150,7 @@ public class CanvasController implements IHighLevelController{
         addInteractionController(interactionController);
     }
 
-    /*private void checkForDeleteInteractionController(){
-        if(activeInteractionController.getActiveSubwindow() == null){
-            if(activeInteractionController.getSubwindows().isEmpty()){
-                removeInteractionController(activeInteractionController);
-                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
-                setActiveInteractionController(findHighestLevelInteractionController());
-                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
-            }
-        }
-    }*/
-
     /**
-     *
      * @return the interactionController with the subwindow with the highest level
      */
     public InteractionController findHighestLevelInteractionController(){
@@ -183,8 +167,7 @@ public class CanvasController implements IHighLevelController{
     }
 
     /**
-     *
-     * @param clickedLocation
+     * @param clickedLocation location where clicked
      * @return the interactionController with the subwindow with the highest level on the clickedLocation
      */
     public InteractionController getAppropriateInteractionController(Point2D clickedLocation){
