@@ -50,36 +50,36 @@ public abstract class DiagramConverter extends SubwindowConverter {
      */
     @Override
     public void draw(Graphics graphics) {
-        DiagramView repo = diagramSubwindow.getFacade().getActiveView();
+        DiagramView view = diagramSubwindow.getFacade().getActiveView();
         Diagram diagram = diagramSubwindow.getFacade().getDiagram();
         DiagramElement selectedElement = diagramSubwindow.getSelected();
 
         drawSubwindow(graphics);
-        drawDiagramSpecificStuff(graphics, repo, diagram, selectedElement);
-        drawParties(graphics, repo.getPartyView());
-        drawPartyLabels(graphics, repo.getPartyView().getAllParties(), repo.getLabelView());
-        drawMessageLabels(graphics, diagram.getFirstMessage(), repo.getLabelView());
-        drawMessages(graphics, repo.getMessageView(), repo.getPartyView().getMap(), diagram.getFirstMessage());
-        drawSelectedLabel(graphics, diagram.getFirstMessage(), repo.getLabelView().getMap());
-        drawSelectionBox(graphics, selectedElement, repo);
+        drawDiagramSpecificStuff(graphics, view, diagram, selectedElement);
+        drawParties(graphics, view.getPartyView());
+        drawPartyLabels(graphics, view.getPartyView().getAllParties(), view.getLabelView());
+        drawMessageLabels(graphics, diagram.getFirstMessage(), view.getLabelView());
+        drawMessages(graphics, view.getMessageView(), view.getPartyView().getMap(), diagram.getFirstMessage());
+        drawSelectedLabel(graphics, diagram.getFirstMessage(), view.getLabelView().getMap());
+        drawSelectionBox(graphics, selectedElement, view);
     }
 
     /**
      * default hook method, for drawing diagram specific stuff if subclass needs it, that does nothing in this class
      *
      * @param graphics        object used to draw on the program's window
-     * @param repo            repository containing all the coordinates of a diagram
+     * @param view            view object containing all the coordinates of a diagram
      * @param diagram         the diagram that will be drawn
      * @param selectedElement the currently selected element in the diagramSubwindow
      */
-    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView repo, Diagram diagram, DiagramElement selectedElement) {
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView view, Diagram diagram, DiagramElement selectedElement) {
     }
 
     /**
      * method that draws parties
      *
      * @param graphics  object used to draw on the program's window
-     * @param partyView repository containing all the coordinates of the parties in the diagramSubwindow's diagram
+     * @param partyView view object containing all the coordinates of the parties in the diagramSubwindow's diagram
      *                  //@param actorDrawer  a drawer object to be used to draw actor parties
      *                  //@param objectDrawer a drawer object to be used to draw object parties
      */
@@ -139,7 +139,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      *
      * @param graphics   object used to draw on the program's window
      * @param allParties a set of all parties in the diagramSubwindow's diagram
-     * @param labelView  repository containing all the coordinates of the labels in the diagramSubwindow's diagram
+     * @param labelView  view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     protected void drawPartyLabels(Graphics graphics, Set<Party> allParties, LabelView labelView) {
         Point2D start;
@@ -155,7 +155,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      *
      * @param graphics     object used to draw on the program's window
      * @param firstMessage the first message in the diagram
-     * @param labelView    repository containing all the coordinates of the labels in the diagramSubwindow's diagram
+     * @param labelView    view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     protected void drawMessageLabels(Graphics graphics, Message firstMessage, LabelView labelView) {
         while (firstMessage != null) {
@@ -169,7 +169,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      *
      * @param graphics  object used to draw on the program's window
      * @param message   message to be drawn
-     * @param labelView repository containing all the coordinates of the labels in the diagramSubwindow's diagram
+     * @param labelView view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
         if (message instanceof InvocationMessage) {
@@ -212,7 +212,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageView  repository containing all the coordinates of the messages in the diagramSubwindow's diagram
+     * @param messageView  view object containing all the coordinates of the messages in the diagramSubwindow's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
@@ -223,23 +223,23 @@ public abstract class DiagramConverter extends SubwindowConverter {
      *
      * @param graphics        object used to draw on the program's window
      * @param selectedElement the diagramSubwindow's selected element
-     * @param repo            repository containing all the coordinates of a diagram
+     * @param view            view object containing all the coordinates of a diagram
      */
-    protected void drawSelectionBox(Graphics graphics, DiagramElement selectedElement, DiagramView repo) {
+    protected void drawSelectionBox(Graphics graphics, DiagramElement selectedElement, DiagramView view) {
         if (selectedElement instanceof Actor) {
             Actor a = (Actor) selectedElement;
-            Map<Party, Point2D> partyMap = repo.getPartyView().getMap();
+            Map<Party, Point2D> partyMap = view.getPartyView().getMap();
             Point2D actorPos = diagramSubwindow.getAbsolutePosition(partyMap.get(a));
             Point2D start = new Point2D.Double(actorPos.getX() - (PartyView.ACTORWIDTH / 2), actorPos.getY()),
                     end = new Point2D.Double(actorPos.getX() + (PartyView.ACTORWIDTH / 2), actorPos.getY() + PartyView.ACTORWIDTH);
             new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Label) {
             Label l = (Label) selectedElement;
-            Point2D start = diagramSubwindow.getAbsolutePosition(repo.getLabelView().getLocationOfLabel(l));
+            Point2D start = diagramSubwindow.getAbsolutePosition(view.getLabelView().getLocationOfLabel(l));
             new SelectionBoxFigure(start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT)).draw(graphics, getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Object) {
             Object o = (Object) selectedElement;
-            Map<Party, Point2D> partyMap = repo.getPartyView().getMap();
+            Map<Party, Point2D> partyMap = view.getPartyView().getMap();
             Point2D objectPos = diagramSubwindow.getAbsolutePosition(partyMap.get(o));
             int selectionBoxSize = 5;
             Point2D start = new Point2D.Double(objectPos.getX() - selectionBoxSize, objectPos.getY() - selectionBoxSize);
@@ -249,9 +249,9 @@ public abstract class DiagramConverter extends SubwindowConverter {
             Message m = (Message) selectedElement;
             Point2D start;
             Point2D end;
-            Map<Party, Point2D> partyMap = repo.getPartyView().getMap();
-            if (repo.getMessageView() instanceof SequenceMessageView) {
-                Map<Message, Integer> msgMap = ((SequenceMessageView) repo.getMessageView()).getMap();
+            Map<Party, Point2D> partyMap = view.getPartyView().getMap();
+            if (view.getMessageView() instanceof SequenceMessageView) {
+                Map<Message, Integer> msgMap = ((SequenceMessageView) view.getMessageView()).getMap();
                 Point2D senderPos = diagramSubwindow.getAbsolutePosition(partyMap.get(m.getSender()));
                 Point2D receiverPos = diagramSubwindow.getAbsolutePosition(partyMap.get(m.getReceiver()));
                 start = new Point2D.Double(senderPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) - (MessageView.HEIGHT / 2));
