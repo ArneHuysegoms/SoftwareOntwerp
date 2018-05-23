@@ -17,7 +17,7 @@ import java.awt.geom.Point2D;
  */
 public class ResultMessageDialogBox extends DialogBox {
 
-    public static final int WIDTH = 120;
+    public static final int WIDTH = 300;
     public static final int HEIGHT = 60;
 
     private TextBox labelTextBox;
