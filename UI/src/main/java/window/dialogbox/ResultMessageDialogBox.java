@@ -15,7 +15,7 @@ import java.awt.geom.Point2D;
 public class ResultMessageDialogBox extends DialogBox {
 
     public static final int WIDTH = 120;
-    public static final int HEIGHT = 50;
+    public static final int HEIGHT = 60;
 
     private TextBox labelTextBox;
     private ResultMessage resultMessage;
@@ -27,7 +27,7 @@ public class ResultMessageDialogBox extends DialogBox {
         super(pos);
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
-        this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 30), "Method");
+        this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 40), "Method");
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
         selected = labelTextBox;

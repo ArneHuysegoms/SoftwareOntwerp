@@ -9,7 +9,6 @@ import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.RadioButton;
@@ -230,7 +229,7 @@ public class PartyDialogBox extends DialogBox {
                         party.getLabel().setLabel(":" + t.getContents());
                     }
                 } else {
-                    party.getLabel().setLabel(split[0] + " :" + t.getContents());
+                    party.getLabel().setLabel(split[0] + ":" + t.getContents());
                 }
             }
             return new UpdateLabelContainersAction(party.getLabel());

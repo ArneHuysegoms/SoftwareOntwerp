@@ -228,17 +228,17 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,75)));
         assertEquals(invocationMessageDialogBox.getArgumentTextBox(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(100,60)));
+        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,100)));
         assertEquals(invocationMessageDialogBox.getAddArgument(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,100)));
-        assertEquals(invocationMessageDialogBox.getDeleteArgument(), invocationMessageDialogBox.getSelected());
-
-        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(50,100)));
+        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(90,100)));
         assertEquals(invocationMessageDialogBox.getMoveDown(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(90,100)));
+        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(130,100)));
         assertEquals(invocationMessageDialogBox.getMoveUp(), invocationMessageDialogBox.getSelected());
+
+        invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(50,100)));
+        assertEquals(invocationMessageDialogBox.getDeleteArgument(), invocationMessageDialogBox.getSelected());
     }
 
     @Test
