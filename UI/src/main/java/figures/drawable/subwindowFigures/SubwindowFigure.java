@@ -25,26 +25,8 @@ public abstract class SubwindowFigure implements IDrawable {
      * a draw function that draws a subwindow on the Graphics parameter object
      *
      * @param graphics object used to draw on the program's window
-     * @param minX     minimum possible x coördinate value
-     * @param minY     minimum possible y coördinate value
-     * @param maxX     maximum possible x coördinate value
-     * @param maxY     maximum possible y coördinate value
      */
-    @Override
-    public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        drawBackgroundColor(graphics, Color.WHITE);
-        drawFrame(graphics, minX, minY, maxX, maxY);
-        drawTitleBar(graphics, minX, minY, maxX, maxY);
-        drawCloseButton(graphics, minX, minY, maxX, maxY);
-    }
-
-    /**
-     * a draw function that draws a subwindow on the Graphics parameter object
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
+    public void drawWindowFrame(Graphics graphics) {
         drawBackgroundColor(graphics, Color.WHITE);
         drawFrame(graphics);
         drawTitleBar(graphics);

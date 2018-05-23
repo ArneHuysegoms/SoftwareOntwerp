@@ -25,7 +25,7 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
      */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        super.draw(graphics, minX, minY, maxX, maxY);
+        drawWindowFrame(graphics);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
         drawButtons(graphics, dialogBox.getArgumentListBox().getSelectedIndex(), minX, minY, maxX, maxY);
         drawListBox(graphics, minX, minY, maxX, maxY);

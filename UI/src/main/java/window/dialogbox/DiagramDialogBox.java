@@ -33,7 +33,8 @@ public class DiagramDialogBox extends DialogBox {
 
     /**
      * creates a new diagramdialogbox
-     * @param position the new position
+     *
+     * @param position  the new position
      * @param subwindow the subwindow this dialogbox is for
      * @throws UIException if the position is null
      */
@@ -48,7 +49,6 @@ public class DiagramDialogBox extends DialogBox {
     }
 
     /**
-     *
      * @return the diagramsubwindow for this dialogbox
      */
     public DiagramSubwindow getDiagramSubwindow() {
@@ -57,32 +57,54 @@ public class DiagramDialogBox extends DialogBox {
 
     /**
      * sets the subwindow to the given subwindow
+     *
      * @param subwindow the new subwindow
      */
     public void setDiagramSubwindow(DiagramSubwindow subwindow) {
         this.subwindow = subwindow;
     }
 
+    /**
+     * @return the default width for this dialogboxtype
+     */
     public static int getWIDTH() {
         return WIDTH;
     }
 
+    /**
+     * @return the default height for this dialogboxtype
+     */
     public static int getHEIGHT() {
         return HEIGHT;
     }
 
+    /**
+     * @return the button responsible for changing to communication diagrams
+     */
     public RadioButton getToCommunicationDiagram() {
         return toCommunicationDiagram;
     }
 
+    /**
+     * @return the button responsible for chaning to sequence diagram
+     */
     public RadioButton getToSequenceDiagram() {
         return toSequenceDiagram;
     }
 
+    /**
+     * @return the selected radiobutton
+     */
     public RadioButton getSelected() {
         return selected;
     }
 
+    /**
+     * handle mouse event
+     *
+     * @param mouseEvent the mouseEvent to handle
+     * @return an action detailing the outcome of the event handling
+     */
     @Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
@@ -93,9 +115,15 @@ public class DiagramDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * handle key event
+     *
+     * @param keyEvent the keyEvent to handle
+     * @return an action detailing the outcome of the event handling
+     */
     @Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyEventType()){
+        switch (keyEvent.getKeyEventType()) {
             case TAB:
                 changeSelectedRadioButton();
                 break;
@@ -106,26 +134,37 @@ public class DiagramDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private void handleMousePress(MouseEvent mouseEvent){
-        if(toCommunicationDiagram.isClicked(mouseEvent.getPoint())){
+    /**
+     * handles the mousepress event
+     *
+     * @param mouseEvent the event to handle
+     */
+    private void handleMousePress(MouseEvent mouseEvent) {
+        if (toCommunicationDiagram.isClicked(mouseEvent.getPoint())) {
             selected = toCommunicationDiagram;
             toCommunicationDiagram.performAction();
-        }
-        else if(toSequenceDiagram.isClicked(mouseEvent.getPoint())){
+        } else if (toSequenceDiagram.isClicked(mouseEvent.getPoint())) {
             selected = toSequenceDiagram;
             toSequenceDiagram.performAction();
         }
     }
 
-    private void changeSelectedRadioButton(){
-        if(selected == toCommunicationDiagram){
+    /**
+     * change the selected radiobutton
+     */
+    private void changeSelectedRadioButton() {
+        if (selected == toCommunicationDiagram) {
             selected = toSequenceDiagram;
-        }
-        else{
+        } else {
             selected = toCommunicationDiagram;
         }
     }
 
+    /**
+     * handles an action
+     *
+     * @param action the action to handle
+     */
     @Override
     public void handleAction(Action action) {
 

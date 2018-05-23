@@ -21,6 +21,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * dialog box for changing parties
+ */
 public class PartyDialogBox extends DialogBox {
 
     public static final int WIDTH = 150;
@@ -46,6 +49,13 @@ public class PartyDialogBox extends DialogBox {
 
     private DiagramSubwindow subwindow;
 
+    /**
+     * create a new party dialog box
+     * @param pos the position for this dialogbox
+     * @param party the party this dialogbox is created for
+     * @param subwindow the subwindow this dialogbox was created in
+     * @throws UIException if the position is null
+     */
     public PartyDialogBox(Point2D pos, Party party, DiagramSubwindow subwindow) throws UIException {
         super(pos);
         this.setParty(party);
@@ -67,18 +77,34 @@ public class PartyDialogBox extends DialogBox {
         updateFields(party);
     }
 
+    /**
+     *
+     * @return the radiobutton for changing to actors
+     */
     public RadioButton getToActor() {
         return toActor;
     }
 
+    /**
+     *
+     * @return the radiobutton for changing to objects
+     */
     public RadioButton getToObject() {
         return toObject;
     }
 
+    /**
+     *
+     * @return the textbox for the instance string
+     */
     public TextBox getInstanceTextBox() {
         return instanceTextBox;
     }
 
+    /**
+     *
+     * @return the textbox for changing the class string
+     */
     public TextBox getClassTextBox() {
         return classTextBox;
     }
@@ -185,23 +211,24 @@ public class PartyDialogBox extends DialogBox {
         selected = elementList.get((oldIndex + 1) % 4);
     }
 
-    //TODO refactor
     private Action handleSpace() {
         if (selected instanceof RadioButton) {
             if (selected == toActor) {
                 Action action = toActor.performAction();
-                if(action instanceof UpdatePartyTypeAction) {
+                handleAction(action);
+                /*if(action instanceof UpdatePartyTypeAction) {
                     UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
                     handleAction(updatePartyTypeAction);
                     return updatePartyTypeAction;
-                }
+                }*/
             } else if (selected == toObject) {
                 Action action = toObject.performAction();
-                if(action instanceof UpdatePartyTypeAction) {
+                handleAction(action);
+                /*if(action instanceof UpdatePartyTypeAction) {
                     UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
                     handleAction(updatePartyTypeAction);
                     return updatePartyTypeAction;
-                }
+                }*/
             }
         }
         return new EmptyAction();
@@ -234,7 +261,7 @@ public class PartyDialogBox extends DialogBox {
             }
             return new UpdateLabelContainersAction(party.getLabel());
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return new EmptyAction();
     }
@@ -260,19 +287,6 @@ public class PartyDialogBox extends DialogBox {
                     if(subwindow.getSelected() == a.getOldParty()){
                         subwindow.setSelected(a.getNewParty());
                     }
-                   /* Action action1 = subwindow.opendialogBox();
-                    if (action1 instanceof DialogBoxOpenedAction) {
-
-                        DialogBoxOpenedAction action2 = (DialogBoxOpenedAction) action1;
-                        CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
-                        CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
-                        close.getInteractionController().addSubwindow(action2.getDialogBox());
-                        action2.getDialogBox().setPosition(this.getPosition());
-                        ((PartyDialogBox) action2.getDialogBox()).setParty(a.getNewParty());
-                        action2.getDialogBox().createFrame(this.getFrame().getButton());
-                        action2.getDialogBox().getFrame().getButton().setPosition(this.getFrame().getButton().getPosition());
-                        action2.getDialogBox().getFrame().getButton().setCommand(new CloseSubwindowCommand(action2.getDialogBox(), close.getInteractionController()));
-                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
