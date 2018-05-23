@@ -278,9 +278,13 @@ public class PartyDialogBox extends DialogBox {
                 String oldLabel = party.getLabel().getLabel();
                 String[] split = oldLabel.split(":");
                 if (split.length == 1) {
-                    party.getLabel().setLabel(t.getContents() + ":" + split[0]);
+                    if(party.getLabel().isValidLabel(t.getContents() + ":" + split[0])) {
+                        party.getLabel().setLabel(t.getContents() + ":" + split[0]);
+                    }
                 } else {
-                    party.getLabel().setLabel(t.getContents() + ":" + split[1]);
+                    if(party.getLabel().isValidLabel(t.getContents() + ":" + split[1])) {
+                        party.getLabel().setLabel(t.getContents() + ":" + split[1]);
+                    }
                 }
             } else {
                 TextBox t = (TextBox) selected;
@@ -290,10 +294,14 @@ public class PartyDialogBox extends DialogBox {
                     if (!this.getInstanceTextBox().getContents().isEmpty() && Character.isLowerCase(this.getInstanceTextBox().getContents().charAt(0))) {
                         party.getLabel().setLabel(getInstanceTextBox().getContents() + ":" + t.getContents());
                     } else {
-                        party.getLabel().setLabel(":" + t.getContents());
+                        if(party.getLabel().isValidLabel(":" + t.getContents())) {
+                            party.getLabel().setLabel(":" + t.getContents());
+                        }
                     }
                 } else {
-                    party.getLabel().setLabel(split[0] + ":" + t.getContents());
+                    if(party.getLabel().isValidLabel(split[0] + ":" + t.getContents())) {
+                        party.getLabel().setLabel(split[0] + ":" + t.getContents());
+                    }
                 }
             }
             return new UpdateLabelContainersAction(party.getLabel());

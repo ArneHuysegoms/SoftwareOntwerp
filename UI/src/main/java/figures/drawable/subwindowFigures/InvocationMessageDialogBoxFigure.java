@@ -113,9 +113,9 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "? invokeDBFigure meth")
+        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "(method name)")
                 .draw(graphics, minX, minY, maxX, maxY);
-        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "? invokeDBFigure arg")
+        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "(argument)")
                 .draw(graphics, minX, minY, maxX, maxY);
     }
 
@@ -125,9 +125,6 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawTextBoxes(Graphics graphics) {
-        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "? invokeDBFigure meth")
-                .draw(graphics);
-        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "? invokeDBFigure arg")
-                .draw(graphics);
+        this.drawTextBoxes(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 }
