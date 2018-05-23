@@ -34,31 +34,11 @@ public class FigureConverter {
      *
      * @param graphics         object used to draw on the program's window
      *                         //* @param subwindowLevels the subwindows to be drawn on the controller
-     * @param canvasController the controller that has acces to all the stuff to be drawn
+     * @param list the controller that has acces to all the stuff to be drawn
      */
-    public void draw(Graphics graphics, CanvasController canvasController) {
+    public void draw(Graphics graphics, List<Subwindow> list) {
         drawBackGroundColor(graphics);
-        drawSubwindows(graphics, sortDiagramSubwindows(canvasController));
-
-    }
-
-    //TODO information expert, deze zou in canvasController kunenn staan en dan "new FigureConverter('een List<Subs>').draw(g)"
-
-    /**
-     * method that gathers and sorts all the Subwindows
-     *
-     * @param canvasController
-     * @return List containing all subwindows
-     */
-    private List<Subwindow> sortDiagramSubwindows(CanvasController canvasController) {
-        List<Subwindow> result = new ArrayList<Subwindow>();
-
-        for (InteractionController interaction : canvasController.getInteractionControllers()) {
-            result.addAll(interaction.getSubwindows());
-        }
-
-        Collections.sort(result);
-        return result;
+        drawSubwindows(graphics, list);
     }
 
     /**

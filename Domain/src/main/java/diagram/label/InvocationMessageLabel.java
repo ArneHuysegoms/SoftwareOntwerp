@@ -1,6 +1,5 @@
 package diagram.label;
 
-import diagram.Argument;
 import exceptions.DomainException;
 
 import java.io.Serializable;
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public class InvocationMessageLabel extends MessageLabel implements Serializable {
 
-    private List<Argument> arguments;
+    private List<String> arguments;
     private int index;
 
     /**
@@ -21,7 +20,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
      * @param arguments List of arguments belonginging to this InvocationMessage
      * @throws DomainException a method name has to start with a lowercase character and can only contain letters, digits and underscores
      */
-    public InvocationMessageLabel(String label, List<Argument> arguments) throws DomainException {
+    public InvocationMessageLabel(String label, List<String> arguments) throws DomainException {
         super(label);
         this.setArguments(arguments);
         index = -1;
@@ -42,37 +41,34 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     /**
      * @return returns the list of arguments for this invocationMessageLabel
      */
-
-    public List<Argument> getArguments() {
+    public List<String> getArguments() {
         return arguments;
     }
 
     /**
      * @param arguments The list of arguments to set with this invocationMessage
      */
-    public void setArguments(List<Argument> arguments) {
+    public void setArguments(List<String> arguments) {
         this.arguments = arguments;
     }
 
     /**
      * adds a new argument with the given strings to the list
      *
-     * @param instance the instance string
-     * @param clas     the class string
+     * @param argument the argument to add
      */
-    public void addArgument(String instance, String clas) {
-        getArguments().add(new Argument(instance, clas));
+    public void addArgument(String argument) {
+        getArguments().add(argument);
     }
 
     /**
      * adds a new argument with the given strings to the list at the specified location
      *
-     * @param instance the instance string
-     * @param clas     the class string
+     * @param argument the argument to add
      * @param position the position in the list to add to
      */
-    public void addArgumentAtPosition(String instance, String clas, int position) {
-        getArguments().add(position, new Argument(instance, clas));
+    public void addArgumentAtPosition(String argument, int position) {
+        getArguments().add(position, argument);
     }
 
     /**
@@ -139,11 +135,11 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     @Override
     public String toString() {
         String toString = this.getLabel() + "(";
-        for (Argument a : getArguments()) {
-            if (arguments.indexOf(a) == arguments.size() - 1) {
-                toString += a.toString();
+        for (String s : getArguments()) {
+            if (arguments.indexOf(s) == arguments.size() - 1) {
+                toString += s;
             } else {
-                toString += a.toString() + ",";
+                toString += s + ",";
             }
         }
         toString += ")";
@@ -156,7 +152,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public void moveUp() {
         if (index > 0) {
             Collections.swap(arguments, index, index - 1);
-            this.setIndex(index + 1);
+            this.setIndex(index - 1);
         }
     }
 
@@ -166,7 +162,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public void moveDown() {
         if (index < arguments.size() - 1) {
             Collections.swap(arguments, index, index + 1);
-            this.setIndex(index - 1);
+            this.setIndex(index + 1);
         }
     }
 
@@ -184,8 +180,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
         String[] args = label.substring(open + 1, close).split(",");
         for (String s : args) {
             if (!s.isEmpty()) {
-                String[] ele = s.split(":");
-                arguments.add(new Argument(ele[0], ele[1]));
+                arguments.add(s);
             }
         }
     }
@@ -211,13 +206,13 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
         String[] args = label.substring(open + 1, close).split(",");
         for (String s : args) {
             if (!s.isEmpty()) {
-                String[] ele = s.split(":");
-                if (ele.length == 2) {
-                    if (!Argument.isValidArgument(ele[0], ele[1])) {
-                        return false;
-                    }
-                } else {
+                if(s.contains(",") || s.contains("(") || s.contains(")")){
                     return false;
+                }
+            }
+            else{
+                if(args.length != 1){
+                   return false;
                 }
             }
         }

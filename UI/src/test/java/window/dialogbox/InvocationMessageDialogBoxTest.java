@@ -252,7 +252,7 @@ public class InvocationMessageDialogBoxTest {
     @Test
     public void test_handleAction_UpdateLabelAction() throws DomainException {
         invocationMessage.getLabel().setLabel("method");
-        invocationMessageLabel.addArgument("d", "D");
+        invocationMessageLabel.addArgument("test");
         Action action = new UpdateLabelAction(invocationMessage, null);
         invocationMessageDialogBox.handleAction(action);
     }
