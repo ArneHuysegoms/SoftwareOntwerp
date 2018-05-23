@@ -142,6 +142,7 @@ public class InteractionController implements IHighLevelController{
             deleteInMap((DialogBox) subwindow);
         }else{
             deleteInMap((DiagramSubwindow) subwindow);
+            setActiveDiagramSubwindow(null);
         }
         subwindows.remove(subwindow);
         setActiveSubwindow(getHighestLevelSubwindow());
