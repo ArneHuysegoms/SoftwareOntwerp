@@ -8,6 +8,7 @@ import uievents.MouseEvent;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -182,6 +183,22 @@ public class CanvasController implements IHighLevelController{
                 }
             }
         }
+        return result;
+    }
+
+    /**
+     * method that gathers and sorts all the Subwindows
+     *
+     * @return List containing all subwindows
+     */
+    public List<Subwindow> sortDiagramSubwindows() {
+        List<Subwindow> result = new ArrayList<Subwindow>();
+
+        for (InteractionController interaction : this.getInteractionControllers()) {
+            result.addAll(interaction.getSubwindows());
+        }
+
+        Collections.sort(result);
         return result;
     }
 }
