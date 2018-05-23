@@ -15,7 +15,7 @@ import java.awt.geom.Point2D;
 // TODO dialog box for a party shows
 //two text boxes and two radio buttons, for editing the instance name and the class
 //name and for choosing between the actor and object form, respectively.
-public class PartyDialogBoxFigure extends SubwindowFigure {
+public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private PartyDialogBox dialogBox;
 

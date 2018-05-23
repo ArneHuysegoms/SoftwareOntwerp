@@ -5,7 +5,7 @@ import window.dialogbox.ResultMessageDialogBox;
 
 import java.awt.*;
 
-public class ResultMessageDialogBoxFigure extends SubwindowFigure {
+public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private ResultMessageDialogBox dialogBox;
 

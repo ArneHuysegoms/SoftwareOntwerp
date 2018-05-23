@@ -6,7 +6,7 @@ import window.dialogbox.DiagramDialogBox;
 
 import java.awt.*;
 
-public class DiagramDialogBoxFigure extends SubwindowFigure {
+public class DiagramDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private DiagramDialogBox dialogBox;
 
