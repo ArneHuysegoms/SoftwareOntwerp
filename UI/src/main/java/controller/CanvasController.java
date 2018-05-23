@@ -141,8 +141,9 @@ public class CanvasController implements IHighLevelController{
             if (!ic.equals(getActiveInteractionController())) {
                 changeActiveInteractionController(ic);
             }
-            ic.handleMouseEvent(mouseEvent);
+            activeInteractionController.handleMouseEvent(mouseEvent);
         }
+        //checkForDeleteInteractionController();
     }
 
     /**
@@ -150,17 +151,18 @@ public class CanvasController implements IHighLevelController{
      */
     private void createNewInteractionController(){
         InteractionController interactionController = new InteractionController();
-        this.getInteractionControllers().add(interactionController);
-        this.changeActiveInteractionController(interactionController);
+        addInteractionController(interactionController);
     }
 
     /*private void checkForDeleteInteractionController(){
-        if(activeInteractionController.getActiveDiagramSubwindow() == null){
+        if(activeInteractionController.getActiveSubwindow() == null){
             if(activeInteractionController.getSubwindows().isEmpty()){
-                this.activeInteractionController = null;
+                removeInteractionController(activeInteractionController);
+                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
+                setActiveInteractionController(findHighestLevelInteractionController());
+                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
             }
         }
-        //getSubwindows() kan nog dialogboxes bevatten?
     }*/
 
     /**

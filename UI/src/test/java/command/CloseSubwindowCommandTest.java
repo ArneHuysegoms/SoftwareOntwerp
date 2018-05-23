@@ -28,8 +28,7 @@ public class CloseSubwindowCommandTest {
         closeSubwindowCommand = new CloseSubwindowCommand(subwindow, interactionController);
         Button button = new CloseWindowButton(closeSubwindowCommand);
         subwindow.getFrame().setButton(button);
-        interactionController.getSubwindows().add(subwindow);
-        interactionController.setActiveSubwindow(subwindow);
+        interactionController.addSubwindow(subwindow);
     }
 
     @Test

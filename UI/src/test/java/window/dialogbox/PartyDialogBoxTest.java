@@ -140,13 +140,13 @@ public class PartyDialogBoxTest {
 
     @Test
     public void test_mouse_presses(){
-        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 50)));
+        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 60)));
         assertEquals(partyDialogBox.getInstanceTextBox(), partyDialogBox.getSelected());
-        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 75)));
+        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 85)));
         assertEquals(partyDialogBox.getClassTextBox(), partyDialogBox.getSelected());
-        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(85, 20)));
+        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(85, 30)));
         assertEquals(partyDialogBox.getToObject(), partyDialogBox.getSelected());
-        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 20)));
+        partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 30)));
         assertEquals(partyDialogBox.getToActor(), partyDialogBox.getSelected());
     }
 
