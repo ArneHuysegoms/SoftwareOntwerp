@@ -57,8 +57,17 @@ public class PartyLabel extends Label implements Serializable {
      */
     public void setLabel(String label) throws DomainException {
         if (!isValidLabel(label)) {
-            throw new DomainException("a message label has to start with a lowercase character");
+            throw new DomainException("invalid party label");
         }
         super.label = label;
+    }
+
+    /**
+     *
+     * @return a textual description of this party label
+     */
+    @Override
+    public String toString(){
+        return this.getLabel();
     }
 }

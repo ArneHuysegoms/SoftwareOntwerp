@@ -33,57 +33,57 @@ public class FacadeTest {
     @Test
     public void Test_default_constructor_works(){
         DomainFacade f = new DomainFacade();
-        assertNotNull(f.getActiveRepo());
-        assertNotNull(f.getCommunicationRepo());
-        assertNotNull(f.getSequenceRepo());
+        assertNotNull(f.getActiveView());
+        assertNotNull(f.getCommunicationView());
+        assertNotNull(f.getSequenceView());
         assertNotNull(f.getDiagram());
-        assertTrue(f.getActiveRepo() instanceof SequenceView);
+        assertTrue(f.getActiveView() instanceof SequenceView);
     }
 
     @Test
     public void Test_changeActiveDiagram(){
         DomainFacade  f = new DomainFacade();
-        assertTrue(f.getActiveRepo() instanceof SequenceView);
+        assertTrue(f.getActiveView() instanceof SequenceView);
         f.changeActiveDiagram();
-        assertTrue(f.getActiveRepo() instanceof CommunicationView);
+        assertTrue(f.getActiveView() instanceof CommunicationView);
     }
 
     @Test
     public void Test_addNewParty() {
         DomainFacade  f = new DomainFacade();
         f.addNewParty(new Point2D.Double(50,120));
-        assertTrue(f.getActiveRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 1);
-        assertTrue(f.getOtherRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 1);
-        assertNotNull(f.getOtherRepo().getPartyView().getPartyAtPosition(new Point2D.Double(50, 120)));
-        assertNotNull(f.getActiveRepo().getPartyView().getPartyAtPosition(new Point2D.Double(50,50)));
+        assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 1);
+        assertTrue(f.getOtherView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 1);
+        assertNotNull(f.getOtherView().getPartyView().getPartyAtPosition(new Point2D.Double(50, 120)));
+        assertNotNull(f.getActiveView().getPartyView().getPartyAtPosition(new Point2D.Double(50,50)));
     }
 
     @Test
     public void Test_addNewParty_works_with_change_of_diagramType(){
         DomainFacade  f = new DomainFacade();
         f.addNewParty(new Point2D.Double(50,120));
-        assertTrue(f.getActiveRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 1);
-        assertTrue(f.getOtherRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 1);
+        assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 1);
+        assertTrue(f.getOtherView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 1);
         f.changeActiveDiagram();
-        assertNotNull(f.getActiveRepo().getPartyView().getPartyAtPosition(new Point2D.Double(50, 120)));
-        assertNotNull(f.getOtherRepo().getPartyView().getPartyAtPosition(new Point2D.Double(50,50)));
+        assertNotNull(f.getActiveView().getPartyView().getPartyAtPosition(new Point2D.Double(50, 120)));
+        assertNotNull(f.getOtherView().getPartyView().getPartyAtPosition(new Point2D.Double(50,50)));
     }
 
     @Test
     public void Test_changePartyType() throws DomainException{
         DomainFacade f = new DomainFacade();
         f.addNewParty(standardPoint);
-        Party party = f.getActiveRepo().getPartyView().getPartyAtPosition(standardPoint);
+        Party party = f.getActiveView().getPartyView().getPartyAtPosition(standardPoint);
         f.changePartyType(party);
         assertTrue(f.getDiagram().getParties().size() == 1);
         assertTrue(f.getDiagram().getParties().get(0) instanceof Actor);
-        Party changedParty = f.getActiveRepo().getPartyView().getPartyAtPosition(standardPoint);
+        Party changedParty = f.getActiveView().getPartyView().getPartyAtPosition(standardPoint);
         assertTrue(changedParty instanceof Actor);
-        Party changedPartyOther = f.getOtherRepo().getPartyView().getPartyAtPosition(standardPoint);
+        Party changedPartyOther = f.getOtherView().getPartyView().getPartyAtPosition(standardPoint);
         assertTrue(changedPartyOther  instanceof Actor);
         assertEquals(changedParty, changedPartyOther);
     }
@@ -103,10 +103,10 @@ public class FacadeTest {
         Party newParty= f.addNewParty(standardPoint);
         f.deleteElementByLabel(newParty.getLabel());
         assertTrue(f.getDiagram().getParties().size() == 0);
-        assertTrue(f.getActiveRepo().getPartyView().getAllParties().size() == 0);
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 0);
-        assertTrue(f.getOtherRepo().getPartyView().getAllParties().size() == 0);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 0);
+        assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 0);
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 0);
+        assertTrue(f.getOtherView().getPartyView().getAllParties().size() == 0);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 0);
     }
 
     @Test
@@ -114,12 +114,12 @@ public class FacadeTest {
         DomainFacade f = new DomainFacade();
         f.addNewParty(standardPoint);
         Point2D newLocation = new Point2D.Double(100,50);
-        Party party = f.getActiveRepo().getPartyView().getPartyAtPosition(standardPoint);
+        Party party = f.getActiveView().getPartyView().getPartyAtPosition(standardPoint);
         f.changePartyPosition(newLocation, party);
-        assertEquals(party, f.getActiveRepo().getPartyView().getPartyAtPosition(new Point2D.Double(100, 50)));
-        assertTrue(f.getActiveRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 1);
-        assertEquals(party.getLabel(), f.getActiveRepo().getLabelView().getLabelAtPosition(new Point2D.Double(110, 75)));
+        assertEquals(party, f.getActiveView().getPartyView().getPartyAtPosition(new Point2D.Double(100, 50)));
+        assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 1);
+        assertEquals(party.getLabel(), f.getActiveView().getLabelView().getLabelAtPosition(new Point2D.Double(110, 75)));
     }
 
     @Test
@@ -133,11 +133,11 @@ public class FacadeTest {
         List<Message> addNewMessage = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
         assertNotNull(f.getDiagram().getFirstMessage());
         assertEquals(addNewMessage.get(0).getLabel(), f.getDiagram().getFirstMessage().getLabel());
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 4);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 3);
-        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveRepo().getMessageView();
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 4);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 3);
+        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveView().getMessageView();
         assertTrue(sequenceMessageRepo.getAllMessages().size() == 2);
-        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherRepo().getMessageView();
+        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherView().getMessageView();
         assertTrue(communicationMessageRepo.getMap().size() == 1);
     }
 
@@ -152,11 +152,11 @@ public class FacadeTest {
         List<Message> addNewMessage = f.addNewMessage(new Point2D.Double(175, 150), messageStart);
         f.deleteElementByLabel(addNewMessage.get(0).getLabel());
         assertNull(f.getDiagram().getFirstMessage());
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 2);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 2);
-        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveRepo().getMessageView();
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 2);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 2);
+        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveView().getMessageView();
         assertTrue(sequenceMessageRepo.getAllMessages().size() == 0);
-        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherRepo().getMessageView();
+        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherView().getMessageView();
         assertTrue(communicationMessageRepo.getMap().size() == 0);
     }
 
@@ -165,10 +165,10 @@ public class FacadeTest {
         DomainFacade f = new DomainFacade();
         Party party = new Object(new MessageLabel("a:A"));
         f.addPartyToRepo(party, standardPoint);
-        assertTrue(f.getActiveRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getActiveRepo().getLabelView().getMap().size() == 1);
-        assertTrue(f.getOtherRepo().getPartyView().getAllParties().size() == 1);
-        assertTrue(f.getOtherRepo().getLabelView().getMap().size() == 1);
+        assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getActiveView().getLabelView().getMap().size() == 1);
+        assertTrue(f.getOtherView().getPartyView().getAllParties().size() == 1);
+        assertTrue(f.getOtherView().getLabelView().getMap().size() == 1);
         assertTrue(f.getDiagram().getParties().size() == 0);
     }
 }

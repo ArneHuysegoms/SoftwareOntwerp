@@ -70,7 +70,7 @@ public class InvocationMessage extends Message implements Serializable {
      */
     @Override
     public String toString() {
-        return this.getMessageNumber() + " " + this.getLabel().getLabel();
+        return this.getMessageNumber() + " " + this.getLabel().toString();
     }
 
     /**

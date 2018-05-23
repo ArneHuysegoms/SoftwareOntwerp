@@ -27,10 +27,20 @@ public class KeyEventFactory {
                 return new KeyEvent(KeyEventType.DEL);
             } else if (keyCode == 8) {
                 return new KeyEvent(KeyEventType.BACKSPACE);
-            } else if (keyCode == 17){
+            } else if (keyCode == 32) {
+                return new KeyEvent(KeyEventType.SPACE);
+            } else if (keyCode == 37) {
+                return new KeyEvent(KeyEventType.ARROWKEYLEFT);
+            } else if (keyCode == 38) {
+                return new KeyEvent(KeyEventType.ARROWKEYUP);
+            } else if (keyCode == 39) {
+                return new KeyEvent(KeyEventType.ARROWKEYRIGHT);
+            } else if (keyCode == 40) {
+                return new KeyEvent(KeyEventType.ARROWKEYDOWN);
+            }  else if (keyCode == 17){
                 setCtrlPressed(true);
                 System.out.println("Set TRUE");
-            } else if (keyCode != 68 && keyCode != 78) {
+            } else if (keyCode != 68 && keyCode != 78 && keyCode != 10) {
                 setCtrlPressed(false);
             } else if (keyCode == 68) {
                 if (ctrlPressed == true) {
@@ -44,9 +54,15 @@ public class KeyEventFactory {
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLN);
                 }
+            } else if (keyCode == 10){
+                if(ctrlPressed == true){
+                    System.out.println("CTRLENTER EVENT CREATED");
+                    setCtrlPressed(false);
+                    return new KeyEvent(KeyEventType.CTRLENTER);
+                }
             }
-        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b') {
-            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ') {
+        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b' && keyChar != '\t') {
+            if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ' || keyChar == ')' || keyChar == '(' || keyChar == ',') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {
                 return new KeyEvent(KeyEventType.CHAR);

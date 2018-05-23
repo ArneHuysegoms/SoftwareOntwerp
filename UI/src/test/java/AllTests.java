@@ -1,25 +1,23 @@
-import mediator.InteractionMediatorTest;
-import suites.FiguresTests;
-import suites.SubwindowTests;
-import suites.UIEventTests;
-import suites.WindowElementsTests;
-import controller.*;
-import canvaswindow.*;
-
+import action.ActionTestSuite;
+import canvaswindow.InteractrCanvasTest;
+import command.CommandTestSuite;
+import controller.ControllerTestSuite;
+import figures.FiguresTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import uievents.UIEventTests;
+import window.WindowTestSuite;
+
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-
-        InteractrCanvasTest.class,
-        CanvasControllerTest.class,
-        FiguresTests.class,
-        InteractionMediatorTest.class,
-        SubwindowTests.class,
+        WindowTestSuite.class,
         UIEventTests.class,
-        WindowElementsTests.class,
+        FiguresTests.class,
+        ControllerTestSuite.class,
+        CommandTestSuite.class,
+        InteractrCanvasTest.class,
+        ActionTestSuite.class,
 })
-
 public class AllTests {
 }
