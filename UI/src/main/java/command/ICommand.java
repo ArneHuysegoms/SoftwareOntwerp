@@ -3,7 +3,7 @@ package command;
 import action.Action;
 
 /**
- * interface for commands that perform an action
+ * interface for commands that perform an action and return an action
  */
 public interface ICommand {
 
