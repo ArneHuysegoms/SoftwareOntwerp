@@ -5,7 +5,7 @@ import window.dialogbox.ResultMessageDialogBox;
 
 import java.awt.*;
 
-public class ResultMessageDialogBoxFigure extends SubwindowFigure {
+public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
 
     private ResultMessageDialogBox dialogBox;
 
@@ -26,6 +26,7 @@ public class ResultMessageDialogBoxFigure extends SubwindowFigure {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);
         drawTextBox(graphics, minX, minY, maxX, maxY);
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**
