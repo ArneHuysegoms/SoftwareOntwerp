@@ -139,7 +139,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
             if (arguments.indexOf(s) == arguments.size() - 1) {
                 toString += s;
             } else {
-                toString += s.toString() + ",";
+                toString += s + ",";
             }
         }
         toString += ")";
@@ -152,7 +152,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public void moveUp() {
         if (index > 0) {
             Collections.swap(arguments, index, index - 1);
-            this.setIndex(index + 1);
+            this.setIndex(index - 1);
         }
     }
 
@@ -162,7 +162,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     public void moveDown() {
         if (index < arguments.size() - 1) {
             Collections.swap(arguments, index, index + 1);
-            this.setIndex(index - 1);
+            this.setIndex(index + 1);
         }
     }
 

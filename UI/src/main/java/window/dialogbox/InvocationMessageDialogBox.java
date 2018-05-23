@@ -82,6 +82,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
 
+        argumentListBox.setArguments(invocationMessageLabel.getArguments());
+        argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
+        invocationMessageLabel.setIndex(invocationMessageLabel.getArguments().size() - 1);
+
         updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
     }
 
