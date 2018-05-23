@@ -1,6 +1,5 @@
 package diagram.label;
 
-import diagram.Argument;
 import exceptions.DomainException;
 import org.junit.Test;
 
