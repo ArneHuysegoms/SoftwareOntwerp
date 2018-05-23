@@ -1,12 +1,23 @@
 package exception;
 
+/**
+ * exception for UI
+ */
 public class UIException extends Exception {
 
-    public UIException(){
+    /**
+     * default ui exception
+     */
+    public UIException() {
         super();
     }
 
-    public UIException(String message){
+    /**
+     * ui exception with message
+     *
+     * @param message message for this exception
+     */
+    public UIException(String message) {
         super(message);
     }
 }

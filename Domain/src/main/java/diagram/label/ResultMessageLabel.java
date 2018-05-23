@@ -2,6 +2,9 @@ package diagram.label;
 
 import exceptions.DomainException;
 
+/**
+ * label class for resultmessagse
+ */
 public class ResultMessageLabel extends MessageLabel {
 
     /**
@@ -23,6 +26,10 @@ public class ResultMessageLabel extends MessageLabel {
         return true;
     }
 
+    /**
+     *
+     * @return a textual description of this ResultMessageLabel
+     */
     @Override
     public String toString(){
         return this.getLabel();

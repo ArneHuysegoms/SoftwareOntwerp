@@ -61,6 +61,10 @@ public abstract class Label extends DiagramElement implements Serializable {
         return Character.toString(charToAdd).matches("[a-zA-Z]") || charToAdd == ':' || charToAdd == ' ';
     }
 
+    /**
+     *
+     * @return a textual description of this label
+     */
     @Override
     public abstract String toString();
 }

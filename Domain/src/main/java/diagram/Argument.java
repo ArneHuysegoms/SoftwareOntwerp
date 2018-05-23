@@ -1,19 +1,15 @@
 package diagram;
 
-import exceptions.DomainException;
-
-import java.util.Collections;
-
+/**
+ * class for an argument, consisting of an instance and class String
+ */
 public class Argument {
     private String argumentInstance;
     private String argumentClass;
 
     /**
-     * @param argumentInstance
-     *        The instancename of this argument
-     *
-     * @param argumentClass
-     *        The classname of this argument
+     * @param argumentInstance The instancename of this argument
+     * @param argumentClass    The classname of this argument
      */
     public Argument(String argumentInstance, String argumentClass) {
         this.setArgumentInstance(argumentInstance);
@@ -21,23 +17,20 @@ public class Argument {
     }
 
     /**
-     * @param argumentInstance
-     *        The instancename of this argument
+     * @param argumentInstance The instancename of this argument
      */
     public void setArgumentInstance(String argumentInstance) {
         this.argumentInstance = argumentInstance;
     }
 
     /**
-     * @param argumentClass
-     *        The classname of this argument
+     * @param argumentClass The classname of this argument
      */
     public void setArgumentClass(String argumentClass) {
         this.argumentClass = argumentClass;
     }
 
     /**
-     *
      * @return this argument's instance
      */
     public String getArgumentInstance() {
@@ -45,7 +38,6 @@ public class Argument {
     }
 
     /**
-     *
      * @return this argument's class
      */
     public String getArgumentClass() {
@@ -61,18 +53,14 @@ public class Argument {
     }
 
     /**
-     * @param instance
-     *        The instance string
-     * @param clas
-     *        The class string
-     * @return
-     *        True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
+     * @param instance The instance string
+     * @param clas     The class string
+     * @return True if label is of the form instanceName:classname (instanceName optional), or empty for empty strings
      */
-    public static boolean isValidArgument(String instance, String clas){
-        if(instance.isEmpty() || clas.isEmpty()){
+    public static boolean isValidArgument(String instance, String clas) {
+        if (instance.isEmpty() || clas.isEmpty()) {
             return false;
-        }
-        else{
+        } else {
             return Character.isLowerCase(instance.charAt(0)) && Character.isUpperCase(clas.charAt(0));
         }
     }
