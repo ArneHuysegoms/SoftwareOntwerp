@@ -51,8 +51,9 @@ public class PartyDialogBox extends DialogBox {
 
     /**
      * create a new party dialog box
-     * @param pos the position for this dialogbox
-     * @param party the party this dialogbox is created for
+     *
+     * @param pos       the position for this dialogbox
+     * @param party     the party this dialogbox is created for
      * @param subwindow the subwindow this dialogbox was created in
      * @throws UIException if the position is null
      */
@@ -78,7 +79,6 @@ public class PartyDialogBox extends DialogBox {
     }
 
     /**
-     *
      * @return the radiobutton for changing to actors
      */
     public RadioButton getToActor() {
@@ -86,7 +86,6 @@ public class PartyDialogBox extends DialogBox {
     }
 
     /**
-     *
      * @return the radiobutton for changing to objects
      */
     public RadioButton getToObject() {
@@ -94,7 +93,6 @@ public class PartyDialogBox extends DialogBox {
     }
 
     /**
-     *
      * @return the textbox for the instance string
      */
     public TextBox getInstanceTextBox() {
@@ -102,33 +100,55 @@ public class PartyDialogBox extends DialogBox {
     }
 
     /**
-     *
      * @return the textbox for changing the class string
      */
     public TextBox getClassTextBox() {
         return classTextBox;
     }
 
+    /**
+     * @return the currently selected dialogboxelement
+     */
     public DialogboxElement getSelected() {
         return selected;
     }
 
+    /**
+     * @return all dialogbox elements in this dialogbox
+     */
     public List<DialogboxElement> getElementList() {
         return elementList;
     }
 
+    /**
+     * @return the party this dialogbox edits
+     */
     public Party getParty() {
         return party;
     }
 
+    /**
+     * the party this dialogbox needs to edit
+     *
+     * @param party the party for this dialogbox
+     */
     public void setParty(Party party) {
         this.party = party;
     }
 
+    /**
+     * @return the subwindow this dialogbox edits
+     */
     public DiagramSubwindow getSubwindow() {
         return subwindow;
     }
 
+    /**
+     * handle a mouse event
+     *
+     * @param mouseEvent the mouseEvent to handle
+     * @return an action detailing the outcome of the handling
+     */
     @Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
@@ -138,43 +158,44 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * handle a keyEvent
+     *
+     * @param keyEvent the keyEvent to handle
+     * @return an action detailing the outcome of the handling
+     */
     @Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
-        try {
-            switch (keyEvent.getKeyEventType()) {
-                case TAB:
-                    cycleSelectedElement();
-                    break;
-                case SPACE:
-                    return handleSpace();
-                case CHAR:
-                    return handleChar(keyEvent);
-                case BACKSPACE:
-                    return handleBackSpace();
-            }
-        } catch (DomainException e) {
-            e.printStackTrace();
+        switch (keyEvent.getKeyEventType()) {
+            case TAB:
+                cycleSelectedElement();
+                break;
+            case SPACE:
+                return handleSpace();
+            case CHAR:
+                return handleChar(keyEvent);
+            case BACKSPACE:
+                return handleBackSpace();
         }
         return new EmptyAction();
     }
 
-    //TODO refactor
+    /**
+     * handle a mouse press event
+     *
+     * @param mouseEvent the mouse event to handle
+     * @return an action detailing the outcome of the handling
+     */
     private Action handleMousePress(MouseEvent mouseEvent) {
         if (toActor.isClicked(mouseEvent.getPoint())) {
             selected = toActor;
             Action action = toActor.performAction();
-            if(action instanceof UpdatePartyTypeAction) {
-                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
-                handleAction(updatePartyTypeAction);
-            }
+            handleAction(action);
             return action;
         } else if (toObject.isClicked(mouseEvent.getPoint())) {
             selected = toObject;
             Action action = toObject.performAction();
-            if(action instanceof UpdatePartyTypeAction) {
-                UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
-                handleAction(updatePartyTypeAction);
-            }
+            handleAction(action);
             return action;
         } else if (instanceTextBox.isClicked(mouseEvent.getPoint())) {
             selected = instanceTextBox;
@@ -184,7 +205,12 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private Action handleBackSpace() throws DomainException {
+    /**
+     * handle the backspace event
+     *
+     * @return an action detailing the outcome of the handling
+     */
+    private Action handleBackSpace() {
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.deleteLastCharFromContents();
@@ -195,7 +221,13 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
-    private Action handleChar(KeyEvent keyEvent) throws DomainException {
+    /**
+     * handles a char keyEvent
+     *
+     * @param keyEvent the keyEvent with the char
+     * @return an action detailing the outcome of the handling
+     */
+    private Action handleChar(KeyEvent keyEvent) {
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.addCharToContents(keyEvent.getKeyChar());
@@ -206,11 +238,19 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * cycle the selected element
+     */
     private void cycleSelectedElement() {
         int oldIndex = elementList.indexOf(selected);
         selected = elementList.get((oldIndex + 1) % 4);
     }
 
+    /**
+     * handle the space event
+     *
+     * @return an action detailing the outcome of the handling
+     */
     private Action handleSpace() {
         if (selected instanceof RadioButton) {
             if (selected == toActor) {
@@ -234,6 +274,11 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * handle changing the party label
+     *
+     * @return an action detailing the outcome of the handling
+     */
     private Action changePartyLabel() {
         try {
             if (selected instanceof InstanceTextBox) {
@@ -266,6 +311,11 @@ public class PartyDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * handle an action
+     *
+     * @param action the action to handle
+     */
     @Override
     public void handleAction(Action action) {
         if (action instanceof RemoveInViewsAction) {
@@ -278,13 +328,12 @@ public class PartyDialogBox extends DialogBox {
             if (a.getOldParty().equals(party)) {
                 try {
                     PartyDialogBox partyDialogBox = new PartyDialogBox(this.getPosition(), a.getNewParty(), subwindow);
-
                     CloseWindowButton closeWindowButton = (CloseWindowButton) subwindow.getFrame().getButton();
                     CloseSubwindowCommand close = (CloseSubwindowCommand) closeWindowButton.getCommand();
                     close.getInteractionController().addSubwindow(partyDialogBox);
                     close.getInteractionController().addToMap(subwindow, partyDialogBox);
                     partyDialogBox.createFrame(new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, close.getInteractionController())));
-                    if(subwindow.getSelected() == a.getOldParty()){
+                    if (subwindow.getSelected() == a.getOldParty()) {
                         subwindow.setSelected(a.getNewParty());
                     }
                 } catch (Exception e) {
@@ -301,6 +350,11 @@ public class PartyDialogBox extends DialogBox {
         }
     }
 
+    /**
+     * update the fields of this dialogbox for the given party
+     *
+     * @param party the party to change the fields for
+     */
     private void updateFields(Party party) {
         String[] labels = party.getLabel().getLabel().split(":");
         if (labels.length == 2) {
