@@ -158,9 +158,13 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * @param labelView    view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     protected void drawMessageLabels(Graphics graphics, Message firstMessage, LabelView labelView) {
-        while (firstMessage != null) {
-            drawMessageLabel(graphics, firstMessage, labelView);
-            firstMessage = firstMessage.getNextMessage();
+        Message msg = firstMessage;
+        while (msg != null) {
+            if (msg.getLabel().equals(diagramSubwindow.getSelected()) && diagramSubwindow.isEditing()) {
+            }else{
+                drawMessageLabel(graphics, msg, labelView);
+            }
+            msg = msg.getNextMessage();
         }
     }
 
@@ -183,10 +187,12 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     //TODO maak hier een figure voor? 'LabelFigure'
+
     /**
      * method that draws a label
+     *
      * @param graphics  object used to draw on the program's window
-     * @param start coordniate of the label box's top left corner
+     * @param start     coordniate of the label box's top left corner
      * @param labelText text for in the label
      * @param minX
      * @param minY
@@ -263,7 +269,8 @@ public abstract class DiagramConverter extends SubwindowConverter {
 
     /**
      * method that draws the subwindow's seleton, an empty subwindow
-     * @param graphics        object used to draw on the program's window
+     *
+     * @param graphics object used to draw on the program's window
      */
     @Override
     public void drawSubwindow(Graphics graphics) {
