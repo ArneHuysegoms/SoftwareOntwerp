@@ -27,7 +27,7 @@ public class ArgumentTextBox extends TextBox {
     public boolean hasValidContents() {
         if (super.hasValidContents()) {
             String s = this.getContents();
-            return ! s.contains(",") || s.contains("(") || s.contains(")");
+            return ! (s.contains(",") || s.contains("(") || s.contains(")"));
         }
         return false;
     }

@@ -59,17 +59,32 @@ public class TextBoxTest {
     @Test
     public void test_argumentTextBox_hasValidContents(){
         argumentTextBox.setContents(":A");
-        assertFalse(argumentTextBox.hasValidContents());
+        assertTrue(argumentTextBox.hasValidContents());
         argumentTextBox.setContents("a:");
-        assertFalse(argumentTextBox.hasValidContents());
+        assertTrue(argumentTextBox.hasValidContents());
         argumentTextBox.setContents("a:a");
-        assertFalse(argumentTextBox.hasValidContents());
+        assertTrue(argumentTextBox.hasValidContents());
         argumentTextBox.setContents("A:A");
-        assertFalse(argumentTextBox.hasValidContents());
+        assertTrue(argumentTextBox.hasValidContents());
         argumentTextBox.setContents("");
         assertFalse(argumentTextBox.hasValidContents());
         argumentTextBox.setContents("a:A");
         assertTrue(argumentTextBox.hasValidContents());
+
+        argumentTextBox.setContents(")__");
+        assertFalse(argumentTextBox.hasValidContents());
+        argumentTextBox.setContents(",__");
+        assertFalse(argumentTextBox.hasValidContents());
+        argumentTextBox.setContents("(__");
+        assertFalse(argumentTextBox.hasValidContents());
+
+        argumentTextBox.setContents("ddddqfefq");
+        assertTrue(argumentTextBox.hasValidContents());
+        argumentTextBox.setContents("esqtqfqefqfq");
+        assertTrue(argumentTextBox.hasValidContents());
+        argumentTextBox.setContents("fiqjfmqijmq98222_");
+        assertTrue(argumentTextBox.hasValidContents());
+
     }
 
     @Test
