@@ -132,6 +132,14 @@ public class InteractionController implements IHighLevelController{
         setActiveSubwindow(subwindow);
     }
 
+    public void addToMap(DiagramSubwindow diagramSubwindow, DialogBox dialogBox){
+        if(this.getMap().get(diagramSubwindow) == null){
+            ArrayList<DialogBox> list = new ArrayList<>();
+            this.getMap().put(diagramSubwindow, list);
+        }
+        this.getMap().get(diagramSubwindow).add(dialogBox);
+    }
+
     /**
      * remove a diagramSubwindow and sets the highest level subwindow active
      *
@@ -142,6 +150,7 @@ public class InteractionController implements IHighLevelController{
             deleteInMap((DialogBox) subwindow);
         }else{
             deleteInMap((DiagramSubwindow) subwindow);
+            setActiveDiagramSubwindow(null);
         }
         subwindows.remove(subwindow);
         setActiveSubwindow(getHighestLevelSubwindow());
@@ -151,7 +160,7 @@ public class InteractionController implements IHighLevelController{
         map.values().remove(dialogBox);
     }
     public void deleteInMap(DiagramSubwindow diagramSubwindow){
-        for(DialogBox d : map.get(diagramSubwindow)){
+        for(DialogBox d : getCorrespondingDialogBoxes(diagramSubwindow)){
             subwindows.remove(d);
         }
         map.remove(diagramSubwindow);
@@ -264,20 +273,9 @@ public class InteractionController implements IHighLevelController{
             DialogBox s = ((DialogBoxOpenedAction)action).getDialogBox();
             Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
             s.getFrame().setButton(button);
-            /*this.getSubwindows().add(s);
-            addToMap(this.getActiveDiagramSubwindow(),s);
-            this.changeActiveSubwindow(s);*/
             addSubwindow(s);
         }
 
-    }
-
-    public void addToMap(DiagramSubwindow diagramSubwindow, DialogBox dialogBox){
-        if(this.getMap().get(diagramSubwindow) == null){
-            ArrayList<DialogBox> list = new ArrayList<>();
-            this.getMap().put(diagramSubwindow, list);
-        }
-        this.getMap().get(diagramSubwindow).add(dialogBox);
     }
 
     /**
@@ -302,16 +300,6 @@ public class InteractionController implements IHighLevelController{
             if (activeSubwindow.frameIsClicked(mouseEvent.getPoint())) {
                 return true;
             }
-            /*if (!getActiveSubwindow().isLabelMode()) {
-                for (SubWindowLevel window.diagram : subwindows) {
-                    if (window.diagram.getDiagramSubwindow().frameIsClicked(mouseEvent.getPoint())) {
-                        changeActiveSubwindow(window.diagram.getDiagramSubwindow());
-                        return true;
-                    }
-                }
-                changeActiveSubwindow(getAppropriateSubwindow(mouseEvent.getPoint()));
-                return true;
-            }*/
         }
         return false;
     }
@@ -324,7 +312,6 @@ public class InteractionController implements IHighLevelController{
      */
     private void changeActiveSubwindow(Subwindow newActiveSubWindow) {
         this.setActiveSubwindow(newActiveSubWindow);
-        //this.changeLevelForActiveSubWindow();
     }
 
     /**
@@ -335,8 +322,6 @@ public class InteractionController implements IHighLevelController{
         Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
         diagramSubwindow.getFrame().setButton(button);
         addSubwindow(diagramSubwindow);
-        //this.changeActiveSubwindow(diagramSubwindow);
-        //this.getMap().put(diagramSubwindow, new ArrayList<>());
 
     }
 
@@ -349,8 +334,6 @@ public class InteractionController implements IHighLevelController{
             Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
             diagramSubwindow.getFrame().setButton(button);
             addSubwindow(diagramSubwindow);
-            //this.changeActiveSubwindow(diagramSubwindow);
-            //this.getMap().put(diagramSubwindow, new ArrayList<>());
         }
     }
 

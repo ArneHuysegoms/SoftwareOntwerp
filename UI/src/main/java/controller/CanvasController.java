@@ -143,6 +143,7 @@ public class CanvasController implements IHighLevelController{
             }
             activeInteractionController.handleMouseEvent(mouseEvent);
         }
+        //checkForDeleteInteractionController();
     }
 
     /**
@@ -154,12 +155,14 @@ public class CanvasController implements IHighLevelController{
     }
 
     /*private void checkForDeleteInteractionController(){
-        if(activeInteractionController.getActiveDiagramSubwindow() == null){
+        if(activeInteractionController.getActiveSubwindow() == null){
             if(activeInteractionController.getSubwindows().isEmpty()){
-                this.activeInteractionController = null;
+                removeInteractionController(activeInteractionController);
+                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
+                setActiveInteractionController(findHighestLevelInteractionController());
+                System.out.println(this.getActiveInteractionController() + " HOHOHO HO HO HO HOH O");
             }
         }
-        //getSubwindows() kan nog dialogboxes bevatten?
     }*/
 
     /**

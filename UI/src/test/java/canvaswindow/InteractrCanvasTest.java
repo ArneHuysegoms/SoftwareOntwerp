@@ -83,7 +83,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_switchDiagramType_toCommunication.png");
     }
 
@@ -131,7 +131,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED,9,'\t');
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_switchDiagramType_backToSequence.png");
     }
 
@@ -148,7 +148,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'y');
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_addParty.png");
     }
 
@@ -170,7 +170,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,235,160,2);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,235,160,2);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_changePartyType_toActor.png");
     }
 
@@ -200,7 +200,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,205,160,2);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,205,160,2);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_changePartyType_backToParty.png");
     }
 
@@ -234,7 +234,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'L');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'I');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'D');
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_editLabel_with_multiple_subwindows.png");
     }
 
@@ -263,7 +263,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_addMessage.png");
     }
 
@@ -306,7 +306,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'s');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_TYPED, 0,'t');
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_addMultipleMessages.png");
     }
 
@@ -321,7 +321,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,351,108,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,872,161,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_moveSubwindow.png");
     }
 
@@ -338,7 +338,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,628,283,1);
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 17, '0');
         interactrCanvas.handleKeyEvent(KeyEvent.KEY_PRESSED, 68, 'd');
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_copySubwindow.png");
     }
 
@@ -347,7 +347,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,686,113,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,686,113,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_CLICKED,686,113,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_closeSubwindow.png");
     }
 
@@ -369,7 +369,7 @@ public class InteractrCanvasTest {
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,393,518,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_PRESSED,549,406,1);
         interactrCanvas.handleMouseEvent(MouseEvent.MOUSE_RELEASED,506,410,1);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         this.screenshot("test_interactrCanvas_resizeSubwindow.png");
     }
 }
