@@ -61,7 +61,7 @@ public class KeyEventFactory {
                     return new KeyEvent(KeyEventType.CTRLENTER);
                 }
             }
-        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b') {
+        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b' && keyChar != '\t') {
             if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ' || keyChar == ')' || keyChar == '(' || keyChar == ',') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {

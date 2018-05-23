@@ -32,9 +32,6 @@ public class AddNewPartyToViewsActionTest {
     @Test
     public void test_performAction(){
         addNewPartyToViewsAction.performAction(diagramSubwindow);
-        //TODO check party in repo..
-        //assertTrue(diagramSubwindow.getSelected()==null);
-        //System.out.println(diagramSubwindow.getFacade().getActiveView().getMessageView().g);
     }
 
 }
