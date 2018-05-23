@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 
 public class InvocationMessageDialogBox extends DialogBox {
 
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 300;
+    public static final int HEIGHT = 300;
 
     private MethodTextBox methodTextBox;
     private ArgumentTextBox argumentTextBox;
