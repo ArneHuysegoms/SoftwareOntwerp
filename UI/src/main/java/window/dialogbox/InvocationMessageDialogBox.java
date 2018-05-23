@@ -48,10 +48,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.invocationMessageLabel = invocationMessageLabel;
         methodTextBox = new MethodTextBox(new Point2D.Double(10, 50), "method");
         argumentTextBox = new ArgumentTextBox(new Point2D.Double(10, 75), "argument");
-        addArgument = new TextualFakeButton(new Point2D.Double(100, 60), "Add");
-        deleteArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Del");
-        moveDown = new TextualFakeButton(new Point2D.Double(50, 100), "Down");
-        moveUp = new TextualFakeButton(new Point2D.Double(90, 100), "Up");
+        addArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Add");
+        deleteArgument = new TextualFakeButton(new Point2D.Double(50, 100), "Del");
+        moveDown = new TextualFakeButton(new Point2D.Double(90, 100), "Down");
+        moveUp = new TextualFakeButton(new Point2D.Double(130, 100), "Up");
 
         this.subwindow = subwindow;
 
