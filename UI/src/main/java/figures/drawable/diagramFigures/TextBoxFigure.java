@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 
 public class TextBoxFigure implements IDrawable {
 
-    private TextBox textBox;
+    protected TextBox textBox;
     private String title;
     private Point2D absolutePosition;
 
@@ -55,9 +55,8 @@ public class TextBoxFigure implements IDrawable {
      * @param graphics   object used to draw on the program's window
      * @param contentPos
      */
-    private void drawContents(Graphics graphics, Point2D contentPos) {
+    protected void drawContents(Graphics graphics, Point2D contentPos) {
         graphics.drawString(textBox.getContents(), (int) contentPos.getX() + 3, (int) contentPos.getY() + 12);
-
     }
 
 

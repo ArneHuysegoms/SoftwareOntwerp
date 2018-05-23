@@ -3,11 +3,15 @@ package figures.drawable.subwindowFigures;
 import figures.drawable.IDrawable;
 import figures.drawable.basicShapes.Rectangle;
 import figures.drawable.diagramFigures.CloseButtonFigure;
+import figures.drawable.diagramFigures.SelectedTextBoxFigure;
+import window.elements.DialogboxElement;
 import window.elements.button.Button;
+import window.elements.textbox.TextBox;
 import window.frame.SubwindowFrame;
 import window.frame.TitleBar;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public abstract class SubwindowFigure implements IDrawable {
 
@@ -117,5 +121,12 @@ public abstract class SubwindowFigure implements IDrawable {
     private void drawCloseButton(Graphics graphics) {
         new CloseButtonFigure(closeButton.getPosition(), closeButton.getHeight(), closeButton.getWidth())
                 .draw(graphics);
+    }
+
+    protected void handleSelectedElement(Graphics graphics,DialogboxElement selected, Point2D absolutePosition){
+        if (selected instanceof TextBox) {
+            new SelectedTextBoxFigure((TextBox)selected, absolutePosition, "")
+                    .draw(graphics);
+        }
     }
 }

@@ -29,6 +29,7 @@ public class InvocationMessageDialogBoxFigure extends SubwindowFigure {
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
         drawButtons(graphics, dialogBox.getArgumentListBox().getSelectedIndex(), minX, minY, maxX, maxY);
         drawListBox(graphics, minX, minY, maxX, maxY);
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**
