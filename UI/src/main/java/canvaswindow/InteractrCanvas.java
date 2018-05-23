@@ -41,14 +41,7 @@ public class InteractrCanvas extends CanvasWindow {
      *
      * @param g This object offers the methods that allow you to paint on the controller.
      */
-    /*public void paint(Graphics g){
-        Collections.sort(canvasController.getSubwindows());
-        Collections.reverse(canvasController.getSubwindows());
-        figureConverter.draw(g, canvasController.getSubwindows());
-    }*/
     public void paint(Graphics g){
-
-        //Collections.reverse(canvasController.getSubwindows());
         figureConverter.draw(g, canvasController.sortDiagramSubwindows());
     }
 
