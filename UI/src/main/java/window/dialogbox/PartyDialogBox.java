@@ -256,19 +256,11 @@ public class PartyDialogBox extends DialogBox {
             if (selected == toActor) {
                 Action action = toActor.performAction();
                 handleAction(action);
-                /*if(action instanceof UpdatePartyTypeAction) {
-                    UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
-                    handleAction(updatePartyTypeAction);
-                    return updatePartyTypeAction;
-                }*/
+                return action;
             } else if (selected == toObject) {
                 Action action = toObject.performAction();
                 handleAction(action);
-                /*if(action instanceof UpdatePartyTypeAction) {
-                    UpdatePartyTypeAction updatePartyTypeAction = (UpdatePartyTypeAction) action;
-                    handleAction(updatePartyTypeAction);
-                    return updatePartyTypeAction;
-                }*/
+                return action;
             }
         }
         return new EmptyAction();
