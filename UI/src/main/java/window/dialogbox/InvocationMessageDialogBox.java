@@ -82,11 +82,9 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
 
-        argumentListBox.setArguments(invocationMessageLabel.getArguments());
+        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
         argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
         invocationMessageLabel.setIndex(invocationMessageLabel.getArguments().size() - 1);
-
-        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
     }
 
     /**
@@ -458,8 +456,8 @@ public class InvocationMessageDialogBox extends DialogBox {
             InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
             methodTextBox.setContents(label.getLabel());
             argumentListBox.setArguments(label.getArguments().stream()
-                    .map(a -> a.toString())
-                    .collect(Collectors.toList()));
+                                            .map(s -> s.toString())
+                                            .collect(Collectors.toList()));
         }
     }
 
