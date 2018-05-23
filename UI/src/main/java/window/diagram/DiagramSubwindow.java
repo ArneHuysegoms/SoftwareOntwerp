@@ -478,6 +478,9 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         }
         if (selectedElementIsLabel() && labelContainer.length() > 0) {
             Label l = (Label) selected;
+            if(l instanceof InvocationMessageLabel){
+                return ((InvocationMessageLabel) l).isValidCompleteLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1));
+            }
             return l.isValidLabel(getLabelContainer().substring(0, getLabelContainer().length() - 1)) && !getLabelContainer().equals("");
         }
         return true;
