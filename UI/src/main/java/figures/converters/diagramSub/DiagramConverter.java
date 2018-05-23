@@ -175,16 +175,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * @param message   message to be drawn
      * @param labelView view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
-    protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
-        if (message instanceof InvocationMessage) {
-            String messageNumber = ((InvocationMessage) message).getMessageNumber();
-
-            Map<Label, Point2D> labelMap = labelView.getMap();
-
-            Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
-            drawLabel(graphics, start, messageNumber + " " + message.getLabel().getLabel(), getX1(), getY1(), getX2(), getY2());
-        }
-    }
+    protected abstract void drawMessageLabel(Graphics graphics, Message message, LabelView labelView);
 
     //TODO maak hier een figure voor? 'LabelFigure'
 
