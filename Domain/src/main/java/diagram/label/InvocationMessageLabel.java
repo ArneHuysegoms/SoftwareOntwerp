@@ -64,6 +64,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
 
     public void deleteArgument(int position){
         getArguments().remove(position);
+        setIndex( index - 1);
     }
 
     public int getIndex() {
@@ -71,13 +72,12 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     }
 
     public void setIndex(int index) {
-        if(index < 0){
-            this.index = 0;
+        if(index < -1){
+            this.index = -1;
         }
-        else if( index > arguments.size() - 1){
+        else if (index > arguments.size() - 1) {
             this.index = arguments.size() - 1;
-        }
-        else {
+        } else {
             this.index = index;
         }
     }
@@ -127,16 +127,16 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     }
 
     public void moveUp(){
-        if(index != 0) {
+        if(index > 0) {
             Collections.swap(arguments, index, index - 1);
-            index++;
+            this.setIndex( index + 1);
         }
     }
 
     public void moveDown(){
-        if(index != arguments.size() - 1) {
+        if(index < arguments.size() - 1) {
             Collections.swap(arguments, index, index + 1);
-            index--;
+            this.setIndex( index - 1);
         }
     }
 

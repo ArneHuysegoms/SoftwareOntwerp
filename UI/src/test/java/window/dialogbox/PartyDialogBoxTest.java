@@ -39,6 +39,8 @@ public class PartyDialogBoxTest {
         try{
             interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
+            CloseWindowButton closeWindowButton2 =new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
+            diagramSubwindow.createFrame(closeWindowButton2);
 
             party = diagramSubwindow.getFacade().addNewParty(new Point2D.Double(75, 75));
 
