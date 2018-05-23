@@ -47,7 +47,6 @@ public class Arrow implements IDrawable {
                 arrowBottom = new Line(x2, y2, x2 + 10, y2 + 10);
             }
         }
-
     }
 
     /**
