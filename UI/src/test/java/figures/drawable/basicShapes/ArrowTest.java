@@ -13,10 +13,6 @@ public class ArrowTest {
     private Arrow arrow2;
     private Arrow arrow3;
     private Arrow arrow4;
-    private Arrow arrow5;
-    private Arrow arrow6;
-    private Arrow arrow7;
-    private Arrow arrow8;
     private Arrow arrowFail;
 
     @Before
