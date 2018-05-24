@@ -368,7 +368,7 @@ public class Diagram implements Serializable {
                 return false;
             }
         }
-        if (previous.getReceiver().equals(sender)) {
+        else if (previous.getReceiver().equals(sender)) {
             return true;
         } else if (this.getFirstMessage() != null) {
             return this.getFirstMessage().getSender().equals(sender) && !(previous instanceof InvocationMessage);
