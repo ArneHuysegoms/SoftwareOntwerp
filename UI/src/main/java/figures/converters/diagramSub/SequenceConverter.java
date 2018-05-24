@@ -41,7 +41,7 @@ public class SequenceConverter extends DiagramConverter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageView  repository containing all the coordinates of the messages in the window.diagram's diagram
+     * @param messageView  view object containing all the coordinates of the messages in the window.diagram's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
@@ -59,7 +59,7 @@ public class SequenceConverter extends DiagramConverter {
      *
      * @param graphics  object used to draw on the program's window
      * @param message   message to be drawn
-     * @param labelView repository containing all the coordinates of the labels in the diagramSubwindow's diagram
+     * @param labelView view object containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     @Override
     protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
@@ -72,19 +72,18 @@ public class SequenceConverter extends DiagramConverter {
 
         Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
         drawLabel(graphics, start, message.toString(), getX1(), getY1(), getX2(), getY2());
-
     }
 
     /**
      * method that draws diagram specific stuff, in this case for sequence diagrams
      *
      * @param graphics        object used to draw on the program's window
-     * @param repo            repository containing all the coordinates of a diagram
+     * @param view            view object containing all the coordinates of a diagram
      * @param diagram         the diagram that will be drawn
      * @param selectedElement the currently selected element in the window.diagram
      */
     @Override
-    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView repo, Diagram diagram, DiagramElement selectedElement) {
+    protected void drawDiagramSpecificStuff(Graphics graphics, DiagramView view, Diagram diagram, DiagramElement selectedElement) {
         Point2D start = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(0, 50));
         Point2D end = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(2000, 50));
         Point2D start2 = getDiagramSubwindow().getAbsolutePosition(new Point2D.Double(0, 100));
@@ -92,7 +91,7 @@ public class SequenceConverter extends DiagramConverter {
         new DashedLine(start, end).draw(graphics, 0, 0, (int) getDiagramSubwindow().getPosition().getX() + getDiagramSubwindow().getWidth(), (int) getDiagramSubwindow().getPosition().getY() + getDiagramSubwindow().getHeight());
         new DashedLine(start2, end2).draw(graphics, 0, 0, (int) getDiagramSubwindow().getPosition().getX() + getDiagramSubwindow().getWidth(), (int) getDiagramSubwindow().getPosition().getY() + getDiagramSubwindow().getHeight());
 
-        drawLifeline(graphics, repo.getPartyView().getMap(), ((SequenceMessageView) repo.getMessageView()).getMap(), diagram.getFirstMessage());
+        drawLifeline(graphics, view.getPartyView().getMap(), ((SequenceMessageView) view.getMessageView()).getMap(), diagram.getFirstMessage());
     }
 
     /**
