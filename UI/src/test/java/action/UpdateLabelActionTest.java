@@ -29,7 +29,6 @@ public class UpdateLabelActionTest {
     @Test
     public void test_performAction(){
         updateLabelAction.performAction(diagramSubwindow);
-        System.out.println(party1.toString());
     }
 
 }

@@ -19,7 +19,6 @@ public class AddButtonFigure implements IDrawable {
     public AddButtonFigure(Point2D position, int width, int height){
         this.x = (int)position.getX();
         this.y = (int)position.getY();
-        System.out.println("x dan y: "+ x + " "+ y);
         this.width = width;
         this.height = height;
     }
