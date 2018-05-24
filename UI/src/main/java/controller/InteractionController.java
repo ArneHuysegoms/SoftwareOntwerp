@@ -294,9 +294,9 @@ public class InteractionController implements IHighLevelController{
      * @param action
      */
     public void actionForEachSubwindow(Action action){
+        List<Subwindow> copy = new ArrayList<>(getSubwindows());
         if(! (action instanceof DialogBoxOpenedAction)){
-            for(int i = getSubwindows().size() - 1; i >= 0; i--){
-                Subwindow s = getSubwindows().get(i);
+            for(Subwindow s : copy){
                 if(s != getActiveSubwindow()){
                     s.handleAction(action);
                 }
