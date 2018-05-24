@@ -2,9 +2,9 @@ package controller;
 
 import exception.UIException;
 import exceptions.DomainException;
-import window.Subwindow;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
+import window.Subwindow;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
