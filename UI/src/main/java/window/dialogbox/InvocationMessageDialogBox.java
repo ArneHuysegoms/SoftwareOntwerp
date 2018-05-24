@@ -1,6 +1,7 @@
 package window.dialogbox;
 
 import action.*;
+import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.message.InvocationMessage;
 import exception.UIException;
@@ -82,11 +83,9 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
 
-        argumentListBox.setArguments(invocationMessageLabel.getArguments());
+        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
         argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
         invocationMessageLabel.setIndex(invocationMessageLabel.getArguments().size() - 1);
-
-        updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
     }
 
     /**
@@ -308,7 +307,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action changeMethod() throws DomainException {
         if (methodTextBox.hasValidContents()) {
             invocationMessageLabel.setLabel(methodTextBox.getContents());
-            return new UpdateLabelContainersAction(invocationMessageLabel);
+            return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
         }
         return new EmptyAction();
     }
@@ -352,7 +351,7 @@ public class InvocationMessageDialogBox extends DialogBox {
             String argumentString = argumentTextBox.getContents();
             argumentListBox.addArgument(argumentString);
             invocationMessageLabel.addArgument(argumentString);
-            return new UpdateLabelContainersAction(invocationMessageLabel);
+            return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
         }
         return new EmptyAction();
     }
@@ -376,7 +375,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleDeleteArgument() {
         invocationMessageLabel.deleteArgument(argumentListBox.getSelectedIndex());
         argumentListBox.removeArgument();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -387,7 +386,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleMoveUp() {
         argumentListBox.moveUp();
         invocationMessageLabel.moveUp();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -398,7 +397,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleMoveDown() {
         argumentListBox.moveDown();
         invocationMessageLabel.moveDown();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -434,9 +433,13 @@ public class InvocationMessageDialogBox extends DialogBox {
     public void handleAction(Action action) {
         if (action instanceof RemoveInViewsAction) {
             RemoveInViewsAction a = (RemoveInViewsAction) action;
-            InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
-            if (a.getDeletedElements().contains(invocationMessage)) {
-                this.getFrame().close();
+            for(DiagramElement element : a.getDeletedElements()) {
+                if(element instanceof InvocationMessage) {
+                    InvocationMessage inv = (InvocationMessage) element;
+                    if (inv.getLabel() == invocationMessageLabel) {
+                        this.getFrame().close();
+                    }
+                }
             }
         }
         if (action instanceof UpdateLabelAction) {
@@ -458,8 +461,8 @@ public class InvocationMessageDialogBox extends DialogBox {
             InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
             methodTextBox.setContents(label.getLabel());
             argumentListBox.setArguments(label.getArguments().stream()
-                    .map(a -> a.toString())
-                    .collect(Collectors.toList()));
+                                            .map(s -> s.toString())
+                                            .collect(Collectors.toList()));
         }
     }
 

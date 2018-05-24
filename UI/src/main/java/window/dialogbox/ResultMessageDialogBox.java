@@ -1,6 +1,9 @@
 package window.dialogbox;
 
-import action.*;
+import action.Action;
+import action.EmptyAction;
+import action.RemoveInViewsAction;
+import action.UpdateLabelAction;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
@@ -156,7 +159,7 @@ public class ResultMessageDialogBox extends DialogBox {
      */
     private Action changeResultMessageLabel() throws DomainException {
         getResultMessage().getLabel().setLabel(selected.getContents());
-        return new UpdateLabelContainersAction(getResultMessage().getLabel());
+        return new UpdateLabelAction(getResultMessage(), getResultMessage().getLabel());
     }
 
     /**

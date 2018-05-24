@@ -1,7 +1,8 @@
 package figures;
 
 import figures.drawable.basicShapes.*;
-import figures.drawable.diagramFigures.*;
+import figures.drawable.diagramFigures.CloseButtonFigureTest;
+import figures.drawable.diagramFigures.StickManTest;
 import figures.drawable.subwindowFigures.DiagramSubwindowFigureTest;
 import figures.helperClasses.PairTest;
 import org.junit.runner.RunWith;

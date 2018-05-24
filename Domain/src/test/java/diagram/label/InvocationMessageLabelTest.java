@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class InvocationMessageLabelTest {
     private static final String VALIDNAME = "invocation_message_1";

@@ -26,9 +26,7 @@ import window.elements.button.CloseWindowButton;
 import java.awt.geom.Point2D;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DiagramSubwindowTest {
 

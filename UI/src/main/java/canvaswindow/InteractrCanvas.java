@@ -11,7 +11,6 @@ import uievents.MouseEventFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Collections;
 
 public class InteractrCanvas extends CanvasWindow {
     /**
@@ -41,14 +40,7 @@ public class InteractrCanvas extends CanvasWindow {
      *
      * @param g This object offers the methods that allow you to paint on the controller.
      */
-    /*public void paint(Graphics g){
-        Collections.sort(canvasController.getSubwindows());
-        Collections.reverse(canvasController.getSubwindows());
-        figureConverter.draw(g, canvasController.getSubwindows());
-    }*/
     public void paint(Graphics g){
-
-        //Collections.reverse(canvasController.getSubwindows());
         figureConverter.draw(g, canvasController.sortDiagramSubwindows());
     }
 

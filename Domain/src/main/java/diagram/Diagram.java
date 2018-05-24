@@ -1,9 +1,9 @@
 package diagram;
 
 import diagram.label.*;
-import diagram.message.ResultMessage;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -361,9 +361,14 @@ public class Diagram implements Serializable {
      */
     private boolean checkCallStack(Message previous, Party sender) {
         if (previous == null) {
-            return true;
+            if((getFirstMessage() == null || this.getFirstMessage().getSender().equals(sender))){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-        if (previous.getReceiver().equals(sender)) {
+        else if (previous.getReceiver().equals(sender)) {
             return true;
         } else if (this.getFirstMessage() != null) {
             return this.getFirstMessage().getSender().equals(sender) && !(previous instanceof InvocationMessage);

@@ -1,14 +1,14 @@
 package view.label;
 
+import diagram.DiagramElement;
+import diagram.label.Label;
+
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import diagram.DiagramElement;
-import diagram.label.Label;
 
 /**
  * Class for keeping track of labels of the diagram and everything label-positional orientated

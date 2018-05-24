@@ -1,7 +1,6 @@
 package figures.drawable.diagramFigures;
 
 import figures.drawable.IDrawable;
-import figures.drawable.basicShapes.Circle;
 import window.elements.RadioButton;
 
 import java.awt.*;

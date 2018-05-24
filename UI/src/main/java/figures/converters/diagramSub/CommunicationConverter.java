@@ -6,12 +6,12 @@ import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Party;
 import figures.drawable.basicShapes.Arrow;
+import util.PartyPair;
 import view.label.LabelView;
 import view.message.CommunicationMessageView;
 import view.message.MessageView;
 import view.party.PartyView;
 import window.diagram.DiagramSubwindow;
-import util.PartyPair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

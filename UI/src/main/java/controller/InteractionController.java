@@ -17,6 +17,7 @@ import window.elements.button.CloseWindowButton;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -228,7 +229,7 @@ public class InteractionController implements IHighLevelController{
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
                     Action action = activeSubwindow.handleKeyEvent(keyEvent);
-                    actionForEachDiagramSubwindow(action);
+                    actionForEachSubwindow(action);
                 }
                 break;
         }
@@ -277,7 +278,7 @@ public class InteractionController implements IHighLevelController{
                         Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                         mouseEvent.setPoint(relativePoint);
                         Action action = subwindow.handleMouseEvent(mouseEvent);
-                        actionForEachDiagramSubwindow(action);
+                        actionForEachSubwindow(action);
 
                     }
             }
@@ -292,9 +293,10 @@ public class InteractionController implements IHighLevelController{
      *      make a new dialogBox and add it to the list of subwindows
      * @param action
      */
-    public void actionForEachDiagramSubwindow(Action action){
+    public void actionForEachSubwindow(Action action){
+        List<Subwindow> copy = new ArrayList<>(getSubwindows());
         if(! (action instanceof DialogBoxOpenedAction)){
-            for(Subwindow s : getSubwindows()){
+            for(Subwindow s : copy){
                 if(s != getActiveSubwindow()){
                     s.handleAction(action);
                 }

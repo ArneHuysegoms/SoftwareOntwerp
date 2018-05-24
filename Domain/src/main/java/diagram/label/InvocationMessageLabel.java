@@ -135,11 +135,12 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
     @Override
     public String toString() {
         String toString = this.getLabel() + "(";
-        for (String s : getArguments()) {
-            if (arguments.indexOf(s) == arguments.size() - 1) {
-                toString += s;
-            } else {
-                toString += s + ",";
+        for (int i = 0; i < this.getArguments().size(); i++){
+            if(i == this.getArguments().size() - 1){
+                toString += getArguments().get(i);
+            }
+            else{
+                toString += getArguments().get(i) + ",";
             }
         }
         toString += ")";
