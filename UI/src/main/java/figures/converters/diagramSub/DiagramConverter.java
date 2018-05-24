@@ -192,11 +192,11 @@ public abstract class DiagramConverter extends SubwindowConverter {
             Point2D actorPos = diagramSubwindow.getAbsolutePosition(partyMap.get(a));
             Point2D start = new Point2D.Double(actorPos.getX() - (PartyView.ACTORWIDTH / 2), actorPos.getY()),
                     end = new Point2D.Double(actorPos.getX() + (PartyView.ACTORWIDTH / 2), actorPos.getY() + PartyView.ACTORWIDTH);
-            new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, end, Color.RED).draw(graphics, getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Label) {
             Label l = (Label) selectedElement;
             Point2D start = diagramSubwindow.getAbsolutePosition(view.getLabelView().getLocationOfLabel(l));
-            new SelectionBoxFigure(start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT)).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, new Point2D.Double(start.getX() + LabelView.WIDTH, start.getY() + LabelView.HEIGHT), Color.RED).draw(graphics, getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Object) {
             Object o = (Object) selectedElement;
             Map<Party, Point2D> partyMap = view.getPartyView().getMap();
@@ -204,7 +204,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
             int selectionBoxSize = 5;
             Point2D start = new Point2D.Double(objectPos.getX() - selectionBoxSize, objectPos.getY() - selectionBoxSize);
             Point2D end = new Point2D.Double(objectPos.getX() + PartyView.OBJECTWIDTH + selectionBoxSize, objectPos.getY() + PartyView.OBJECTHEIGHT + selectionBoxSize);
-            new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+            new SelectionBoxFigure(start, end, Color.RED).draw(graphics, getX1(), getY1(), getX2(), getY2());
         } else if (selectedElement instanceof Message) {
             Message m = (Message) selectedElement;
             Point2D start;
@@ -216,7 +216,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
                 Point2D receiverPos = diagramSubwindow.getAbsolutePosition(partyMap.get(m.getReceiver()));
                 start = new Point2D.Double(senderPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) - (MessageView.HEIGHT / 2));
                 end = new Point2D.Double(receiverPos.getX(), (msgMap.get(m) + diagramSubwindow.getPosition().getY()) + (MessageView.HEIGHT / 2));
-                new SelectionBoxFigure(start, end).draw(graphics, getX1(), getY1(), getX2(), getY2());
+                new SelectionBoxFigure(start, end, Color.RED).draw(graphics, getX1(), getY1(), getX2(), getY2());
             }
         }
     }

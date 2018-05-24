@@ -6,6 +6,13 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class SelectedRadioButtonFigure extends RadioButtonFigure {
+
+    /**
+     *
+     * @param rb the radio button that has to be drawn
+     * @param absolutePosition the radio button's position
+     * @param title the radio button's title
+     */
     public SelectedRadioButtonFigure(RadioButton rb, Point2D absolutePosition, String title) {
         super(rb, absolutePosition, title);
     }
