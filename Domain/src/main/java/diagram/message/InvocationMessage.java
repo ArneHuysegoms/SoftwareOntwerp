@@ -1,7 +1,7 @@
 package diagram.message;
 
-import diagram.party.Party;
 import diagram.label.Label;
+import diagram.party.Party;
 import exceptions.DomainException;
 
 import java.io.Serializable;

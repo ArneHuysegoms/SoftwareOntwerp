@@ -1,9 +1,9 @@
 package diagram;
 
 import diagram.label.*;
-import diagram.message.ResultMessage;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;

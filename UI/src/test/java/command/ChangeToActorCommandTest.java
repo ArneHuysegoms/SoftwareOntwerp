@@ -1,8 +1,6 @@
 package command;
 
 import command.changeType.ChangeToActorCommand;
-import command.closeWindow.CloseSubwindowCommand;
-import controller.InteractionController;
 import diagram.label.Label;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;
@@ -10,10 +8,7 @@ import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.Button;
-import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 

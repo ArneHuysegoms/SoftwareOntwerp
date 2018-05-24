@@ -1,6 +1,9 @@
 package window.dialogbox;
 
-import action.*;
+import action.Action;
+import action.EmptyAction;
+import action.RemoveInViewsAction;
+import action.UpdateLabelAction;
 import command.closeWindow.CloseSubwindowCommand;
 import controller.InteractionController;
 import diagram.DiagramElement;

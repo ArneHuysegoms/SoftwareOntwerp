@@ -1,9 +1,6 @@
 package figures.drawable.diagramFigures;
 
-import figures.drawable.diagramFigures.CloseButtonFigure;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class CloseButtonFigureTest {
     private CloseButtonFigure closeButtonFigure;

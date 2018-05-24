@@ -2,8 +2,6 @@ package figures.drawable.subwindowFigures;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
-
 public class DiagramSubwindowFigureTest {
     /*private DiagramSubwindowFigure subwindowFigure;
     private int x1, x2, y1, y2, width, height;

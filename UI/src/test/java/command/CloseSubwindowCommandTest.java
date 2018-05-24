@@ -2,7 +2,6 @@ package command;
 
 import command.closeWindow.CloseSubwindowCommand;
 import controller.InteractionController;
-import figures.helperClasses.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import window.Subwindow;
@@ -10,7 +9,6 @@ import window.diagram.DiagramSubwindow;
 import window.elements.button.Button;
 import window.elements.button.CloseWindowButton;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.assertTrue;

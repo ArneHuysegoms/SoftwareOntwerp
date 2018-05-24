@@ -5,9 +5,9 @@ import command.changeType.ChangeToActorCommand;
 import exception.UIException;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.awt.geom.Point2D;
+
+import static org.junit.Assert.*;
 
 public class RadioButtonTest {
 

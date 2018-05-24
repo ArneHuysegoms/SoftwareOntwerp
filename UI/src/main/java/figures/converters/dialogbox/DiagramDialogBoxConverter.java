@@ -3,8 +3,6 @@ package figures.converters.dialogbox;
 import figures.drawable.subwindowFigures.DiagramDialogBoxFigure;
 import window.dialogbox.DiagramDialogBox;
 
-import java.awt.*;
-
 public class DiagramDialogBoxConverter extends DialogBoxConverter {
 
     private DiagramDialogBox dialogBox;

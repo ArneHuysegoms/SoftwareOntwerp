@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
-
 import static org.junit.Assert.*;
 
 public class InvocationMessageDialogBoxTest {

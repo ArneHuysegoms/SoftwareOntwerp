@@ -5,7 +5,6 @@ import controller.ControllerTestSuite;
 import figures.FiguresTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
 import uievents.UIEventTests;
 import window.WindowTestSuite;
 

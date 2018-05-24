@@ -3,9 +3,9 @@ package view.message;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Party;
+import util.PartyPair;
 import view.label.LabelView;
 import view.party.PartyView;
-import util.PartyPair;
 
 import java.io.Serializable;
 import java.util.ArrayList;

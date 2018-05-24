@@ -3,7 +3,6 @@ package window.dialogbox;
 import action.Action;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import window.IActionHandler;
 import window.Subwindow;
 import window.WindowLevelCounter;
 

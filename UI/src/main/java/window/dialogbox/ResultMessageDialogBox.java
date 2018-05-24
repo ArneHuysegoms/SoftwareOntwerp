@@ -1,6 +1,9 @@
 package window.dialogbox;
 
-import action.*;
+import action.Action;
+import action.EmptyAction;
+import action.RemoveInViewsAction;
+import action.UpdateLabelAction;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
