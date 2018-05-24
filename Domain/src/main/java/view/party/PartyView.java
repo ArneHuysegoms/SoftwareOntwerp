@@ -25,14 +25,14 @@ public class PartyView implements Serializable {
     private Map<Party, Point2D> partyPoint2DMap;
 
     /**
-     * constructs a new partyrepo
+     * constructs a new partyview
      */
     public PartyView(){
         this(new HashMap<>());
     }
 
     /**
-     * constructs a new partyrepo of which the state is equal to the given state
+     * constructs a new partyview of which the state is equal to the given state
      * @param labelPoint2DMap the new map for this PartyView
      */
     public PartyView(Map<Party, Point2D> labelPoint2DMap){
@@ -40,8 +40,8 @@ public class PartyView implements Serializable {
     }
 
     /**
-     * sets the map containing the state of the partyrepo to the given map
-     * @param partyPoint2DMap the map containing the state which we want this partyrepo to have
+     * sets the map containing the state of the partyview to the given map
+     * @param partyPoint2DMap the map containing the state which we want this partyview to have
      * @throws IllegalArgumentException if the given map is null
      */
     private void setPartyPoint2DMap(Map<Party, Point2D> partyPoint2DMap) throws IllegalArgumentException{

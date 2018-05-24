@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a subclass of messagerepo, contains the state of the messages of the communication diagram
+ * a subclass of messageview, contains the state of the messages of the communication diagram
  */
 public class CommunicationMessageView extends MessageView implements Serializable {
 
@@ -108,7 +108,7 @@ public class CommunicationMessageView extends MessageView implements Serializabl
     }
 
     /**
-     * adds messages to the repos and take cares of any other objects that need to be updated for the new messages
+     * adds messages to the views and take cares of any other objects that need to be updated for the new messages
      *
      * @param messages the message to add
      * @param firstMessage the first message of the diagram

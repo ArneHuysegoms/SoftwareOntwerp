@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 
 /**
- * subclass of DiagramView for the state/description of a sequencerepo
+ * subclass of DiagramView for the state/description of a sequenceview
  */
 public class SequenceView extends DiagramView implements Serializable {
 
@@ -16,18 +16,18 @@ public class SequenceView extends DiagramView implements Serializable {
     private static final int MAXY = 100;
 
     /**
-     * constructs a new empty sequencerepo
+     * constructs a new empty sequenceview
      */
     public SequenceView(){
         this(new LabelView(), new PartyView(), new SequenceMessageView());
     }
 
     /**
-     * constructs a new sequencerepo of which the state is equal to the state of the provided repos
+     * constructs a new sequenceview of which the state is equal to the state of the provided views
      *
-     * @param labelView the labelrepo containing the state of the labels
-     * @param partyView the partyrepo containing the state of the parties
-     * @param messageRepo the messagerepo containing the state of the messages
+     * @param labelView the labelview containing the state of the labels
+     * @param partyView the partyview containing the state of the parties
+     * @param messageRepo the messageview containing the state of the messages
      */
     public SequenceView(LabelView labelView, PartyView partyView, SequenceMessageView messageRepo){
         super(labelView, partyView, messageRepo);

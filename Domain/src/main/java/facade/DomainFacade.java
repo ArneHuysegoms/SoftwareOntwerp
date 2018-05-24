@@ -56,10 +56,10 @@ public class DomainFacade {
 
     /**
      * sets the view that contains the active state of the diagram
-     * @param activeRepo the state of the diagram we want to be the current one
+     * @param activeView the state of the diagram we want to be the current one
      */
-    public void setActiveView(DiagramView activeRepo) {
-        this.activeView = activeRepo;
+    public void setActiveView(DiagramView activeView) {
+        this.activeView = activeView;
     }
 
     /**
@@ -150,8 +150,8 @@ public class DomainFacade {
      */
     public Party addNewParty(Point2D location){
         Party newParty = this.getDiagram().addNewParty();
-        activeView.addNewPartyToRepos(newParty, location);
-        getOtherView().addNewPartyToRepos(newParty, location);
+        activeView.addNewPartyToViews(newParty, location);
+        getOtherView().addNewPartyToViews(newParty, location);
         return newParty;
     }
 
@@ -160,9 +160,9 @@ public class DomainFacade {
      * @param party the party to add
      * @param location the location of the party
      */
-    public void addPartyToRepo(Party party, Point2D location){
-        activeView.addNewPartyToRepos(party, location);
-        getOtherView().addNewPartyToRepos(party, location);
+    public void addPartyToView(Party party, Point2D location){
+        activeView.addNewPartyToViews(party, location);
+        getOtherView().addNewPartyToViews(party, location);
     }
 
     /**
@@ -173,7 +173,7 @@ public class DomainFacade {
      */
     public Party changePartyType(Party oldParty){
         Party newParty = diagram.changePartyType(oldParty);
-        changePartyTypeInRepo(oldParty, newParty);
+        changePartyTypeInView(oldParty, newParty);
         return newParty;
     }
 
@@ -182,9 +182,9 @@ public class DomainFacade {
      * @param oldParty oldParty the old type
      * @param newParty newParty the new type
      */
-    public void changePartyTypeInRepo(Party oldParty, Party newParty){
-        activeView.changePartyTypeInRepos(oldParty, newParty);
-        getOtherView().changePartyTypeInRepos(oldParty, newParty);
+    public void changePartyTypeInView(Party oldParty, Party newParty){
+        activeView.changePartyTypeInViews(oldParty, newParty);
+        getOtherView().changePartyTypeInViews(oldParty, newParty);
         activeView.getMessageView().resetMessagePositions(diagram.getFirstMessage(), activeView.getPartyView(), activeView.getLabelView());
         getOtherView().getMessageView().resetMessagePositions(diagram.getFirstMessage(), getOtherView().getPartyView(), getOtherView().getLabelView());
     }
@@ -223,7 +223,7 @@ public class DomainFacade {
      */
     public Set<DiagramElement> deleteElementByLabel(Label label){
         Set<DiagramElement> deletedElements = this.getDiagram().deleteElementByLabel(label);
-        deleteElementsInRepos(deletedElements);
+        deleteElementsInViews(deletedElements);
         return deletedElements;
     }
 
@@ -241,15 +241,15 @@ public class DomainFacade {
      * deletes the given diagramelements in the repos
      * @param deletedElements the elements to remove
      */
-    public void deleteElementsInRepos(Set<DiagramElement> deletedElements){
+    public void deleteElementsInViews(Set<DiagramElement> deletedElements){
         for(DiagramElement d : deletedElements){
             if(d instanceof Party){
                 Party p = (Party) d;
-                deletePartyInRepos(p);
+                deletePartyInViews(p);
             }
             else if(d instanceof Message){
                 Message m = (Message) d;
-                deleteMessageInRepos(m);
+                deleteMessageInViews(m);
             }
         }
     }
@@ -258,17 +258,17 @@ public class DomainFacade {
      * deletes the given message in both repos
      * @param message the message to be deleted
      */
-    private void deleteMessageInRepos(Message message){
+    private void deleteMessageInViews(Message message){
         Message firstMessage = diagram.getFirstMessage();
-        activeView.deleteMessageInRepos(message, firstMessage);
-        getOtherView().deleteMessageInRepos(message, firstMessage);
+        activeView.deleteMessageInViews(message, firstMessage);
+        getOtherView().deleteMessageInViews(message, firstMessage);
     }
 
     /**
      * deletes the given party in both repos, with cascading effect
      * @param party the party to be deleted
      */
-    private void deletePartyInRepos(Party party) {
+    private void deletePartyInViews(Party party) {
         this.getActiveView().getPartyView().removeParty(party);
         this.getActiveView().getLabelView().removeLabel(party.getLabel());
 
@@ -301,14 +301,14 @@ public class DomainFacade {
      */
     public List<Message> addNewMessage(Point2D location, DiagramView.MessageStart messageStart) throws IllegalStateException{
         if(this.getActiveView() instanceof SequenceView) {
-            SequenceView sequenceRepo = (SequenceView) this.getActiveView();
+            SequenceView sequenceView = (SequenceView) this.getActiveView();
             Party Sender = messageStart.getParty();
             Party receiver = this.getActiveView().findReceiver(location);
             if (receiver != null) {
                 int yLocation = new Double(messageStart.getStartloction().getY()).intValue();
-                Message previous = sequenceRepo.getMessageView().findPreviousMessage(yLocation, diagram.getFirstMessage());
+                Message previous = sequenceView.getMessageView().findPreviousMessage(yLocation, diagram.getFirstMessage());
                 List<Message> addedMessages = diagram.addNewMessage(Sender, receiver, previous);
-                addMessagesToRepos(addedMessages);
+                addMessagesToViews(addedMessages);
                 if(addedMessages.size() == 2){
                     return addedMessages;
                 }
@@ -324,7 +324,7 @@ public class DomainFacade {
      * adds the given messages to all repos of this facade
      * @param messages the messages to add
      */
-    public void addMessagesToRepos(List<Message> messages){
+    public void addMessagesToViews(List<Message> messages){
         getActiveView().getMessageView().addMessages(messages, diagram.getFirstMessage(), getActiveView().getPartyView(), getActiveView().getLabelView());
         this.getOtherView().getMessageView().addMessages(messages, diagram.getFirstMessage(), getOtherView().getPartyView(), getOtherView().getLabelView());
     }

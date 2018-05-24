@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * subclass of messagerepo, contains the state of sequencediagrams
+ * subclass of messageview, contains the state of sequencediagrams
  */
 public class SequenceMessageView extends MessageView implements Serializable {
 
@@ -22,14 +22,14 @@ public class SequenceMessageView extends MessageView implements Serializable {
     private Map<Message, Integer> messageYLocationMap;
 
     /**
-     * constructs a new empty sequencemessagerepo
+     * constructs a new empty sequencemessageview
      */
     public SequenceMessageView(){
         this(new HashMap<>());
     }
 
     /**
-     * constructs a new sequencemessagerepo of which the location is equal to the state of the provided map
+     * constructs a new sequencemessageview of which the location is equal to the state of the provided map
      * @param messageYLocationMap the map containing the state we want the new view to have
      * @throws IllegalArgumentException if the provided map is null
      */

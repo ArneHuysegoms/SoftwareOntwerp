@@ -135,10 +135,10 @@ public class FacadeTest {
         assertEquals(addNewMessage.get(0).getLabel(), f.getDiagram().getFirstMessage().getLabel());
         assertTrue(f.getActiveView().getLabelView().getMap().size() == 4);
         assertTrue(f.getOtherView().getLabelView().getMap().size() == 3);
-        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveView().getMessageView();
-        assertTrue(sequenceMessageRepo.getAllMessages().size() == 2);
-        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherView().getMessageView();
-        assertTrue(communicationMessageRepo.getMap().size() == 1);
+        SequenceMessageView sequenceMessageView = (SequenceMessageView) f.getActiveView().getMessageView();
+        assertTrue(sequenceMessageView.getAllMessages().size() == 2);
+        CommunicationMessageView communicationMessageView = (CommunicationMessageView) f.getOtherView().getMessageView();
+        assertTrue(communicationMessageView.getMap().size() == 1);
     }
 
     @Test
@@ -154,17 +154,17 @@ public class FacadeTest {
         assertNull(f.getDiagram().getFirstMessage());
         assertTrue(f.getActiveView().getLabelView().getMap().size() == 2);
         assertTrue(f.getOtherView().getLabelView().getMap().size() == 2);
-        SequenceMessageView sequenceMessageRepo = (SequenceMessageView) f.getActiveView().getMessageView();
-        assertTrue(sequenceMessageRepo.getAllMessages().size() == 0);
-        CommunicationMessageView communicationMessageRepo = (CommunicationMessageView) f.getOtherView().getMessageView();
-        assertTrue(communicationMessageRepo.getMap().size() == 0);
+        SequenceMessageView sequenceMessageView = (SequenceMessageView) f.getActiveView().getMessageView();
+        assertTrue(sequenceMessageView.getAllMessages().size() == 0);
+        CommunicationMessageView communicationMessageView = (CommunicationMessageView) f.getOtherView().getMessageView();
+        assertTrue(communicationMessageView.getMap().size() == 0);
     }
 
     @Test
-    public void Test_addPartyToRepos() throws DomainException{
+    public void Test_addPartyToViews() throws DomainException{
         DomainFacade f = new DomainFacade();
         Party party = new Object(new MessageLabel("a:A"));
-        f.addPartyToRepo(party, standardPoint);
+        f.addPartyToView(party, standardPoint);
         assertTrue(f.getActiveView().getPartyView().getAllParties().size() == 1);
         assertTrue(f.getActiveView().getLabelView().getMap().size() == 1);
         assertTrue(f.getOtherView().getPartyView().getAllParties().size() == 1);

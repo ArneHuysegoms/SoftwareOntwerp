@@ -45,7 +45,7 @@ public class RemoveInViewsAction extends Action {
         for(DiagramElement element : deletedElements) {
             lableIsSelectedInSubwindow(element, subwindow);
         }
-        subwindow.getFacade().deleteElementsInRepos(deletedElements);
+        subwindow.getFacade().deleteElementsInViews(deletedElements);
     }
 
     /**

@@ -26,7 +26,7 @@ public class ChangeToObjectCommandTest {
             Label label = new PartyLabel(":Jos");
             party = new Actor(label);
             subwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-            subwindow.getFacade().addPartyToRepo(party,new Point2D.Double(150,150));
+            subwindow.getFacade().addPartyToView(party,new Point2D.Double(150,150));
             changeToObjectCommand = new ChangeToObjectCommand(subwindow, party);
         }catch(DomainException e){
             System.out.println("domainexception changetoobjectcommandtest setup");
