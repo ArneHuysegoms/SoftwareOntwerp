@@ -1,9 +1,12 @@
 package figures.converters.diagramSub;
 
+import diagram.label.Label;
+import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Party;
 import figures.drawable.basicShapes.Arrow;
+import view.label.LabelView;
 import view.message.CommunicationMessageView;
 import view.message.MessageView;
 import view.party.PartyView;
@@ -22,6 +25,18 @@ public class CommunicationConverter extends DiagramConverter {
         //actorDrawingStrategy = new CommunicationActorDrawer();
         //objectDrawingStrategy = new CommunicationObjectDrawer();
         //invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
+    }
+
+    @Override
+    protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
+        String messageNumber = "";
+        if (message instanceof InvocationMessage) {
+            messageNumber = ((InvocationMessage) message).getMessageNumber();
+            Map<Label, Point2D> labelMap = labelView.getMap();
+
+            Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
+            drawLabel(graphics, start, message.toString(), getX1(), getY1(), getX2(), getY2());
+        }
     }
 
     /**
@@ -54,8 +69,8 @@ public class CommunicationConverter extends DiagramConverter {
      * calculates start point of an arrow, position depends on how many messages are sent from the first party to the second
      *
      * @param spaceing space to leave between the arrow and the object's top y-coordinate
-     * @param pair a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
-     * @param partyMap     list of Party and Point2D entries
+     * @param pair     a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
+     * @param partyMap list of Party and Point2D entries
      * @return start point of the arrow
      */
     public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
@@ -74,8 +89,8 @@ public class CommunicationConverter extends DiagramConverter {
      * calculates end point of an arrow, position depends on how many messages are sent from the first party to the second
      *
      * @param spaceing space to leave between the arrow and the object's top y-coordinate
-     * @param pair a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
-     * @param partyMap     list of Party and Point2D entries
+     * @param pair     a pair object used to keep track of the messages and number of messages between pairs of parties in communication diagrams
+     * @param partyMap list of Party and Point2D entries
      * @return end point of the arrow
      */
     public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
