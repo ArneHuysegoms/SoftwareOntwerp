@@ -6,7 +6,6 @@ import command.changeType.ChangeToObjectCommand;
 import command.closeWindow.CloseSubwindowCommand;
 import diagram.party.Party;
 import exception.UIException;
-import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
