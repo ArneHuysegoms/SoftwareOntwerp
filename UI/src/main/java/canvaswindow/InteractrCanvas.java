@@ -11,7 +11,6 @@ import uievents.MouseEventFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Collections;
 
 public class InteractrCanvas extends CanvasWindow {
     /**

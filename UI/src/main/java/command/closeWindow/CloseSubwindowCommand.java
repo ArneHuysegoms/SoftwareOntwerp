@@ -5,7 +5,6 @@ import action.EmptyAction;
 import command.Command;
 import controller.InteractionController;
 import window.Subwindow;
-import window.diagram.DiagramSubwindow;
 
 /**
  * command for closing subwindows

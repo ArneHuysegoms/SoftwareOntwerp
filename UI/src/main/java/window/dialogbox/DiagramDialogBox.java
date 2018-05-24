@@ -7,7 +7,6 @@ import command.changeType.ChangeToSequenceCommand;
 import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.RadioButton;
 
