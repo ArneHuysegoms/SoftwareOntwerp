@@ -68,7 +68,7 @@ public class ResultMessageDialogBoxText {
     @Test
     public void test_handleChars(){
         Action resultAction = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
-        assertTrue(resultAction instanceof UpdateLabelContainersAction);
+        assertTrue(resultAction instanceof UpdateLabelAction);
         assertEquals("a", resultMessageDialogBox.getLabelTextBox().getContents());
         assertEquals("a", resultMessage.getLabel().getLabel());
     }
@@ -76,12 +76,12 @@ public class ResultMessageDialogBoxText {
     @Test
     public void test_deleteChars(){
         Action resultAction = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
-        assertTrue(resultAction instanceof UpdateLabelContainersAction);
+        assertTrue(resultAction instanceof UpdateLabelAction);
         assertEquals("a", resultMessageDialogBox.getLabelTextBox().getContents());
         assertEquals("a", resultMessage.getLabel().getLabel());
 
         Action result = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertTrue(result instanceof UpdateLabelContainersAction);
+        assertTrue(result instanceof UpdateLabelAction);
         assertEquals("", resultMessageDialogBox.getLabelTextBox().getContents());
         assertEquals("", resultMessage.getLabel().getLabel());
 

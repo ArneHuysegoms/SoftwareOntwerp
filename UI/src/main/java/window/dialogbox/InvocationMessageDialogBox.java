@@ -306,7 +306,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action changeMethod() throws DomainException {
         if (methodTextBox.hasValidContents()) {
             invocationMessageLabel.setLabel(methodTextBox.getContents());
-            return new UpdateLabelContainersAction(invocationMessageLabel);
+            return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
         }
         return new EmptyAction();
     }
@@ -350,7 +350,7 @@ public class InvocationMessageDialogBox extends DialogBox {
             String argumentString = argumentTextBox.getContents();
             argumentListBox.addArgument(argumentString);
             invocationMessageLabel.addArgument(argumentString);
-            return new UpdateLabelContainersAction(invocationMessageLabel);
+            return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
         }
         return new EmptyAction();
     }
@@ -374,7 +374,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleDeleteArgument() {
         invocationMessageLabel.deleteArgument(argumentListBox.getSelectedIndex());
         argumentListBox.removeArgument();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -385,7 +385,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleMoveUp() {
         argumentListBox.moveUp();
         invocationMessageLabel.moveUp();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -396,7 +396,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     private Action handleMoveDown() {
         argumentListBox.moveDown();
         invocationMessageLabel.moveDown();
-        return new UpdateLabelContainersAction(invocationMessageLabel);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
