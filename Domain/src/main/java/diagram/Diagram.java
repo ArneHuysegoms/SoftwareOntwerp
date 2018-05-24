@@ -360,7 +360,7 @@ public class Diagram implements Serializable {
      * @return true if the party is on top of the call stack, false otherwise
      */
     private boolean checkCallStack(Message previous, Party sender) {
-        if (previous == null && (getFirstMessage() == null || this.getFirstMessage().getSender().equals(sender))) {
+        if (previous == null) {
             if((getFirstMessage() == null || this.getFirstMessage().getSender().equals(sender))){
                 return true;
             }
