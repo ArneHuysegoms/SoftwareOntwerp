@@ -2,25 +2,24 @@ package figures.converters.diagramSub;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
-import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
-
 import figures.converters.SubwindowConverter;
 import figures.drawable.basicShapes.Box;
-import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
+import figures.drawable.diagramFigures.LabelFigure;
 import figures.drawable.diagramFigures.SelectionBoxFigure;
 import figures.drawable.diagramFigures.StickMan;
-import window.diagram.DiagramSubwindow;
+import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
 import view.diagram.DiagramView;
 import view.label.LabelView;
 import view.message.MessageView;
 import view.message.SequenceMessageView;
 import view.party.PartyView;
+import window.diagram.DiagramSubwindow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -30,7 +29,7 @@ import java.util.Set;
 
 public abstract class DiagramConverter extends SubwindowConverter {
     private DiagramSubwindow diagramSubwindow;
-    protected int x1, y1, x2, y2;
+    private int x1, y1, x2, y2;
 
     /**
      * @param diagramSubwindow the diagramSubwindow that will be drawn
@@ -83,7 +82,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
      *                  //@param actorDrawer  a drawer object to be used to draw actor parties
      *                  //@param objectDrawer a drawer object to be used to draw object parties
      */
-    //protected void drawParties(Graphics graphics, PartyView partyView, Drawer actorDrawer, Drawer objectDrawer) {
     protected void drawParties(Graphics graphics, PartyView partyView) {
         Map<Party, Point2D> partyMap = partyView.getMap();
 
@@ -104,7 +102,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * method that draws the diagramSubwindow's 'String labelContainer'-object over the selected label it's position
      *
      * @param graphics     object used to draw on the program's window
-     * @param firstMessage
+     * @param firstMessage the first message in a diagram
      * @param labelMap     list of Label and Point2D entries
      */
     protected void drawSelectedLabel(Graphics graphics, Message firstMessage, Map<Label, Point2D> labelMap) {
@@ -160,8 +158,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     protected void drawMessageLabels(Graphics graphics, Message firstMessage, LabelView labelView) {
         Message msg = firstMessage;
         while (msg != null) {
-            if (msg.getLabel().equals(diagramSubwindow.getSelected()) && diagramSubwindow.isEditing()) {
-            }else{
+            if (!msg.getLabel().equals(diagramSubwindow.getSelected()) || !diagramSubwindow.isEditing()) {
                 drawMessageLabel(graphics, msg, labelView);
             }
             msg = msg.getNextMessage();
@@ -177,34 +174,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
      */
     protected abstract void drawMessageLabel(Graphics graphics, Message message, LabelView labelView);
 
-    //TODO maak hier een figure voor? 'LabelFigure'
-
-    /**
-     * method that draws a label
-     *
-     * @param graphics  object used to draw on the program's window
-     * @param start     coordniate of the label box's top left corner
-     * @param labelText text for in the label
-     * @param minX
-     * @param minY
-     * @param maxX
-     * @param maxY
-     */
-    protected void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
-        //TODO javaDoc (met of zonder Figure class)
-        double x1 = start.getX(), y1 = start.getY(), stringPixelEstimate = 50;
-        if ((labelText.length()) * 5 > stringPixelEstimate) {
-            stringPixelEstimate = (labelText.length()) * 5;
-        }
-        if (x1 > minX && y1 > minY && x1 + stringPixelEstimate < maxX && y1 < maxY) {
-            Color c = graphics.getColor();
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect((int) x1, (int) y1, 50, 15);
-            graphics.setColor(c);
-            graphics.drawString(labelText, (int) start.getX() + 3, (int) start.getY() + 10);
-        }
-    }
-
     /**
      * method that draws messages
      *
@@ -214,6 +183,22 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * @param firstMessage the first message in the diagram
      */
     protected abstract void drawMessages(Graphics graphics, MessageView messageView, Map<Party, Point2D> partyMap, Message firstMessage);
+
+    /**
+     * method that draws a label
+     *
+     * @param graphics  object used to draw on the program's window
+     * @param start     coordniate of the label box's top left corner
+     * @param labelText text of the label
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
+    protected void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
+        new LabelFigure(start, labelText)
+                .draw(graphics, minX, minY, maxX, maxY);
+    }
 
     /**
      * method that draws a selection box around the currently selected selectable part of the diagram
@@ -259,7 +244,7 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * method that draws the subwindow's seleton, an empty subwindow
+     * method that draws the subwindow's skeleton, an empty subwindow
      *
      * @param graphics object used to draw on the program's window
      */
