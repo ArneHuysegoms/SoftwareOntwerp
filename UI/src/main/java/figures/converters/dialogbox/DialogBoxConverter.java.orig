@@ -1,18 +1,14 @@
 package figures.converters.dialogbox;
 
 import figures.converters.SubwindowConverter;
-import figures.drawable.diagramFigures.DialogBoxSelectionBoxFigure;
-import figures.drawable.subwindowFigures.*;
-import window.elements.DialogboxElement;
-import window.elements.ListBox;
-import window.elements.RadioButton;
-import window.elements.button.FakeButton;
-import window.elements.textbox.TextBox;
+<<<<<<< HEAD
 import figures.drawable.subwindowFigures.*;
 import window.dialogbox.*;
+=======
+import figures.drawable.subwindowFigures.SubwindowFigure;
+>>>>>>> origin/ArneDi
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class DialogBoxConverter extends SubwindowConverter {
 
