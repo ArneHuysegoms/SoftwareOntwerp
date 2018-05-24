@@ -2,7 +2,6 @@ package command.changeType;
 
 import action.Action;
 import action.EmptyAction;
-import action.UpdateLabelContainersAction;
 import action.UpdatePartyTypeAction;
 import command.Command;
 import diagram.party.Actor;

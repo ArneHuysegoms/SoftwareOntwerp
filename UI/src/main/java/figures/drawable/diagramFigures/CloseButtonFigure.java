@@ -3,7 +3,6 @@ package figures.drawable.diagramFigures;
 import figures.drawable.IDrawable;
 import figures.drawable.basicShapes.Line;
 import figures.drawable.basicShapes.Rectangle;
-import window.frame.TitleBar;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

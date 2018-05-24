@@ -17,6 +17,7 @@ import window.elements.button.CloseWindowButton;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -294,7 +295,8 @@ public class InteractionController implements IHighLevelController{
      */
     public void actionForEachSubwindow(Action action){
         if(! (action instanceof DialogBoxOpenedAction)){
-            for(Subwindow s : getSubwindows()){
+            for(int i = getSubwindows().size() - 1; i >= 0; i--){
+                Subwindow s = getSubwindows().get(i);
                 if(s != getActiveSubwindow()){
                     s.handleAction(action);
                 }

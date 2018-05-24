@@ -1,6 +1,5 @@
 package figures.drawable.basicShapes;
 
-import figures.drawable.basicShapes.Box;
 import org.junit.Before;
 import org.junit.Test;
 

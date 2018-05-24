@@ -7,7 +7,8 @@ import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
 import exceptions.DomainException;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;

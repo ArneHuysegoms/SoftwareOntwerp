@@ -1,14 +1,15 @@
 package figures.converters;
 
-import controller.CanvasController;
-import controller.InteractionController;
 import figures.converters.diagramSub.CommunicationConverter;
 import figures.converters.diagramSub.SequenceConverter;
 import figures.converters.dialogbox.DiagramDialogBoxConverter;
 import figures.converters.dialogbox.InvocationMessageDialogBoxConverter;
 import figures.converters.dialogbox.PartyDialogBoxConverter;
 import figures.converters.dialogbox.ResultMessageDialogBoxConverter;
-import figures.drawable.subwindowFigures.*;
+import figures.drawable.subwindowFigures.DiagramDialogBoxFigure;
+import figures.drawable.subwindowFigures.InvocationMessageDialogBoxFigure;
+import figures.drawable.subwindowFigures.PartyDialogBoxFigure;
+import figures.drawable.subwindowFigures.ResultMessageDialogBoxFigure;
 import view.diagram.CommunicationView;
 import view.diagram.SequenceView;
 import window.Subwindow;
@@ -16,8 +17,6 @@ import window.diagram.DiagramSubwindow;
 import window.dialogbox.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

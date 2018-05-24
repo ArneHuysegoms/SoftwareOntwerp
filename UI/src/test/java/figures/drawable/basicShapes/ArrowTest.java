@@ -1,6 +1,5 @@
 package figures.drawable.basicShapes;
 
-import figures.drawable.basicShapes.Arrow;
 import org.junit.Before;
 import org.junit.Test;
 

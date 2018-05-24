@@ -2,25 +2,23 @@ package figures.converters.diagramSub;
 
 import diagram.Diagram;
 import diagram.DiagramElement;
-import diagram.label.InvocationMessageLabel;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
-
 import figures.converters.SubwindowConverter;
 import figures.drawable.basicShapes.Box;
-import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
 import figures.drawable.diagramFigures.SelectionBoxFigure;
 import figures.drawable.diagramFigures.StickMan;
-import window.diagram.DiagramSubwindow;
+import figures.drawable.subwindowFigures.DiagramSubwindowFigure;
 import view.diagram.DiagramView;
 import view.label.LabelView;
 import view.message.MessageView;
 import view.message.SequenceMessageView;
 import view.party.PartyView;
+import window.diagram.DiagramSubwindow;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

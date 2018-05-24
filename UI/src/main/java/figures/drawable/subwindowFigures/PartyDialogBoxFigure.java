@@ -1,16 +1,12 @@
 package figures.drawable.subwindowFigures;
 
 import diagram.party.Actor;
-import figures.drawable.diagramFigures.*;
+import figures.drawable.diagramFigures.RadioButtonFigure;
+import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
+import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
-import window.elements.DialogboxElement;
-import window.elements.ListBox;
-import window.elements.RadioButton;
-import window.elements.button.FakeButton;
-import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
 

@@ -11,7 +11,7 @@ import view.message.SequenceMessageView;
 import view.party.PartyView;
 
 import java.awt.geom.Point2D;
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;

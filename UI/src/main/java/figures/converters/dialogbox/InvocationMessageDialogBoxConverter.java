@@ -3,8 +3,6 @@ package figures.converters.dialogbox;
 import figures.drawable.subwindowFigures.InvocationMessageDialogBoxFigure;
 import window.dialogbox.InvocationMessageDialogBox;
 
-import java.awt.*;
-
 public class InvocationMessageDialogBoxConverter extends DialogBoxConverter {
 
     private InvocationMessageDialogBox dialogBox;

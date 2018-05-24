@@ -2,20 +2,14 @@ package action;
 
 import diagram.DiagramElement;
 import diagram.label.Label;
-import diagram.label.MessageLabel;
 import diagram.label.PartyLabel;
-import diagram.message.InvocationMessage;
-import diagram.message.Message;
 import diagram.party.Actor;
-import diagram.party.Party;
 import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UpdateLabelActionTest {
     private UpdateLabelAction updateLabelAction;

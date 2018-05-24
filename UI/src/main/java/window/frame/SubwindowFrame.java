@@ -1,7 +1,7 @@
 package window.frame;
 
-import window.elements.button.Button;
 import window.Clickable;
+import window.elements.button.Button;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

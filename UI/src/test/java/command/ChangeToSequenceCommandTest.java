@@ -1,14 +1,9 @@
 package command;
 
 import command.changeType.ChangeToSequenceCommand;
-import command.closeWindow.CloseSubwindowCommand;
-import controller.InteractionController;
 import org.junit.Before;
 import org.junit.Test;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.Button;
-import window.elements.button.CloseWindowButton;
 
 import java.awt.geom.Point2D;
 

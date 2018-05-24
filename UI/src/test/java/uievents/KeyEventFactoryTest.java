@@ -3,7 +3,8 @@ package uievents;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class KeyEventFactoryTest {
     private KeyEvent keyEvent1, keyEvent2, keyEvent3, keyEvent4, keyEvent5, keyEvent6, keyEvent7, keyEvent8;

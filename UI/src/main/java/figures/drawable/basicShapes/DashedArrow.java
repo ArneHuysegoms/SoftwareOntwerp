@@ -1,8 +1,5 @@
 package figures.drawable.basicShapes;
 
-import figures.drawable.basicShapes.Arrow;
-import figures.drawable.basicShapes.DashedLine;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 

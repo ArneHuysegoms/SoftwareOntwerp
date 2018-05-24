@@ -25,7 +25,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PartyDialogBoxTest {
 

@@ -1,15 +1,15 @@
 package view.party;
 
+import diagram.DiagramElement;
+import diagram.party.Object;
+import diagram.party.Party;
+
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import diagram.DiagramElement;
-import diagram.party.Party;
-import diagram.party.Object;
 
 /**
  * a class containing the state of every party in the diagram, and everything positional on parties
