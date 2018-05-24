@@ -22,16 +22,11 @@ public class CommunicationConverter extends DiagramConverter {
 
     public CommunicationConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
-        //actorDrawingStrategy = new CommunicationActorDrawer();
-        //objectDrawingStrategy = new CommunicationObjectDrawer();
-        //invokeMessageDrawingStrategy = new CommunicationInvokeMessageDrawer();
     }
 
     @Override
     protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
-        String messageNumber = "";
         if (message instanceof InvocationMessage) {
-            messageNumber = ((InvocationMessage) message).getMessageNumber();
             Map<Label, Point2D> labelMap = labelView.getMap();
 
             Point2D start = getDiagramSubwindow().getAbsolutePosition(labelMap.get(message.getLabel()));
@@ -43,15 +38,15 @@ public class CommunicationConverter extends DiagramConverter {
      * method that draws messages
      *
      * @param graphics     object used to draw on the program's window
-     * @param messageView  repository containing all the coordinates of the messages in the window.diagram's diagram
+     * @param messageView  view object containing all the coordinates of the messages in the window.diagram's diagram
      * @param partyMap     list of Party and Point2D entries
      * @param firstMessage the first message in the diagram
      */
     @Override
     protected void drawMessages(Graphics graphics, MessageView messageView, Map<Party, Point2D> partyMap, Message firstMessage) {
-        CommunicationMessageView repo = (CommunicationMessageView) messageView;
+        CommunicationMessageView view = (CommunicationMessageView) messageView;
 
-        List<PartyPair> pairs = repo.getMap();
+        List<PartyPair> pairs = view.getMap();
 
         for (PartyPair pair : pairs) {
             int spread = PartyView.OBJECTHEIGHT / pair.getNumberOfMessages();
@@ -73,7 +68,7 @@ public class CommunicationConverter extends DiagramConverter {
      * @param partyMap list of Party and Point2D entries
      * @return start point of the arrow
      */
-    public Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
+    private Point2D calculateStart(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y, offset;
         if (pair.getSender() instanceof Actor) {
             offset = PartyView.ACTORWIDTH / 2;
@@ -93,7 +88,7 @@ public class CommunicationConverter extends DiagramConverter {
      * @param partyMap list of Party and Point2D entries
      * @return end point of the arrow
      */
-    public Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
+    private Point2D calculateEnd(int spaceing, PartyPair pair, Map<Party, Point2D> partyMap) {
         double x, y, offset;
         if (pair.getReceiver() instanceof Actor) {
             offset = PartyView.ACTORWIDTH / 2;

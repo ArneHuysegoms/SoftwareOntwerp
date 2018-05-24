@@ -59,7 +59,7 @@ public class SequenceConverter extends DiagramConverter {
      *
      * @param graphics  object used to draw on the program's window
      * @param message   message to be drawn
-     * @param labelView view object containing all the coordinates of the labels in the diagramSubwindow's diagram
+     * @param labelView view containing all the coordinates of the labels in the diagramSubwindow's diagram
      */
     @Override
     protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
