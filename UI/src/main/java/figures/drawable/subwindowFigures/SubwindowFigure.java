@@ -3,19 +3,11 @@ package figures.drawable.subwindowFigures;
 import figures.drawable.IDrawable;
 import figures.drawable.basicShapes.Rectangle;
 import figures.drawable.diagramFigures.CloseButtonFigure;
-import figures.drawable.diagramFigures.DialogBoxSelectionBoxFigure;
-import figures.drawable.diagramFigures.SelectedTextBoxFigure;
-import window.elements.DialogboxElement;
-import window.elements.ListBox;
-import window.elements.RadioButton;
 import window.elements.button.Button;
-import window.elements.button.FakeButton;
-import window.elements.textbox.TextBox;
 import window.frame.SubwindowFrame;
 import window.frame.TitleBar;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public abstract class SubwindowFigure implements IDrawable {
 
@@ -48,9 +40,10 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param c        subwindows background color
      */
     private void drawBackgroundColor(Graphics graphics, Color c) {
+        Color temp = graphics.getColor();
         graphics.setColor(c);
         graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight());
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(temp);
     }
 
     /**

@@ -30,11 +30,6 @@ public class SequenceConverter extends DiagramConverter {
 
     public SequenceConverter(DiagramSubwindow diagramSubwindow) {
         super(diagramSubwindow);
-        //lifeLineDrawer = new SequenceLifelineDrawer();
-        //actorDrawingStrategy = new SequenceActorDrawer();
-        //objectDrawingStrategy = new SequenceObjectDrawer();
-        //invokeMessageDrawingStrategy = new SequenceInvokeMessageDrawer();
-        //responseMessageDrawingStrategy = new SequenseResponseMessageDrawer();
     }
 
     /**
@@ -330,7 +325,7 @@ public class SequenceConverter extends DiagramConverter {
             /**
              * returns if this activation bar is stacked on another one
              *
-             * @return
+             * @return true if this activation starts in another activation bar
              */
             private Boolean hasParent() {
                 return hasParentBar;

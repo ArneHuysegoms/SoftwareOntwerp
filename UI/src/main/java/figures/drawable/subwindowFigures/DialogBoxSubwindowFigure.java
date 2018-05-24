@@ -18,6 +18,13 @@ public abstract class DialogBoxSubwindowFigure extends SubwindowFigure {
         super(subwindow);
     }
 
+    /**
+     * method that draws a box around the selected element
+     *
+     * @param graphics object used to draw on the program's window
+     * @param selected the selected element
+     * @param absolutePosition the position of the selected element
+     */
     protected void handleSelectedElement(Graphics graphics, DialogboxElement selected, Point2D absolutePosition) {
 
         if (selected instanceof TextBox) {
@@ -42,6 +49,12 @@ public abstract class DialogBoxSubwindowFigure extends SubwindowFigure {
         }
     }
 
+    /**
+     * method used to draw the selected text box
+     * @param graphics object used to draw on the program's window
+     * @param selected the selected text box
+     * @param absolutePosition the position of the selected text box
+     */
     private void drawSelectedTextBoxFigure(Graphics graphics, TextBox selected, Point2D absolutePosition) {
         new SelectedTextBoxFigure((TextBox) selected, absolutePosition, "")
                 .draw(graphics);

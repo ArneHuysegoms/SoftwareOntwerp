@@ -43,27 +43,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * template draw method that draws the diagram subwindow's contents, order of drawing is decided here
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    @Override
-    public void draw(Graphics graphics) {
-        DiagramView view = diagramSubwindow.getFacade().getActiveView();
-        Diagram diagram = diagramSubwindow.getFacade().getDiagram();
-        DiagramElement selectedElement = diagramSubwindow.getSelected();
-
-        drawSubwindow(graphics);
-        drawDiagramSpecificStuff(graphics, view, diagram, selectedElement);
-        drawParties(graphics, view.getPartyView());
-        drawPartyLabels(graphics, view.getPartyView().getAllParties(), view.getLabelView());
-        drawMessageLabels(graphics, diagram.getFirstMessage(), view.getLabelView());
-        drawMessages(graphics, view.getMessageView(), view.getPartyView().getMap(), diagram.getFirstMessage());
-        drawSelectedLabel(graphics, diagram.getFirstMessage(), view.getLabelView().getMap());
-        drawSelectionBox(graphics, selectedElement, view);
-    }
-
-    /**
      * default hook method, for drawing diagram specific stuff if subclass needs it, that does nothing in this class
      *
      * @param graphics        object used to draw on the program's window
@@ -128,7 +107,6 @@ public abstract class DiagramConverter extends SubwindowConverter {
             } else {
                 drawLabel(graphics, start, messageNumber + getDiagramSubwindow().getLabelContainer(), getX1(), getY1(), getX2(), getY2());
             }
-
         }
     }
 
@@ -190,10 +168,10 @@ public abstract class DiagramConverter extends SubwindowConverter {
      * @param graphics  object used to draw on the program's window
      * @param start     coordniate of the label box's top left corner
      * @param labelText text of the label
-     * @param minX     minimum possible x coördinate value
-     * @param minY     minimum possible y coördinate value
-     * @param maxX     maximum possible x coördinate value
-     * @param maxY     maximum possible y coördinate value
+     * @param minX      minimum possible x coördinate value
+     * @param minY      minimum possible y coördinate value
+     * @param maxX      maximum possible x coördinate value
+     * @param maxY      maximum possible y coördinate value
      */
     protected void drawLabel(Graphics graphics, Point2D start, String labelText, int minX, int minY, int maxX, int maxY) {
         new LabelFigure(start, labelText)
@@ -244,15 +222,36 @@ public abstract class DiagramConverter extends SubwindowConverter {
     }
 
     /**
-     * method that draws the subwindow's skeleton, an empty subwindow
+     * template draw method that draws the diagram subwindow's contents, order of drawing is decided here
      *
      * @param graphics object used to draw on the program's window
      */
     @Override
     public void drawSubwindow(Graphics graphics) {
+        DiagramView view = diagramSubwindow.getFacade().getActiveView();
+        Diagram diagram = diagramSubwindow.getFacade().getDiagram();
+        DiagramElement selectedElement = diagramSubwindow.getSelected();
+
+        drawSubwindowFigure(graphics);
+        drawDiagramSpecificStuff(graphics, view, diagram, selectedElement);
+        drawParties(graphics, view.getPartyView());
+        drawPartyLabels(graphics, view.getPartyView().getAllParties(), view.getLabelView());
+        drawMessageLabels(graphics, diagram.getFirstMessage(), view.getLabelView());
+        drawMessages(graphics, view.getMessageView(), view.getPartyView().getMap(), diagram.getFirstMessage());
+        drawSelectedLabel(graphics, diagram.getFirstMessage(), view.getLabelView().getMap());
+        drawSelectionBox(graphics, selectedElement, view);
+    }
+
+    /**
+     * method that draws the subwindow's skeleton, an empty subwindow
+     *
+     * @param graphics object used to draw on the program's window
+     */
+    protected void drawSubwindowFigure(Graphics graphics){
         new DiagramSubwindowFigure(diagramSubwindow)
                 .draw(graphics);
     }
+
 
     /**
      * @return the diagramSubwindow to draw
