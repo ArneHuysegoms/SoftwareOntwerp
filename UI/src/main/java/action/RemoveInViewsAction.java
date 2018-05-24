@@ -43,9 +43,7 @@ public class RemoveInViewsAction extends Action {
             subwindow.setSelected(null);
         }
         for(DiagramElement element : deletedElements) {
-            if(lableIsSelectedInSubwindow(element, subwindow)){
-                subwindow.setSelected(null);
-            }
+            lableIsSelectedInSubwindow(element, subwindow);
         }
         subwindow.getFacade().deleteElementsInRepos(deletedElements);
     }
@@ -54,21 +52,25 @@ public class RemoveInViewsAction extends Action {
      * checks if the given element is selected in the given subwindow
      * @param element the element to check
      * @param subwindow the subwindow to check
-     * @return true if the element is selected in the subwindow
      */
-    private boolean lableIsSelectedInSubwindow(DiagramElement element, DiagramSubwindow subwindow) {
+    private void lableIsSelectedInSubwindow(DiagramElement element, DiagramSubwindow subwindow) {
         if(element instanceof Party){
             Party p = (Party) element;
             if(subwindow.getSelected() == p.getLabel()){
-                return true;
+                subwindow.setSelected(null);
+                subwindow.setEditing(false);
+                subwindow.setLabelMode(false);
+                subwindow.setLabelContainer("");
             }
         }
         else if(element instanceof Message){
             Message m = (Message) element;
             if(subwindow.getSelected() == m.getLabel()){
-               return true;
+                subwindow.setSelected(null);
+                subwindow.setEditing(false);
+                subwindow.setLabelMode(false);
+                subwindow.setLabelContainer("");
             }
         }
-        return false;
     }
 }
