@@ -14,6 +14,15 @@ public class DiagramSubwindowFigure extends SubwindowFigure {
         super(subwindow.getFrame());
     }
 
+    /**
+     * draws a diagram subwindow frame
+     *
+     * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
+     */
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);

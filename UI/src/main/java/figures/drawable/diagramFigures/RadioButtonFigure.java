@@ -12,6 +12,12 @@ public class RadioButtonFigure implements IDrawable {
     private String title;
     protected Point2D absolutePosition;
 
+    /**
+     *
+     * @param rb the radio button that has to be drawn
+     * @param absolutePosition the radio button's position
+     * @param title the radio button's title
+     */
     public RadioButtonFigure(RadioButton rb, Point2D absolutePosition, String title) {
         this.absolutePosition = absolutePosition;
         this.rb = rb;

@@ -42,8 +42,11 @@ public class UpButtonFigure implements IDrawable {
 
     /**
      * draws the button's icon
-     *
      * @param graphics object used to draw on the program's window
+     * @param minX     minimum possible x coördinate value
+     * @param minY     minimum possible y coördinate value
+     * @param maxX     maximum possible x coördinate value
+     * @param maxY     maximum possible y coördinate value
      */
     private void drawUpShape(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         int offsetCenter = (int) Math.ceil(((double) width) / 2),
@@ -58,11 +61,7 @@ public class UpButtonFigure implements IDrawable {
      * @param graphics object used to draw on the program's window
      */
     private void drawUpShape(Graphics graphics) {
-        int offsetCenter = (int) Math.ceil(((double) width) / 2),
-                offsetX = (int) Math.floor(width / 5),
-                offsetY = (int) Math.floor(height / 5);
-        new Line(x+offsetCenter,y+offsetY,x+offsetX,y+(offsetY*4)).draw(graphics);
-        new Line(x+offsetCenter,y+offsetY,x+(offsetX*4),y+(offsetY*4)).draw(graphics);
+        this.drawUpShape(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE,Integer.MAX_VALUE);
     }
 
     /**

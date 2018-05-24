@@ -12,7 +12,7 @@ public class LifeLineFigure extends DashedLine{
     }
 
     /**
-     * a draw function that draws a gray dashed line on the Graphics parameter object
+     * a draw function that draws a gray dashed line on the Graphics parameter object, used to draw a life line in sequence diagrams
      *
      * @param graphics object used to draw on the program's window
      */

@@ -56,10 +56,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawTextBoxes(Graphics graphics) {
-        new TextBoxFigure(dialogBox.getInstanceTextBox(), dialogBox.getAbsolutePosition(dialogBox.getInstanceTextBox().getCoordinate()), PartyDialogBox.INSTANCE_DESCRIPTION)
-                .draw(graphics);
-        new TextBoxFigure(dialogBox.getClassTextBox(), dialogBox.getAbsolutePosition(dialogBox.getClassTextBox().getCoordinate()), PartyDialogBox.CLASS_DESCRIPTION)
-                .draw(graphics);
+        this.drawTextBoxes(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
@@ -85,11 +82,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawRadioButtons(Graphics graphics) {
-        new RadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()), PartyDialogBox.TOACTOR_DESCRIPTION)
-                .draw(graphics);
-        new RadioButtonFigure(dialogBox.getToObject(), dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()), PartyDialogBox.TOOBJECT_DESPCRIPTION)
-                .draw(graphics);
-        drawSelectedRadioButton(graphics);
+        this.drawRadioButtons(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**

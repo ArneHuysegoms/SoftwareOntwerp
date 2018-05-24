@@ -40,9 +40,10 @@ public abstract class SubwindowFigure implements IDrawable {
      * @param c        subwindows background color
      */
     private void drawBackgroundColor(Graphics graphics, Color c) {
+        Color temp = graphics.getColor();
         graphics.setColor(c);
         graphics.fillRect((int) subwindow.getSubwindowPoint().getX(), (int) subwindow.getSubwindowPoint().getY(), subwindow.getSubwindowWidth(), subwindow.getSubwindowHeight());
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(temp);
     }
 
     /**

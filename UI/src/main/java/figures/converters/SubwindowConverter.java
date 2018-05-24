@@ -9,11 +9,4 @@ public abstract class SubwindowConverter{
      * @param g object used to draw on the program's window
      */
     public abstract void drawSubwindow(Graphics g);
-
-    /**
-     * method that draws the subwindow's contents
-     *
-     * @param g object used to draw on the program's window
-     */
-    public abstract void draw(Graphics g);
 }

@@ -39,6 +39,11 @@ public class Rectangle implements IDrawable {
         setCornerTR(new Point2D.Double(br.getX(), tl.getY()));
     }
 
+    /**
+     * @param subwindowPoint the rectangle's top-left point
+     * @param subwindowWidth the rectangles width
+     * @param subwindowHeight the rectangles height
+     */
     public Rectangle(Point2D subwindowPoint, int subwindowWidth, int subwindowHeight) {
         setPositionTL(subwindowPoint);
         setCornerBR(new Point2D.Double(subwindowPoint.getX()+subwindowWidth, subwindowPoint.getY()+subwindowHeight));

@@ -14,6 +14,11 @@ public class ListBoxFigure implements IDrawable {
     private Point2D absolutePosition;
     private Point2D absoluteArgumentPosition;
 
+    /**
+     *
+     * @param listBox the list box that has to be drawn
+     * @param absolutePosition the list box's position
+     */
     public ListBoxFigure(ListBox listBox, Point2D absolutePosition) {
         this.absolutePosition = absolutePosition;
         this.listBox = listBox;
@@ -36,19 +41,6 @@ public class ListBoxFigure implements IDrawable {
     }
 
     /**
-     * draws the box of a list box
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    private void drawBox(Graphics graphics) {
-        Color temp = graphics.getColor();
-        graphics.setColor(Color.GRAY);
-        new Rectangle(absolutePosition, ListBox.WIDTH, ListBox.HEIGHT)
-                .draw(graphics);
-        graphics.setColor(temp);
-    }
-
-    /**
      * marks an argument
      *
      * @param graphics object used to draw on the program's window
@@ -66,15 +58,6 @@ public class ListBoxFigure implements IDrawable {
                     .draw(graphics, minX, minY, maxX, maxY);
             graphics.setColor(temp);
         }
-    }
-
-    /**
-     * marks an argument
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    private void drawArgumentSelection(Graphics graphics) {
-        this.drawArgumentSelection(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
