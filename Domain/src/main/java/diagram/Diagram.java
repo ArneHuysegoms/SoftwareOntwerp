@@ -361,7 +361,12 @@ public class Diagram implements Serializable {
      */
     private boolean checkCallStack(Message previous, Party sender) {
         if (previous == null && (getFirstMessage() == null || this.getFirstMessage().getSender().equals(sender))) {
-            return true;
+            if((getFirstMessage() == null || this.getFirstMessage().getSender().equals(sender))){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         if (previous.getReceiver().equals(sender)) {
             return true;
