@@ -1,6 +1,7 @@
 package window.dialogbox;
 
 import action.*;
+import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.message.InvocationMessage;
 import exception.UIException;
@@ -432,9 +433,13 @@ public class InvocationMessageDialogBox extends DialogBox {
     public void handleAction(Action action) {
         if (action instanceof RemoveInViewsAction) {
             RemoveInViewsAction a = (RemoveInViewsAction) action;
-            InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
-            if (a.getDeletedElements().contains(invocationMessage)) {
-                this.getFrame().close();
+            for(DiagramElement element : a.getDeletedElements()) {
+                if(element instanceof InvocationMessage) {
+                    InvocationMessage inv = (InvocationMessage) element;
+                    if (inv.getLabel() == invocationMessageLabel) {
+                        this.getFrame().close();
+                    }
+                }
             }
         }
         if (action instanceof UpdateLabelAction) {
