@@ -44,13 +44,15 @@ public class UpdateLabelAction extends Action {
      */
     @Override
     public void performAction(DiagramSubwindow subwindow) {
-        if(subwindow.getSelected().equals(element)){
-            subwindow.setLabelContainer(element.toString() + "I");
-        }
-        if(subwindow.getSelected() instanceof Label && ( subwindow.getSelected()).equals(selectedLabel)){
-            subwindow.stopEditingLabel();
-            subwindow.setLabelMode(false);
-            subwindow.setEditing(false);
+        if(subwindow.getSelected() != null){
+            if(subwindow.getSelected().equals(element)){
+                subwindow.setLabelContainer(element.toString() + "I");
+            }
+            if(subwindow.getSelected() instanceof Label && ( subwindow.getSelected()).equals(selectedLabel)){
+                subwindow.stopEditingLabel();
+                subwindow.setLabelMode(false);
+                subwindow.setEditing(false);
+            }
         }
     }
 }
