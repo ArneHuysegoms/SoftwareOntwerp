@@ -20,5 +20,5 @@ import view.party.PartyViewTest;
         CommunicationRepoTest.class,
         DiagramViewTest.class
 })
-public class RepoTestSuite {
+public class ViewTestSuite {
 }
