@@ -46,6 +46,11 @@ public class KeyEventFactory {
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLD);
                 }
+            } else if (keyCode == 69) {
+                if (ctrlPressed == true) {
+                    setCtrlPressed(false);
+                    return new KeyEvent(KeyEventType.CTRLE);
+                }
             } else if (keyCode == 78){
                 if(ctrlPressed == true){
                     setCtrlPressed(false);
