@@ -1,4 +1,4 @@
-package command.changeType;
+package command.changeType.DiagramCommand;
 
 import action.Action;
 import action.EmptyAction;

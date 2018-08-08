@@ -2,13 +2,14 @@ package window.dialogbox;
 
 import action.Action;
 import action.EmptyAction;
-import command.changeType.ChangeToCommunicationCommand;
-import command.changeType.ChangeToSequenceCommand;
+import command.changeType.DiagramCommand.ChangeToCommunicationCommand;
+import command.changeType.DiagramCommand.ChangeToSequenceCommand;
 import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
-import window.elements.RadioButton;
+import window.elements.radiobutton.DiagramRadioButton;
+import window.elements.radiobutton.RadioButton;
 
 import java.awt.geom.Point2D;
 
@@ -41,8 +42,8 @@ public class DiagramDialogBox extends DialogBox {
         super(position);
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        toCommunicationDiagram = new RadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
-        toSequenceDiagram = new RadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
+        toCommunicationDiagram = new DiagramRadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
+        toSequenceDiagram = new DiagramRadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
         selected = toCommunicationDiagram;
         this.setDiagramSubwindow(subwindow);
     }

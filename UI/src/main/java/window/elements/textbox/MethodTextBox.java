@@ -1,6 +1,10 @@
 package window.elements.textbox;
 
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import window.Subwindow;
+import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
@@ -20,6 +24,12 @@ public class MethodTextBox extends TextBox {
         super(coordinate, description);
     }
 
+    @Override
+    public DialogboxElement clone() {
+        throw new NotImplementedException();
+
+    }
+
     /**
      * @return true if this textbox has valid contents
      */
@@ -27,4 +37,6 @@ public class MethodTextBox extends TextBox {
     public boolean hasValidContents() {
         return !this.getContents().isEmpty();
     }
+
+
 }

@@ -1,7 +1,10 @@
 package window.elements;
 
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import window.Clickable;
+import window.Subwindow;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ public class ListBox extends DialogboxElement implements Clickable {
     private List<String> arguments;
 
     private int selectedIndex;
+
 
     /**
      * makes a new listbox with the given parameters
@@ -75,6 +79,12 @@ public class ListBox extends DialogboxElement implements Clickable {
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+    }
+
+    @Override
+    public DialogboxElement clone() {
+        throw new NotImplementedException();
+
     }
 
     /**

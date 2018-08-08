@@ -1,7 +1,10 @@
 package window.elements;
 
+import diagram.party.Party;
 import exception.UIException;
 import window.Clickable;
+import window.Subwindow;
+import window.diagram.DiagramSubwindow;
 
 import java.awt.geom.Point2D;
 
@@ -16,6 +19,9 @@ public abstract class DialogboxElement implements Clickable {
     protected DialogboxElement() {
 
     }
+
+    public void update(DiagramSubwindow subwindow, Party party){}
+    public void update(DiagramSubwindow subwindow){}
 
     /**
      * makes a new dialogboxelement with the given parameters
@@ -69,4 +75,6 @@ public abstract class DialogboxElement implements Clickable {
      */
     @Override
     public abstract boolean isClicked(Point2D coordinate);
+
+    public abstract DialogboxElement clone();
 }

@@ -2,6 +2,9 @@ package window.elements.textbox;
 
 import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import window.Subwindow;
+import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
@@ -19,6 +22,16 @@ public class ClassTextBox extends TextBox {
      */
     public ClassTextBox(Point2D coordinate, String description) throws UIException {
         super(coordinate, description);
+    }
+
+    @Override
+    public DialogboxElement clone() {
+        try {
+            return new ClassTextBox(getCoordinate(), getDescription());
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

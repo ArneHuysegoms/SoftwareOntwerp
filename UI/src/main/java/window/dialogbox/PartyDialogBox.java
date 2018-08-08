@@ -1,8 +1,8 @@
 package window.dialogbox;
 
 import action.*;
-import command.changeType.ChangeToActorCommand;
-import command.changeType.ChangeToObjectCommand;
+import command.changeType.PartyCommand.ChangeToActorCommand;
+import command.changeType.PartyCommand.ChangeToObjectCommand;
 import command.closeWindow.CloseSubwindowCommand;
 import diagram.party.Party;
 import exception.UIException;
@@ -10,7 +10,8 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
-import window.elements.RadioButton;
+import window.elements.radiobutton.PartyRadioButton;
+import window.elements.radiobutton.RadioButton;
 import window.elements.button.CloseWindowButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
@@ -18,6 +19,7 @@ import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,6 +50,19 @@ public class PartyDialogBox extends DialogBox {
 
     private DiagramSubwindow subwindow;
 
+    public static ArrayList<DialogboxElement> PARTYBOXLIST;
+
+    static {
+        try {
+            PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION),
+                        new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION),
+                        new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION),
+                        new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION)));
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * create a new party dialog box
      *
@@ -59,22 +74,31 @@ public class PartyDialogBox extends DialogBox {
     public PartyDialogBox(Point2D pos, Party party, DiagramSubwindow subwindow) throws UIException {
         super(pos);
         this.setParty(party);
-        toActor = new RadioButton(new ChangeToActorCommand(subwindow, party), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION);
+        /*toActor = new RadioButton(new ChangeToActorCommand(subwindow, party), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION);
         toObject = new RadioButton(new ChangeToObjectCommand(subwindow, party), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION);
         instanceTextBox = new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION);
-        classTextBox = new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION);
+        classTextBox = new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION);*/
         elementList = new ArrayList<>();
-        elementList.add(toActor);
+        /*elementList.add(toActor);
         elementList.add(toObject);
         elementList.add(instanceTextBox);
         elementList.add(classTextBox);
         selected = toActor;
-
+*/
         this.subwindow = subwindow;
 
         this.setWidth(WIDTH);
         this.setHeight(HEIGHT);
         updateFields(party);
+        updateList();
+    }
+
+    public void updateList(){
+        for (DialogboxElement e : PARTYBOXLIST){
+            DialogboxElement clone = e.clone();
+            clone.update(subwindow,party);
+            elementList.add(clone);
+        }
     }
 
     /**
@@ -151,8 +175,20 @@ public class PartyDialogBox extends DialogBox {
     @Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
+            case LEFTDOUBLECLICK:
+                if(designerMode){
+                    for(DialogboxElement ele:PARTYBOXLIST){
+                        if(ele.isClicked(mouseEvent.getPoint())){
+                            ele.clone(); //TODO
+                        }
+                    }
+                    System.out.println("FUCKFFLDSJMKLJKLMSDJMLSDFJMLJLKFDMLKDFD");
+                }
+                break;
             case PRESSED:
-                return handleMousePress(mouseEvent);
+                if(!designerMode) {
+                    return handleMousePress(mouseEvent);
+                }
         }
         return new EmptyAction();
     }
@@ -178,11 +214,13 @@ public class PartyDialogBox extends DialogBox {
             case CTRLE:
                 setDesignerMode(true);
                 System.out.println("DESIGNER MODE ON");
+                break;
             case ENTER:
                 if(designerMode){
                     setDesignerMode(false);
                     System.out.println("DESIGNER MODE OFF");
                 }
+                break;
         }
         return new EmptyAction();
     }

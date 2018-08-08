@@ -1,9 +1,10 @@
 package window.elements;
 
 import command.Command;
-import command.changeType.ChangeToActorCommand;
+import command.changeType.PartyCommand.ChangeToActorCommand;
 import exception.UIException;
 import org.junit.Test;
+import window.elements.radiobutton.RadioButton;
 
 import java.awt.geom.Point2D;
 

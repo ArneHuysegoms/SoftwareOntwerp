@@ -4,7 +4,7 @@ import figures.drawable.diagramFigures.SelectedTextBoxFigure;
 import figures.drawable.diagramFigures.SelectionBoxFigure;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
-import window.elements.RadioButton;
+import window.elements.radiobutton.RadioButton;
 import window.elements.button.FakeButton;
 import window.elements.textbox.TextBox;
 import window.frame.SubwindowFrame;

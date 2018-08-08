@@ -1,16 +1,22 @@
-package window.elements;
+package window.elements.radiobutton;
 
 import action.Action;
 import command.Command;
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import window.Clickable;
+import window.Subwindow;
+import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
+import window.elements.ICommandable;
 
 import java.awt.geom.Point2D;
 
 /**
  * class detailing a radiobutton
  */
-public class RadioButton extends DialogboxElement implements Clickable, ICommandable {
+public abstract class RadioButton extends DialogboxElement implements Clickable, ICommandable {
 
     public static final int WIDTH = 20;
     public static final int HEIGHT = 20;
@@ -66,6 +72,4 @@ public class RadioButton extends DialogboxElement implements Clickable, ICommand
         double endY = getCoordinate().getY() + HEIGHT;
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
-
-
 }

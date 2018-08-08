@@ -1,6 +1,9 @@
 package window.elements.button;
 
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import window.Subwindow;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
@@ -74,4 +77,10 @@ public class FakeButton extends DialogboxElement {
         double endY = getCoordinate().getY() + height;
         return (startX <= coordinate.getX() && endX >= coordinate.getX()) && (startY <= coordinate.getY() && endY >= coordinate.getY());
     }
+
+    @Override
+    public DialogboxElement clone() {
+        throw new NotImplementedException();
+    }
+
 }
