@@ -254,6 +254,14 @@ public class InvocationMessageDialogBox extends DialogBox {
                 case TAB:
                     cycleSelectedElement();
                     break;
+                case CTRLE:
+                    setDesignerMode(true);
+                    System.out.println("DESIGNER MODE ON");
+                case ENTER:
+                    if(designerMode){
+                        setDesignerMode(false);
+                        System.out.println("DESIGNER MODE OFF");
+                    }
                 default:
                     break;
             }

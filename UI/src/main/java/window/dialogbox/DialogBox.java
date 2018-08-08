@@ -13,6 +13,10 @@ import java.awt.geom.Point2D;
  */
 public abstract class DialogBox extends Subwindow {
 
+    protected boolean designerMode;
+    protected void setDesignerMode(boolean bool){
+        this.designerMode = bool;
+    }
     /**
      * create a new dialogbox at the given position
      *

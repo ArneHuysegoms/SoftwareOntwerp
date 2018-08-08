@@ -124,10 +124,21 @@ public class DiagramDialogBox extends DialogBox {
     public Action handleKeyEvent(KeyEvent keyEvent) {
         switch (keyEvent.getKeyEventType()) {
             case TAB:
+                System.out.println("DESIGkojuy");
                 changeSelectedRadioButton();
                 break;
             case SPACE:
                 selected.performAction();
+                break;
+            case CTRLE:
+                setDesignerMode(true);
+                System.out.println("DESIGNER MODE ON");
+                break;
+            case ENTER:
+                if(designerMode){
+                    setDesignerMode(false);
+                    System.out.println("DESIGNER MODE OFF");
+                }
                 break;
         }
         return new EmptyAction();

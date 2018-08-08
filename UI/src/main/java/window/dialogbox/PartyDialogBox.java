@@ -175,6 +175,14 @@ public class PartyDialogBox extends DialogBox {
                 return handleChar(keyEvent);
             case BACKSPACE:
                 return handleBackSpace();
+            case CTRLE:
+                setDesignerMode(true);
+                System.out.println("DESIGNER MODE ON");
+            case ENTER:
+                if(designerMode){
+                    setDesignerMode(false);
+                    System.out.println("DESIGNER MODE OFF");
+                }
         }
         return new EmptyAction();
     }
