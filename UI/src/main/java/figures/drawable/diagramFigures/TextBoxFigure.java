@@ -13,6 +13,12 @@ public class TextBoxFigure implements IDrawable {
     private String title;
     private Point2D absolutePosition;
 
+    /**
+     *
+     * @param textBox text box to be drawn
+     * @param absolutePosition position of the text box
+     * @param title text box's title
+     */
     public TextBoxFigure(TextBox textBox, Point2D absolutePosition, String title) {
         this.absolutePosition = absolutePosition;
         this.textBox = textBox;
@@ -53,7 +59,7 @@ public class TextBoxFigure implements IDrawable {
      * draws what's being typed in the TextBox
      *
      * @param graphics   object used to draw on the program's window
-     * @param contentPos
+     * @param contentPos top-left corner of the text box
      */
     protected void drawContents(Graphics graphics, Point2D contentPos) {
         graphics.drawString(textBox.getContents(), (int) contentPos.getX() + 3, (int) contentPos.getY() + 12);

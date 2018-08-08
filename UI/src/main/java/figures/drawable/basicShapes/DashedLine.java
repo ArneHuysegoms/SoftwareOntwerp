@@ -28,11 +28,13 @@ public class DashedLine extends Line {
         super(p1, p2);
     }
 
+
     /**
      * method dat updates the length left to the end point, used to calculate the dashes to be drawn
-     *
-     * @param currentX
-     * @param currentY
+     * @param currentX x coordinate until where the dashed line has reached so far
+     * @param currentY y coordinate until where the dashed line has reached so far
+     * @param endX x coordinate where dashed line will end
+     * @param endY y coordinate where dashed line will end
      */
     private void updateLength(double currentX, double currentY, double endX, double endY) {
         lengthLeft = Math.sqrt(Math.pow((endX - currentX), 2) + Math.pow((endY - currentY), 2));

@@ -41,8 +41,6 @@ public class AddNewMessagesInViewsActionTest {
     @Test
     public void test_performAction(){
         addNewMessagesInViewsAction.performAction(diagramSubwindow);
-        System.out.println(diagramSubwindow.getFacade().getDiagram().getFirstMessage());
-        //System.out.println(diagramSubwindow.getFacade().getActiveView().getMessageView().g);
     }
 
 }

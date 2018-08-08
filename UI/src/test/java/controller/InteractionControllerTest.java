@@ -185,11 +185,7 @@ public class InteractionControllerTest {
         interactionController.addSubwindow(diagramSubwindow4);
 
         assertTrue(diagramSubwindow3.getLevel() < diagramSubwindow4.getLevel());
-        System.out.println(diagramSubwindow3.getLevel());
-        System.out.println(diagramSubwindow4.getLevel());
         interactionController.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED,new Point2D.Double(100,100)));
-        System.out.println(diagramSubwindow3.getLevel());
-        System.out.println(diagramSubwindow4.getLevel());
         assertTrue(diagramSubwindow3.getLevel() > diagramSubwindow4.getLevel());
 
 

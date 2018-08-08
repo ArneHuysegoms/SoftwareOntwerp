@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * abstract superclass for all types of diagramrepos, contains all logic for maintaining the state of the diagram
+ * abstract superclass for all types of diagramviews, contains all logic for maintaining the state of the diagram
  */
 public abstract class DiagramView implements Serializable {
 
@@ -27,9 +27,9 @@ public abstract class DiagramView implements Serializable {
 
     /**
      * constructs a new DiagramView
-     * @param labelView the labelrepo for this diagramrepo
-     * @param partyView the partyrepo for this diagramrepo
-     * @param messageView the messagerepo for this diagramrepo
+     * @param labelView the labelview for this diagramview
+     * @param partyView the partyview for this diagramview
+     * @param messageView the messageview for this diagramview
      */
     public DiagramView(LabelView labelView, PartyView partyView, MessageView messageView) {
         this.setLabelView(labelView);
@@ -38,16 +38,16 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * @return the labelrepo of this diagramrepo
+     * @return the labelview of this diagramview
      */
     public LabelView getLabelView() {
         return labelView;
     }
 
     /**
-     * sets the labelrepo for this diagramrepo to the given labelrepo
-     * @param labelView the labelrepo for this diagramrepo
-     * @throws IllegalArgumentException if the provided labelrepo is null
+     * sets the labelview for this diagramview to the given labelview
+     * @param labelView the labelview for this diagramview
+     * @throws IllegalArgumentException if the provided labelview is null
      */
     private void setLabelView(LabelView labelView) throws IllegalArgumentException {
         if (labelView == null) {
@@ -57,16 +57,16 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * @return the partyrepo of this diagramrepo
+     * @return the partyview of this diagramview
      */
     public PartyView getPartyView() {
         return partyView;
     }
 
     /**
-     * sets the partyrepo for this diagramrepo to the given diagramrepo
-     * @param partyView the partyrepo for this diagramrepo
-     * @throws IllegalArgumentException if the provided partyrepo is null
+     * sets the partyview for this diagramview to the given diagramview
+     * @param partyView the partyview for this diagramview
+     * @throws IllegalArgumentException if the provided patyview is null
      */
     private void setPartyView(PartyView partyView) throws IllegalArgumentException {
         if (partyView == null) {
@@ -76,17 +76,17 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * @return the messagerepo of this diagram
+     * @return the messageview of this diagram
      */
     public MessageView getMessageView() {
         return messageView;
     }
 
     /**
-     * sets the message of this diagramrepo to the provided messagerepo
+     * sets the message of this diagramview to the provided messageview
      *
-     * @param messageView the messagerepo for this diagramrepo
-     * @throws IllegalArgumentException if the provided messagerepo is null
+     * @param messageView the messageview for this diagramview
+     * @throws IllegalArgumentException if the provided messageview is null
      */
     private void setMessageView(MessageView messageView) throws IllegalArgumentException{
         if (messageView == null) {
@@ -147,11 +147,11 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * adds the given party to the repos, with cascading effet
+     * adds the given party to the views, with cascading effet
      * @param newParty the new Party to add
      * @param location the location of the new party
      */
-    public void addNewPartyToRepos(Party newParty, Point2D location) {
+    public void addNewPartyToViews(Party newParty, Point2D location) {
         Point2D correctPartyLocation = getValidPartyLocation(location);
         if (newParty != null) {
             getPartyView().addPartyWithLocation(newParty, correctPartyLocation);
@@ -162,12 +162,12 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * changes the type of the oldParty to that of the newParty in all repos, with cascading effet
+     * changes the type of the oldParty to that of the newParty in all views, with cascading effet
      *
      * @param oldParty the old party
      * @param newParty the new party
      */
-    public void changePartyTypeInRepos(Party oldParty, Party newParty){
+    public void changePartyTypeInViews(Party oldParty, Party newParty){
         Point2D location = getPartyView().getLocationOfParty(oldParty);
         Point2D labelLocation = getLabelView().getLocationOfLabel(oldParty.getLabel());
 
@@ -180,13 +180,13 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * deletes the given message from the repos with cascading effect and restores the location of the other messages
+     * deletes the given message from the views with cascading effect and restores the location of the other messages
      * based on the provided firstmessage
      *
-     * @param message the message to remove from the repos
+     * @param message the message to remove from the views
      * @param firstMessage the first message of the diagram
      */
-    public void deleteMessageInRepos(Message message, Message firstMessage) {
+    public void deleteMessageInViews(Message message, Message firstMessage) {
         getMessageView().removeMessage(message);
         getLabelView().removeLabel(message.getLabel());
         getMessageView().resetMessagePositions(firstMessage, getPartyView(), getLabelView());
@@ -237,7 +237,7 @@ public abstract class DiagramView implements Serializable {
     }
 
     /**
-     * returns a deep copy of the provided original diagramRepo
+     * returns a deep copy of the provided original diagramView
      * @param orig the original diagram view
      * @return the deep copy of the provided original
      */
@@ -245,13 +245,13 @@ public abstract class DiagramView implements Serializable {
         PartyView partyView = new PartyView(new HashMap<>(orig.getPartyView().getMap()));
         LabelView labelView = new LabelView(new HashMap<>(orig.getLabelView().getMap()));
         if(orig.getMessageView() instanceof SequenceMessageView){
-            SequenceMessageView smrepo = (SequenceMessageView) orig.getMessageView();
-            SequenceMessageView newSmr = new SequenceMessageView(new HashMap<>(smrepo.getMap()));
+            SequenceMessageView smview = (SequenceMessageView) orig.getMessageView();
+            SequenceMessageView newSmr = new SequenceMessageView(new HashMap<>(smview.getMap()));
             return new SequenceView(labelView, partyView, newSmr);
         }
         else{
-            CommunicationMessageView comrepo = (CommunicationMessageView) orig.getMessageView();
-            CommunicationMessageView newCom = new CommunicationMessageView(new ArrayList<>(comrepo.getMap()));
+            CommunicationMessageView comview = (CommunicationMessageView) orig.getMessageView();
+            CommunicationMessageView newCom = new CommunicationMessageView(new ArrayList<>(comview.getMap()));
             return new CommunicationView(labelView, partyView, newCom);
         }
     }

@@ -24,6 +24,13 @@ public class CommunicationConverter extends DiagramConverter {
         super(diagramSubwindow);
     }
 
+    /**
+     * method that draws the label of a message
+     *
+     * @param graphics  object used to draw on the program's window
+     * @param message   message to be drawn
+     * @param labelView view object containing all the coordinates of the labels in the diagramSubwindow's diagram
+     */
     @Override
     protected void drawMessageLabel(Graphics graphics, Message message, LabelView labelView) {
         if (message instanceof InvocationMessage) {

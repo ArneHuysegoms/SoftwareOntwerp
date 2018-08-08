@@ -26,6 +26,6 @@ public class AddNewMessagesInViewsAction extends Action {
      */
     @Override
     public void performAction(DiagramSubwindow subwindow) {
-        subwindow.getFacade().addMessagesToRepos(messageList);
+        subwindow.getFacade().addMessagesToViews(messageList);
     }
 }

@@ -13,18 +13,18 @@ import java.io.Serializable;
 public class CommunicationView extends DiagramView implements Serializable {
 
     /**
-     * constructs a new empty communicationrepo
+     * constructs a new empty communicationview
      */
     public CommunicationView() {
         this(new LabelView(), new PartyView(), new CommunicationMessageView());
     }
 
     /**
-     * constructs a new communicationrepo of which the state is equal to the state of the provided repos
+     * constructs a new communicationview of which the state is equal to the state of the provided views
      *
-     * @param labelView the labelrepo containing the state of the labels
-     * @param partyView the partyrepos containing the state of the parties
-     * @param messageRepo the messagerepo containing the state of the messages
+     * @param labelView the labelview containing the state of the labels
+     * @param partyView the partyviews containing the state of the parties
+     * @param messageRepo the messageview containing the state of the messages
      */
     public CommunicationView(LabelView labelView, PartyView partyView, CommunicationMessageView messageRepo){
         super(labelView, partyView, messageRepo);

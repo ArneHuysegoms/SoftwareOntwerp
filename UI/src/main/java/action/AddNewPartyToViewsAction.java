@@ -31,6 +31,6 @@ public class AddNewPartyToViewsAction extends Action {
      */
     @Override
     public void performAction(DiagramSubwindow subwindow) {
-        subwindow.getFacade().addPartyToRepo(party, location);
+        subwindow.getFacade().addPartyToView(party, location);
     }
 }

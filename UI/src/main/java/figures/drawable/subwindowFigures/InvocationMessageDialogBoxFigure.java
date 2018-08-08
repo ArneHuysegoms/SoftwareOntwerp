@@ -52,14 +52,14 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param graphics object used to draw on the program's window
      */
     private void drawListBox(Graphics graphics) {
-        new ListBoxFigure(dialogBox.getArgumentListBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentListBox().getCoordinate()))
-                .draw(graphics);
+        this.drawListBox(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
      * draws the buttons on the dialog box
      *
      * @param graphics object used to draw on the program's window
+     * @param selectedIndex index to see if an argument is selected, the buttons are drawn gray if no argument is selected
      * @param minX     minimum possible x coördinate value
      * @param minY     minimum possible y coördinate value
      * @param maxX     maximum possible x coördinate value
@@ -85,22 +85,10 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * draws the buttons on the dialog box
      *
      * @param graphics object used to draw on the program's window
+     * @param selectedIndex index to see if an argument is selected, the buttons are drawn gray if no argument is selected
      */
     private void drawButtons(Graphics graphics, int selectedIndex) {
-        new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
-                .draw(graphics);
-
-        Color temp = graphics.getColor();
-        if (selectedIndex < 0) {
-            graphics.setColor(Color.LIGHT_GRAY);
-        }
-        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
-                .draw(graphics);
-        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
-                .draw(graphics);
-        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
-                .draw(graphics);
-        graphics.setColor(temp);
+        this.drawButtons(graphics, selectedIndex, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**

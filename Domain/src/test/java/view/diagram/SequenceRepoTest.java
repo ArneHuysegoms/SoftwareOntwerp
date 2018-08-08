@@ -159,7 +159,7 @@ public class SequenceRepoTest{
 
     @Test
     public void Test_addNewParty_invalid_point_gets_corrected(){
-        sequenceRepo.addNewPartyToRepos(actor1, notValidPoint);
+        sequenceRepo.addNewPartyToViews(actor1, notValidPoint);
         assertEquals(actor1, sequenceRepo.getPartyView().getPartyAtPosition(sequenceRepo.getValidPartyLocation(notValidPoint)));
     }
 }

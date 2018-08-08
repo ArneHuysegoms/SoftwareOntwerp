@@ -10,10 +10,15 @@ public class AddButtonFigure implements IDrawable {
 
     private int x,y,width,height;
 
+    /**
+     *
+     * @param position  the button's top-left point
+     * @param width the button's top-left width
+     * @param height the button's top-left height
+     */
     public AddButtonFigure(Point2D position, int width, int height){
         this.x = (int)position.getX();
         this.y = (int)position.getY();
-        System.out.println("x dan y: "+ x + " "+ y);
         this.width = width;
         this.height = height;
     }

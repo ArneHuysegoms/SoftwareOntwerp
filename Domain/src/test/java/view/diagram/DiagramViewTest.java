@@ -119,10 +119,10 @@ public class DiagramViewTest {
     }
 
     @Test
-    public void Test_addNewPartyToRepos(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+    public void Test_addNewPartyToViews(){
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         assertTrue(diagramView.getPartyView().getAllParties().size() == 3);
         assertTrue(diagramView.getPartyView().getAllParties().containsAll(parties));
         assertTrue(diagramView.getLabelView().getMap().size() == 3);
@@ -132,44 +132,44 @@ public class DiagramViewTest {
     }
 
     @Test
-    public void Test_changePartyTypeInRepos() throws DomainException {
+    public void Test_changePartyTypeInViews() throws DomainException {
         Party object1 = new Object(actor1.getLabel());
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
-        diagramView.changePartyTypeInRepos(actor1, object1);
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
+        diagramView.changePartyTypeInViews(actor1, object1);
         assertFalse(diagramView.getPartyView().getAllParties().contains(actor1));
         assertTrue(diagramView.getPartyView().getAllParties().contains(object1));
     }
 
     @Test
     public void Test_findReceiver(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         assertEquals(actor3, diagramView.findReceiver(new Point2D.Double(240, 200)));
     }
 
     @Test
-    public void Test_deleteMessageInRepos(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+    public void Test_deleteMessageInViews(){
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         diagramView.getMessageView().addMessages(messages, inv1, diagramView.getPartyView(), diagramView.getLabelView());
         diagram.deleteElementByLabel(invLabel2);
-        diagramView.deleteMessageInRepos(inv2, inv1);
-        SequenceMessageView messageRepo = (SequenceMessageView) diagramView.getMessageView();
-        assertFalse(messageRepo.getAllMessages().contains(inv2));
+        diagramView.deleteMessageInViews(inv2, inv1);
+        SequenceMessageView messageView = (SequenceMessageView) diagramView.getMessageView();
+        assertFalse(messageView.getAllMessages().contains(inv2));
     }
 
     @Test
     public void Test_addingAllWorks(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         diagramView.getMessageView().addMessages(messages, inv1, diagramView.getPartyView(), diagramView.getLabelView());
-        SequenceMessageView messageRepo = (SequenceMessageView) diagramView.getMessageView();
-        assertTrue(messageRepo.getMap().size() == 6);
+        SequenceMessageView messageView = (SequenceMessageView) diagramView.getMessageView();
+        assertTrue(messageView.getMap().size() == 6);
         System.out.println(diagramView.getLabelView().getMap().size());
         assertTrue(diagramView.getLabelView().getMap().size() == 9);
         assertTrue(diagramView.getPartyView().getMap().size() == 3);
@@ -177,9 +177,9 @@ public class DiagramViewTest {
 
     @Test
     public void Test_getSelectedDiagramElement(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         diagramView.getMessageView().addMessages(messages, inv1, diagramView.getPartyView(), diagramView.getLabelView());
         assertEquals(actor3, diagramView.getSelectedDiagramElement(validPoint3));
         assertEquals(label2, diagramView.getSelectedDiagramElement(new Point2D.Double(160,75)));
@@ -188,9 +188,9 @@ public class DiagramViewTest {
 
     @Test
     public void Test_copy(){
-        diagramView.addNewPartyToRepos(actor1, validPoint1);
-        diagramView.addNewPartyToRepos(object2, validPoint2);
-        diagramView.addNewPartyToRepos(actor3, validPoint3);
+        diagramView.addNewPartyToViews(actor1, validPoint1);
+        diagramView.addNewPartyToViews(object2, validPoint2);
+        diagramView.addNewPartyToViews(actor3, validPoint3);
         diagramView.getMessageView().addMessages(messages, inv1, diagramView.getPartyView(), diagramView.getLabelView());
         DiagramView copy = DiagramView.copy(diagramView);
         assertTrue(copy instanceof SequenceView);

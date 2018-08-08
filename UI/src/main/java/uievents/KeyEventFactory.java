@@ -39,24 +39,25 @@ public class KeyEventFactory {
                 return new KeyEvent(KeyEventType.ARROWKEYDOWN);
             }  else if (keyCode == 17){
                 setCtrlPressed(true);
-                System.out.println("Set TRUE");
             } else if (keyCode != 68 && keyCode != 78 && keyCode != 10) {
                 setCtrlPressed(false);
             } else if (keyCode == 68) {
                 if (ctrlPressed == true) {
-                    System.out.println("CTRLD EVENT CREATED");
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLD);
                 }
+            } else if (keyCode == 69) {
+                if (ctrlPressed == true) {
+                    setCtrlPressed(false);
+                    return new KeyEvent(KeyEventType.CTRLE);
+                }
             } else if (keyCode == 78){
                 if(ctrlPressed == true){
-                    System.out.println("CTRLN EVENT CREATED");
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLN);
                 }
             } else if (keyCode == 10){
                 if(ctrlPressed == true){
-                    System.out.println("CTRLENTER EVENT CREATED");
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLENTER);
                 }

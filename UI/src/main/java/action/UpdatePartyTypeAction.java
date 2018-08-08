@@ -44,7 +44,7 @@ public class UpdatePartyTypeAction extends Action {
     @Override
     public void performAction(DiagramSubwindow subwindow) {
         if (subwindow.getFacade().getActiveView().getPartyView().getAllParties().contains(oldParty)) {
-            subwindow.getFacade().changePartyTypeInRepo(oldParty, newParty);
+            subwindow.getFacade().changePartyTypeInView(oldParty, newParty);
             if (subwindow.getSelected() == oldParty) {
                 subwindow.setSelected(newParty);
             }
