@@ -5,6 +5,7 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
+import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
@@ -14,6 +15,9 @@ import java.awt.geom.Point2D;
 public abstract class DialogBox extends Subwindow {
 
     protected boolean designerMode;
+
+    protected DialogboxElement selected;
+    protected int selectedindex;
     protected void setDesignerMode(boolean bool){
         this.designerMode = bool;
     }
@@ -43,4 +47,6 @@ public abstract class DialogBox extends Subwindow {
      */
     @Override
     public abstract Action handleKeyEvent(KeyEvent keyEvent);
+
+
 }

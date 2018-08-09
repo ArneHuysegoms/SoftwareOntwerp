@@ -8,10 +8,14 @@ import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
 import window.elements.radiobutton.DiagramRadioButton;
 import window.elements.radiobutton.RadioButton;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * construct a new dialogbox for diagrams
@@ -27,9 +31,23 @@ public class DiagramDialogBox extends DialogBox {
     private RadioButton toCommunicationDiagram;
     private RadioButton toSequenceDiagram;
 
-    private RadioButton selected;
+    //private RadioButton selected;
+
+    private ArrayList<DialogboxElement> elementList;
 
     private DiagramSubwindow subwindow;
+
+
+    public static ArrayList<DialogboxElement> DIAGRAMBOXLIST;
+
+    static {
+        try{
+            DIAGRAMBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new DiagramRadioButton(new ChangeToCommunicationCommand(null), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION),
+                    new DiagramRadioButton(new ChangeToSequenceCommand(null), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION)));
+        }catch (UIException e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * creates a new diagramdialogbox
@@ -42,10 +60,26 @@ public class DiagramDialogBox extends DialogBox {
         super(position);
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        toCommunicationDiagram = new DiagramRadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
+        /*toCommunicationDiagram = new DiagramRadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
         toSequenceDiagram = new DiagramRadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
-        selected = toCommunicationDiagram;
+        selected = toCommunicationDiagram;*/
+        this.elementList = new ArrayList<>();
         this.setDiagramSubwindow(subwindow);
+        updateList();
+        this.selectedindex = 0;
+        selected = this.elementList.get(getSelectedindex());
+    }
+
+    public void updateList(){
+        for (DialogboxElement d : DIAGRAMBOXLIST) {
+            DialogboxElement clone = d.clone();
+            clone.update(subwindow);
+            elementList.add(clone);
+        }
+    }
+
+    public int getSelectedindex() {
+        return selectedindex;
     }
 
     /**
@@ -95,9 +129,9 @@ public class DiagramDialogBox extends DialogBox {
     /**
      * @return the selected radiobutton
      */
-    public RadioButton getSelected() {
+    /*public RadioButton getSelected() {
         return selected;
-    }
+    }*/
 
     /**
      * handle mouse event
@@ -129,7 +163,7 @@ public class DiagramDialogBox extends DialogBox {
                 changeSelectedRadioButton();
                 break;
             case SPACE:
-                selected.performAction();
+                ((RadioButton) selected).performAction();
                 break;
             case CTRLE:
                 setDesignerMode(true);
@@ -180,4 +214,6 @@ public class DiagramDialogBox extends DialogBox {
     public void handleAction(Action action) {
 
     }
+
+
 }

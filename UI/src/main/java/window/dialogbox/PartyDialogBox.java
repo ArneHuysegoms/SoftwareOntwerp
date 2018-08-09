@@ -52,6 +52,8 @@ public class PartyDialogBox extends DialogBox {
 
     public static ArrayList<DialogboxElement> PARTYBOXLIST;
 
+    private int selectedindex;
+
     static {
         try {
             PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION),
@@ -91,6 +93,8 @@ public class PartyDialogBox extends DialogBox {
         this.setHeight(HEIGHT);
         //updateFields(party);
         updateList();
+        this.selectedindex = 0;
+        selected = this.elementList.get(getSelectedindex());
     }
 
     public void updateList(){
@@ -99,6 +103,10 @@ public class PartyDialogBox extends DialogBox {
             clone.update(subwindow,party);
             elementList.add(clone);
         }
+    }
+
+    public int getSelectedindex() {
+        return selectedindex;
     }
 
     /**
@@ -287,8 +295,17 @@ public class PartyDialogBox extends DialogBox {
      * cycle the selected element
      */
     private void cycleSelectedElement() {
-        int oldIndex = elementList.indexOf(selected);
-        selected = elementList.get((oldIndex + 1) % 4);
+        /*int oldIndex = elementList.indexOf(selected);
+        selected = elementList.get((oldIndex + 1) % 4);*/
+        selectedindex++;
+        if(getSelectedindex() < elementList.size()){
+            selected = elementList.get(getSelectedindex());
+        }
+        else{
+            //TODO what if list size is 0?
+            selectedindex = 0;
+            selected = elementList.get(getSelectedindex());
+        }
     }
 
     /**
