@@ -1,5 +1,7 @@
 package window.elements;
 
+import action.Action;
+import action.EmptyAction;
 import diagram.party.Party;
 import exception.UIException;
 import window.Clickable;
@@ -11,7 +13,7 @@ import java.awt.geom.Point2D;
 /**
  * Abstract superclass for dialogboxelements, they are clickable
  */
-public abstract class DialogboxElement implements Clickable {
+public abstract class DialogboxElement implements Clickable, ICommandable {
 
     private Point2D coordinate;
     private String description;
@@ -78,4 +80,9 @@ public abstract class DialogboxElement implements Clickable {
     public abstract boolean isClicked(Point2D coordinate);
 
     public abstract DialogboxElement clone();
+
+    @Override
+    public Action performAction(){
+        return new EmptyAction();
+    }
 }

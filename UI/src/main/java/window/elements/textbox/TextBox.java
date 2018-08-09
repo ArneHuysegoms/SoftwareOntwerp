@@ -1,6 +1,7 @@
 package window.elements.textbox;
 
 import exception.UIException;
+import util.MutableString;
 import window.Clickable;
 import window.elements.DialogboxElement;
 
@@ -35,6 +36,7 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
         return contents;
     }
 
+
     /**
      * sets the contents to the given contents
      *
@@ -67,6 +69,7 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
     public boolean hasValidContents() {
         return !this.getContents().isEmpty();
     }
+
 
     /**
      * adds the given char to the contents

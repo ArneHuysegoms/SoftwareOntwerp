@@ -39,8 +39,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
         drawWindowFrame(graphics);
         drawRadioButtons(graphics, minX, minY, maxX, maxY);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
-        //TODO once "selected" is refactored in PartyDialogBox
-        //super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**
@@ -132,7 +131,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      *
      * @param graphics object used to draw on the program's window
      */
-    private void drawSelectedRadioButton(Graphics graphics) {
+    /*private void drawSelectedRadioButton(Graphics graphics) {
         if (dialogBox.getParty() instanceof Actor) {
             new SelectedRadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()),"")
                     .draw(graphics);
@@ -140,5 +139,5 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
             new SelectedRadioButtonFigure(dialogBox.getToObject(),  dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()),"")
                     .draw(graphics);
         }
-    }
+    }*/
 }

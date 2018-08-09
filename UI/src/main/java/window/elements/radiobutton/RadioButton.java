@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
 /**
  * class detailing a radiobutton
  */
-public abstract class RadioButton extends DialogboxElement implements Clickable, ICommandable {
+public abstract class RadioButton extends DialogboxElement implements Clickable {
 
     public static final int WIDTH = 20;
     public static final int HEIGHT = 20;

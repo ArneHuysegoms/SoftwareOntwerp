@@ -57,9 +57,9 @@ public class PartyDialogBox extends DialogBox {
     static {
         try {
             PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION),
-                        new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION),
-                        new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION),
-                        new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION)));
+                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION),
+                    new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION),
+                    new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION)));
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -240,7 +240,21 @@ public class PartyDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      */
     private Action handleMousePress(MouseEvent mouseEvent) {
-        if (toActor.isClicked(mouseEvent.getPoint())) {
+        updateList();
+        if(elementList.size() < 1){
+            return new EmptyAction();
+        }
+        for(int i = 0; i < elementList.size(); i++){
+            if(elementList.get(i).isClicked(mouseEvent.getPoint())){
+                selected = elementList.get(i);
+                selectedindex = i;
+            }
+        }
+        Action action = selected.performAction();
+        handleAction(action);
+        return action;
+
+        /*if (toActor.isClicked(mouseEvent.getPoint())) {
             selected = toActor;
             Action action = toActor.performAction();
             handleAction(action);
@@ -255,7 +269,7 @@ public class PartyDialogBox extends DialogBox {
         } else if (classTextBox.isClicked(mouseEvent.getPoint())) {
             selected = classTextBox;
         }
-        return new EmptyAction();
+        return new EmptyAction();*/
     }
 
     /**
@@ -268,7 +282,7 @@ public class PartyDialogBox extends DialogBox {
             TextBox t = (TextBox) selected;
             t.deleteLastCharFromContents();
             if (t.hasValidContents()) {
-                return changePartyLabel();
+                return changePartyLabel(t.getContents());
             }
         }
         return new EmptyAction();
@@ -285,7 +299,7 @@ public class PartyDialogBox extends DialogBox {
             TextBox t = (TextBox) selected;
             t.addCharToContents(keyEvent.getKeyChar());
             if (t.hasValidContents()) {
-                return changePartyLabel();
+                return changePartyLabel(t.getContents());
             }
         }
         return new EmptyAction();
@@ -314,7 +328,7 @@ public class PartyDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      */
     private Action handleSpace() {
-        if (selected instanceof RadioButton) {
+        /*if (selected instanceof RadioButton) {
             if (selected == toActor) {
                 Action action = toActor.performAction();
                 handleAction(action);
@@ -325,7 +339,8 @@ public class PartyDialogBox extends DialogBox {
                 return action;
             }
         }
-        return new EmptyAction();
+        return new EmptyAction();*/
+        return selected.performAction();
     }
 
     /**
@@ -333,7 +348,7 @@ public class PartyDialogBox extends DialogBox {
      *
      * @return an action detailing the outcome of the handling
      */
-    private Action changePartyLabel() {
+    private Action changePartyLabel(String contents) {
         try {
             if (selected instanceof InstanceTextBox) {
                 TextBox t = (TextBox) selected;
@@ -353,13 +368,13 @@ public class PartyDialogBox extends DialogBox {
                 String oldLabel = party.getLabel().getLabel();
                 String[] split = oldLabel.split(":");
                 if (split.length == 1) {
-                    if (!this.getInstanceTextBox().getContents().isEmpty() && Character.isLowerCase(this.getInstanceTextBox().getContents().charAt(0))) {
-                        party.getLabel().setLabel(getInstanceTextBox().getContents() + ":" + t.getContents());
-                    } else {
-                        if(party.getLabel().isValidLabel(":" + t.getContents())) {
-                            party.getLabel().setLabel(":" + t.getContents());
-                        }
+                    //if (!this.getInstanceTextBox().getContents().isEmpty() && Character.isLowerCase(this.getInstanceTextBox().getContents().charAt(0))) {
+                    //    party.getLabel().setLabel(getInstanceTextBox().getContents() + ":" + t.getContents());
+                    //} else {
+                    if(party.getLabel().isValidLabel(":" + t.getContents())) {
+                        party.getLabel().setLabel(":" + t.getContents());
                     }
+                    //}
                 } else {
                     if(party.getLabel().isValidLabel(split[0] + ":" + t.getContents())) {
                         party.getLabel().setLabel(split[0] + ":" + t.getContents());
@@ -407,7 +422,8 @@ public class PartyDialogBox extends DialogBox {
         if (action instanceof UpdateLabelAction) {
             UpdateLabelAction a = (UpdateLabelAction) action;
             if (a.getElement().equals(party)) {
-                updateFields((Party) a.getElement());
+                //updateFields((Party) a.getElement());
+                updateList();
             }
         }
     }

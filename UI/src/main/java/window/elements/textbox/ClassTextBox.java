@@ -50,5 +50,6 @@ public class ClassTextBox extends TextBox {
             this.setContents(labels[1]);
         } else {
             this.setContents(labels[0]);
-        }}
+        }
+    }
 }
