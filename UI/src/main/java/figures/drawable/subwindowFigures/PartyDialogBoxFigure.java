@@ -1,10 +1,18 @@
 package figures.drawable.subwindowFigures;
 
+import diagram.DiagramElement;
 import diagram.party.Actor;
+import diagram.party.Object;
 import figures.drawable.diagramFigures.RadioButtonFigure;
 import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
+import window.elements.DialogboxElement;
+import window.elements.radiobutton.PartyRadioButton;
+import window.elements.radiobutton.RadioButton;
+import window.elements.textbox.ClassTextBox;
+import window.elements.textbox.InstanceTextBox;
+import window.elements.textbox.TextBox;
 
 import java.awt.*;
 
@@ -31,7 +39,8 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
         drawWindowFrame(graphics);
         drawRadioButtons(graphics, minX, minY, maxX, maxY);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
-        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        //TODO once "selected" is refactored in PartyDialogBox
+        //super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
     }
 
     /**
@@ -44,10 +53,24 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getInstanceTextBox(), dialogBox.getAbsolutePosition(dialogBox.getInstanceTextBox().getCoordinate()), PartyDialogBox.INSTANCE_DESCRIPTION)
+       /* new TextBoxFigure(dialogBox.getInstanceTextBox(), dialogBox.getAbsolutePosition(dialogBox.getInstanceTextBox().getCoordinate()), PartyDialogBox.INSTANCE_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
         new TextBoxFigure(dialogBox.getClassTextBox(), dialogBox.getAbsolutePosition(dialogBox.getClassTextBox().getCoordinate()), PartyDialogBox.CLASS_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
+*/
+        TextBox temp;
+        for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
+            if(ele instanceof InstanceTextBox) {
+                temp = (TextBox) ele;
+                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                        .draw(graphics);
+            }
+            if(ele instanceof ClassTextBox) {
+                temp = (TextBox) ele;
+                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                        .draw(graphics);
+            }
+        }
     }
 
     /**
@@ -69,11 +92,30 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        PartyRadioButton temp;
+        for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
+            if(ele instanceof PartyRadioButton){
+                temp = (PartyRadioButton)ele;
+                if (dialogBox.getParty() instanceof Actor && temp.getDescription().toLowerCase().contains("actor")) {
+                    new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                            .draw(graphics);
+                } else if (dialogBox.getParty() instanceof Object && temp.getDescription().toLowerCase().contains("object")) {
+                    new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                            .draw(graphics);
+                }
+                else {
+                    new RadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                            .draw(graphics, minX, minY, maxX, maxY);
+                }
+            }
+        }
+        /*
         new RadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()), PartyDialogBox.TOACTOR_DESCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
         new RadioButtonFigure(dialogBox.getToObject(), dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()), PartyDialogBox.TOOBJECT_DESPCRIPTION)
                 .draw(graphics, minX, minY, maxX, maxY);
-        drawSelectedRadioButton(graphics);
+                */
+        //drawSelectedRadioButton(graphics);
     }
 
     /**
