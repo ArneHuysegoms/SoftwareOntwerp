@@ -4,6 +4,7 @@ import diagram.party.Party;
 import exception.UIException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import window.Subwindow;
+import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
@@ -41,4 +42,13 @@ public class ClassTextBox extends TextBox {
     public boolean hasValidContents() {
         return super.hasValidContents() && Party.isValidClassString(getContents());
     }
+
+    @Override
+    public void update(DiagramSubwindow diagramSubwindow, Party party){
+        String[] labels = party.getLabel().getLabel().split(":");
+        if (labels.length == 2) {
+            this.setContents(labels[1]);
+        } else {
+            this.setContents(labels[0]);
+        }}
 }

@@ -89,7 +89,7 @@ public class PartyDialogBox extends DialogBox {
 
         this.setWidth(WIDTH);
         this.setHeight(HEIGHT);
-        updateFields(party);
+        //updateFields(party);
         updateList();
     }
 

@@ -22,6 +22,7 @@ public abstract class DialogboxElement implements Clickable {
 
     public void update(DiagramSubwindow subwindow, Party party){}
     public void update(DiagramSubwindow subwindow){}
+    public void update(Party party){}
 
     /**
      * makes a new dialogboxelement with the given parameters
