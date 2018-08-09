@@ -21,6 +21,15 @@ public abstract class DialogBox extends Subwindow {
     protected void setDesignerMode(boolean bool){
         this.designerMode = bool;
     }
+
+    public int getSelectedindex() {
+        return selectedindex;
+    }
+
+    public DialogboxElement getSelected() {
+        return selected;
+    }
+
     /**
      * create a new dialogbox at the given position
      *

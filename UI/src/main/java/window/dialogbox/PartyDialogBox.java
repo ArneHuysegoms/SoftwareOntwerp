@@ -36,13 +36,13 @@ public class PartyDialogBox extends DialogBox {
     public static final String INSTANCE_DESCRIPTION = "Instance";
     public static final String CLASS_DESCRIPTION = "Class";
 
-    private RadioButton toActor;
-    private RadioButton toObject;
+    //private RadioButton toActor;
+    //private RadioButton toObject;
 
-    private TextBox instanceTextBox;
-    private TextBox classTextBox;
+    //private TextBox instanceTextBox;
+    //private TextBox classTextBox;
 
-    private DialogboxElement selected;
+    //private DialogboxElement selected;
 
     private List<DialogboxElement> elementList;
 
@@ -52,7 +52,7 @@ public class PartyDialogBox extends DialogBox {
 
     public static ArrayList<DialogboxElement> PARTYBOXLIST;
 
-    private int selectedindex;
+    //private int selectedindex;
 
     static {
         try {
@@ -105,42 +105,42 @@ public class PartyDialogBox extends DialogBox {
         }
     }
 
-    public int getSelectedindex() {
+    /*public int getSelectedindex() {
         return selectedindex;
-    }
+    }*/
 
     /**
      * @return the radiobutton for changing to actors
      */
-    public RadioButton getToActor() {
+    /*public RadioButton getToActor() {
         return toActor;
-    }
+    }*/
 
     /**
      * @return the radiobutton for changing to objects
      */
-    public RadioButton getToObject() {
+    /*public RadioButton getToObject() {
         return toObject;
     }
 
     /**
      * @return the textbox for the instance string
      */
-    public TextBox getInstanceTextBox() {
+    /*public TextBox getInstanceTextBox() {
         return instanceTextBox;
     }
 
     /**
      * @return the textbox for changing the class string
      */
-    public TextBox getClassTextBox() {
+    /*public TextBox getClassTextBox() {
         return classTextBox;
     }
 
     /**
      * @return the currently selected dialogboxelement
      */
-    public DialogboxElement getSelected() {
+    /*public DialogboxElement getSelected() {
         return selected;
     }
 
@@ -417,7 +417,7 @@ public class PartyDialogBox extends DialogBox {
      *
      * @param party the party to change the fields for
      */
-    private void updateFields(Party party) {
+    /*private void updateFields(Party party) {
         String[] labels = party.getLabel().getLabel().split(":");
         if (labels.length == 2) {
             instanceTextBox.setContents(labels[0]);
@@ -425,5 +425,5 @@ public class PartyDialogBox extends DialogBox {
         } else {
             classTextBox.setContents(labels[0]);
         }
-    }
+    }*/
 }
