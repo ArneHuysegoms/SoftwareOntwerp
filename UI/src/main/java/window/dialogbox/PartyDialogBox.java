@@ -154,6 +154,7 @@ public class PartyDialogBox extends DialogBox {
                             e.printStackTrace();
                         }
                         PARTYBOXLIST.add(last);
+                        updateList();
                     }
                     System.out.println("FUCKFFLDSJMKLJKLMSDJMLSDFJMLJLKFDMLKDFD");
                 }
