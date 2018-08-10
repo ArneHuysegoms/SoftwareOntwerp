@@ -22,6 +22,10 @@ public abstract class DialogBox extends Subwindow {
         this.designerMode = bool;
     }
 
+    public boolean getDesignerMode(){
+        return designerMode;
+    }
+
     public int getSelectedindex() {
         return selectedindex;
     }

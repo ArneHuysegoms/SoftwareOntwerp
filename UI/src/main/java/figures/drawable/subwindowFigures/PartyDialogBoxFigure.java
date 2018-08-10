@@ -5,6 +5,7 @@ import diagram.party.Actor;
 import diagram.party.Object;
 import figures.drawable.diagramFigures.RadioButtonFigure;
 import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
+import figures.drawable.diagramFigures.SelectedTextBoxFigure;
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
 import window.elements.DialogboxElement;
@@ -15,6 +16,7 @@ import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
 
@@ -39,7 +41,10 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
         drawWindowFrame(graphics);
         drawRadioButtons(graphics, minX, minY, maxX, maxY);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
-        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        super.handleSelectedElement(graphics,dialogBox);
+        if(dialogBox.getDesignerMode()) {
+            this.drawOrangeTitleBar(graphics);
+        }
     }
 
     /**
