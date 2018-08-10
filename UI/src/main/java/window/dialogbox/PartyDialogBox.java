@@ -198,9 +198,13 @@ public class PartyDialogBox extends DialogBox {
             case SPACE:
                 return handleSpace();
             case CHAR:
-                return handleChar(keyEvent);
+                if(!designerMode){
+                    return handleChar(keyEvent);
+                }
             case BACKSPACE:
-                return handleBackSpace();
+                if(!designerMode){
+                    return handleBackSpace();
+                }
             case CTRLE:
                 setDesignerMode(true);
                 System.out.println("DESIGNER MODE ON");
@@ -357,7 +361,7 @@ public class PartyDialogBox extends DialogBox {
             }
         }
         return new EmptyAction();*/
-        if(selected != null){
+        if(selected != null && !designerMode){
             return selected.performAction();
 
         }else{
