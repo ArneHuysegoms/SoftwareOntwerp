@@ -44,8 +44,6 @@ public class PartyDialogBox extends DialogBox {
 
     //private DialogboxElement selected;
 
-    private List<DialogboxElement> elementList;
-
     private Party party;
 
     private DiagramSubwindow subwindow;
@@ -108,10 +106,6 @@ public class PartyDialogBox extends DialogBox {
             elementList.add(clone);
         }
     }
-    public List<DialogboxElement> getElementList() {
-        return elementList;
-    }
-
     /**
      * @return the party this dialogbox edits
      */
@@ -164,6 +158,23 @@ public class PartyDialogBox extends DialogBox {
                     System.out.println("FUCKFFLDSJMKLJKLMSDJMLSDFJMLJLKFDMLKDFD");
                 }
                 break;
+            case DRAG:
+                if(designerMode){
+                    setDragging(true);
+                }
+            case RELEASE:
+                if(designerMode){
+                    if(isDragging()){
+                        try {
+                            PARTYBOXLIST.get(selectedindex).setCoordinate(mouseEvent.getPoint());
+                            updateList();
+                        }catch(UIException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                    setDragging(false);
+                }
             case PRESSED:
                 return handleMousePress(mouseEvent);
 
@@ -306,6 +317,10 @@ public class PartyDialogBox extends DialogBox {
         if(elementList.size() < 1){
             selected = null;
         }
+        else if(selectedindex == elementList.size()){
+            selectedindex = 0;
+            selected = elementList.get(getSelectedindex());
+        }
 
         else if(elementList.get(selectedindex).equals(selected)){
             selectedindex++;
@@ -432,6 +447,7 @@ public class PartyDialogBox extends DialogBox {
                 updateList();
             }
         }
+
     }
 
     /**

@@ -8,6 +8,8 @@ import window.WindowLevelCounter;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * abstract superclass for dialogboxes
@@ -18,6 +20,7 @@ public abstract class DialogBox extends Subwindow {
 
     protected DialogboxElement selected;
     protected int selectedindex;
+    protected List<DialogboxElement> elementList;
     protected void setDesignerMode(boolean bool){
         this.designerMode = bool;
     }
@@ -32,6 +35,10 @@ public abstract class DialogBox extends Subwindow {
 
     public DialogboxElement getSelected() {
         return selected;
+    }
+
+    public List<DialogboxElement> getElementList() {
+        return elementList;
     }
 
     /**
