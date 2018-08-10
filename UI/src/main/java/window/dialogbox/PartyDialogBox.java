@@ -208,9 +208,8 @@ public class PartyDialogBox extends DialogBox {
                 }
                 break;
             case PRESSED:
-                if(!designerMode) {
-                    return handleMousePress(mouseEvent);
-                }
+                return handleMousePress(mouseEvent);
+
         }
         return new EmptyAction();
     }
@@ -256,6 +255,7 @@ public class PartyDialogBox extends DialogBox {
                         PARTYBOXLIST.remove(last);
                     }
                     updateList();
+                    cycleSelectedElement();
                 }
                 break;
 
@@ -280,6 +280,9 @@ public class PartyDialogBox extends DialogBox {
                 selected = elementList.get(i);
                 selectedindex = i;
             }
+        }
+        if(designerMode){
+            return new EmptyAction();
         }
         Action action = selected.performAction();
         handleAction(action);
@@ -342,15 +345,25 @@ public class PartyDialogBox extends DialogBox {
     private void cycleSelectedElement() {
         /*int oldIndex = elementList.indexOf(selected);
         selected = elementList.get((oldIndex + 1) % 4);*/
-        selectedindex++;
-        if(getSelectedindex() < elementList.size()){
-            selected = elementList.get(getSelectedindex());
+
+        if(elementList.size() < 1){
+            selected = null;
         }
-        else{
-            //TODO what if list size is 0?
-            selectedindex = 0;
-            selected = elementList.get(getSelectedindex());
+
+        else if(elementList.get(selectedindex).equals(selected)){
+            selectedindex++;
+            if(getSelectedindex() < elementList.size()){
+                selected = elementList.get(getSelectedindex());
+            }
+            else{
+                //TODO what if list size is 0?
+                selectedindex = 0;
+                selected = elementList.get(getSelectedindex());
+            }
+        } else{
+            selected = elementList.get(selectedindex);
         }
+
     }
 
     /**
