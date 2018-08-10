@@ -94,10 +94,14 @@ public class PartyDialogBox extends DialogBox {
         //updateFields(party);
         updateList();
         this.selectedindex = 0;
-        selected = this.elementList.get(getSelectedindex());
+        if(elementList.size() > 0){
+
+            selected = this.elementList.get(getSelectedindex());
+        }
     }
 
     public void updateList(){
+        elementList = new ArrayList<>();
         for (DialogboxElement e : PARTYBOXLIST){
             DialogboxElement clone = e.clone();
             clone.update(subwindow,party);
@@ -185,10 +189,20 @@ public class PartyDialogBox extends DialogBox {
         switch (mouseEvent.getMouseEventType()) {
             case LEFTDOUBLECLICK:
                 if(designerMode){
+                    DialogboxElement last = null;
                     for(DialogboxElement ele:PARTYBOXLIST){
                         if(ele.isClicked(mouseEvent.getPoint())){
-                            ele.clone(); //TODO
+                            last = ele;
                         }
+                    }
+                    if(last != null){
+                        last = last.clone();
+                        try {
+                            last.setCoordinate(new Point2D.Double(last.getCoordinate().getX() + 30, last.getCoordinate().getY() + 30));
+                        }catch(UIException e){
+                            e.printStackTrace();
+                        }
+                        PARTYBOXLIST.add(last);
                     }
                     System.out.println("FUCKFFLDSJMKLJKLMSDJMLSDFJMLJLKFDMLKDFD");
                 }
@@ -229,9 +243,26 @@ public class PartyDialogBox extends DialogBox {
                     System.out.println("DESIGNER MODE OFF");
                 }
                 break;
+            case DEL:
+                if(designerMode){
+                    DialogboxElement last = null;
+                    for(DialogboxElement ele:PARTYBOXLIST){
+                        if(ele.getCoordinate().equals(selected.getCoordinate())){
+                            last = ele;
+                        }
+                    }
+
+                    if(last != null){
+                        PARTYBOXLIST.remove(last);
+                    }
+                    updateList();
+                }
+                break;
+
         }
         return new EmptyAction();
     }
+
 
     /**
      * handle a mouse press event
