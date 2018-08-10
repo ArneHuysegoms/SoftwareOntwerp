@@ -108,49 +108,6 @@ public class PartyDialogBox extends DialogBox {
             elementList.add(clone);
         }
     }
-
-    /*public int getSelectedindex() {
-        return selectedindex;
-    }*/
-
-    /**
-     * @return the radiobutton for changing to actors
-     */
-    /*public RadioButton getToActor() {
-        return toActor;
-    }*/
-
-    /**
-     * @return the radiobutton for changing to objects
-     */
-    /*public RadioButton getToObject() {
-        return toObject;
-    }
-
-    /**
-     * @return the textbox for the instance string
-     */
-    /*public TextBox getInstanceTextBox() {
-        return instanceTextBox;
-    }
-
-    /**
-     * @return the textbox for changing the class string
-     */
-    /*public TextBox getClassTextBox() {
-        return classTextBox;
-    }
-
-    /**
-     * @return the currently selected dialogboxelement
-     */
-    /*public DialogboxElement getSelected() {
-        return selected;
-    }
-
-    /**
-     * @return all dialogbox elements in this dialogbox
-     */
     public List<DialogboxElement> getElementList() {
         return elementList;
     }
@@ -384,7 +341,12 @@ public class PartyDialogBox extends DialogBox {
             }
         }
         return new EmptyAction();*/
-        return selected.performAction();
+        if(selected != null){
+            return selected.performAction();
+
+        }else{
+            return new EmptyAction();
+        }
     }
 
     /**
