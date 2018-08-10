@@ -38,6 +38,18 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
         this.setDescription(description);
     }
 
+    public void addCharToDescription(char c){
+        setDescription(description + c);
+    }
+    public void deleteCharFromDescription(){
+        if(description.length() > 0){
+            setDescription(description.substring(0,description.length()-1));
+        }
+    }
+    public boolean isValidDescription(){
+        return !this.getDescription().isEmpty();
+    }
+
     /**
      * @return the description
      */

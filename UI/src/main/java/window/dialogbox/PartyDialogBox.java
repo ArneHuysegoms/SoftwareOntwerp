@@ -30,11 +30,11 @@ public class PartyDialogBox extends DialogBox {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 200;
 
-    public static final String TOOBJECT_DESPCRIPTION = "Object";
-    public static final String TOACTOR_DESCRIPTION = "Actor";
+    public String TOOBJECT_DESPCRIPTION = "Object";
+    public String TOACTOR_DESCRIPTION = "Actor";
 
-    public static final String INSTANCE_DESCRIPTION = "Instance";
-    public static final String CLASS_DESCRIPTION = "Class";
+    public String INSTANCE_DESCRIPTION = "Instance";
+    public String CLASS_DESCRIPTION = "Class";
 
     //private RadioButton toActor;
     //private RadioButton toObject;
@@ -54,10 +54,10 @@ public class PartyDialogBox extends DialogBox {
 
     static {
         try {
-            PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION),
-                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION),
-                    new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION),
-                    new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION)));
+            PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
+                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), "Object"),
+                    new InstanceTextBox(new Point2D.Double(10, 60), "Instance"),
+                    new ClassTextBox(new Point2D.Double(10, 85), "Class")));
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -137,6 +137,9 @@ public class PartyDialogBox extends DialogBox {
      */
     @Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
+        if(invalidDescriptionMode){
+            return new EmptyAction();
+        }
         switch (mouseEvent.getMouseEventType()) {
             case LEFTDOUBLECLICK:
                 if(designerMode){
@@ -191,49 +194,55 @@ public class PartyDialogBox extends DialogBox {
      */
     @Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyEventType()) {
-            case TAB:
-                cycleSelectedElement();
-                break;
-            case SPACE:
-                return handleSpace();
-            case CHAR:
-                if(!designerMode){
+        if(invalidDescriptionMode){
+            switch (keyEvent.getKeyEventType()) {
+                case CHAR:
                     return handleChar(keyEvent);
-                }
-            case BACKSPACE:
-                if(!designerMode){
-                    return handleBackSpace();
-                }
-            case CTRLE:
-                setDesignerMode(true);
-                System.out.println("DESIGNER MODE ON");
-                break;
-            case ENTER:
-                if(designerMode){
-                    setDesignerMode(false);
-                    System.out.println("DESIGNER MODE OFF");
-                }
-                break;
-            case DEL:
-                if(designerMode){
-                    DialogboxElement last = null;
-                    for(DialogboxElement ele:PARTYBOXLIST){
-                        if(ele.getCoordinate().equals(selected.getCoordinate())){
-                            last = ele;
-                        }
-                    }
-
-                    if(last != null){
-                        PARTYBOXLIST.remove(last);
-                    }
-                    updateList();
-                    cycleSelectedElement();
-                }
-                break;
-
+            }
+            return new EmptyAction();
         }
-        return new EmptyAction();
+        else{
+            switch (keyEvent.getKeyEventType()) {
+                case TAB:
+                    cycleSelectedElement();
+                    break;
+                case SPACE:
+                    return handleSpace();
+                case CHAR:
+                    return handleChar(keyEvent);
+                case BACKSPACE:
+                    return handleBackSpace();
+                case CTRLE:
+                    setDesignerMode(true);
+                    System.out.println("DESIGNER MODE ON");
+                    break;
+                case ENTER:
+                    if(designerMode){
+                        setDesignerMode(false);
+                        System.out.println("DESIGNER MODE OFF");
+                    }
+                    break;
+                case DEL:
+                    if(designerMode){
+                        DialogboxElement last = null;
+                        for(DialogboxElement ele:PARTYBOXLIST){
+                            if(ele.getCoordinate().equals(selected.getCoordinate())){
+                                last = ele;
+                            }
+                        }
+
+                        if(last != null){
+                            PARTYBOXLIST.remove(last);
+                        }
+                        updateList();
+                        cycleSelectedElement();
+                    }
+                    break;
+
+            }
+            return new EmptyAction();
+        }
+
     }
 
 
@@ -285,15 +294,27 @@ public class PartyDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      */
     private Action handleBackSpace() {
-        if (selected instanceof TextBox) {
-            TextBox t = (TextBox) selected;
-            t.deleteLastCharFromContents();
-            if (t.hasValidContents()) {
-                return changePartyLabel(t.getContents());
+        if(!designerMode){
+            if (selected instanceof TextBox) {
+                TextBox t = (TextBox) selected;
+                t.deleteLastCharFromContents();
+                if (t.hasValidContents()) {
+                    return changePartyLabel(t.getContents());
+                }
             }
+            return new EmptyAction();
         }
-        return new EmptyAction();
+        else{
+            DialogboxElement d = PARTYBOXLIST.get(selectedindex);
+            d.deleteCharFromDescription();
+            if(!d.isValidDescription()){
+                setInvalidDescriptionMode(true);
+            }
+            return new EmptyAction();
+        }
     }
+
+
 
     /**
      * handles a char keyEvent
@@ -302,14 +323,25 @@ public class PartyDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      */
     private Action handleChar(KeyEvent keyEvent) {
-        if (selected instanceof TextBox) {
-            TextBox t = (TextBox) selected;
-            t.addCharToContents(keyEvent.getKeyChar());
-            if (t.hasValidContents()) {
-                return changePartyLabel(t.getContents());
+        if(!designerMode){
+            if (selected instanceof TextBox) {
+                TextBox t = (TextBox) selected;
+                t.addCharToContents(keyEvent.getKeyChar());
+                if (t.hasValidContents()) {
+                    return changePartyLabel(t.getContents());
+                }
             }
+            return new EmptyAction();
         }
-        return new EmptyAction();
+        else{
+            DialogboxElement d = PARTYBOXLIST.get(selectedindex);
+            d.addCharToDescription(keyEvent.getKeyChar());
+            if(d.isValidDescription()){
+                setInvalidDescriptionMode(false);
+            }
+            return new EmptyAction();
+        }
+
     }
 
     /**

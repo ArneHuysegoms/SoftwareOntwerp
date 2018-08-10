@@ -25,6 +25,15 @@ public abstract class DialogBox extends Subwindow {
         this.designerMode = bool;
     }
 
+    protected boolean invalidDescriptionMode;
+
+    public void setInvalidDescriptionMode(boolean invalidDescriptionMode) {
+        this.invalidDescriptionMode = invalidDescriptionMode;
+    }
+    public boolean getInvalidDescriptionMode(){
+        return invalidDescriptionMode;
+    }
+
     public boolean getDesignerMode(){
         return designerMode;
     }
@@ -48,6 +57,7 @@ public abstract class DialogBox extends Subwindow {
      */
     public DialogBox(Point2D position) {
         super(position, WindowLevelCounter.getNextLevel());
+        this.invalidDescriptionMode = false;
     }
 
     /**
