@@ -1,5 +1,7 @@
 package figures.drawable.subwindowFigures;
 
+import command.changeType.PartyCommand.ChangeToActorCommand;
+import command.changeType.PartyCommand.ChangeToObjectCommand;
 import diagram.DiagramElement;
 import diagram.party.Actor;
 import diagram.party.Object;
@@ -102,10 +104,10 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
         for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof PartyRadioButton){
                 temp = (PartyRadioButton)ele;
-                if (dialogBox.getParty() instanceof Actor && temp.getDescription().toLowerCase().contains("actor")) {
+                if (dialogBox.getParty() instanceof Actor && temp.getCommand() instanceof ChangeToActorCommand) {
                     new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
                             .draw(graphics);
-                } else if (dialogBox.getParty() instanceof Object && temp.getDescription().toLowerCase().contains("object")) {
+                } else if (dialogBox.getParty() instanceof Object && temp.getCommand() instanceof ChangeToObjectCommand) {
                     new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
                             .draw(graphics);
                 }
@@ -115,13 +117,6 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
                 }
             }
         }
-        /*
-        new RadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()), PartyDialogBox.TOACTOR_DESCRIPTION)
-                .draw(graphics, minX, minY, maxX, maxY);
-        new RadioButtonFigure(dialogBox.getToObject(), dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()), PartyDialogBox.TOOBJECT_DESPCRIPTION)
-                .draw(graphics, minX, minY, maxX, maxY);
-                */
-        //drawSelectedRadioButton(graphics);
     }
 
     /**
