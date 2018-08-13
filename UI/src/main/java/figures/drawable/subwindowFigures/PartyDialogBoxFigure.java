@@ -42,6 +42,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
         drawRadioButtons(graphics, minX, minY, maxX, maxY);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
         super.handleSelectedElement(graphics,dialogBox);
+
         if(dialogBox.getDesignerMode()) {
             this.drawOrangeTitleBar(graphics);
         }
@@ -63,7 +64,7 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
                 .draw(graphics, minX, minY, maxX, maxY);
 */
         TextBox temp;
-        for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
+        for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof InstanceTextBox) {
                 temp = (TextBox) ele;
                 new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
@@ -97,7 +98,8 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      */
     private void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         PartyRadioButton temp;
-        for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
+        //for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
+        for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof PartyRadioButton){
                 temp = (PartyRadioButton)ele;
                 if (dialogBox.getParty() instanceof Actor && temp.getDescription().toLowerCase().contains("actor")) {
