@@ -163,14 +163,16 @@ public class CanvasController {
     public void handleMouseEvent(MouseEvent mouseEvent) {
 
         if(activeInteractionController != null && activeInteractionController.isDragging()){
-            activeInteractionController.handleMouseEvent(mouseEvent);
+            Action action = activeInteractionController.handleMouseEvent(mouseEvent);
+            activeInteractionController.actionForEachSubwindow(action);
         }
         else if (getAppropriateInteractionController(mouseEvent.getPoint()) != null) {
             InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
             if (!ic.equals(getActiveInteractionController())) {
                 changeActiveInteractionController(ic);
             }
-            activeInteractionController.handleMouseEvent(mouseEvent);
+            Action action = activeInteractionController.handleMouseEvent(mouseEvent);
+            activeInteractionController.actionForEachSubwindow(action);
         }
     }
 
