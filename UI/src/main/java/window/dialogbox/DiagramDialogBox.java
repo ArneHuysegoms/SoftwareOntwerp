@@ -85,6 +85,17 @@ public class DiagramDialogBox extends DialogBox {
             clone.update(subwindow);
             elementList.add(clone);
         }
+
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
+        }
     }
 
     public int getSelectedindex() {
@@ -142,45 +153,29 @@ public class DiagramDialogBox extends DialogBox {
         return selected;
     }*/
 
-    /**
-     * handle mouse event
-     *
-     * @param mouseEvent the mouseEvent to handle
-     * @return an action detailing the outcome of the event handling
-     */
-    /*@Override
-    public Action handleMouseEvent(MouseEvent mouseEvent) {
-        switch (mouseEvent.getMouseEventType()) {
-            case PRESSED:
-                handleMousePress(mouseEvent);
-                break;
+
+    @Override
+    protected Action handleBackSpace() {
+        if(designerMode) {
+            DialogboxElement d = getStaticList().get(selectedindex);
+            d.deleteCharFromDescription();
+            if (!d.isValidDescription()) {
+                setInvalidDescriptionMode(true);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
-    }*/
+    }
 
-    /**
-     * handle key event
-     *
-     * @param keyEvent the keyEvent to handle
-     * @return an action detailing the outcome of the event handling
-     */
     @Override
-    public Action handleKeyEvent(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyEventType()) {
-            case TAB:
-                changeSelectedRadioButton();
-                break;
-            case SPACE:
-                ((RadioButton) selected).performAction();
-                break;
-            case CTRLE:
-                setDesignerMode(true);
-                break;
-            case ENTER:
-                if(designerMode){
-                    setDesignerMode(false);
-                }
-                break;
+    public Action handleChar(KeyEvent keyEvent) {
+        if(designerMode && selected != null){
+            DialogboxElement d = getStaticList().get(selectedindex);
+            d.addCharToDescription(keyEvent.getKeyChar());
+            if(d.isValidDescription()){
+                setInvalidDescriptionMode(false);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
     }

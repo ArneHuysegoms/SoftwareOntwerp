@@ -223,12 +223,10 @@ public class PartyDialogBox extends DialogBox {
                     return handleBackSpace();
                 case CTRLE:
                     setDesignerMode(true);
-                    System.out.println("DESIGNER MODE ON");
                     break;
                 case ENTER:
                     if(designerMode){
                         setDesignerMode(false);
-                        System.out.println("DESIGNER MODE OFF");
                     }
                     break;
                 case DEL:
@@ -291,7 +289,8 @@ public class PartyDialogBox extends DialogBox {
      *
      * @return an action detailing the outcome of the handling
      */
-    private Action handleBackSpace() {
+    @Override
+    protected Action handleBackSpace() {
         if(!designerMode){
             if (selected instanceof TextBox) {
                 TextBox t = (TextBox) selected;
@@ -308,7 +307,7 @@ public class PartyDialogBox extends DialogBox {
             if(!d.isValidDescription()){
                 setInvalidDescriptionMode(true);
             }
-            return new EmptyAction();
+            return new UpdateListAction();
         }
     }
 
@@ -320,7 +319,8 @@ public class PartyDialogBox extends DialogBox {
      * @param keyEvent the keyEvent with the char
      * @return an action detailing the outcome of the handling
      */
-    private Action handleChar(KeyEvent keyEvent) {
+    @Override
+    public Action handleChar(KeyEvent keyEvent) {
         if(!designerMode){
             if (selected instanceof TextBox) {
                 TextBox t = (TextBox) selected;
@@ -345,64 +345,6 @@ public class PartyDialogBox extends DialogBox {
 
     }
 
-    /**
-     * cycle the selected element
-     */
-    private void cycleSelectedElement() {
-        /*int oldIndex = elementList.indexOf(selected);
-        selected = elementList.get((oldIndex + 1) % 4);*/
-
-        if(elementList.size() < 1){
-            selected = null;
-        }
-        else if(selectedindex == elementList.size()){
-            selectedindex = 0;
-            selected = elementList.get(getSelectedindex());
-        }
-
-        else if(elementList.get(selectedindex).equals(selected)){
-            selectedindex++;
-            if(getSelectedindex() < elementList.size()){
-                selected = elementList.get(getSelectedindex());
-            }
-            else{
-                //TODO what if list size is 0?
-                selectedindex = 0;
-                selected = elementList.get(getSelectedindex());
-            }
-        } else{
-            selected = elementList.get(selectedindex);
-        }
-
-    }
-
-    /**
-     * handle the space event
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    private Action handleSpace() {
-        /*if (selected instanceof RadioButton) {
-            if (selected == toActor) {
-                Action action = toActor.performAction();
-                handleAction(action);
-                return action;
-            } else if (selected == toObject) {
-                Action action = toObject.performAction();
-                handleAction(action);
-                return action;
-            }
-        }
-        return new EmptyAction();*/
-        if(selected != null && !designerMode){
-            Action action = selected.performAction();
-            handleAction(action);
-            return action;
-
-        }else{
-            return new EmptyAction();
-        }
-    }
 
     /**
      * handle changing the party label

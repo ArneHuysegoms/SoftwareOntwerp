@@ -312,12 +312,16 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications are made
      */
-    private Action handleBackSpace() throws DomainException {
+    public Action handleBackSpace() {
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.deleteLastCharFromContents();
             if (t == methodTextBox) {
-                return changeMethod();
+                try {
+                    return changeMethod();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return new EmptyAction();
@@ -330,12 +334,16 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications are made
      */
-    private Action handleChar(KeyEvent keyEvent) throws DomainException {
+    public Action handleChar(KeyEvent keyEvent){
         if (selected instanceof TextBox) {
             TextBox t = (TextBox) selected;
             t.addCharToContents(keyEvent.getKeyChar());
             if (t == methodTextBox) {
-                return changeMethod();
+                try {
+                    return changeMethod();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return new EmptyAction();
@@ -360,7 +368,7 @@ public class InvocationMessageDialogBox extends DialogBox {
      *
      * @return an action detailing the outcome of the handling
      */
-    private Action handleSpace() {
+    public Action handleSpace() {
         if (addArgument == selected) {
             return handleAddArgument();
         } else if (additionalButtonsAreActive()) {
@@ -462,7 +470,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     /**
      * cycle the selected argument
      */
-    private void cycleSelectedElement() {
+    public void cycleSelectedElement() {
         int oldIndex = dialogboxElements.indexOf(selected);
         selected = dialogboxElements.get((oldIndex + 1) % 7);
     }

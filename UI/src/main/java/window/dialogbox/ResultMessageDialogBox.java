@@ -4,6 +4,8 @@ import action.Action;
 import action.EmptyAction;
 import action.RemoveInViewsAction;
 import action.UpdateLabelAction;
+import command.changeType.PartyCommand.ChangeToActorCommand;
+import command.changeType.PartyCommand.ChangeToObjectCommand;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
@@ -11,11 +13,15 @@ import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
+import window.elements.radiobutton.PartyRadioButton;
+import window.elements.textbox.ClassTextBox;
+import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.MethodTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,6 +40,16 @@ public class ResultMessageDialogBox extends DialogBox {
 
     public static ArrayList<DialogboxElement> RESULTMESSAGEBOXLIST;
 
+    /*static {
+        try {
+            RESULTMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
+                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), "Object"),
+                    new InstanceTextBox(new Point2D.Double(10, 60), "Instance"),
+                    new ClassTextBox(new Point2D.Double(10, 85), "Class")));
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+    }*/
 
 
     @Override
@@ -126,23 +142,19 @@ public class ResultMessageDialogBox extends DialogBox {
      */
     @Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
-        try {
-            switch (keyEvent.getKeyEventType()) {
-                case CHAR:
-                    return handleChar(keyEvent);
-                case BACKSPACE:
-                    return handleBackSpace();
-                case CTRLE:
-                    setDesignerMode(true);
-                    System.out.println("DESIGNER MODE ON");
-                case ENTER:
-                    if(designerMode){
-                        setDesignerMode(false);
-                        System.out.println("DESIGNER MODE OFF");
-                    }
-            }
-        } catch (DomainException e) {
-            e.printStackTrace();
+        switch (keyEvent.getKeyEventType()) {
+            case CHAR:
+                return handleChar(keyEvent);
+            case BACKSPACE:
+                return handleBackSpace();
+            case CTRLE:
+                setDesignerMode(true);
+                System.out.println("DESIGNER MODE ON");
+            case ENTER:
+                if(designerMode){
+                    setDesignerMode(false);
+                    System.out.println("DESIGNER MODE OFF");
+                }
         }
         return new EmptyAction();
     }
@@ -153,10 +165,14 @@ public class ResultMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications ara made
      */
-    private Action handleBackSpace() throws DomainException {
+    public Action handleBackSpace(){
         if (selected.hasValidContents()) {
             selected.deleteLastCharFromContents();
-            return changeResultMessageLabel();
+            try {
+                return changeResultMessageLabel();
+            } catch (DomainException e) {
+                e.printStackTrace();
+            }
         }
         return new EmptyAction();
     }
@@ -168,10 +184,15 @@ public class ResultMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications are made
      */
-    private Action handleChar(KeyEvent keyEvent) throws DomainException {
+    @Override
+    public Action handleChar(KeyEvent keyEvent) {
         selected.addCharToContents(keyEvent.getKeyChar());
         if (selected.hasValidContents()) {
-            return changeResultMessageLabel();
+            try {
+                return changeResultMessageLabel();
+            } catch (DomainException e) {
+                e.printStackTrace();
+            }
         }
         return new EmptyAction();
     }

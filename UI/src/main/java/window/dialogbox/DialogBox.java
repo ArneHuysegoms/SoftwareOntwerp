@@ -10,6 +10,7 @@ import window.Subwindow;
 import window.WindowLevelCounter;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.RadioButton;
+import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -128,7 +129,6 @@ public abstract class DialogBox extends Subwindow {
     }
 
     private Action handleMousePress(MouseEvent mouseEvent) {
-        updateList();
         if(elementList.size() < 1){
             return new EmptyAction();
         }
@@ -160,7 +160,115 @@ public abstract class DialogBox extends Subwindow {
      * @return an action detailing the change by the keyEvent
      */
     @Override
-    public abstract Action handleKeyEvent(KeyEvent keyEvent);
+    public Action handleKeyEvent(KeyEvent keyEvent) {
+        if(invalidDescriptionMode){
+            switch (keyEvent.getKeyEventType()) {
+                case CHAR:
+                    return handleChar(keyEvent);
+            }
+            return new EmptyAction();
+        }
+        else{
+            switch (keyEvent.getKeyEventType()) {
+                case TAB:
+                    cycleSelectedElement();
+                    break;
+                case SPACE:
+                    return handleSpace();
+                case CHAR:
+                    return handleChar(keyEvent);
+                case BACKSPACE:
+                    return handleBackSpace();
+                case CTRLE:
+                    setDesignerMode(true);
+                    break;
+                case ENTER:
+                    if(designerMode){
+                        setDesignerMode(false);
+                    }
+                    break;
+                case DEL:
+                    if(designerMode){
+                        DialogboxElement last = null;
+                        for(DialogboxElement ele:getStaticList()){
+                            if(ele.getCoordinate().equals(selected.getCoordinate())){
+                                last = ele;
+                            }
+                        }
 
+                        if(last != null){
+                            getStaticList().remove(last);
+                        }
+                        updateList();
+                        cycleSelectedElement();
+                    }
+                    break;
+
+            }
+            return new EmptyAction();
+        }
+
+    }
+
+    /**
+     * cycle the selected element
+     */
+    protected void cycleSelectedElement() {
+        /*int oldIndex = elementList.indexOf(selected);
+        selected = elementList.get((oldIndex + 1) % 4);*/
+
+        if(elementList.size() < 1){
+            selected = null;
+        }
+        else if(selectedindex == elementList.size()){
+            selectedindex = 0;
+            selected = elementList.get(getSelectedindex());
+        }
+
+        else if(elementList.get(selectedindex).equals(selected)){
+            selectedindex++;
+            if(getSelectedindex() < elementList.size()){
+                selected = elementList.get(getSelectedindex());
+            }
+            else{
+                //TODO what if list size is 0?
+                selectedindex = 0;
+                selected = elementList.get(getSelectedindex());
+            }
+        } else{
+            selected = elementList.get(selectedindex);
+        }
+    }
+
+    /**
+     * handle the space event
+     *
+     * @return an action detailing the outcome of the handling
+     */
+    protected Action handleSpace() {
+        if(selected != null && !designerMode){
+            Action action = selected.performAction();
+            handleAction(action);
+            return action;
+
+        }else{
+            return new EmptyAction();
+        }
+    }
+
+    /**
+     * handle the backspace event
+     *
+     * @return an action detailing the outcome of the handling
+     */
+    protected abstract Action handleBackSpace();
+
+    /**
+     * handles a char keyEvent
+     *
+     * @param keyEvent the keyEvent with the char
+     * @return an action detailing the outcome of the handling
+     */
+    public abstract Action handleChar(KeyEvent keyEvent);
 
 }
