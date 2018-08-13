@@ -28,11 +28,11 @@ public class PartyDialogBox extends DialogBox {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 200;
 
-    public String TOOBJECT_DESPCRIPTION = "Object";
-    public String TOACTOR_DESCRIPTION = "Actor";
+    //public String TOOBJECT_DESPCRIPTION = "Object";
+    //public String TOACTOR_DESCRIPTION = "Actor";
 
-    public String INSTANCE_DESCRIPTION = "Instance";
-    public String CLASS_DESCRIPTION = "Class";
+    //public String INSTANCE_DESCRIPTION = "Instance";
+    //public String CLASS_DESCRIPTION = "Class";
 
     //private RadioButton toActor;
     //private RadioButton toObject;

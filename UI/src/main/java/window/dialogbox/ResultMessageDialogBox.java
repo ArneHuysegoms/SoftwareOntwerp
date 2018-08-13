@@ -49,29 +49,6 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
 
-    @Override
-    public List<DialogboxElement> getStaticList(){
-        return RESULTMESSAGEBOXLIST;
-    }
-
-    @Override
-    public void updateList() {
-        for (DialogboxElement d : getStaticList()) {
-            DialogboxElement clone = d.clone();
-            elementList.add(clone);
-        }
-        if(elementList.size() == 0){
-            selected = null;
-        }
-        else if(selectedindex > elementList.size()-1){
-            selectedindex = 0;
-            selected = this.elementList.get(selectedindex);
-        }else{
-
-            selected = this.elementList.get(selectedindex);
-        }
-    }
-
     /**
      * create a new resultmessage dialogbox
      *
@@ -99,6 +76,28 @@ public class ResultMessageDialogBox extends DialogBox {
         updateFields(resultMessage);
     }
 
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return RESULTMESSAGEBOXLIST;
+    }
+
+    @Override
+    public void updateList() {
+        for (DialogboxElement d : getStaticList()) {
+            DialogboxElement clone = d.clone();
+            elementList.add(clone);
+        }
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
+        }
+    }
     /**
      * @return the default width for this dialogbox type
      */
