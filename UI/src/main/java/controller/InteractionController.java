@@ -231,7 +231,6 @@ public class InteractionController{
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
                     Action action = activeSubwindow.handleKeyEvent(keyEvent);
-                    System.out.println("-------------- REACHED ic");
                     return action;
                 }
                 break;

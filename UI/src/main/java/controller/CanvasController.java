@@ -132,7 +132,6 @@ public class CanvasController {
     }
 
     public void handleForEachInteractionController(Action action){
-        System.out.println("-------------- REACHED handleForEachIC");
         List<InteractionController> copy = new ArrayList<>(getInteractionControllers());
         for(InteractionController ic : getInteractionControllers()){
             ic.actionForEachSubwindow(action);

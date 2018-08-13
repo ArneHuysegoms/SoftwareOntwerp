@@ -9,6 +9,7 @@ import uievents.MouseEvent;
 import window.Subwindow;
 import window.WindowLevelCounter;
 import window.elements.DialogboxElement;
+import window.elements.radiobutton.RadioButton;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -141,6 +142,7 @@ public abstract class DialogBox extends Subwindow {
             return new EmptyAction();
         }
         if(selected.isClicked(mouseEvent.getPoint())){
+            System.out.println("------- " + ((RadioButton)selected).getCommand());
             Action action = selected.performAction();
             handleAction(action);
             return action;
