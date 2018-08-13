@@ -60,6 +60,16 @@ public class ResultMessageDialogBox extends DialogBox {
             DialogboxElement clone = d.clone();
             elementList.add(clone);
         }
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
+        }
     }
 
     /**
@@ -176,6 +186,7 @@ public class ResultMessageDialogBox extends DialogBox {
         else if(designerMode) {
             DialogboxElement d = getStaticList().get(selectedindex);
             d.deleteCharFromDescription();
+            System.out.println("SYSOUT------------" + d.getDescription());
             if (!d.isValidDescription()) {
                 setInvalidDescriptionMode(true);
             }

@@ -142,7 +142,6 @@ public abstract class DialogBox extends Subwindow {
             return new EmptyAction();
         }
         if(selected.isClicked(mouseEvent.getPoint())){
-            System.out.println("------- " + ((RadioButton)selected).getCommand());
             Action action = selected.performAction();
             handleAction(action);
             return action;
