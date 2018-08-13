@@ -1,9 +1,6 @@
 package window.dialogbox;
 
-import action.Action;
-import action.EmptyAction;
-import action.RemoveInViewsAction;
-import action.UpdateLabelAction;
+import action.*;
 import command.changeType.PartyCommand.ChangeToActorCommand;
 import command.changeType.PartyCommand.ChangeToObjectCommand;
 import diagram.message.ResultMessage;
@@ -32,24 +29,24 @@ public class ResultMessageDialogBox extends DialogBox {
     public static final int WIDTH = 300;
     public static final int HEIGHT = 60;
 
-    private TextBox labelTextBox;
+    //private TextBox labelTextBox;
     private ResultMessage resultMessage;
     private DiagramSubwindow diagramSubwindow;
 
-    private TextBox selected;
+    //private TextBox selected;
 
     public static ArrayList<DialogboxElement> RESULTMESSAGEBOXLIST;
 
-    /*static {
+    static {
         try {
-            RESULTMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
-                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), "Object"),
-                    new InstanceTextBox(new Point2D.Double(10, 60), "Instance"),
-                    new ClassTextBox(new Point2D.Double(10, 85), "Class")));
+            RESULTMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(
+                    new MethodTextBox(new Point2D.Double(10, 40), "Method")));
+
+
         } catch (UIException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
 
     @Override
@@ -59,7 +56,10 @@ public class ResultMessageDialogBox extends DialogBox {
 
     @Override
     public void updateList() {
-
+        for (DialogboxElement d : getStaticList()) {
+            DialogboxElement clone = d.clone();
+            elementList.add(clone);
+        }
     }
 
     /**
@@ -74,10 +74,18 @@ public class ResultMessageDialogBox extends DialogBox {
         super(pos);
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
-        this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 40), "Method");
+        /*this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 40), "Method");
+        /*/
+        elementList = new ArrayList<>();
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        selected = labelTextBox;
+        //selected = labelTextBox;
+        updateList();
+        this.selectedindex = 0;
+        if(elementList.size() > 0){
+
+            selected = this.elementList.get(getSelectedindex());
+        }
         updateFields(resultMessage);
     }
 
@@ -95,19 +103,6 @@ public class ResultMessageDialogBox extends DialogBox {
         return HEIGHT;
     }
 
-    /**
-     * @return the currently selected textbox
-     */
-    public TextBox getSelected() {
-        return selected;
-    }
-
-    /**
-     * @return the label textbox
-     */
-    public TextBox getLabelTextBox() {
-        return labelTextBox;
-    }
 
     /**
      * @return the result message this dialogbox serves
@@ -129,10 +124,10 @@ public class ResultMessageDialogBox extends DialogBox {
      * @param mouseEvent the mouseEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    @Override
+    /*@Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         return new EmptyAction();
-    }
+    }*/
 
     /**
      * handles key events
@@ -140,7 +135,7 @@ public class ResultMessageDialogBox extends DialogBox {
      * @param keyEvent the keyEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    @Override
+    /*@Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
         switch (keyEvent.getKeyEventType()) {
             case CHAR:
@@ -157,7 +152,7 @@ public class ResultMessageDialogBox extends DialogBox {
                 }
         }
         return new EmptyAction();
-    }
+    }*/
 
     /**
      * handle the backspace event
@@ -165,14 +160,26 @@ public class ResultMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications ara made
      */
+    @Override
     public Action handleBackSpace(){
-        if (selected.hasValidContents()) {
-            selected.deleteLastCharFromContents();
-            try {
-                return changeResultMessageLabel();
-            } catch (DomainException e) {
-                e.printStackTrace();
+        if(!designerMode) {
+            if (((TextBox) selected).hasValidContents()) {
+                ((TextBox) selected).deleteLastCharFromContents();
+                try {
+                    return changeResultMessageLabel();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
             }
+
+        }
+        else if(designerMode) {
+            DialogboxElement d = getStaticList().get(selectedindex);
+            d.deleteCharFromDescription();
+            if (!d.isValidDescription()) {
+                setInvalidDescriptionMode(true);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
     }
@@ -186,16 +193,27 @@ public class ResultMessageDialogBox extends DialogBox {
      */
     @Override
     public Action handleChar(KeyEvent keyEvent) {
-        selected.addCharToContents(keyEvent.getKeyChar());
-        if (selected.hasValidContents()) {
-            try {
-                return changeResultMessageLabel();
-            } catch (DomainException e) {
-                e.printStackTrace();
+        if (!designerMode) {
+            ((TextBox) selected).addCharToContents(keyEvent.getKeyChar());
+            if (((TextBox) selected).hasValidContents()) {
+                try {
+                    return changeResultMessageLabel();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
             }
+        }
+        else if (designerMode && selected != null) {
+            DialogboxElement d = getStaticList().get(selectedindex);
+            d.addCharToDescription(keyEvent.getKeyChar());
+            if (d.isValidDescription()) {
+                setInvalidDescriptionMode(false);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
     }
+
 
     /**
      * change the resultmessage label
@@ -204,7 +222,7 @@ public class ResultMessageDialogBox extends DialogBox {
      * @throws DomainException if illegal modifications are made
      */
     private Action changeResultMessageLabel() throws DomainException {
-        getResultMessage().getLabel().setLabel(selected.getContents());
+        getResultMessage().getLabel().setLabel(((TextBox)selected).getContents());
         return new UpdateLabelAction(getResultMessage(), getResultMessage().getLabel());
     }
 
@@ -227,6 +245,9 @@ public class ResultMessageDialogBox extends DialogBox {
                 updateFields((ResultMessage) a.getElement());
             }
         }
+        if (action instanceof UpdateListAction){
+            updateList();
+        }
     }
 
     /**
@@ -235,6 +256,8 @@ public class ResultMessageDialogBox extends DialogBox {
      * @param resultMessage the resultmessage to parse
      */
     private void updateFields(ResultMessage resultMessage) {
-        labelTextBox.setContents(resultMessage.getLabel().getLabel());
+        if(selected != null){
+            ((TextBox)selected).setContents(resultMessage.getLabel().getLabel());
+        }
     }
 }
