@@ -48,16 +48,9 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
     public void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         TextBox temp;
         for(DialogboxElement ele : dialogBox.getElementList()){
-            if(ele instanceof InstanceTextBox) {
-                temp = (TextBox) ele;
-                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                        .draw(graphics, minX, minY, maxX, maxY);
-            }
-            if(ele instanceof ClassTextBox) {
-                temp = (TextBox) ele;
-                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                        .draw(graphics, minX, minY, maxX, maxY);
-            }
+            temp = (TextBox) ele;
+            new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                    .draw(graphics, minX, minY, maxX, maxY);
         }
     }
 
