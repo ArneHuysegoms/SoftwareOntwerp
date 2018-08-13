@@ -1,6 +1,9 @@
 package window.dialogbox;
 
 import action.Action;
+import action.EmptyAction;
+import action.UpdateListAction;
+import exception.UIException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.Subwindow;
@@ -8,7 +11,6 @@ import window.WindowLevelCounter;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +52,7 @@ public abstract class DialogBox extends Subwindow {
         return elementList;
     }
 
+    public abstract List<DialogboxElement> getStaticList();
     /**
      * create a new dialogbox at the given position
      *
@@ -60,6 +63,8 @@ public abstract class DialogBox extends Subwindow {
         this.invalidDescriptionMode = false;
     }
 
+    public abstract void updateList();
+
     /**
      * handles a mouseEvent
      *
@@ -67,7 +72,84 @@ public abstract class DialogBox extends Subwindow {
      * @return an action detailing the change by the mouseEvent
      */
     @Override
-    public abstract Action handleMouseEvent(MouseEvent mouseEvent);
+    public Action handleMouseEvent(MouseEvent mouseEvent){
+        if(invalidDescriptionMode){
+            return new EmptyAction();
+        }
+        if(designerMode){
+            switch (mouseEvent.getMouseEventType()) {
+                case LEFTDOUBLECLICK:
+                    DialogboxElement last = null;
+                    for(DialogboxElement ele:getStaticList()){
+                        if(ele.isClicked(mouseEvent.getPoint())){
+                            last = ele;
+                        }
+                    }
+                    if(last != null){
+                        last = last.clone();
+                        try {
+                            last.setCoordinate(new Point2D.Double(last.getCoordinate().getX() + 30, last.getCoordinate().getY() + 30));
+                        }catch(UIException e){
+                            e.printStackTrace();
+                        }
+                        getStaticList().add(last);
+                        updateList();
+                    }
+                    break;
+                case DRAG:
+                    setDragging(true);
+                    break;
+                case RELEASE:
+                    if(isDragging()){
+                        try {
+                            getStaticList().get(selectedindex).setCoordinate(mouseEvent.getPoint());
+                            selected = elementList.get(selectedindex);
+                        }catch(UIException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                    setDragging(false);
+                    updateList();
+                    break;
+                case PRESSED:
+                    return handleMousePress(mouseEvent);
+            }
+            return new UpdateListAction();
+        }
+        else{
+            switch (mouseEvent.getMouseEventType()) {
+                case PRESSED:
+                    return handleMousePress(mouseEvent);
+            }
+        }
+        return new EmptyAction();
+    }
+
+    private Action handleMousePress(MouseEvent mouseEvent) {
+        updateList();
+        if(elementList.size() < 1){
+            return new EmptyAction();
+        }
+        for(int i = 0; i < elementList.size(); i++){
+            if(elementList.get(i).isClicked(mouseEvent.getPoint())){
+                selected = elementList.get(i);
+                selectedindex = i;
+            }
+        }
+        if(designerMode){
+            return new EmptyAction();
+        }
+        if(selected.isClicked(mouseEvent.getPoint())){
+            Action action = selected.performAction();
+            handleAction(action);
+            return action;
+        }
+        else{
+            return new EmptyAction();
+        }
+
+    }
 
     /**
      * handles a keyEvent

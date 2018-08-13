@@ -8,7 +8,7 @@ import window.diagram.DiagramSubwindow;
 /**
  * command for changing a diagram to a communication diagram
  */
-public class ChangeToCommunicationCommand extends Command {
+public class ChangeToCommunicationCommand extends DiagramCommand {
 
     private DiagramSubwindow diagramSubwindow;
 

@@ -11,7 +11,7 @@ import java.awt.geom.Point2D;
 /**
  * a class for fakebuttons, these are buttons with no command behind them; but are buttons in every other way
  */
-public class FakeButton extends DialogboxElement {
+public abstract class FakeButton extends DialogboxElement {
 
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;

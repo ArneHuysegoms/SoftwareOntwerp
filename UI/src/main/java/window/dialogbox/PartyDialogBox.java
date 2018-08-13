@@ -7,11 +7,9 @@ import command.closeWindow.CloseSubwindowCommand;
 import diagram.party.Party;
 import exception.UIException;
 import uievents.KeyEvent;
-import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.PartyRadioButton;
-import window.elements.radiobutton.RadioButton;
 import window.elements.button.CloseWindowButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
@@ -131,13 +129,18 @@ public class PartyDialogBox extends DialogBox {
         return subwindow;
     }
 
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return PARTYBOXLIST;
+    }
+
     /**
      * handle a mouse event
      *
      * @param mouseEvent the mouseEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    @Override
+    /*@Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         if(invalidDescriptionMode){
             return new EmptyAction();
@@ -190,7 +193,7 @@ public class PartyDialogBox extends DialogBox {
             }
         }
         return new EmptyAction();
-    }
+    }*/
 
     /**
      * handle a keyEvent
@@ -258,7 +261,7 @@ public class PartyDialogBox extends DialogBox {
      * @param mouseEvent the mouse event to handle
      * @return an action detailing the outcome of the handling
      */
-    private Action handleMousePress(MouseEvent mouseEvent) {
+    /*private Action handleMousePress(MouseEvent mouseEvent) {
         updateList();
         if(elementList.size() < 1){
             return new EmptyAction();
@@ -281,7 +284,7 @@ public class PartyDialogBox extends DialogBox {
             return new EmptyAction();
         }
 
-    }
+    }*/
 
     /**
      * handle the backspace event

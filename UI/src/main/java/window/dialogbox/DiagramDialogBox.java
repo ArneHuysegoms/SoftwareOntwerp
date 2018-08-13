@@ -2,6 +2,7 @@ package window.dialogbox;
 
 import action.Action;
 import action.EmptyAction;
+import action.UpdateListAction;
 import command.changeType.DiagramCommand.ChangeToCommunicationCommand;
 import command.changeType.DiagramCommand.ChangeToSequenceCommand;
 import exception.UIException;
@@ -12,10 +13,10 @@ import window.elements.DialogboxElement;
 import window.elements.radiobutton.DiagramRadioButton;
 import window.elements.radiobutton.RadioButton;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * construct a new dialogbox for diagrams
@@ -33,7 +34,7 @@ public class DiagramDialogBox extends DialogBox {
 
     //private RadioButton selected;
 
-    private ArrayList<DialogboxElement> elementList;
+    //private ArrayList<DialogboxElement> elementList;
 
     private DiagramSubwindow subwindow;
 
@@ -47,6 +48,10 @@ public class DiagramDialogBox extends DialogBox {
         }catch (UIException e){
             e.printStackTrace();
         }
+    }
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return DIAGRAMBOXLIST;
     }
 
     /**
@@ -70,6 +75,7 @@ public class DiagramDialogBox extends DialogBox {
         selected = this.elementList.get(getSelectedindex());
     }
 
+    @Override
     public void updateList(){
         for (DialogboxElement d : DIAGRAMBOXLIST) {
             DialogboxElement clone = d.clone();
@@ -139,7 +145,7 @@ public class DiagramDialogBox extends DialogBox {
      * @param mouseEvent the mouseEvent to handle
      * @return an action detailing the outcome of the event handling
      */
-    @Override
+    /*@Override
     public Action handleMouseEvent(MouseEvent mouseEvent) {
         switch (mouseEvent.getMouseEventType()) {
             case PRESSED:
@@ -147,7 +153,7 @@ public class DiagramDialogBox extends DialogBox {
                 break;
         }
         return new EmptyAction();
-    }
+    }*/
 
     /**
      * handle key event
@@ -181,7 +187,7 @@ public class DiagramDialogBox extends DialogBox {
      *
      * @param mouseEvent the event to handle
      */
-    private void handleMousePress(MouseEvent mouseEvent) {
+    /*private void handleMousePress(MouseEvent mouseEvent) {
         if (toCommunicationDiagram.isClicked(mouseEvent.getPoint())) {
             selected = toCommunicationDiagram;
             toCommunicationDiagram.performAction();
@@ -189,7 +195,7 @@ public class DiagramDialogBox extends DialogBox {
             selected = toSequenceDiagram;
             toSequenceDiagram.performAction();
         }
-    }
+    }*/
 
     /**
      * change the selected radiobutton
@@ -209,7 +215,10 @@ public class DiagramDialogBox extends DialogBox {
      */
     @Override
     public void handleAction(Action action) {
-
+        if(action instanceof UpdateListAction){
+            System.out.println("-------------- REACHED UpdateListAction in diagramdialogbox");
+            updateList();
+        }
     }
 
 

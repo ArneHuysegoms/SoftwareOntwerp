@@ -10,10 +10,13 @@ import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
 import window.elements.textbox.MethodTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * dialogbox for changing resultmessages
@@ -28,6 +31,20 @@ public class ResultMessageDialogBox extends DialogBox {
     private DiagramSubwindow diagramSubwindow;
 
     private TextBox selected;
+
+    public static ArrayList<DialogboxElement> RESULTMESSAGEBOXLIST;
+
+
+
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return RESULTMESSAGEBOXLIST;
+    }
+
+    @Override
+    public void updateList() {
+
+    }
 
     /**
      * create a new resultmessage dialogbox

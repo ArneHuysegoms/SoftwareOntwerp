@@ -1,6 +1,8 @@
 package window.dialogbox;
 
 import action.*;
+import command.changeType.DiagramCommand.ChangeToCommunicationCommand;
+import command.changeType.DiagramCommand.ChangeToSequenceCommand;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.message.InvocationMessage;
@@ -11,14 +13,15 @@ import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
-import window.elements.button.FakeButton;
-import window.elements.button.TextualFakeButton;
+import window.elements.button.*;
+import window.elements.radiobutton.DiagramRadioButton;
 import window.elements.textbox.ArgumentTextBox;
 import window.elements.textbox.MethodTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,38 @@ public class InvocationMessageDialogBox extends DialogBox {
     private InvocationMessageLabel invocationMessageLabel;
     private DiagramSubwindow subwindow;
 
+    public static ArrayList<DialogboxElement> INVOCATIONMESSAGEBOXLIST;
+
+    static {
+        try{
+            INVOCATIONMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(
+                    new MethodTextBox(new Point2D.Double(10, 50), "method"),
+                    new ArgumentTextBox(new Point2D.Double(10, 75), "argument"),
+                    new AddArgumentFakeButton(new Point2D.Double(10, 100), "Add"),
+                    new DeleteArgumentFakeButton(new Point2D.Double(50, 100), "Del"),
+                    new MoveDownFakeButton(new Point2D.Double(90, 100), "Down"),
+                    new MoveUpFakeButton(new Point2D.Double(130, 100), "Up"),
+                    new ListBox(new Point2D.Double(10, 140), "")));
+
+        }catch (UIException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return INVOCATIONMESSAGEBOXLIST;
+    }
+
+    @Override
+    public void updateList() {
+        for (DialogboxElement d : INVOCATIONMESSAGEBOXLIST) {
+            DialogboxElement clone = d.clone();
+            clone.update(subwindow);
+            elementList.add(clone);
+        }
+    }
+
     /**
      * create a new invocation message dialog box
      *
@@ -58,16 +93,16 @@ public class InvocationMessageDialogBox extends DialogBox {
     public InvocationMessageDialogBox(Point2D pos, InvocationMessageLabel invocationMessageLabel, DiagramSubwindow subwindow) throws UIException {
         super(pos);
         this.invocationMessageLabel = invocationMessageLabel;
-        methodTextBox = new MethodTextBox(new Point2D.Double(10, 50), "method");
+        /*methodTextBox = new MethodTextBox(new Point2D.Double(10, 50), "method");
         argumentTextBox = new ArgumentTextBox(new Point2D.Double(10, 75), "argument");
         addArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Add");
         deleteArgument = new TextualFakeButton(new Point2D.Double(50, 100), "Del");
         moveDown = new TextualFakeButton(new Point2D.Double(90, 100), "Down");
         moveUp = new TextualFakeButton(new Point2D.Double(130, 100), "Up");
-
+*/
         this.subwindow = subwindow;
 
-        argumentListBox = new ListBox(new Point2D.Double(10, 140), "");
+        /*argumentListBox = new ListBox(new Point2D.Double(10, 140), "");
 
         dialogboxElements = new ArrayList<>();
         dialogboxElements.add(methodTextBox);
@@ -79,7 +114,7 @@ public class InvocationMessageDialogBox extends DialogBox {
         dialogboxElements.add(argumentListBox);
 
         selected = methodTextBox;
-
+*/
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
 
