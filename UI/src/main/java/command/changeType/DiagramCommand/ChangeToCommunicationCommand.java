@@ -10,7 +10,6 @@ import window.diagram.DiagramSubwindow;
  */
 public class ChangeToCommunicationCommand extends DiagramCommand {
 
-    private DiagramSubwindow diagramSubwindow;
 
     /**
      * creates a new changeToCommunicationCommand for the given diagramSubWindow
@@ -18,7 +17,7 @@ public class ChangeToCommunicationCommand extends DiagramCommand {
      * @param diagramSubwindow the diagramSubwindow to change
      */
     public ChangeToCommunicationCommand(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
+        super(diagramSubwindow);
     }
 
     /**

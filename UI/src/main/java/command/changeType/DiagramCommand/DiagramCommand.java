@@ -7,6 +7,10 @@ public abstract class DiagramCommand extends Command {
 
     protected DiagramSubwindow diagramSubwindow;
 
+    public DiagramCommand(DiagramSubwindow diagramSubwindow){
+        setDiagramSubwindow(diagramSubwindow);
+    }
+
     public DiagramSubwindow getDiagramSubwindow() {
         return diagramSubwindow;
     }

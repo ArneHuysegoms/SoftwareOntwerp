@@ -17,7 +17,7 @@ public class ChangeToSequenceCommand extends DiagramCommand{
      * @param diagramSubwindow the diagramsubwindow to change
      */
     public ChangeToSequenceCommand(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
+        super(diagramSubwindow);
     }
 
     /**

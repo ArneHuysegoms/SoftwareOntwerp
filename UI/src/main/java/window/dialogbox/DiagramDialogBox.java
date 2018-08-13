@@ -79,6 +79,7 @@ public class DiagramDialogBox extends DialogBox {
     public void updateList(){
         System.out.println("---------------------- Update DiagramDialogBox List!!!");
         System.out.println("-------------" + subwindow + " " + subwindow.getSelected());
+        this.elementList = new ArrayList<>();
         for (DialogboxElement d : DIAGRAMBOXLIST) {
             DialogboxElement clone = d.clone();
             clone.update(subwindow);
