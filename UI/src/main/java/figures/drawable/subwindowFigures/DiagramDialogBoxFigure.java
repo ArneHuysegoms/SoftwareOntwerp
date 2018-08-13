@@ -57,11 +57,11 @@ public class DiagramDialogBoxFigure extends DialogBoxSubwindowFigure {
                 temp = (DiagramRadioButton)ele;
                 if (dialogBox.getDiagramSubwindow().isCommunicationDiagram() && temp.getCommand() instanceof ChangeToCommunicationCommand) {
                     new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                            .draw(graphics);
+                            .draw(graphics, minX, minY, maxX, maxY);
                 }
                 else if (dialogBox.getDiagramSubwindow().isSequenceDiagram() && temp.getCommand() instanceof ChangeToSequenceCommand) {
                     new SelectedRadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                            .draw(graphics);
+                            .draw(graphics, minX, minY, maxX, maxY);
                 }
                 else {
                     new RadioButtonFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())

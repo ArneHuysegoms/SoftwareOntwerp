@@ -60,22 +60,17 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-       /* new TextBoxFigure(dialogBox.getInstanceTextBox(), dialogBox.getAbsolutePosition(dialogBox.getInstanceTextBox().getCoordinate()), PartyDialogBox.INSTANCE_DESCRIPTION)
-                .draw(graphics, minX, minY, maxX, maxY);
-        new TextBoxFigure(dialogBox.getClassTextBox(), dialogBox.getAbsolutePosition(dialogBox.getClassTextBox().getCoordinate()), PartyDialogBox.CLASS_DESCRIPTION)
-                .draw(graphics, minX, minY, maxX, maxY);
-*/
         TextBox temp;
         for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof InstanceTextBox) {
                 temp = (TextBox) ele;
                 new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                        .draw(graphics);
+                        .draw(graphics, minX, minY, maxX, maxY);
             }
             if(ele instanceof ClassTextBox) {
                 temp = (TextBox) ele;
                 new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
-                        .draw(graphics);
+                        .draw(graphics, minX, minY, maxX, maxY);
             }
         }
     }

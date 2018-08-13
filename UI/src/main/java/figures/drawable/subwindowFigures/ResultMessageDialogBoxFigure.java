@@ -2,6 +2,10 @@ package figures.drawable.subwindowFigures;
 
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.ResultMessageDialogBox;
+import window.elements.DialogboxElement;
+import window.elements.textbox.ClassTextBox;
+import window.elements.textbox.InstanceTextBox;
+import window.elements.textbox.TextBox;
 
 import java.awt.*;
 
@@ -25,8 +29,12 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
     @Override
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);
-        drawTextBox(graphics, minX, minY, maxX, maxY);
-        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        drawTextBoxes(graphics, minX, minY, maxX, maxY);
+        super.handleSelectedElement(graphics,dialogBox);
+
+        if(dialogBox.getDesignerMode()) {
+            this.drawOrangeTitleBar(graphics);
+        }
     }
 
     /**
@@ -37,16 +45,27 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
-    private void drawTextBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getLabelTextBox(), dialogBox.getAbsolutePosition(dialogBox.getLabelTextBox().getCoordinate()), "(response message)")
-                .draw(graphics, minX, minY, maxX, maxY);
+    public void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        TextBox temp;
+        for(DialogboxElement ele : dialogBox.getElementList()){
+            if(ele instanceof InstanceTextBox) {
+                temp = (TextBox) ele;
+                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+            if(ele instanceof ClassTextBox) {
+                temp = (TextBox) ele;
+                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+        }
     }
 
     /**
      * draws a text box
      * @param graphics object used to draw on the program's window
      */
-    private void drawTextBox(Graphics graphics) {
-        this.drawTextBox(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    public void drawTextBoxes(Graphics graphics) {
+        this.drawTextBoxes(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 }
