@@ -271,9 +271,14 @@ public class PartyDialogBox extends DialogBox {
         if(designerMode){
             return new EmptyAction();
         }
-        Action action = selected.performAction();
-        handleAction(action);
-        return action;
+        if(selected.isClicked(mouseEvent.getPoint())){
+            Action action = selected.performAction();
+            handleAction(action);
+            return action;
+        }
+        else{
+            return new EmptyAction();
+        }
 
     }
 
