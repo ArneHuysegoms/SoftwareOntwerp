@@ -105,6 +105,17 @@ public class PartyDialogBox extends DialogBox {
             clone.update(subwindow,party);
             elementList.add(clone);
         }
+
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
+        }
     }
     /**
      * @return the party this dialogbox edits
@@ -166,19 +177,22 @@ public class PartyDialogBox extends DialogBox {
                 if(designerMode){
                     setDragging(true);
                 }
+                break;
             case RELEASE:
                 if(designerMode){
                     if(isDragging()){
                         try {
                             PARTYBOXLIST.get(selectedindex).setCoordinate(mouseEvent.getPoint());
-                            updateList();
+                            selected = elementList.get(selectedindex);
                         }catch(UIException e){
                             e.printStackTrace();
                         }
 
                     }
                     setDragging(false);
+                    updateList();
                 }
+                break;
             case PRESSED:
                 return handleMousePress(mouseEvent);
 
@@ -334,10 +348,13 @@ public class PartyDialogBox extends DialogBox {
             return new EmptyAction();
         }
         else{
-            DialogboxElement d = PARTYBOXLIST.get(selectedindex);
-            d.addCharToDescription(keyEvent.getKeyChar());
-            if(d.isValidDescription()){
-                setInvalidDescriptionMode(false);
+            if(selected != null){
+                DialogboxElement d = PARTYBOXLIST.get(selectedindex);
+                d.addCharToDescription(keyEvent.getKeyChar());
+                if(d.isValidDescription()){
+                    setInvalidDescriptionMode(false);
+                }
+
             }
             return new EmptyAction();
         }
@@ -394,7 +411,9 @@ public class PartyDialogBox extends DialogBox {
         }
         return new EmptyAction();*/
         if(selected != null && !designerMode){
-            return selected.performAction();
+            Action action = selected.performAction();
+            handleAction(action);
+            return action;
 
         }else{
             return new EmptyAction();
