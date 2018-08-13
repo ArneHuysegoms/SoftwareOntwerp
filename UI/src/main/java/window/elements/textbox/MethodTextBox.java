@@ -26,7 +26,12 @@ public class MethodTextBox extends TextBox {
 
     @Override
     public DialogboxElement clone() {
-        throw new NotImplementedException();
+        try {
+            return new MethodTextBox(getCoordinate(), getDescription());
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
 
     }
 
