@@ -74,17 +74,8 @@ public class PartyDialogBox extends DialogBox {
     public PartyDialogBox(Point2D pos, Party party, DiagramSubwindow subwindow) throws UIException {
         super(pos);
         this.setParty(party);
-        /*toActor = new RadioButton(new ChangeToActorCommand(subwindow, party), new Point2D.Double(10, 30), TOACTOR_DESCRIPTION);
-        toObject = new RadioButton(new ChangeToObjectCommand(subwindow, party), new Point2D.Double(85, 30), TOOBJECT_DESPCRIPTION);
-        instanceTextBox = new InstanceTextBox(new Point2D.Double(10, 60), INSTANCE_DESCRIPTION);
-        classTextBox = new ClassTextBox(new Point2D.Double(10, 85), CLASS_DESCRIPTION);*/
+
         elementList = new ArrayList<>();
-        /*elementList.add(toActor);
-        elementList.add(toObject);
-        elementList.add(instanceTextBox);
-        elementList.add(classTextBox);
-        selected = toActor;
-*/
         this.subwindow = subwindow;
 
         this.setWidth(WIDTH);
@@ -284,22 +275,6 @@ public class PartyDialogBox extends DialogBox {
         handleAction(action);
         return action;
 
-        /*if (toActor.isClicked(mouseEvent.getPoint())) {
-            selected = toActor;
-            Action action = toActor.performAction();
-            handleAction(action);
-            return action;
-        } else if (toObject.isClicked(mouseEvent.getPoint())) {
-            selected = toObject;
-            Action action = toObject.performAction();
-            handleAction(action);
-            return action;
-        } else if (instanceTextBox.isClicked(mouseEvent.getPoint())) {
-            selected = instanceTextBox;
-        } else if (classTextBox.isClicked(mouseEvent.getPoint())) {
-            selected = classTextBox;
-        }
-        return new EmptyAction();*/
     }
 
     /**

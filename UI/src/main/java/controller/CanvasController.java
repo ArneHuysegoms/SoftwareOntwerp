@@ -1,5 +1,7 @@
 package controller;
 
+import action.Action;
+import action.UpdateListAction;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -16,7 +18,7 @@ import java.util.List;
  *
  * Interprets UIEvents and passes these on to the appropriate interactionController.
  */
-public class CanvasController implements IHighLevelController{
+public class CanvasController {
 
     private InteractionController activeInteractionController;
     private List<InteractionController> interactionControllers;
@@ -106,19 +108,48 @@ public class CanvasController implements IHighLevelController{
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 if(getActiveInteractionController() != null){
-                    activeInteractionController.handleKeyEvent(keyEvent);
+                    Action action = activeInteractionController.handleKeyEvent(keyEvent);
+                    this.getActiveInteractionController().actionForEachSubwindow(action);
                 }
                 break;
             case CTRLN:
                 createNewInteractionController();
-                activeInteractionController.handleKeyEvent(keyEvent);
+                Action action = activeInteractionController.handleKeyEvent(keyEvent);
+                this.getActiveInteractionController().actionForEachSubwindow(action);
                 break;
             default:
                 if(this.getActiveInteractionController() != null){
-                    activeInteractionController.handleKeyEvent(keyEvent);
+                    Action act = activeInteractionController.handleKeyEvent(keyEvent);
+                    if(act instanceof UpdateListAction){
+                        handleForEachInteractionController(act);
+                    }
+                    else{
+                        this.getActiveInteractionController().actionForEachSubwindow(act);
+                    }
                 }
                 break;
         }
+    }
+
+    public void handleForEachInteractionController(Action action){
+        List<InteractionController> copy = new ArrayList<>(getInteractionControllers());
+        for(InteractionController ic : getInteractionControllers()){
+            ic.actionForEachSubwindow(action);
+        }
+        /*if(! (action instanceof DialogBoxOpenedAction)){
+            for(Subwindow s : copy){
+                if(s != getActiveSubwindow()){
+                    s.handleAction(action);
+                }
+            }
+        }
+        else{
+            DialogBox s = ((DialogBoxOpenedAction)action).getDialogBox();
+            Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
+            s.getFrame().setButton(button);
+            addSubwindow(s);
+        }*/
+
     }
 
     /**
