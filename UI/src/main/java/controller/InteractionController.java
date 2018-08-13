@@ -3,6 +3,7 @@ package controller;
 import action.Action;
 import action.DialogBoxOpenedAction;
 import action.EmptyAction;
+import action.UpdateListAction;
 import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
@@ -230,6 +231,7 @@ public class InteractionController{
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
                     Action action = activeSubwindow.handleKeyEvent(keyEvent);
+                    System.out.println("-------------- REACHED ic");
                     return action;
                 }
                 break;
@@ -298,7 +300,12 @@ public class InteractionController{
      */
     public void actionForEachSubwindow(Action action){
         List<Subwindow> copy = new ArrayList<>(getSubwindows());
-        if(! (action instanceof DialogBoxOpenedAction)){
+        if(action instanceof UpdateListAction){
+            for(Subwindow s : copy){
+                s.handleAction(action);
+            }
+        }
+        else if(! (action instanceof DialogBoxOpenedAction)){
             for(Subwindow s : copy){
                 if(s != getActiveSubwindow()){
                     s.handleAction(action);

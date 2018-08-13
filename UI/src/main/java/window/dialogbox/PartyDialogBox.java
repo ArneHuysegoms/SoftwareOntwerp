@@ -142,9 +142,9 @@ public class PartyDialogBox extends DialogBox {
         if(invalidDescriptionMode){
             return new EmptyAction();
         }
-        switch (mouseEvent.getMouseEventType()) {
-            case LEFTDOUBLECLICK:
-                if(designerMode){
+        if(designerMode){
+            switch (mouseEvent.getMouseEventType()) {
+                case LEFTDOUBLECLICK:
                     DialogboxElement last = null;
                     for(DialogboxElement ele:PARTYBOXLIST){
                         if(ele.isClicked(mouseEvent.getPoint())){
@@ -161,32 +161,33 @@ public class PartyDialogBox extends DialogBox {
                         PARTYBOXLIST.add(last);
                         updateList();
                     }
-                    System.out.println("FUCKFFLDSJMKLJKLMSDJMLSDFJMLJLKFDMLKDFD");
-                }
-                break;
-            case DRAG:
-                if(designerMode){
+                    break;
+                case DRAG:
                     setDragging(true);
-                }
-                break;
-            case RELEASE:
-                if(designerMode){
-                    if(isDragging()){
-                        try {
-                            PARTYBOXLIST.get(selectedindex).setCoordinate(mouseEvent.getPoint());
-                            selected = elementList.get(selectedindex);
-                        }catch(UIException e){
-                            e.printStackTrace();
+                    break;
+                case RELEASE:
+                        if(isDragging()){
+                            try {
+                                PARTYBOXLIST.get(selectedindex).setCoordinate(mouseEvent.getPoint());
+                                selected = elementList.get(selectedindex);
+                            }catch(UIException e){
+                                e.printStackTrace();
+                            }
+
                         }
-
-                    }
-                    setDragging(false);
-                    updateList();
-                }
-                break;
-            case PRESSED:
-                return handleMousePress(mouseEvent);
-
+                        setDragging(false);
+                        updateList();
+                    break;
+                case PRESSED:
+                    return handleMousePress(mouseEvent);
+            }
+            return new UpdateListAction();
+        }
+        else{
+            switch (mouseEvent.getMouseEventType()) {
+                case PRESSED:
+                    return handleMousePress(mouseEvent);
+            }
         }
         return new EmptyAction();
     }
@@ -336,7 +337,7 @@ public class PartyDialogBox extends DialogBox {
                 }
 
             }
-            return new EmptyAction();
+            return new UpdateListAction();
         }
 
     }
@@ -482,6 +483,10 @@ public class PartyDialogBox extends DialogBox {
                 //updateFields((Party) a.getElement());
                 updateList();
             }
+        }
+        if(action instanceof UpdateListAction){
+            System.out.println("-------------- REACHED UpdateListAction");
+            updateList();
         }
 
     }
