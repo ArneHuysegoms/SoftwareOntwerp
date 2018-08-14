@@ -1,5 +1,6 @@
 package window.elements;
 
+import diagram.label.InvocationMessageLabel;
 import diagram.party.Party;
 import exception.UIException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -10,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * class for a listbox with arguments
@@ -83,8 +85,21 @@ public class ListBox extends DialogboxElement implements Clickable {
 
     @Override
     public DialogboxElement clone() {
-        throw new NotImplementedException();
+        try {
+            return new ListBox(getCoordinate(),getDescription());
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    @Override
+    public void update(InvocationMessageLabel iml){
+        if (iml != null) {
+            this.setArguments(iml.getArguments().stream()
+                    .map(s -> s.toString())
+                    .collect(Collectors.toList()));
+        }
     }
 
     /**

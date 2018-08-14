@@ -78,9 +78,4 @@ public abstract class FakeButton extends DialogboxElement {
         return (startX <= coordinate.getX() && endX >= coordinate.getX()) && (startY <= coordinate.getY() && endY >= coordinate.getY());
     }
 
-    @Override
-    public DialogboxElement clone() {
-        throw new NotImplementedException();
-    }
-
 }

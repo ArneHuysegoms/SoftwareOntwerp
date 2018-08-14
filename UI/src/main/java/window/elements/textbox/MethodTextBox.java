@@ -9,6 +9,7 @@ import window.Subwindow;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
+import java.util.stream.Collectors;
 
 /**
  * textbox for a method name
@@ -52,11 +53,15 @@ public class MethodTextBox extends TextBox {
         this.setContents(rm.getLabel().getLabel());
     }
 
-    //TODO
-    // /*@Override
-    /*public void update(InvocationMessageLabel iml){
-        this.setContents(iml);
-    }*/
+
+    @Override
+    public void update(InvocationMessageLabel iml){
+        if(iml != null){
+            this.setContents(iml.getLabel());
+        }
+
+
+    }
 
     @Override
     public void addCharToDescription(char c){

@@ -2,6 +2,7 @@ package window.elements;
 
 import action.Action;
 import action.EmptyAction;
+import diagram.label.InvocationMessageLabel;
 import diagram.message.ResultMessage;
 import diagram.party.Party;
 import exception.UIException;
@@ -27,6 +28,7 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
     public void update(DiagramSubwindow subwindow){}
     public void update(Party party){}
     public void update(ResultMessage rm){}
+    public void update(InvocationMessageLabel iml){}
 
     /**
      * makes a new dialogboxelement with the given parameters

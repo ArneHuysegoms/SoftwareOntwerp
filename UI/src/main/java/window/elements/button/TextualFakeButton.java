@@ -1,6 +1,8 @@
 package window.elements.button;
 
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
@@ -19,5 +21,10 @@ public class TextualFakeButton extends FakeButton {
     public TextualFakeButton(Point2D position, String description) throws UIException {
         super(position);
         super.setDescription(description);
+    }
+
+    @Override
+    public DialogboxElement clone(){
+        throw new NotImplementedException();
     }
 }
