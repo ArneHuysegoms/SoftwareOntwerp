@@ -125,7 +125,7 @@ public class CanvasController {
                         handleForEachInteractionController(act);
                     }
                     if(act instanceof UpdateLabelAction){
-                        handleForEachInteractionController(new UpdateListAction());
+                        //handleForEachInteractionController(new UpdateListAction());
                     }
                     this.getActiveInteractionController().actionForEachSubwindow(act);
 
