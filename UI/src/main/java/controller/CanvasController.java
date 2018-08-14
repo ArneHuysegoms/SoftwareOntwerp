@@ -1,6 +1,7 @@
 package controller;
 
 import action.Action;
+import action.UpdateLabelAction;
 import action.UpdateListAction;
 import exception.UIException;
 import exceptions.DomainException;
@@ -123,9 +124,11 @@ public class CanvasController {
                     if(act instanceof UpdateListAction){
                         handleForEachInteractionController(act);
                     }
-                    else{
-                        this.getActiveInteractionController().actionForEachSubwindow(act);
+                    if(act instanceof UpdateLabelAction){
+                        handleForEachInteractionController(new UpdateListAction());
                     }
+                    this.getActiveInteractionController().actionForEachSubwindow(act);
+
                 }
                 break;
         }
@@ -172,6 +175,12 @@ public class CanvasController {
                 changeActiveInteractionController(ic);
             }
             Action action = activeInteractionController.handleMouseEvent(mouseEvent);
+            if(action instanceof UpdateListAction){
+                handleForEachInteractionController(action);
+            }
+            if(action instanceof UpdateLabelAction){
+                handleForEachInteractionController(new UpdateListAction());
+            }
             activeInteractionController.actionForEachSubwindow(action);
         }
     }
