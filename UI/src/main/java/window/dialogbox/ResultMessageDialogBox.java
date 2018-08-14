@@ -83,8 +83,11 @@ public class ResultMessageDialogBox extends DialogBox {
 
     @Override
     public void updateList() {
-        for (DialogboxElement d : getStaticList()) {
+        elementList = new ArrayList<>();
+        for (DialogboxElement d : RESULTMESSAGEBOXLIST) {
             DialogboxElement clone = d.clone();
+            d.update(resultMessage);
+            //((MethodTextBox)clone).setContents(d.toString());
             elementList.add(clone);
         }
         if(elementList.size() == 0){
@@ -97,6 +100,7 @@ public class ResultMessageDialogBox extends DialogBox {
 
             selected = this.elementList.get(selectedindex);
         }
+        updateFields(resultMessage);
     }
     /**
      * @return the default width for this dialogbox type
@@ -182,8 +186,8 @@ public class ResultMessageDialogBox extends DialogBox {
             }
 
         }
-        else if(designerMode) {
-            DialogboxElement d = getStaticList().get(selectedindex);
+        else{
+            DialogboxElement d = RESULTMESSAGEBOXLIST.get(selectedindex);
             d.deleteCharFromDescription();
             System.out.println("SYSOUT------------" + d.getDescription());
             if (!d.isValidDescription()) {
@@ -214,7 +218,7 @@ public class ResultMessageDialogBox extends DialogBox {
             }
         }
         else if (designerMode && selected != null) {
-            DialogboxElement d = getStaticList().get(selectedindex);
+            DialogboxElement d = RESULTMESSAGEBOXLIST.get(selectedindex);
             d.addCharToDescription(keyEvent.getKeyChar());
             if (d.isValidDescription()) {
                 setInvalidDescriptionMode(false);
@@ -254,6 +258,7 @@ public class ResultMessageDialogBox extends DialogBox {
             if (a.getElement().equals(resultMessage)) {
                 updateFields((ResultMessage) a.getElement());
             }
+            updateList();
         }
         if (action instanceof UpdateListAction){
             updateList();
