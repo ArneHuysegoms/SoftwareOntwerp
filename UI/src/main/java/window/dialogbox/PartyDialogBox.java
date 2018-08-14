@@ -203,7 +203,7 @@ public class PartyDialogBox extends DialogBox {
      * @param keyEvent the keyEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    @Override
+    /*@Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
         if(invalidDescriptionMode){
             switch (keyEvent.getKeyEventType()) {
@@ -252,7 +252,7 @@ public class PartyDialogBox extends DialogBox {
             return new EmptyAction();
         }
 
-    }
+    }*/
 
 
     /**
@@ -386,6 +386,7 @@ public class PartyDialogBox extends DialogBox {
                     }
                 }
             }
+            updateList();
             return new UpdateLabelAction(party, party.getLabel());
         } catch (Exception e) {
             e.printStackTrace();
