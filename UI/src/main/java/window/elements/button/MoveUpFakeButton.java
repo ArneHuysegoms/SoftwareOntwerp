@@ -1,5 +1,7 @@
 package window.elements.button;
 
+import action.Action;
+import command.Command;
 import exception.UIException;
 import window.elements.DialogboxElement;
 
@@ -26,5 +28,10 @@ public class MoveUpFakeButton extends FakeButton {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Action performAction(){
+
     }
 }

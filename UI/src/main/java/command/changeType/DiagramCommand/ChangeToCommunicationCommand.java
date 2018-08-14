@@ -27,7 +27,6 @@ public class ChangeToCommunicationCommand extends DiagramCommand {
      */
     @Override
     public Action performAction() {
-        System.out.println(diagramSubwindow + " huehue");
         if (!(diagramSubwindow.activeDiagramIsCommunication())) {
             diagramSubwindow.changeActiveDiagram();
         }
