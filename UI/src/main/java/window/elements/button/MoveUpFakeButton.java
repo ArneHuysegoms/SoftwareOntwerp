@@ -30,8 +30,4 @@ public class MoveUpFakeButton extends FakeButton {
         return null;
     }
 
-    @Override
-    public Action performAction(){
-
-    }
 }
