@@ -1,6 +1,8 @@
 package window.elements.radiobutton;
 
 import command.Command;
+import command.changeType.DiagramCommand.ChangeToCommunicationCommand;
+import command.changeType.DiagramCommand.ChangeToSequenceCommand;
 import command.changeType.DiagramCommand.DiagramCommand;
 import diagram.party.Party;
 import exception.UIException;
@@ -9,7 +11,7 @@ import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
-public class DiagramRadioButton extends RadioButton{
+public abstract class DiagramRadioButton extends RadioButton{
     /**
      * constructs a new radiobutton with the given parametesr
      *
@@ -22,19 +24,5 @@ public class DiagramRadioButton extends RadioButton{
         super(command, coordinate, description);
     }
 
-    @Override
-    public void update(DiagramSubwindow sub) {
-        ((DiagramCommand)getCommand()).setDiagramSubwindow(sub);
 
-    }
-
-    @Override
-    public DialogboxElement clone() {
-        try {
-            return new DiagramRadioButton(getCommand(), getCoordinate(), getDescription());
-        } catch (UIException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

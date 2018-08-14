@@ -14,6 +14,8 @@ import java.awt.geom.Point2D;
  */
 public class MethodTextBox extends TextBox {
 
+    public static String DESCRIPTION = "result message label";
+
     /**
      * creates a new methodtextbox with the given parameters
      *
@@ -22,13 +24,13 @@ public class MethodTextBox extends TextBox {
      * @throws UIException if the coordinate is null
      */
     public MethodTextBox(Point2D coordinate, String description) throws UIException {
-        super(coordinate, description);
+        super(coordinate, DESCRIPTION);
     }
 
     @Override
     public DialogboxElement clone() {
         try {
-            return new MethodTextBox(getCoordinate(), getDescription());
+            return new MethodTextBox(getCoordinate(), DESCRIPTION);
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -47,6 +49,20 @@ public class MethodTextBox extends TextBox {
     @Override
     public void update(ResultMessage rm){
         this.setContents(rm.getLabel().getLabel());
+    }
+
+    @Override
+    public void addCharToDescription(char c){
+        DESCRIPTION += c;
+        setDescription(DESCRIPTION);
+    }
+
+    @Override
+    public void deleteCharFromDescription(){
+        if(DESCRIPTION.length() > 0){
+            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
+            setDescription(DESCRIPTION);
+        }
     }
 
 }

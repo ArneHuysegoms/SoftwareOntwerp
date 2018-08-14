@@ -14,6 +14,8 @@ import java.awt.geom.Point2D;
  */
 public class ClassTextBox extends TextBox {
 
+    public static String DESCRIPTION = "Class";
+
     /**
      * creates a new ClassTextBox
      *
@@ -22,13 +24,13 @@ public class ClassTextBox extends TextBox {
      * @throws UIException if the coordinate is null
      */
     public ClassTextBox(Point2D coordinate, String description) throws UIException {
-        super(coordinate, description);
+        super(coordinate, DESCRIPTION);
     }
 
     @Override
     public DialogboxElement clone() {
         try {
-            return new ClassTextBox(getCoordinate(), getDescription());
+            return new ClassTextBox(getCoordinate(), DESCRIPTION);
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -50,6 +52,20 @@ public class ClassTextBox extends TextBox {
             this.setContents(labels[1]);
         } else {
             this.setContents(labels[0]);
+        }
+    }
+
+    @Override
+    public void addCharToDescription(char c){
+        DESCRIPTION += c;
+        setDescription(DESCRIPTION);
+    }
+
+    @Override
+    public void deleteCharFromDescription(){
+        if(DESCRIPTION.length() > 0){
+            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
+            setDescription(DESCRIPTION);
         }
     }
 }

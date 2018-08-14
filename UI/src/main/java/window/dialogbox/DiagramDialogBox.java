@@ -12,6 +12,8 @@ import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.DiagramRadioButton;
 import window.elements.radiobutton.RadioButton;
+import window.elements.radiobutton.ToCommunicationRadioButton;
+import window.elements.radiobutton.ToSequenceRadioButton;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -43,8 +45,8 @@ public class DiagramDialogBox extends DialogBox {
 
     static {
         try{
-            DIAGRAMBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new DiagramRadioButton(new ChangeToCommunicationCommand(null), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION),
-                    new DiagramRadioButton(new ChangeToSequenceCommand(null), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION)));
+            DIAGRAMBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new ToCommunicationRadioButton(new ChangeToCommunicationCommand(null), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION),
+                    new ToSequenceRadioButton(new ChangeToSequenceCommand(null), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION)));
         }catch (UIException e){
             e.printStackTrace();
         }
@@ -77,8 +79,6 @@ public class DiagramDialogBox extends DialogBox {
 
     @Override
     public void updateList(){
-        System.out.println("---------------------- Update DiagramDialogBox List!!!");
-        System.out.println("-------------" + subwindow + " " + subwindow.getSelected());
         this.elementList = new ArrayList<>();
         for (DialogboxElement d : DIAGRAMBOXLIST) {
             DialogboxElement clone = d.clone();
@@ -214,7 +214,6 @@ public class DiagramDialogBox extends DialogBox {
     @Override
     public void handleAction(Action action) {
         if(action instanceof UpdateListAction){
-            System.out.println("-------------- REACHED UpdateListAction in diagramdialogbox");
             updateList();
         }
     }

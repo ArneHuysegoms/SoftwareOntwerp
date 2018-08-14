@@ -11,6 +11,8 @@ import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.PartyRadioButton;
 import window.elements.button.CloseWindowButton;
+import window.elements.radiobutton.ToActorRadioButton;
+import window.elements.radiobutton.ToObjectRadioButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
@@ -52,8 +54,8 @@ public class PartyDialogBox extends DialogBox {
 
     static {
         try {
-            PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new PartyRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
-                    new PartyRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), "Object"),
+            PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new ToActorRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
+                    new ToObjectRadioButton(new ChangeToObjectCommand(null, null), new Point2D.Double(85, 30), "Object"),
                     new InstanceTextBox(new Point2D.Double(10, 60), "Instance"),
                     new ClassTextBox(new Point2D.Double(10, 85), "Class")));
         } catch (UIException e) {
