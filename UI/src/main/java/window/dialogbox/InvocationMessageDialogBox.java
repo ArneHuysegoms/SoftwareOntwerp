@@ -77,8 +77,19 @@ public class InvocationMessageDialogBox extends DialogBox {
     public void updateList() {
         for (DialogboxElement d : INVOCATIONMESSAGEBOXLIST) {
             DialogboxElement clone = d.clone();
-            clone.update(subwindow);
+            //TODO clone.update(invocationMessageLabel);
             elementList.add(clone);
+        }
+
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
         }
     }
 
@@ -119,7 +130,7 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.setWidth(WIDTH);
 
         updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
-        argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
+        //argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
         invocationMessageLabel.setIndex(invocationMessageLabel.getArguments().size() - 1);
     }
 

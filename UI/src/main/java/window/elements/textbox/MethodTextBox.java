@@ -1,5 +1,6 @@
 package window.elements.textbox;
 
+import diagram.label.InvocationMessageLabel;
 import diagram.message.ResultMessage;
 import diagram.party.Party;
 import exception.UIException;
@@ -50,6 +51,12 @@ public class MethodTextBox extends TextBox {
     public void update(ResultMessage rm){
         this.setContents(rm.getLabel().getLabel());
     }
+
+    //TODO
+    // /*@Override
+    /*public void update(InvocationMessageLabel iml){
+        this.setContents(iml);
+    }*/
 
     @Override
     public void addCharToDescription(char c){
