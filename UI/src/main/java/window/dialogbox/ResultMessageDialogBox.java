@@ -86,7 +86,7 @@ public class ResultMessageDialogBox extends DialogBox {
         elementList = new ArrayList<>();
         for (DialogboxElement d : RESULTMESSAGEBOXLIST) {
             DialogboxElement clone = d.clone();
-            d.update(resultMessage);
+            clone.update(resultMessage);
             //((MethodTextBox)clone).setContents(d.toString());
             elementList.add(clone);
         }
