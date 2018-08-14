@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class MethodTextBox extends TextBox {
 
-    public static String DESCRIPTION = "result message label";
+    public static String DESCRIPTION = "message label";
 
     /**
      * creates a new methodtextbox with the given parameters

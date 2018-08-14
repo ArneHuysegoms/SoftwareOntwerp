@@ -4,9 +4,9 @@ import figures.drawable.diagramFigures.*;
 import window.dialogbox.InvocationMessageDialogBox;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
-import window.elements.button.*;
-import window.elements.textbox.ClassTextBox;
-import window.elements.textbox.InstanceTextBox;
+import window.elements.button.AddArgumentButton;
+import window.elements.button.DialogBoxButton;
+import window.elements.button.FakeButtons.*;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
@@ -85,26 +85,18 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawButtons(Graphics graphics, int selectedIndex, int minX, int minY, int maxX, int maxY) {
-        /*new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        Color temp = graphics.getColor();
-        if (selectedIndex < 0) {
-            graphics.setColor(Color.LIGHT_GRAY);
-        }
-        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        graphics.setColor(temp);*/
-
         FakeButton tempBut;
+        DialogBoxButton tempBut2;
         Color temp = graphics.getColor();
         for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof AddArgumentFakeButton) {
                 tempBut = (FakeButton) ele;
                 new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+            if(ele instanceof AddArgumentButton) {
+                tempBut2 = (AddArgumentButton) ele;
+                new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
             }
 

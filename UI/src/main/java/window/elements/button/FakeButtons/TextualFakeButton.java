@@ -1,4 +1,4 @@
-package window.elements.button;
+package window.elements.button.FakeButtons;
 
 import exception.UIException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

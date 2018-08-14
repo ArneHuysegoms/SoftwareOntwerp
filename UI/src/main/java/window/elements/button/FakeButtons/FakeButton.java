@@ -1,4 +1,4 @@
-package window.elements.button;
+package window.elements.button.FakeButtons;
 
 import diagram.party.Party;
 import exception.UIException;

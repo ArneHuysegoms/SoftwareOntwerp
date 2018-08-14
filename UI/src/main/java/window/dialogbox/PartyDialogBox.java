@@ -9,7 +9,6 @@ import exception.UIException;
 import uievents.KeyEvent;
 import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
-import window.elements.radiobutton.PartyRadioButton;
 import window.elements.button.CloseWindowButton;
 import window.elements.radiobutton.ToActorRadioButton;
 import window.elements.radiobutton.ToObjectRadioButton;

@@ -9,6 +9,7 @@ import exception.UIException;
 import window.Clickable;
 import window.Subwindow;
 import window.diagram.DiagramSubwindow;
+import window.elements.textbox.ArgumentTextBox;
 
 import java.awt.geom.Point2D;
 
@@ -29,14 +30,15 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
     public void update(Party party){}
     public void update(ResultMessage rm){}
     public void update(InvocationMessageLabel iml){}
+    public void update(DiagramSubwindow subwindow, InvocationMessageLabel label, ListBox lb, ArgumentTextBox atb) {}
 
-    /**
-     * makes a new dialogboxelement with the given parameters
-     *
-     * @param coordinate  the new coordinate for this dialogbox
-     * @param description the description for this dialogbox
-     * @throws UIException if an illegal coordinate is given
-     */
+        /**
+         * makes a new dialogboxelement with the given parameters
+         *
+         * @param coordinate  the new coordinate for this dialogbox
+         * @param description the description for this dialogbox
+         * @throws UIException if an illegal coordinate is given
+         */
     public DialogboxElement(Point2D coordinate, String description) throws UIException {
         this.setCoordinate(coordinate);
         this.setDescription(description);

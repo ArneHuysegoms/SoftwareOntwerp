@@ -7,7 +7,7 @@ import window.dialogbox.DialogBox;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.radiobutton.RadioButton;
-import window.elements.button.FakeButton;
+import window.elements.button.FakeButtons.FakeButton;
 import window.elements.textbox.TextBox;
 import window.frame.SubwindowFrame;
 import window.frame.TitleBar;

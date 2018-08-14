@@ -1,11 +1,11 @@
-package window.elements.button;
+package window.elements.button.FakeButtons;
 
 import exception.UIException;
 import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
-public class AddArgumentFakeButton extends FakeButton {
+public class DeleteArgumentFakeButton extends FakeButton {
 
 
     /**
@@ -14,14 +14,14 @@ public class AddArgumentFakeButton extends FakeButton {
      * @param position the position for the fakebutton
      * @throws UIException if position is null
      */
-    public AddArgumentFakeButton(Point2D position) throws UIException {
+    public DeleteArgumentFakeButton(Point2D position) throws UIException {
         super(position);
     }
 
     @Override
     public DialogboxElement clone() {
         try {
-            return new AddArgumentFakeButton(getCoordinate());
+            return new DeleteArgumentFakeButton(getCoordinate());
         } catch (UIException e) {
             e.printStackTrace();
         }
