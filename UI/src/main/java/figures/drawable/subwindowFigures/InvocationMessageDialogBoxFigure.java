@@ -33,8 +33,8 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
-        drawButtons(graphics, dialogBox.getArgumentListBox().getSelectedIndex(), minX, minY, maxX, maxY);
-        drawListBox(graphics, minX, minY, maxX, maxY);
+        int selectedIndex = drawListBox(graphics, minX, minY, maxX, maxY);
+        drawButtons(graphics, selectedIndex, minX, minY, maxX, maxY);
         super.handleSelectedElement(graphics,dialogBox);
 
         if(dialogBox.getDesignerMode()) {
@@ -51,15 +51,18 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
-    private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+    private int drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         ListBox temp;
+        int index = -1;
         for(DialogboxElement ele : dialogBox.getElementList()) {
             if(ele instanceof ListBox) {
                 temp = (ListBox) ele;
                 new ListBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()))
                         .draw(graphics, minX, minY, maxX, maxY);
+                index = temp.getSelectedIndex();
             }
         }
+        return index;
     }
 
     /**
