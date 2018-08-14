@@ -1,5 +1,6 @@
 package window.elements.textbox;
 
+import diagram.message.ResultMessage;
 import diagram.party.Party;
 import exception.UIException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -43,5 +44,9 @@ public class MethodTextBox extends TextBox {
         return !this.getContents().isEmpty();
     }
 
+    @Override
+    public void update(ResultMessage rm){
+        this.setContents(rm.getLabel().getLabel());
+    }
 
 }

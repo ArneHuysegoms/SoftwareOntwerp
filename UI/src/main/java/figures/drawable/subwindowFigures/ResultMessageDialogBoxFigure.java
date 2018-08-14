@@ -30,6 +30,7 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
+
         super.handleSelectedElement(graphics,dialogBox);
 
         if(dialogBox.getDesignerMode()) {
@@ -49,6 +50,7 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
         TextBox temp;
         for(DialogboxElement ele : dialogBox.getElementList()){
             temp = (TextBox) ele;
+            System.out.println("TESTTTTT"+temp.getDescription());
             new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
                     .draw(graphics, minX, minY, maxX, maxY);
         }
