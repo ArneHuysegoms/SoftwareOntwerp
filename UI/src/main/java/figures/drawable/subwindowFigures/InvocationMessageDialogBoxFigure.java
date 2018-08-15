@@ -108,7 +108,7 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
                         .draw(graphics, minX, minY, maxX, maxY);
             }*/
             if(ele instanceof MoveUpButton) {
-                tempBut2 = (AddArgumentButton) ele;
+                tempBut2 = (MoveUpButton) ele;
                 new UpButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
             }
@@ -118,7 +118,7 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
                         .draw(graphics, minX, minY, maxX, maxY);
             }*/
             if(ele instanceof MoveDownButton) {
-                tempBut2 = (AddArgumentButton) ele;
+                tempBut2 = (MoveDownButton) ele;
                 new DownButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
             }
@@ -128,7 +128,7 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
                         .draw(graphics, minX, minY, maxX, maxY);
             }*/
             if(ele instanceof DeleteArgumentButton) {
-                tempBut2 = (AddArgumentButton) ele;
+                tempBut2 = (DeleteArgumentButton) ele;
                 new RemoveButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
             }
