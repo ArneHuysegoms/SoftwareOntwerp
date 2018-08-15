@@ -27,12 +27,19 @@ public class ToActorRadioButton extends PartyRadioButton {
         super(command, coordinate, DESCRIPTION);
     }
 
+    /**
+     * add character to description
+     * @param c
+     */
     @Override
     public void addCharToDescription(char c){
         DESCRIPTION += c;
         setDescription(DESCRIPTION);
     }
 
+    /**
+     * delete character from description
+     */
     @Override
     public void deleteCharFromDescription(){
         if(DESCRIPTION.length() > 0){
@@ -41,13 +48,20 @@ public class ToActorRadioButton extends PartyRadioButton {
         }
     }
 
+    /**
+     * update parties
+     * @param subwindow
+     * @param party
+     */
     @Override
     public void update(DiagramSubwindow subwindow, Party party) {
-        //((PartyCommand)getCommand()).setSubwindow(subwindow);
-        //((PartyCommand)getCommand()).setParty(party);
         this.setCommand(new ChangeToActorCommand(subwindow,party));
     }
 
+    /**
+     * clones object
+     * @return clone
+     */
     @Override
     public DialogboxElement clone() {
         try {

@@ -31,15 +31,7 @@ public class DiagramDialogBox extends DialogBox {
     public static final String TOCOMMUNICATIONDIAGRAM_DESPCRIPTION = "Communication";
     public static final String TOSEQUENCEDIAGRAM_DESCRIPTION = "Sequence";
 
-    private RadioButton toCommunicationDiagram;
-    private RadioButton toSequenceDiagram;
-
-    //private RadioButton selected;
-
-    //private ArrayList<DialogboxElement> elementList;
-
     private DiagramSubwindow subwindow;
-
 
     public static ArrayList<DialogboxElement> DIAGRAMBOXLIST;
 
@@ -67,9 +59,7 @@ public class DiagramDialogBox extends DialogBox {
         super(position);
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        /*toCommunicationDiagram = new DiagramRadioButton(new ChangeToCommunicationCommand(subwindow), new Point2D.Double(20, 30), TOCOMMUNICATIONDIAGRAM_DESPCRIPTION);
-        toSequenceDiagram = new DiagramRadioButton(new ChangeToSequenceCommand(subwindow), new Point2D.Double(20, 60), TOSEQUENCEDIAGRAM_DESCRIPTION);
-        selected = toCommunicationDiagram;*/
+
         this.elementList = new ArrayList<>();
         this.setDiagramSubwindow(subwindow);
         updateList();
@@ -77,6 +67,10 @@ public class DiagramDialogBox extends DialogBox {
         selected = this.elementList.get(getSelectedindex());
     }
 
+    /**
+     * syncs static list with private list
+     * sets correct selectedelement
+     */
     @Override
     public void updateList(){
         this.elementList = new ArrayList<>();
@@ -133,27 +127,9 @@ public class DiagramDialogBox extends DialogBox {
     }
 
     /**
-     * @return the button responsible for changing to communication diagrams
+     * handles the backspace key
+     * @return correct action
      */
-    public RadioButton getToCommunicationDiagram() {
-        return toCommunicationDiagram;
-    }
-
-    /**
-     * @return the button responsible for chaning to sequence diagram
-     */
-    public RadioButton getToSequenceDiagram() {
-        return toSequenceDiagram;
-    }
-
-    /**
-     * @return the selected radiobutton
-     */
-    /*public RadioButton getSelected() {
-        return selected;
-    }*/
-
-
     @Override
     protected Action handleBackSpace() {
         if(designerMode) {
@@ -167,6 +143,11 @@ public class DiagramDialogBox extends DialogBox {
         return new EmptyAction();
     }
 
+    /**
+     * handles a character key
+     * @param keyEvent the keyEvent with the char
+     * @return correct action
+     */
     @Override
     public Action handleChar(KeyEvent keyEvent) {
         if(designerMode && selected != null){
@@ -178,32 +159,6 @@ public class DiagramDialogBox extends DialogBox {
             return new UpdateListAction();
         }
         return new EmptyAction();
-    }
-
-    /**
-     * handles the mousepress event
-     *
-     * @param mouseEvent the event to handle
-     */
-    /*private void handleMousePress(MouseEvent mouseEvent) {
-        if (toCommunicationDiagram.isClicked(mouseEvent.getPoint())) {
-            selected = toCommunicationDiagram;
-            toCommunicationDiagram.performAction();
-        } else if (toSequenceDiagram.isClicked(mouseEvent.getPoint())) {
-            selected = toSequenceDiagram;
-            toSequenceDiagram.performAction();
-        }
-    }*/
-
-    /**
-     * change the selected radiobutton
-     */
-    private void changeSelectedRadioButton() {
-        if (selected == toCommunicationDiagram) {
-            selected = toSequenceDiagram;
-        } else {
-            selected = toCommunicationDiagram;
-        }
     }
 
     /**

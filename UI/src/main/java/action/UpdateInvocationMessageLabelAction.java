@@ -14,6 +14,10 @@ public class UpdateInvocationMessageLabelAction extends Action {
         this.index = index;
     }
 
+    /**
+     *
+     * @return index
+     */
     public int getIndex() {
         return index;
     }

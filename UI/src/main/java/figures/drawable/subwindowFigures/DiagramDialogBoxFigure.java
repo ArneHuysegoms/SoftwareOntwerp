@@ -80,7 +80,7 @@ public class DiagramDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
-    private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+    /*private void drawSelectedRadioButton(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         if (dialogBox.getDiagramSubwindow().isCommunicationDiagram()) {
             new SelectedRadioButtonFigure(dialogBox.getToCommunicationDiagram(), dialogBox.getAbsolutePosition(dialogBox.getToCommunicationDiagram().getCoordinate()), "")
                     .draw(graphics, minX, minY, maxX, maxY);
@@ -95,7 +95,7 @@ public class DiagramDialogBoxFigure extends DialogBoxSubwindowFigure {
      *
      * @param graphics object used to draw on the program's window
      */
-    private void drawSelectedRadioButton(Graphics graphics) {
+    /*private void drawSelectedRadioButton(Graphics graphics) {
         this.drawSelectedRadioButton(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
-    }
+    }*/
 }

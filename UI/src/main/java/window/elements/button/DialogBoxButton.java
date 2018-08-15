@@ -40,21 +40,43 @@ public abstract class DialogBoxButton extends DialogboxElement {
         return getCommand().performAction();
     }
 
+    /**
+     *
+     * @return command
+     */
     public Command getCommand() {
         return command;
     }
+
+    /**
+     * set command
+     * @param c
+     */
     protected void setCommand(Command c) {
         this.command = c;
     }
 
+    /**
+     *
+     * @return width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     *
+     * @return height
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * check if the button is clicked
+     * @param coordinate the location of the click
+     * @return
+     */
     @Override
     public boolean isClicked(Point2D coordinate) {
         double startX = getCoordinate().getX();
