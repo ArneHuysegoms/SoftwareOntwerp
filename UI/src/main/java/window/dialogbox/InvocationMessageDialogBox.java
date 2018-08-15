@@ -534,7 +534,9 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
         if(action instanceof UpdateInvocationMessageLabelAction){
             invocationMessageLabel.setIndex(((UpdateInvocationMessageLabelAction)action).getIndex());
-            setListBoxIndex(((UpdateInvocationMessageLabelAction)action).getIndex());
+            int index = ((UpdateInvocationMessageLabelAction)action).getIndex();
+            setListBoxIndex(index);
+            setAllSelectedIndexes(findListBox(), index);
         }
     }
 
