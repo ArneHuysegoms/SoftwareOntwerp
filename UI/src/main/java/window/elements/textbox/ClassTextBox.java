@@ -27,6 +27,10 @@ public class ClassTextBox extends TextBox {
         super(coordinate, DESCRIPTION);
     }
 
+    /**
+     * clones object
+     * @return new object
+     */
     @Override
     public DialogboxElement clone() {
         try {
@@ -54,13 +58,17 @@ public class ClassTextBox extends TextBox {
             this.setContents(labels[0]);
         }
     }
-
+    /**
+     * add character from description
+     */
     @Override
     public void addCharToDescription(char c){
         DESCRIPTION += c;
         setDescription(DESCRIPTION);
     }
-
+    /**
+     * delete character from description
+     */
     @Override
     public void deleteCharFromDescription(){
         if(DESCRIPTION.length() > 0){

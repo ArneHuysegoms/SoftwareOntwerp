@@ -23,13 +23,18 @@ public class PartyRadioButton extends RadioButton{
     public PartyRadioButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate, description);
     }
-
+    /**
+     * update
+     */
     @Override
     public void update(DiagramSubwindow subwindow, Party party) {
         ((PartyCommand)getCommand()).setSubwindow(subwindow);
         ((PartyCommand)getCommand()).setParty(party);
     }
-
+    /**
+     * clones object
+     * @return clone
+     */
     @Override
     public DialogboxElement clone() {
         try {
