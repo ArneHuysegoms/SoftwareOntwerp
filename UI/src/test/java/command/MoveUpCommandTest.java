@@ -1,6 +1,8 @@
 package command;
 
+import command.InvocationCommand.AddArgumentCommand;
 import command.InvocationCommand.DeleteArgumentCommand;
+import command.InvocationCommand.MoveUpCommand;
 import diagram.label.InvocationMessageLabel;
 import exception.UIException;
 import exceptions.DomainException;
@@ -15,9 +17,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class DeleteArgumentCommandTest {
+public class MoveUpCommandTest {
 
-    private DeleteArgumentCommand deleteArgumentCommand;
+    private MoveUpCommand moveUpCommand;
     private DiagramSubwindow subwindow;
     private InvocationMessageLabel label;
     private ArgumentTextBox textBox;
@@ -28,9 +30,10 @@ public class DeleteArgumentCommandTest {
     public void setUp(){
         try {
             listBox = new ListBox(new Point2D.Double(110, 1800),"listBox");
+            textBox = new ArgumentTextBox(new Point2D.Double(110, 110),"listBox");
             label = new InvocationMessageLabel("jos",new ArrayList<String>());
             subwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-            deleteArgumentCommand = new DeleteArgumentCommand(listBox, label,subwindow);
+            moveUpCommand = new MoveUpCommand(listBox,textBox,label,subwindow);
         }catch(DomainException e){
             System.out.println("domainexception AddArgumentCommandTest setup");
             e.printStackTrace();
@@ -44,8 +47,10 @@ public class DeleteArgumentCommandTest {
     public void test_performAction(){
         listBox.addArgument("hello");
         label.addArgument("hello");
-        assertEquals(1,label.getArguments().size());
-        deleteArgumentCommand.performAction();
-        assertEquals(0,label.getArguments().size());
+        listBox.addArgument("hello");
+        label.addArgument("hello");
+        assertEquals(1,label.getIndex());
+        moveUpCommand.performAction();
+        assertEquals(0,label.getIndex());
     }
 }
