@@ -4,8 +4,7 @@ import figures.drawable.diagramFigures.*;
 import window.dialogbox.InvocationMessageDialogBox;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
-import window.elements.button.AddArgumentButton;
-import window.elements.button.DialogBoxButton;
+import window.elements.button.*;
 import window.elements.button.FakeButtons.*;
 import window.elements.textbox.TextBox;
 
@@ -89,11 +88,11 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
         DialogBoxButton tempBut2;
         Color temp = graphics.getColor();
         for(DialogboxElement ele : dialogBox.getElementList()){
-            if(ele instanceof AddArgumentFakeButton) {
+            /*if(ele instanceof AddArgumentFakeButton) {
                 tempBut = (FakeButton) ele;
                 new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
-            }
+            }*/
             if(ele instanceof AddArgumentButton) {
                 tempBut2 = (AddArgumentButton) ele;
                 new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
@@ -103,18 +102,33 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
             if (selectedIndex < 0) {
                 graphics.setColor(Color.LIGHT_GRAY);
             }
-            if(ele instanceof MoveUpFakeButton) {
+            /*if(ele instanceof MoveUpFakeButton) {
                 tempBut = (FakeButton) ele;
                 new UpButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof MoveUpButton) {
+                tempBut2 = (AddArgumentButton) ele;
+                new UpButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
             }
-            if(ele instanceof MoveDownFakeButton) {
+            /*if(ele instanceof MoveDownFakeButton) {
                 tempBut = (FakeButton) ele;
                 new DownButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof MoveDownButton) {
+                tempBut2 = (AddArgumentButton) ele;
+                new DownButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
             }
-            if(ele instanceof DeleteArgumentFakeButton) {
+            /*if(ele instanceof DeleteArgumentFakeButton) {
                 tempBut = (FakeButton) ele;
+                new RemoveButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof DeleteArgumentButton) {
+                tempBut2 = (AddArgumentButton) ele;
                 new RemoveButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
                         .draw(graphics, minX, minY, maxX, maxY);
             }
