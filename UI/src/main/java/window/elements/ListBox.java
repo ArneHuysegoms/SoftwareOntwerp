@@ -82,9 +82,10 @@ public class ListBox extends DialogboxElement implements Clickable {
         double endX = getCoordinate().getX() + WIDTH;
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
-        //if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
-          //  selectArgument(location);
-        //}
+        if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
+            selectArgument(location);
+            System.out.println(this);
+        }
         //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
@@ -153,9 +154,11 @@ public class ListBox extends DialogboxElement implements Clickable {
      * swaps the selected argument with the argument above it
      */
     public void moveUp() {
+        System.out.println("MOVEUPPPPPPPPPPPPPPPPPPPPPP" + this + " " + selectedIndex);
         if (selectedIndex > 0) {
             Collections.swap(arguments, selectedIndex, selectedIndex - 1);
             setSelectedIndex(selectedIndex - 1);
+            System.out.println("MOVEUPPPPPPPPPPPPPPPPPPPPPP" + this + " " + selectedIndex);
         }
     }
 

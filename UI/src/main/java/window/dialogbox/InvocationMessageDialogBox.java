@@ -528,6 +528,8 @@ public class InvocationMessageDialogBox extends DialogBox {
                 //updateFields((InvocationMessage) a.getElement());
                 updateList();
             }
+            this.listBoxIndex = invocationMessageLabel.getIndex();
+            setAllSelectedIndexes(findListBox(),listBoxIndex);
         }
         if(action instanceof UpdateListAction){
             updateList();
