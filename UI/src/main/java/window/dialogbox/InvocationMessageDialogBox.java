@@ -54,6 +54,7 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     private InvocationMessageLabel invocationMessageLabel;
     private DiagramSubwindow subwindow;
+    private int listBoxIndex;
 
     public static ArrayList<DialogboxElement> INVOCATIONMESSAGEBOXLIST;
 
@@ -73,6 +74,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
     }
 
+    public void setListBoxIndex(int listBoxIndex) {
+        this.listBoxIndex = listBoxIndex;
+    }
+
     @Override
     public List<DialogboxElement> getStaticList(){
         return INVOCATIONMESSAGEBOXLIST;
@@ -80,8 +85,8 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     @Override
     public void updateList() {
-        ListBox tempLB;
-        ArgumentTextBox tempTB;
+        List<ListBox> tempLB;
+        List<ArgumentTextBox> tempTB;
         this.elementList = new ArrayList<>();
         for (DialogboxElement d : INVOCATIONMESSAGEBOXLIST) {
             DialogboxElement clone = d.clone();
@@ -92,9 +97,14 @@ public class InvocationMessageDialogBox extends DialogBox {
 
         tempLB = findListBox();
         tempTB = findArgumentTextBox();
+        setAllSelectedIndexes(tempLB,listBoxIndex);
+
+        if(listBoxIndex < 0){
+            setAllSelectedIndexes(tempLB,invocationMessageLabel.getArguments().size() - 1);
+        }
 
         for (DialogboxElement d : elementList) {
-            d.update(getSubwindow(),invocationMessageLabel,tempLB,tempTB);
+            d.update(getSubwindow(),invocationMessageLabel,tempLB.get(0),tempTB.get(0));
         }
         if(elementList.size() == 0){
             selected = null;
@@ -108,20 +118,30 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
     }
 
-    private ArgumentTextBox findArgumentTextBox() {
-        for (DialogboxElement ele :elementList){
-            if(ele instanceof ArgumentTextBox)
-                return (ArgumentTextBox)ele;
+    private void setAllSelectedIndexes(List<ListBox> tempLB, int listBoxIndex) {
+        if(tempLB != null){
+            for(ListBox lb : tempLB){
+                lb.setSelectedIndex(listBoxIndex);
+            }
         }
-        return null;
     }
 
-    private ListBox findListBox() {
+    private List<ArgumentTextBox> findArgumentTextBox() {
+        List<ArgumentTextBox> result = new ArrayList<>();
+        for (DialogboxElement ele :elementList){
+            if(ele instanceof ArgumentTextBox)
+                result.add( (ArgumentTextBox)ele);
+        }
+        return result;
+    }
+
+    private List<ListBox> findListBox() {
+        List<ListBox> result = new ArrayList<>();
         for (DialogboxElement ele :elementList){
             if(ele instanceof ListBox)
-                return (ListBox)ele;
+                result.add((ListBox)ele);
         }
-        return null;
+        return result;
     }
 
     /**
@@ -142,7 +162,7 @@ public class InvocationMessageDialogBox extends DialogBox {
         deleteArgument = new TextualFakeButton(new Point2D.Double(50, 100), "Del");
         moveDown = new TextualFakeButton(new Point2D.Double(90, 100), "Down");
         moveUp = new TextualFakeButton(new Point2D.Double(130, 100), "Up");
-*/
+*/      this.listBoxIndex = -1;
         this.subwindow = subwindow;
 
         /*argumentListBox = new ListBox(new Point2D.Double(10, 140), "");
@@ -264,7 +284,7 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @param keyEvent the keyEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    @Override
+    /*@Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
         try {
             switch (keyEvent.getKeyEventType()) {
@@ -298,7 +318,7 @@ public class InvocationMessageDialogBox extends DialogBox {
             e.printStackTrace();
         }
         return new EmptyAction();
-    }
+    }*/
 
     /**
      * handle the backspace event
@@ -329,18 +349,32 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @throws DomainException if illegal modifications are made
      */
     public Action handleChar(KeyEvent keyEvent){
-        if (selected instanceof TextBox) {
-            TextBox t = (TextBox) selected;
-            t.addCharToContents(keyEvent.getKeyChar());
-            if (t instanceof MethodTextBox) {
-                try {
-                    return changeMethod();
-                } catch (DomainException e) {
-                    e.printStackTrace();
+        if(!designerMode){
+
+            if (selected instanceof TextBox) {
+                TextBox t = (TextBox) selected;
+                t.addCharToContents(keyEvent.getKeyChar());
+                if (t instanceof MethodTextBox) {
+                    try {
+                        return changeMethod();
+                    } catch (DomainException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            return new EmptyAction();
         }
-        return new EmptyAction();
+        else{
+            if(selected != null){
+                DialogboxElement d = INVOCATIONMESSAGEBOXLIST.get(selectedindex);
+                d.addCharToDescription(keyEvent.getKeyChar());
+                if(d.isValidDescription()){
+                    setInvalidDescriptionMode(false);
+                }
+
+            }
+            return new UpdateListAction();
+        }
     }
 
     /**
@@ -494,6 +528,13 @@ public class InvocationMessageDialogBox extends DialogBox {
                 //updateFields((InvocationMessage) a.getElement());
                 updateList();
             }
+        }
+        if(action instanceof UpdateListAction){
+            updateList();
+        }
+        if(action instanceof UpdateInvocationMessageLabelAction){
+            invocationMessageLabel.setIndex(((UpdateInvocationMessageLabelAction)action).getIndex());
+            setListBoxIndex(((UpdateInvocationMessageLabelAction)action).getIndex());
         }
     }
 

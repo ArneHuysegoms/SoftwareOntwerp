@@ -21,6 +21,10 @@ public class MoveDownCommand extends Command {
         this.subwindow = diagramSubwindow;
     }
 
+    public ListBox getListBox() {
+        return listBox;
+    }
+
     @Override
     public Action performAction() {
         listBox.moveDown();

@@ -1,5 +1,7 @@
 package window.elements;
 
+import action.Action;
+import action.UpdateInvocationMessageLabelAction;
 import diagram.label.InvocationMessageLabel;
 import diagram.party.Party;
 import exception.UIException;
@@ -80,6 +82,10 @@ public class ListBox extends DialogboxElement implements Clickable {
         double endX = getCoordinate().getX() + WIDTH;
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
+        if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
+            selectArgument(location);
+        }
+        //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
 
@@ -175,5 +181,11 @@ public class ListBox extends DialogboxElement implements Clickable {
      */
     public List<String> getArguments() {
         return arguments;
+    }
+
+    @Override
+    public Action performAction(){
+        //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
+        return new UpdateInvocationMessageLabelAction(getSelectedIndex());
     }
 }

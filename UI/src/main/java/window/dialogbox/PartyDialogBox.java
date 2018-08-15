@@ -280,7 +280,6 @@ public class PartyDialogBox extends DialogBox {
             }
         }
         if(action instanceof UpdateListAction){
-            System.out.println("-------------- REACHED UpdateListAction");
             updateList();
         }
 
