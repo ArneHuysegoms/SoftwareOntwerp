@@ -22,6 +22,7 @@ public class DeleteArgumentCommand extends Command {
 
     @Override
     public Action performAction() {
+        System.out.println();
         label.deleteArgument(listBox.getSelectedIndex());
         listBox.removeArgument();
         return new UpdateLabelAction(subwindow.getFacade().findParentElement(label), label);
