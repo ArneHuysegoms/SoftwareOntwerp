@@ -6,6 +6,7 @@ import figures.drawable.diagramFigures.SelectionBoxFigure;
 import window.dialogbox.DialogBox;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
+import window.elements.button.DialogBoxButton;
 import window.elements.radiobutton.RadioButton;
 import window.elements.button.FakeButtons.FakeButton;
 import window.elements.textbox.TextBox;
@@ -73,7 +74,7 @@ public abstract class DialogBoxSubwindowFigure extends SubwindowFigure {
                 Point2D start = new Point2D.Double(absolutePosition.getX() - 3, absolutePosition.getY() - 3),
                         end = new Point2D.Double(absolutePosition.getX() + RadioButton.WIDTH + 2, absolutePosition.getY() + RadioButton.HEIGHT + 2);
                 new SelectionBoxFigure(start, end, Color.BLUE).draw(graphics, 0, 0, 2000, 2000);
-            } else if (selected instanceof FakeButton) {
+            } else if (selected instanceof DialogBoxButton) {
                 FakeButton fb = (FakeButton) selected;
                 Point2D start = new Point2D.Double(absolutePosition.getX() - 2, absolutePosition.getY() - 2),
                         end = new Point2D.Double(absolutePosition.getX() + fb.getWidth() + 2, absolutePosition.getY() + fb.getHeight() + 2);
