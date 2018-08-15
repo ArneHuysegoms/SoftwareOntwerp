@@ -2,6 +2,8 @@ package window.dialogbox;
 
 import action.*;
 import command.InvocationCommand.AddArgumentCommand;
+import command.InvocationCommand.DeleteArgumentCommand;
+import command.InvocationCommand.MoveDownCommand;
 import diagram.DiagramElement;
 import diagram.label.InvocationMessageLabel;
 import diagram.message.InvocationMessage;
@@ -12,10 +14,13 @@ import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.button.AddArgumentButton;
+import window.elements.button.DeleteArgumentButton;
 import window.elements.button.FakeButtons.AddArgumentFakeButton;
 import window.elements.button.FakeButtons.DeleteArgumentFakeButton;
 import window.elements.button.FakeButtons.MoveDownFakeButton;
 import window.elements.button.FakeButtons.MoveUpFakeButton;
+import window.elements.button.MoveDownButton;
+import window.elements.button.MoveUpButton;
 import window.elements.textbox.ArgumentTextBox;
 import window.elements.textbox.MethodTextBox;
 import window.elements.textbox.TextBox;
@@ -58,9 +63,9 @@ public class InvocationMessageDialogBox extends DialogBox {
                     new MethodTextBox(new Point2D.Double(10, 50), "method"),
                     new ArgumentTextBox(new Point2D.Double(10, 75), "argument"),
                     new AddArgumentButton(new AddArgumentCommand(null,null,null,null), new Point2D.Double(10, 100),""),
-                    new DeleteArgumentFakeButton(new Point2D.Double(50, 100)),
-                    new MoveDownFakeButton(new Point2D.Double(90, 100)),
-                    new MoveUpFakeButton(new Point2D.Double(130, 100)),
+                    new DeleteArgumentButton(new DeleteArgumentCommand(null,null,null), new Point2D.Double(50, 100), ""),
+                    new MoveDownButton(new MoveDownCommand(null,null,null,null),new Point2D.Double(90, 100),""),
+                    new MoveUpButton(new MoveDownCommand(null,null,null,null),new Point2D.Double(130, 100),""),
                     new ListBox(new Point2D.Double(10, 140), "")));
 
         }catch (UIException e){
