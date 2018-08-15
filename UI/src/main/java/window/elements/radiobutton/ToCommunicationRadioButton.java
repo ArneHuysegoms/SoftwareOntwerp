@@ -26,7 +26,6 @@ public class ToCommunicationRadioButton extends DiagramRadioButton {
 
     @Override
     public void update(DiagramSubwindow sub) {
-        //((DiagramCommand)getCommand()).setDiagramSubwindow(sub);
         this.setCommand(new ChangeToCommunicationCommand(sub));
 
     }

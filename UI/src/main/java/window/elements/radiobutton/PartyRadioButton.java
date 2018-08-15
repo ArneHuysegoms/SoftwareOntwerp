@@ -10,7 +10,7 @@ import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
-public abstract class PartyRadioButton extends RadioButton{
+public class PartyRadioButton extends RadioButton{
 
     /**
      * constructs a new radiobutton with the given parametesr
@@ -22,5 +22,21 @@ public abstract class PartyRadioButton extends RadioButton{
      */
     public PartyRadioButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate, description);
+    }
+
+    @Override
+    public void update(DiagramSubwindow subwindow, Party party) {
+        ((PartyCommand)getCommand()).setSubwindow(subwindow);
+        ((PartyCommand)getCommand()).setParty(party);
+    }
+
+    @Override
+    public DialogboxElement clone() {
+        try {
+            return new PartyRadioButton(getCommand(), getCoordinate(), getDescription());
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

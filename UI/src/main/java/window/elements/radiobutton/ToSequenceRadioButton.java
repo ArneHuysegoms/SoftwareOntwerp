@@ -46,6 +46,10 @@ public class ToSequenceRadioButton extends DiagramRadioButton{
         }
     }
 
+    /**
+     * clones object
+     * @return clone
+     */
     @Override
     public DialogboxElement clone() {
         try {

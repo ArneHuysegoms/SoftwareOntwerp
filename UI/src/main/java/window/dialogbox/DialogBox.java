@@ -213,9 +213,6 @@ public abstract class DialogBox extends Subwindow {
      * cycle the selected element
      */
     protected void cycleSelectedElement() {
-        /*int oldIndex = elementList.indexOf(selected);
-        selected = elementList.get((oldIndex + 1) % 4);*/
-
         if(elementList.size() < 1){
             selected = null;
         }
@@ -230,7 +227,6 @@ public abstract class DialogBox extends Subwindow {
                 selected = elementList.get(getSelectedindex());
             }
             else{
-                //TODO what if list size is 0?
                 selectedindex = 0;
                 selected = elementList.get(getSelectedindex());
             }

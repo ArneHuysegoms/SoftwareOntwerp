@@ -38,26 +38,15 @@ public class InvocationMessageDialogBox extends DialogBox {
     public static final int WIDTH = 300;
     public static final int HEIGHT = 300;
 
-    //private MethodTextBox methodTextBox;
-    //private ArgumentTextBox argumentTextBox;
-
-    //private ListBox argumentListBox;
-
-    //private FakeButton addArgument;
-    //private FakeButton deleteArgument;
-    //private FakeButton moveUp;
-    //private FakeButton moveDown;
-
-    //private DialogboxElement selected;
-
-    //private List<DialogboxElement> dialogboxElements;
-
     private InvocationMessageLabel invocationMessageLabel;
     private DiagramSubwindow subwindow;
     private int listBoxIndex;
 
     public static ArrayList<DialogboxElement> INVOCATIONMESSAGEBOXLIST;
 
+    /**
+     * initiate static list
+     */
     static {
         try{
             INVOCATIONMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(
@@ -74,15 +63,27 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
     }
 
+    /**
+     * set list box index
+     * @param listBoxIndex
+     */
     public void setListBoxIndex(int listBoxIndex) {
         this.listBoxIndex = listBoxIndex;
     }
 
+    /**
+     *
+     * @return the static list
+     */
     @Override
     public List<DialogboxElement> getStaticList(){
         return INVOCATIONMESSAGEBOXLIST;
     }
 
+    /**
+     * syncs the static list and the private list
+     * also sets the selected elements for the list itself and the listbox
+     */
     @Override
     public void updateList() {
         List<ListBox> tempLB;
@@ -118,6 +119,11 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
     }
 
+    /**
+     * sets all indices of listboxes
+     * @param tempLB
+     * @param listBoxIndex
+     */
     private void setAllSelectedIndexes(List<ListBox> tempLB, int listBoxIndex) {
         if(tempLB != null){
             for(ListBox lb : tempLB){
@@ -126,6 +132,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         }
     }
 
+    /**
+     * finds all argumentTextBoxes
+     * @return list of argument text boxes
+     */
     private List<ArgumentTextBox> findArgumentTextBox() {
         List<ArgumentTextBox> result = new ArrayList<>();
         for (DialogboxElement ele :elementList){
@@ -135,6 +145,10 @@ public class InvocationMessageDialogBox extends DialogBox {
         return result;
     }
 
+    /**
+     * finds all listboxes
+     * @return list of list boxes
+     */
     private List<ListBox> findListBox() {
         List<ListBox> result = new ArrayList<>();
         for (DialogboxElement ele :elementList){
@@ -161,8 +175,6 @@ public class InvocationMessageDialogBox extends DialogBox {
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
         updateList();
-        //updateFields((InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel));
-        //argumentListBox.setSelectedIndex(invocationMessageLabel.getArguments().size() - 1);
         invocationMessageLabel.setIndex(invocationMessageLabel.getArguments().size() - 1);
     }
 
@@ -188,13 +200,6 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     /**
-     * @return all dialogbox elements in this dialogbox
-     */
-    /*public List<DialogboxElement> getDialogboxElements() {
-        return dialogboxElements;
-    }*/
-
-    /**
      * @return the label that's being edited by this invocation message label
      */
     public InvocationMessageLabel getInvocationMessageLabel() {
@@ -209,57 +214,7 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     /**
-     * handle a mouseEvent
-     *
-     * @param mouseEvent the mouseEvent to handle
-     * @return an action detailing the outcome of the handling
-     */
-    /*@Override
-    public Action handleMouseEvent(MouseEvent mouseEvent) {
-        switch (mouseEvent.getMouseEventType()) {
-            case PRESSED:
-                return handlePressed(mouseEvent.getPoint());
-            default:
-                break;
-        }
-        return new EmptyAction();
-    }*/
-
-    /**
-     * handle the moouse pressed event at the given location
-     *
-     * @param point the point of the event
-     * @return an action detailing the outcome of the handling
-     */
-    /*private Action handlePressed(Point2D point) {
-        if (methodTextBox.isClicked(point)) {
-            selected = methodTextBox;
-        } else if (argumentTextBox.isClicked(point)) {
-            selected = argumentTextBox;
-        } else if (addArgument.isClicked(point)) {
-            selected = addArgument;
-            return handleAddArgument();
-        } else if (argumentListBox.isClicked(point)) {
-            selected = argumentListBox;
-            handleArgumentListBoxClick(point);
-        }
-        if (additionalButtonsAreActive()) {
-            if (deleteArgument.isClicked(point)) {
-                selected = deleteArgument;
-                return handleDeleteArgument();
-            } else if (moveDown.isClicked(point)) {
-                selected = moveDown;
-                return handleMoveDown();
-            } else if (moveUp.isClicked(point)) {
-                selected = moveUp;
-                return handleMoveUp();
-            }
-        }
-        return new EmptyAction();
-    }*/
-
-    /**
-     * handle a keyEvent
+     * handle a keyEvent, needs to be overwritten because ARROWKEYUP and ARROWKEYDOWN
      *
      * @param keyEvent the keyEvent to handle
      * @return an action detailing the outcome of the handling
@@ -404,94 +359,6 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     /**
-     * handle the space event
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    /*public Action handleSpace() {
-        if (addArgument == selected) {
-            return handleAddArgument();
-        } else if (additionalButtonsAreActive()) {
-            if (deleteArgument == selected) {
-                return handleDeleteArgument();
-            } else if (moveDown == selected) {
-                return handleMoveDown();
-            } else if (moveUp == selected) {
-                return handleMoveUp();
-            }
-        }
-        return new UpdateLabelContainersAction(invocationMessageLabel);
-    }*/
-
-    /**
-     * checks if the additional buttons are active
-     *
-     * @return true if the additional buttons are active
-     */
-    private boolean additionalButtonsAreActive() {
-        return ((ListBox)selected).hasSelectedArgument();
-    }
-
-    /**
-     * handle adding an argument
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    private Action handleAddArgument() {
-        if (((TextBox)selected).hasValidContents()) {
-            String argumentString = ((TextBox)selected).getContents();
-            ((ListBox)selected).addArgument(argumentString);
-            invocationMessageLabel.addArgument(argumentString);
-            return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
-        }
-        return new EmptyAction();
-    }
-
-    /**
-     * handles a click on the argument list box
-     *
-     * @param point the point to handle
-     */
-    private void handleArgumentListBoxClick(Point2D point) {
-        selected = ((ListBox)selected);
-        ((ListBox)selected).selectArgument(point);
-        invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
-    }
-
-    /**
-     * handles deleting an argument
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    private Action handleDeleteArgument() {
-        invocationMessageLabel.deleteArgument(((ListBox)selected).getSelectedIndex());
-        ((ListBox)selected).removeArgument();
-        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
-    }
-
-    /**
-     * handles moving up arguments
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    private Action handleMoveUp() {
-        ((ListBox)selected).moveUp();
-        invocationMessageLabel.moveUp();
-        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
-    }
-
-    /**
-     * handle moving down arguments
-     *
-     * @return an action detailing the outcome of the handling
-     */
-    private Action handleMoveDown() {
-        ((ListBox)selected).moveDown();
-        invocationMessageLabel.moveDown();
-        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
-    }
-
-    /**
      * handle the array key down event
      */
     private Action handleArrowKeyDown() {
@@ -512,21 +379,12 @@ public class InvocationMessageDialogBox extends DialogBox {
     }
 
     /**
-     * cycle the selected argument
-     */
-    /*public void cycleSelectedElement() {
-        int oldIndex = dialogboxElements.indexOf(selected);
-        selected = dialogboxElements.get((oldIndex + 1) % 7);
-    }*/
-
-    /**
      * handles an action that could change this dialogbox type
      *
      * @param action the action to handle
      */
     @Override
     public void handleAction(Action action) {
-        System.out.println("HELLO");
         if (action instanceof RemoveInViewsAction) {
             RemoveInViewsAction a = (RemoveInViewsAction) action;
             for(DiagramElement element : a.getDeletedElements()) {
@@ -539,21 +397,13 @@ public class InvocationMessageDialogBox extends DialogBox {
             }
         }
         if (action instanceof UpdateLabelAction) {
-            System.out.println("HELLOO");
             UpdateLabelAction a = (UpdateLabelAction) action;
             InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
             if (a.getElement().equals(invocationMessage)) {
-                //updateFields((InvocationMessage) a.getElement());
                 updateList();
             }
-
-            System.out.println(invocationMessageLabel.getIndex() + " is inv index2");
-            System.out.println(listBoxIndex + " is lb index2");
             this.listBoxIndex = invocationMessageLabel.getIndex();
             setAllSelectedIndexes(findListBox(),listBoxIndex);
-
-            System.out.println(invocationMessageLabel.getIndex() + " is inv index2");
-            System.out.println(listBoxIndex + " is lb index2");
         }
         if(action instanceof UpdateListAction){
             updateList();
@@ -565,28 +415,4 @@ public class InvocationMessageDialogBox extends DialogBox {
             setAllSelectedIndexes(findListBox(), index);
         }
     }
-
-    /**
-     * update all fields for the given invocation message
-     *
-     * @param invocationMessage the message to change the fields for
-     */
-    /*private void updateFields(InvocationMessage invocationMessage) {
-        if (invocationMessage != null) {
-            InvocationMessageLabel label = (InvocationMessageLabel) invocationMessage.getLabel();
-            methodTextBox.setContents(label.getLabel());
-            argumentListBox.setArguments(label.getArguments().stream()
-                                            .map(s -> s.toString())
-                                            .collect(Collectors.toList()));
-        }
-    }*/
-
-    /**
-     * sets the given element as the selected
-     *
-     * @param dialogboxElement the new selected dialogboxelement
-     */
-    /*public void setSelected(DialogboxElement dialogboxElement) {
-        this.selected = dialogboxElement;
-    }*/
 }

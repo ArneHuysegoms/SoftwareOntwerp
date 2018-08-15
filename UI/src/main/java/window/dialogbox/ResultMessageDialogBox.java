@@ -29,11 +29,8 @@ public class ResultMessageDialogBox extends DialogBox {
     public static final int WIDTH = 300;
     public static final int HEIGHT = 60;
 
-    //private TextBox labelTextBox;
     private ResultMessage resultMessage;
     private DiagramSubwindow diagramSubwindow;
-
-    //private TextBox selected;
 
     public static ArrayList<DialogboxElement> RESULTMESSAGEBOXLIST;
 
@@ -61,33 +58,37 @@ public class ResultMessageDialogBox extends DialogBox {
         super(pos);
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
-        /*this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 40), "Method");
-        /*/
         elementList = new ArrayList<>();
+
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        //selected = labelTextBox;
+
         updateList();
         this.selectedindex = 0;
         if(elementList.size() > 0){
-
             selected = this.elementList.get(getSelectedindex());
         }
         updateFields(resultMessage);
     }
 
+    /**
+     *
+     * @return static list
+     */
     @Override
     public List<DialogboxElement> getStaticList(){
         return RESULTMESSAGEBOXLIST;
     }
 
+    /**
+     * syncs static list with private list
+     */
     @Override
     public void updateList() {
         elementList = new ArrayList<>();
         for (DialogboxElement d : RESULTMESSAGEBOXLIST) {
             DialogboxElement clone = d.clone();
             clone.update(resultMessage);
-            //((MethodTextBox)clone).setContents(d.toString());
             elementList.add(clone);
         }
         if(elementList.size() == 0){
@@ -132,42 +133,6 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
     /**
-     * handles mouse events
-     *
-     * @param mouseEvent the mouseEvent to handle
-     * @return an action detailing the outcome of the handling
-     */
-    /*@Override
-    public Action handleMouseEvent(MouseEvent mouseEvent) {
-        return new EmptyAction();
-    }*/
-
-    /**
-     * handles key events
-     *
-     * @param keyEvent the keyEvent to handle
-     * @return an action detailing the outcome of the handling
-     */
-    /*@Override
-    public Action handleKeyEvent(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyEventType()) {
-            case CHAR:
-                return handleChar(keyEvent);
-            case BACKSPACE:
-                return handleBackSpace();
-            case CTRLE:
-                setDesignerMode(true);
-                System.out.println("DESIGNER MODE ON");
-            case ENTER:
-                if(designerMode){
-                    setDesignerMode(false);
-                    System.out.println("DESIGNER MODE OFF");
-                }
-        }
-        return new EmptyAction();
-    }*/
-
-    /**
      * handle the backspace event
      *
      * @return an action detailing the outcome of the handling
@@ -189,7 +154,6 @@ public class ResultMessageDialogBox extends DialogBox {
         else{
             DialogboxElement d = RESULTMESSAGEBOXLIST.get(selectedindex);
             d.deleteCharFromDescription();
-            System.out.println("SYSOUT------------" + d.getDescription());
             if (!d.isValidDescription()) {
                 setInvalidDescriptionMode(true);
             }

@@ -47,6 +47,10 @@ public class ToObjectRadioButton extends PartyRadioButton {
         }
     }
 
+    /**
+     * clones object
+     * @return clone
+     */
     @Override
     public DialogboxElement clone() {
         try {

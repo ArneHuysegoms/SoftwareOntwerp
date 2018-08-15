@@ -25,6 +25,10 @@ public class MoveDownButton extends DialogBoxButton {
         super(command, coordinate, description);
     }
 
+    /**
+     * clones object
+     * @return new object
+     */
     @Override
     public DialogboxElement clone() {
         try {
@@ -35,6 +39,13 @@ public class MoveDownButton extends DialogBoxButton {
         return null;
     }
 
+    /**
+     * updates command
+     * @param subwindow
+     * @param label
+     * @param lb
+     * @param atb
+     */
     @Override
     public void update(DiagramSubwindow subwindow, InvocationMessageLabel label, ListBox lb, ArgumentTextBox atb) {
         this.setCommand(new MoveDownCommand(lb,atb,label,subwindow));

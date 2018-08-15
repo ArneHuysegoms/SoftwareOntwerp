@@ -29,28 +29,15 @@ public class PartyDialogBox extends DialogBox {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 200;
 
-    //public String TOOBJECT_DESPCRIPTION = "Object";
-    //public String TOACTOR_DESCRIPTION = "Actor";
-
-    //public String INSTANCE_DESCRIPTION = "Instance";
-    //public String CLASS_DESCRIPTION = "Class";
-
-    //private RadioButton toActor;
-    //private RadioButton toObject;
-
-    //private TextBox instanceTextBox;
-    //private TextBox classTextBox;
-
-    //private DialogboxElement selected;
-
     private Party party;
 
     private DiagramSubwindow subwindow;
 
     public static ArrayList<DialogboxElement> PARTYBOXLIST;
 
-    //private int selectedindex;
-
+    /**
+     * initiate static list
+     */
     static {
         try {
             PARTYBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(new ToActorRadioButton(new ChangeToActorCommand(null, null), new Point2D.Double(10, 30), "Actor"),
@@ -61,6 +48,7 @@ public class PartyDialogBox extends DialogBox {
             e.printStackTrace();
         }
     }
+
 
     /**
      * create a new party dialog box
@@ -82,31 +70,34 @@ public class PartyDialogBox extends DialogBox {
         //updateFields(party);
         updateList();
         this.selectedindex = 0;
-        if(elementList.size() > 0){
+        if (elementList.size() > 0) {
 
             selected = this.elementList.get(getSelectedindex());
         }
     }
 
-    public void updateList(){
+    /**
+     * syncs the static list with the private list
+     * also sets the selected element
+     */
+    public void updateList() {
         elementList = new ArrayList<>();
-        for (DialogboxElement e : PARTYBOXLIST){
+        for (DialogboxElement e : PARTYBOXLIST) {
             DialogboxElement clone = e.clone();
-            clone.update(subwindow,party);
+            clone.update(subwindow, party);
             elementList.add(clone);
         }
 
-        if(elementList.size() == 0){
+        if (elementList.size() == 0) {
             selected = null;
-        }
-        else if(selectedindex > elementList.size()-1){
+        } else if (selectedindex > elementList.size() - 1) {
             selectedindex = 0;
             selected = this.elementList.get(selectedindex);
-        }else{
-
+        } else {
             selected = this.elementList.get(selectedindex);
         }
     }
+
     /**
      * @return the party this dialogbox edits
      */
@@ -131,7 +122,7 @@ public class PartyDialogBox extends DialogBox {
     }
 
     @Override
-    public List<DialogboxElement> getStaticList(){
+    public List<DialogboxElement> getStaticList() {
         return PARTYBOXLIST;
     }
 
@@ -142,7 +133,7 @@ public class PartyDialogBox extends DialogBox {
      */
     @Override
     protected Action handleBackSpace() {
-        if(!designerMode){
+        if (!designerMode) {
             if (selected instanceof TextBox) {
                 TextBox t = (TextBox) selected;
                 t.deleteLastCharFromContents();
@@ -151,11 +142,10 @@ public class PartyDialogBox extends DialogBox {
                 }
             }
             return new EmptyAction();
-        }
-        else{
+        } else {
             DialogboxElement d = PARTYBOXLIST.get(selectedindex);
             d.deleteCharFromDescription();
-            if(!d.isValidDescription()){
+            if (!d.isValidDescription()) {
                 setInvalidDescriptionMode(true);
             }
             return new UpdateListAction();
@@ -170,7 +160,7 @@ public class PartyDialogBox extends DialogBox {
      */
     @Override
     public Action handleChar(KeyEvent keyEvent) {
-        if(!designerMode){
+        if (!designerMode) {
             if (selected instanceof TextBox) {
                 TextBox t = (TextBox) selected;
                 t.addCharToContents(keyEvent.getKeyChar());
@@ -179,12 +169,11 @@ public class PartyDialogBox extends DialogBox {
                 }
             }
             return new EmptyAction();
-        }
-        else{
-            if(selected != null){
+        } else {
+            if (selected != null) {
                 DialogboxElement d = PARTYBOXLIST.get(selectedindex);
                 d.addCharToDescription(keyEvent.getKeyChar());
-                if(d.isValidDescription()){
+                if (d.isValidDescription()) {
                     setInvalidDescriptionMode(false);
                 }
 
@@ -207,11 +196,11 @@ public class PartyDialogBox extends DialogBox {
                 String oldLabel = party.getLabel().getLabel();
                 String[] split = oldLabel.split(":");
                 if (split.length == 1) {
-                    if(party.getLabel().isValidLabel(t.getContents() + ":" + split[0])) {
+                    if (party.getLabel().isValidLabel(t.getContents() + ":" + split[0])) {
                         party.getLabel().setLabel(t.getContents() + ":" + split[0]);
                     }
                 } else {
-                    if(party.getLabel().isValidLabel(t.getContents() + ":" + split[1])) {
+                    if (party.getLabel().isValidLabel(t.getContents() + ":" + split[1])) {
                         party.getLabel().setLabel(t.getContents() + ":" + split[1]);
                     }
                 }
@@ -220,15 +209,11 @@ public class PartyDialogBox extends DialogBox {
                 String oldLabel = party.getLabel().getLabel();
                 String[] split = oldLabel.split(":");
                 if (split.length == 1) {
-                    //if (!this.getInstanceTextBox().getContents().isEmpty() && Character.isLowerCase(this.getInstanceTextBox().getContents().charAt(0))) {
-                    //    party.getLabel().setLabel(getInstanceTextBox().getContents() + ":" + t.getContents());
-                    //} else {
-                    if(party.getLabel().isValidLabel(":" + t.getContents())) {
+                    if (party.getLabel().isValidLabel(":" + t.getContents())) {
                         party.getLabel().setLabel(":" + t.getContents());
                     }
-                    //}
                 } else {
-                    if(party.getLabel().isValidLabel(split[0] + ":" + t.getContents())) {
+                    if (party.getLabel().isValidLabel(split[0] + ":" + t.getContents())) {
                         party.getLabel().setLabel(split[0] + ":" + t.getContents());
                     }
                 }
@@ -268,7 +253,7 @@ public class PartyDialogBox extends DialogBox {
                     }
                     partyDialogBox.selectedindex = this.selectedindex;
                     partyDialogBox.selected = this.selected;
-                    if(this.designerMode){
+                    if (this.designerMode) {
                         partyDialogBox.setDesignerMode(true);
                     }
                 } catch (Exception e) {
@@ -280,28 +265,13 @@ public class PartyDialogBox extends DialogBox {
         if (action instanceof UpdateLabelAction) {
             UpdateLabelAction a = (UpdateLabelAction) action;
             if (a.getElement().equals(party)) {
-                //updateFields((Party) a.getElement());
                 updateList();
             }
         }
-        if(action instanceof UpdateListAction){
+        if (action instanceof UpdateListAction) {
             updateList();
         }
 
     }
 
-    /**
-     * update the fields of this dialogbox for the given party
-     *
-     * @param party the party to change the fields for
-     */
-    /*private void updateFields(Party party) {
-        String[] labels = party.getLabel().getLabel().split(":");
-        if (labels.length == 2) {
-            instanceTextBox.setContents(labels[0]);
-            classTextBox.setContents(labels[1]);
-        } else {
-            classTextBox.setContents(labels[0]);
-        }
-    }*/
 }
