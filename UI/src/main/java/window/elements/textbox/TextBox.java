@@ -5,6 +5,7 @@ import util.MutableString;
 import window.Clickable;
 import window.elements.DialogboxElement;
 
+import javax.swing.*;
 import java.awt.geom.Point2D;
 
 /**

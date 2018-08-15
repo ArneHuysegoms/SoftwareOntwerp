@@ -123,15 +123,12 @@ public class PartyDialogBoxTest {
 
     @Test
     public void test_delete_chars_fromClassTextBox(){
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        test_adding_chars_toClassTextBox();
 
         for(DialogboxElement ele:partyDialogBox.getElementList()) {
             if(ele instanceof ClassTextBox) {
                 ClassTextBox textBox = (ClassTextBox)ele;
                 assertEquals(textBox, partyDialogBox.getSelected());
-                partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
                 assertEquals("A", textBox.getContents());
                 partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
                 assertEquals("", textBox.getContents());
