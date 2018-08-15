@@ -407,19 +407,18 @@ public class InvocationMessageDialogBoxTest {
                 invocationMessageDialogBox.selected = ele;
                 break;
             }
-
         }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, ':'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
 
-        /*for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
-            if(ele instanceof AddArgumentButton){
-                invocationMessageDialogBox.selected = ele;
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+            if(invocationMessageDialogBox.selected instanceof AddArgumentButton){
+                break;
             }
-        }*/
+        }
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
     }
 
