@@ -82,9 +82,9 @@ public class ListBox extends DialogboxElement implements Clickable {
         double endX = getCoordinate().getX() + WIDTH;
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
-        if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
-            selectArgument(location);
-        }
+        //if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
+          //  selectArgument(location);
+        //}
         //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
