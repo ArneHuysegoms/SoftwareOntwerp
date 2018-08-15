@@ -1,6 +1,6 @@
 package command;
 
-import command.InvocationCommand.MoveUpCommand;
+import command.InvocationCommand.MoveDownCommand;
 import diagram.label.InvocationMessageLabel;
 import exception.UIException;
 import exceptions.DomainException;
@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class MoveUpCommandTest {
-
-    private MoveUpCommand moveUpCommand;
+public class MoveDownCommandTest {
+    private MoveDownCommand moveDownCommand;
     private DiagramSubwindow subwindow;
     private InvocationMessageLabel label;
     private ArgumentTextBox textBox;
     private ListBox listBox;
-
 
     @Before
     public void setUp(){
@@ -31,7 +29,7 @@ public class MoveUpCommandTest {
             textBox = new ArgumentTextBox(new Point2D.Double(110, 110),"listBox");
             label = new InvocationMessageLabel("jos",new ArrayList<String>());
             subwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-            moveUpCommand = new MoveUpCommand(listBox,textBox,label,subwindow);
+            moveDownCommand = new MoveDownCommand(listBox,textBox,label,subwindow);
         }catch(DomainException e){
             System.out.println("domainexception AddArgumentCommandTest setup");
             e.printStackTrace();
@@ -48,7 +46,10 @@ public class MoveUpCommandTest {
         listBox.addArgument("hello");
         label.addArgument("hello");
         assertEquals(1,label.getIndex());
-        moveUpCommand.performAction();
+        listBox.moveUp();
+        label.moveUp();
         assertEquals(0,label.getIndex());
+        moveDownCommand.performAction();
+        assertEquals(1,label.getIndex());
     }
 }
