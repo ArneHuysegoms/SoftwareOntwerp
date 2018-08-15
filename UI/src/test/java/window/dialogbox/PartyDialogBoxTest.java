@@ -18,10 +18,15 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
 import window.elements.button.CloseWindowButton;
+import window.elements.textbox.ClassTextBox;
+import window.elements.textbox.InstanceTextBox;
+import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
@@ -57,31 +62,35 @@ public class PartyDialogBoxTest {
 
     @Test
     public void test_default_constructor(){
-       assertEquals(party, partyDialogBox.getParty());
-       assertEquals(diagramSubwindow, partyDialogBox.getSubwindow());
-       assertEquals(PartyDialogBox.WIDTH, partyDialogBox.getWidth());
-       assertEquals(PartyDialogBox.HEIGHT, partyDialogBox.getHeight());
-       assertEquals(4, partyDialogBox.getElementList().size());
-       assertEquals(partyDialogBox.getToActor(), partyDialogBox.getSelected());
-       assertEquals("",partyDialogBox.getInstanceTextBox().getContents());
-       assertEquals("",partyDialogBox.getClassTextBox().getContents());
+        List<DialogboxElement> list = partyDialogBox.getElementList();
+        assertEquals(list.size(), PartyDialogBox.PARTYBOXLIST.size());
+        assertEquals(party, partyDialogBox.getParty());
+        assertEquals(diagramSubwindow, partyDialogBox.getSubwindow());
+        assertEquals(PartyDialogBox.WIDTH, partyDialogBox.getWidth());
+        assertEquals(PartyDialogBox.HEIGHT, partyDialogBox.getHeight());
+        assertEquals(4, partyDialogBox.getElementList().size());
+
+        for(DialogboxElement ele:partyDialogBox.getElementList()) {
+            if(ele instanceof TextBox)
+                assertEquals("",((TextBox) ele).getContents());
+        }
     }
 
     @Test
     public void test_tabbing_cycles_trough_elements(){
-        assertEquals(partyDialogBox.getToActor(), partyDialogBox.getSelected());
-
+        assertEquals(0, partyDialogBox.getSelectedindex());
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getToObject(), partyDialogBox.getSelected());
 
+        assertEquals(1, partyDialogBox.getSelectedindex());
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getInstanceTextBox(), partyDialogBox.getSelected());
 
+        assertEquals(2, partyDialogBox.getSelectedindex());
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getClassTextBox(), partyDialogBox.getSelected());
 
+        assertEquals(3, partyDialogBox.getSelectedindex());
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getToActor(), partyDialogBox.getSelected());
+
+        assertEquals(0, partyDialogBox.getSelectedindex());
     }
 
     @Test
@@ -101,9 +110,15 @@ public class PartyDialogBoxTest {
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getClassTextBox(), partyDialogBox.getSelected());
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
-        assertEquals(":A", party.getLabel().getLabel());
+
+        for(DialogboxElement ele:partyDialogBox.getElementList()) {
+            if(ele instanceof ClassTextBox) {
+                ClassTextBox textBox = (ClassTextBox)ele;
+                assertEquals(textBox, partyDialogBox.getSelected());
+                partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
+                assertEquals(":A", party.getLabel().getLabel());
+            }
+        }
     }
 
     @Test
@@ -111,32 +126,40 @@ public class PartyDialogBoxTest {
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(partyDialogBox.getClassTextBox(), partyDialogBox.getSelected());
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertEquals("", partyDialogBox.getClassTextBox().getContents());
-        assertEquals(":A", party.getLabel().getLabel());
+
+        for(DialogboxElement ele:partyDialogBox.getElementList()) {
+            if(ele instanceof ClassTextBox) {
+                ClassTextBox textBox = (ClassTextBox)ele;
+                assertEquals(textBox, partyDialogBox.getSelected());
+                partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
+                assertEquals("A", textBox.getContents());
+                partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+                assertEquals("", textBox.getContents());
+                assertEquals(":A", party.getLabel().getLabel());
+            }
+        }
     }
 
     @Test
     public void test_add_char_toInstanceTextBox(){
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
-        assertEquals("a", partyDialogBox.getInstanceTextBox().getContents());
-        assertEquals("", party.getLabel().getLabel());
+        test_adding_chars_toClassTextBox();
 
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
-        assertEquals("a:A", party.getLabel().getLabel());
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+
+        for(DialogboxElement ele:partyDialogBox.getElementList()) {
+            if(ele instanceof InstanceTextBox) {
+                InstanceTextBox textBox = (InstanceTextBox)ele;
+                partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
+                assertEquals("a", textBox.getContents());
+            }
+        }
     }
 
     @Test
     public void test_delete_char_fromInstanceTextBox(){
         test_add_char_toInstanceTextBox();
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
         assertEquals(":A", party.getLabel().getLabel());
     }
@@ -144,13 +167,13 @@ public class PartyDialogBoxTest {
     @Test
     public void test_mouse_presses(){
         partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 60)));
-        assertEquals(partyDialogBox.getInstanceTextBox(), partyDialogBox.getSelected());
+        assertEquals(partyDialogBox.getElementList().get(2), partyDialogBox.getSelected());
         partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 85)));
-        assertEquals(partyDialogBox.getClassTextBox(), partyDialogBox.getSelected());
+        assertEquals(partyDialogBox.getElementList().get(3), partyDialogBox.getSelected());
         partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(85, 30)));
-        assertEquals(partyDialogBox.getToObject(), partyDialogBox.getSelected());
+        assertEquals(partyDialogBox.getElementList().get(1), partyDialogBox.getSelected());
         partyDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10, 30)));
-        assertEquals(partyDialogBox.getToActor(), partyDialogBox.getSelected());
+        assertEquals(partyDialogBox.getElementList().get(0), partyDialogBox.getSelected());
     }
 
     @Test
@@ -167,8 +190,14 @@ public class PartyDialogBoxTest {
         party.getLabel().setLabel("b:B");
         Action action = new UpdateLabelAction(party, null);
         partyDialogBox.handleAction(action);
-        assertEquals("b", partyDialogBox.getInstanceTextBox().getContents());
-        assertEquals("B", partyDialogBox.getClassTextBox().getContents());
+        for(DialogboxElement ele:partyDialogBox.getElementList()) {
+            if(ele instanceof InstanceTextBox){
+                assertEquals("b", ((InstanceTextBox)ele).getContents());
+            }
+            else if(ele instanceof ClassTextBox){
+                assertEquals("B", ((ClassTextBox)ele).getContents());
+            }
+        }
     }
 
     @Test

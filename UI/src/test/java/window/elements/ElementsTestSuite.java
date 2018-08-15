@@ -6,7 +6,7 @@ import window.elements.button.ButtonTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        RadioButtonTest.class,
+        ToActorRadioButtonTest.class,
         ListBoxTest.class,
         TextBoxTest.class,
         ButtonTestSuite.class,
