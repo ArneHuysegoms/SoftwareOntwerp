@@ -59,6 +59,7 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
      */
     public void addArgument(String argument) {
         getArguments().add(argument);
+        setIndex(getArguments().size() - 1);
     }
 
     /**

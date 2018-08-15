@@ -140,6 +140,7 @@ public class ListBox extends DialogboxElement implements Clickable {
      */
     public void addArgument(String argument) {
         arguments.add(argument);
+        setSelectedIndex(arguments.size()-1);
     }
 
     /**
