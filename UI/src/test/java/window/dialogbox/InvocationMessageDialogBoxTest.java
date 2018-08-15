@@ -18,8 +18,12 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
-import window.elements.button.Button;
-import window.elements.button.CloseWindowButton;
+import window.elements.DialogboxElement;
+import window.elements.ListBox;
+import window.elements.button.*;
+import window.elements.textbox.ArgumentTextBox;
+import window.elements.textbox.MethodTextBox;
+import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -47,7 +51,11 @@ public class InvocationMessageDialogBoxTest {
             invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(50, 50), invocationMessageLabel, diagramSubwindow);
             Button closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(invocationMessageDialogBox, interactionController));
             invocationMessageDialogBox.createFrame(closeWindowButton);
-            invocationMessageDialogBox.getMethodTextBox().setContents("a");
+
+            for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+                if(ele instanceof MethodTextBox)
+                    ((MethodTextBox) ele).setContents("a");
+            }
         }
         catch (Exception e){
             fail();
@@ -56,61 +64,128 @@ public class InvocationMessageDialogBoxTest {
 
     @Test
     public void test_default_constructor(){
-        assertEquals(7, invocationMessageDialogBox.getDialogboxElements().size());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MethodTextBox) {
+                assertNotNull(ele);
+                assertEquals("a", ((MethodTextBox) ele).getContents());
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+            }
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof ArgumentTextBox)
+                assertNotNull(ele);
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof AddArgumentButton)
+                assertNotNull(ele);
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof DeleteArgumentButton)
+                assertNotNull(ele);
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof MoveDownButton)
+                assertNotNull(ele);
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof MoveUpButton)
+                assertNotNull(ele);
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof ListBox)
+                assertNotNull(ele);
+        }
+        assertEquals(7, invocationMessageDialogBox.getElementList().size());
         assertEquals(invocationMessageLabel, invocationMessageDialogBox.getInvocationMessageLabel());
-        assertNotNull(invocationMessageDialogBox.getMethodTextBox());
-        assertNotNull(invocationMessageDialogBox.getArgumentTextBox());
-        assertNotNull(invocationMessageDialogBox.getAddArgument());
-        assertNotNull(invocationMessageDialogBox.getDeleteArgument());
-        assertNotNull(invocationMessageDialogBox.getMoveDown());
-        assertNotNull(invocationMessageDialogBox.getMoveUp());
         assertEquals(diagramSubwindow, invocationMessageDialogBox.getSubwindow());
-        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
+
         assertEquals(InvocationMessageDialogBox.WIDTH, invocationMessageDialogBox.getWidth());
         assertEquals(InvocationMessageDialogBox.HEIGHT, invocationMessageDialogBox.getHeight());
 
-        assertEquals("a", invocationMessageDialogBox.getMethodTextBox().getContents());
     }
 
     @Test
     public void test_handleTab(){
-        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
 
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof MethodTextBox) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(0, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getArgumentTextBox(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof ArgumentTextBox) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(1, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof AddArgumentButton) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(2, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof DeleteArgumentButton) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(3, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof MoveDownButton) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(4, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getAddArgument(), invocationMessageDialogBox.getSelected());
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof MoveUpButton) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(5, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if (ele instanceof ListBox) {
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+                assertEquals(6, invocationMessageDialogBox.getSelectedindex());
+            }
+        }
+                invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getDeleteArgument(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getMoveDown(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getMoveUp(), invocationMessageDialogBox.getSelected());
 
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getArgumentListBox(), invocationMessageDialogBox.getSelected());
-
-        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
-        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
     }
 
     @Test
     public void test_handle_adding_and_deleting_chars_method(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         assertEquals("aa", invocationMessageLabel.getLabel());
-        assertEquals("aa", invocationMessageDialogBox.getMethodTextBox().getContents());
+
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MethodTextBox)
+                assertEquals("aa", ((MethodTextBox)ele).getContents());
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
         assertEquals("a", invocationMessageLabel.getLabel());
-        assertEquals("a", invocationMessageDialogBox.getMethodTextBox().getContents());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MethodTextBox)
+                assertEquals("a", ((MethodTextBox)ele).getContents());
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
         assertEquals("a", invocationMessageLabel.getLabel());
-        assertEquals("", invocationMessageDialogBox.getMethodTextBox().getContents());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MethodTextBox)
+                assertEquals("", ((MethodTextBox)ele).getContents());
+        }
     }
 
     @Test
@@ -119,10 +194,16 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, ':'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
-        assertEquals("a:A", invocationMessageDialogBox.getArgumentTextBox().getContents());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox)
+                assertEquals("a:A", ((ArgumentTextBox)ele).getContents());
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertEquals("a:", invocationMessageDialogBox.getArgumentTextBox().getContents());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox)
+                assertEquals("a:", ((ArgumentTextBox)ele).getContents());
+        }
     }
 
     @Test
@@ -136,24 +217,38 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
 
         assertEquals("a:A", invocationMessageLabel.getArguments().get(0).toString());
-        assertTrue(invocationMessageDialogBox.getArgumentListBox().getArguments().contains("a:A"));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertTrue(((ListBox)ele).getArguments().contains("a:A"));
+        }
     }
 
     @Test
     public void test_handleArgumentListBox(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(0, ((ListBox)ele).getSelectedIndex());
+        }
+
     }
 
     @Test
     public void test_delete_argument(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getDeleteArgument());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof DeleteArgumentButton) {
+                invocationMessageDialogBox.selected = ele;
+            }
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
-
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getArguments().size());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox) {
+                assertEquals(0, ((ListBox) ele).getArguments().size());
+            }
+        }
         assertEquals(0, invocationMessageLabel.getArguments().size());
     }
 
@@ -161,15 +256,24 @@ public class InvocationMessageDialogBoxTest {
     public void test_moveDown(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
-
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getMoveDown());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(0, ((ListBox)ele).getSelectedIndex());
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MoveDownButton)
+                invocationMessageDialogBox.selected = ele;
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox) {
+                assertEquals(1, ((ListBox) ele).getSelectedIndex());
+                assertEquals(2, ((ListBox) ele).getArguments().size());
+                assertEquals("b:B", ((ListBox) ele).getArguments().get(0));
+                assertEquals("a:A", ((ListBox) ele).getArguments().get(1));
+            }
+        }
 
-        assertEquals(1, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
-        assertEquals(2, invocationMessageDialogBox.getArgumentListBox().getArguments().size());
-        assertEquals("b:B", invocationMessageDialogBox.getArgumentListBox().getArguments().get(0));
-        assertEquals("a:A", invocationMessageDialogBox.getArgumentListBox().getArguments().get(1));
 
         assertEquals("b:B", invocationMessageLabel.getArguments().get(0).toString());
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
@@ -179,15 +283,23 @@ public class InvocationMessageDialogBoxTest {
     public void test_moveUp(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,164)));
-        assertEquals(1, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
-
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getMoveUp());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(1, ((ListBox)ele).getSelectedIndex());
+        }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MoveUpButton)
+                invocationMessageDialogBox.selected = ele;
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
-
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
-        assertEquals(2, invocationMessageDialogBox.getArgumentListBox().getArguments().size());
-        assertEquals("b:B", invocationMessageDialogBox.getArgumentListBox().getArguments().get(0));
-        assertEquals("a:A", invocationMessageDialogBox.getArgumentListBox().getArguments().get(1));
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox) {
+                assertEquals(0, ((ListBox) ele).getSelectedIndex());
+                assertEquals(2, ((ListBox) ele).getArguments().size());
+                assertEquals("b:B", ((ListBox) ele).getArguments().get(0));
+                assertEquals("a:A", ((ListBox) ele).getArguments().get(1));
+            }
+        }
 
         assertEquals("b:B", invocationMessageLabel.getArguments().get(0).toString());
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
@@ -197,48 +309,81 @@ public class InvocationMessageDialogBoxTest {
     public void test_select_by_arrowDownKey(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(0, ((ListBox)ele).getSelectedIndex());
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ARROWKEYDOWN));
 
-        assertEquals(1, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(1, ((ListBox)ele).getSelectedIndex());
+        }
     }
 
     @Test
     public void test_select_by_arrowKeyUp(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,164)));
-        assertEquals(1, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(1, ((ListBox)ele).getSelectedIndex());
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ARROWKEYUP));
 
-        assertEquals(0, invocationMessageDialogBox.getArgumentListBox().getSelectedIndex());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(0, ((ListBox)ele).getSelectedIndex());
+        }
     }
 
     @Test
     public void test_MousePressed(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
-        assertEquals(invocationMessageDialogBox.getArgumentListBox(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,50)));
-        assertEquals(invocationMessageDialogBox.getMethodTextBox(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MethodTextBox)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,75)));
-        assertEquals(invocationMessageDialogBox.getArgumentTextBox(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,100)));
-        assertEquals(invocationMessageDialogBox.getAddArgument(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof AddArgumentButton)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(90,100)));
-        assertEquals(invocationMessageDialogBox.getMoveDown(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MoveDownButton)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(130,100)));
-        assertEquals(invocationMessageDialogBox.getMoveUp(), invocationMessageDialogBox.getSelected());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof MoveUpButton)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
 
+        }
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(50,100)));
-        assertEquals(invocationMessageDialogBox.getDeleteArgument(), invocationMessageDialogBox.getSelected());
-    }
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof DeleteArgumentButton)
+                assertEquals(ele, invocationMessageDialogBox.getSelected());
+
+        }}
 
     @Test
     public void test_handleAction_RemoveInReposAction(){
@@ -257,25 +402,48 @@ public class InvocationMessageDialogBoxTest {
     }
 
     private void add_argument1(){
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getArgumentTextBox());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox) {
+                invocationMessageDialogBox.selected = ele;
+                break;
+            }
+
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, ':'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
 
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getAddArgument());
+        /*for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof AddArgumentButton){
+                invocationMessageDialogBox.selected = ele;
+            }
+        }*/
+
+        invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
     }
 
     private void add_argument2(){
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getArgumentTextBox());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox) {
+                invocationMessageDialogBox.selected = ele;
+            }
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, ':'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'A'));
 
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getAddArgument());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof AddArgumentButton) {
+                invocationMessageDialogBox.selected = ele;
+            }
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
 
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getArgumentTextBox());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ArgumentTextBox)
+                invocationMessageDialogBox.selected = ele;
+        }
 
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
@@ -284,11 +452,16 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'b'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, ':'));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'B'));
-
-        invocationMessageDialogBox.setSelected(invocationMessageDialogBox.getAddArgument());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof AddArgumentButton)
+                invocationMessageDialogBox.selected = ele;
+        }
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.SPACE));
 
-        assertEquals(2, invocationMessageDialogBox.getArgumentListBox().getArguments().size());
+        for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
+            if(ele instanceof ListBox)
+                assertEquals(2, ((ListBox)ele).getArguments().size());
+        }
     }
 
     /*private void add_argument3(){
