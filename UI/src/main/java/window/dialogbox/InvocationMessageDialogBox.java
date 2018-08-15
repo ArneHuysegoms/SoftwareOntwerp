@@ -156,28 +156,8 @@ public class InvocationMessageDialogBox extends DialogBox {
         super(pos);
         this.invocationMessageLabel = invocationMessageLabel;
         this.elementList = new ArrayList<>();
-        /*methodTextBox = new MethodTextBox(new Point2D.Double(10, 50), "method");
-        argumentTextBox = new ArgumentTextBox(new Point2D.Double(10, 75), "argument");
-        addArgument = new TextualFakeButton(new Point2D.Double(10, 100), "Add");
-        deleteArgument = new TextualFakeButton(new Point2D.Double(50, 100), "Del");
-        moveDown = new TextualFakeButton(new Point2D.Double(90, 100), "Down");
-        moveUp = new TextualFakeButton(new Point2D.Double(130, 100), "Up");
-*/      this.listBoxIndex = -1;
+        this.listBoxIndex = -1;
         this.subwindow = subwindow;
-
-        /*argumentListBox = new ListBox(new Point2D.Double(10, 140), "");
-
-        dialogboxElements = new ArrayList<>();
-        dialogboxElements.add(methodTextBox);
-        dialogboxElements.add(argumentTextBox);
-        dialogboxElements.add(addArgument);
-        dialogboxElements.add(deleteArgument);
-        dialogboxElements.add(moveDown);
-        dialogboxElements.add(moveUp);
-        dialogboxElements.add(argumentListBox);
-
-        selected = methodTextBox;
-*/
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
         updateList();
@@ -284,41 +264,62 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @param keyEvent the keyEvent to handle
      * @return an action detailing the outcome of the handling
      */
-    /*@Override
+    @Override
     public Action handleKeyEvent(KeyEvent keyEvent) {
-        try {
+        if(invalidDescriptionMode){
             switch (keyEvent.getKeyEventType()) {
-                case BACKSPACE:
-                    return handleBackSpace();
                 case CHAR:
                     return handleChar(keyEvent);
-                case ARROWKEYDOWN:
-                    handleArrowKeyDown();
+            }
+            return new EmptyAction();
+        }
+        if(designerMode){
+            switch (keyEvent.getKeyEventType()) {
+                case CHAR:
+                    return handleChar(keyEvent);
+                case BACKSPACE:
+                    return handleBackSpace();
+                case ENTER:
+                    setDesignerMode(false);
                     break;
-                case ARROWKEYUP:
-                    handleArrowKeyUp();
+                case DEL:
+                    DialogboxElement last = null;
+                    for(DialogboxElement ele:getStaticList()){
+                        if(ele.getCoordinate().equals(selected.getCoordinate())){
+                            last = ele;
+                        }
+                    }
+                    if(last != null){
+                        getStaticList().remove(last);
+                    }
+                    updateList();
+                    cycleSelectedElement();
                     break;
-                case SPACE:
-                    return handleSpace();
+            }
+        }
+
+        else{
+            switch (keyEvent.getKeyEventType()) {
                 case TAB:
                     cycleSelectedElement();
                     break;
+                case ARROWKEYUP:
+                    return handleArrowKeyUp();
+                case ARROWKEYDOWN:
+                    return handleArrowKeyDown();
+                case SPACE:
+                    return handleSpace();
+                case CHAR:
+                    return handleChar(keyEvent);
+                case BACKSPACE:
+                    return handleBackSpace();
                 case CTRLE:
                     setDesignerMode(true);
-                    System.out.println("DESIGNER MODE ON");
-                case ENTER:
-                    if(designerMode){
-                        setDesignerMode(false);
-                        System.out.println("DESIGNER MODE OFF");
-                    }
-                default:
                     break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return new EmptyAction();
-    }*/
+    }
 
     /**
      * handle the backspace event
@@ -327,17 +328,28 @@ public class InvocationMessageDialogBox extends DialogBox {
      * @throws DomainException if illegal modifications are made
      */
     public Action handleBackSpace() {
-        if (selected instanceof TextBox) {
-            TextBox t = (TextBox) selected;
-            t.deleteLastCharFromContents();
-            if (t instanceof MethodTextBox) {
-                try {
-                    return changeMethod();
-                } catch (DomainException e) {
-                    e.printStackTrace();
+        if(!designerMode){
+            if (selected instanceof TextBox) {
+                TextBox t = (TextBox) selected;
+                t.deleteLastCharFromContents();
+                if (t instanceof MethodTextBox) {
+                    try {
+                        return changeMethod();
+                    } catch (DomainException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+        else{
+            DialogboxElement d = INVOCATIONMESSAGEBOXLIST.get(selectedindex);
+            d.deleteCharFromDescription();
+            if(!d.isValidDescription()){
+                setInvalidDescriptionMode(true);
+            }
+            return new UpdateListAction();
+        }
+
         return new EmptyAction();
     }
 
@@ -482,17 +494,21 @@ public class InvocationMessageDialogBox extends DialogBox {
     /**
      * handle the array key down event
      */
-    private void handleArrowKeyDown() {
-        ((ListBox)selected).setSelectedIndex(((ListBox)selected).getSelectedIndex() + 1);
+    private Action handleArrowKeyDown() {
         invocationMessageLabel.setIndex(invocationMessageLabel.getIndex() + 1);
+        this.listBoxIndex = invocationMessageLabel.getIndex();
+        setAllSelectedIndexes(findListBox(),listBoxIndex);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
      * handle the arrow key up event
      */
-    private void handleArrowKeyUp() {
-        ((ListBox)selected).setSelectedIndex(((ListBox)selected).getSelectedIndex() - 1);
+    private Action handleArrowKeyUp() {
         invocationMessageLabel.setIndex(invocationMessageLabel.getIndex() - 1);
+        this.listBoxIndex = invocationMessageLabel.getIndex();
+        setAllSelectedIndexes(findListBox(),listBoxIndex);
+        return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
     }
 
     /**
@@ -510,6 +526,7 @@ public class InvocationMessageDialogBox extends DialogBox {
      */
     @Override
     public void handleAction(Action action) {
+        System.out.println("HELLO");
         if (action instanceof RemoveInViewsAction) {
             RemoveInViewsAction a = (RemoveInViewsAction) action;
             for(DiagramElement element : a.getDeletedElements()) {
@@ -522,14 +539,21 @@ public class InvocationMessageDialogBox extends DialogBox {
             }
         }
         if (action instanceof UpdateLabelAction) {
+            System.out.println("HELLOO");
             UpdateLabelAction a = (UpdateLabelAction) action;
             InvocationMessage invocationMessage = (InvocationMessage) subwindow.getFacade().findParentElement(invocationMessageLabel);
             if (a.getElement().equals(invocationMessage)) {
                 //updateFields((InvocationMessage) a.getElement());
                 updateList();
             }
+
+            System.out.println(invocationMessageLabel.getIndex() + " is inv index2");
+            System.out.println(listBoxIndex + " is lb index2");
             this.listBoxIndex = invocationMessageLabel.getIndex();
             setAllSelectedIndexes(findListBox(),listBoxIndex);
+
+            System.out.println(invocationMessageLabel.getIndex() + " is inv index2");
+            System.out.println(listBoxIndex + " is lb index2");
         }
         if(action instanceof UpdateListAction){
             updateList();

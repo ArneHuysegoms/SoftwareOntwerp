@@ -266,6 +266,11 @@ public class PartyDialogBox extends DialogBox {
                     if (subwindow.getSelected() == a.getOldParty()) {
                         subwindow.setSelected(a.getNewParty());
                     }
+                    partyDialogBox.selectedindex = this.selectedindex;
+                    partyDialogBox.selected = this.selected;
+                    if(this.designerMode){
+                        partyDialogBox.setDesignerMode(true);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
