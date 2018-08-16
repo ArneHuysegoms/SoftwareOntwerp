@@ -92,7 +92,7 @@ public class ListBox extends DialogboxElement implements Clickable {
     @Override
     public DialogboxElement clone() {
         try {
-            return new ListBox(getCoordinate(),getDescription());
+            return new ListBox(getCoordinate(),"list box");
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -112,7 +112,7 @@ public class ListBox extends DialogboxElement implements Clickable {
      * @return null
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return null;
     }
     /**

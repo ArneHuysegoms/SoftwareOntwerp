@@ -220,7 +220,7 @@ public class PartyDialogBoxTest {
         assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
 
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actort");
+        assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
 
     }
@@ -231,10 +231,10 @@ public class PartyDialogBoxTest {
         assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
 
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actort");
+        assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
 
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actor");
+        assertEquals(partyDialogBox.getSelected().getDescription(), "Actor");
     }
 
     @Test

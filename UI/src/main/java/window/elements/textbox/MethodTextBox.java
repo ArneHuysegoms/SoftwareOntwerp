@@ -61,7 +61,7 @@ public class MethodTextBox extends TextBox {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return DESCRIPTION;
     }
 

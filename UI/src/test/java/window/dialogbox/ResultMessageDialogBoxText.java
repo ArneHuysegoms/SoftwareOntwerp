@@ -129,7 +129,7 @@ public class ResultMessageDialogBoxText {
         assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
 
         resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message labelt");
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message labelt");
         resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
 
     }
@@ -140,10 +140,10 @@ public class ResultMessageDialogBoxText {
         assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
 
         resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message labelt");
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message labelt");
 
         resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message label");
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message label");
     }
 
     @Test

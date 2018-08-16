@@ -2,23 +2,19 @@ package figures.drawable.subwindowFigures;
 
 import command.changeType.PartyCommand.ChangeToActorCommand;
 import command.changeType.PartyCommand.ChangeToObjectCommand;
-import diagram.DiagramElement;
 import diagram.party.Actor;
 import diagram.party.Object;
 import figures.drawable.diagramFigures.RadioButtonFigure;
 import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
-import figures.drawable.diagramFigures.SelectedTextBoxFigure;
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.PartyRadioButton;
-import window.elements.radiobutton.RadioButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
 
@@ -95,7 +91,6 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      */
     private void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         PartyRadioButton temp;
-        //for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
         for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof PartyRadioButton){
                 temp = (PartyRadioButton)ele;
@@ -122,19 +117,4 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
     private void drawRadioButtons(Graphics graphics) {
         this.drawRadioButtons(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
-
-    /**
-     * draws the dialog box's selected radio button
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    /*private void drawSelectedRadioButton(Graphics graphics) {
-        if (dialogBox.getParty() instanceof Actor) {
-            new SelectedRadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()),"")
-                    .draw(graphics);
-        } else if (dialogBox.getParty() instanceof Object) {
-            new SelectedRadioButtonFigure(dialogBox.getToObject(),  dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()),"")
-                    .draw(graphics);
-        }
-    }*/
 }

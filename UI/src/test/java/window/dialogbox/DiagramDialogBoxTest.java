@@ -14,7 +14,6 @@ import window.diagram.DiagramSubwindow;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.ToCommunicationRadioButton;
 import window.elements.radiobutton.ToSequenceRadioButton;
-import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -97,7 +96,7 @@ public class DiagramDialogBoxTest {
         assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
 
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communicationt");
+        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
 
     }
@@ -108,10 +107,10 @@ public class DiagramDialogBoxTest {
         assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
 
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communicationt");
+        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
 
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communication");
+        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communication");
     }
 
     @Test

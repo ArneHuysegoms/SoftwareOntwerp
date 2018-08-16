@@ -7,7 +7,6 @@ import diagram.message.ResultMessage;
 import diagram.party.Party;
 import exception.UIException;
 import window.Clickable;
-import window.Subwindow;
 import window.diagram.DiagramSubwindow;
 import window.elements.textbox.ArgumentTextBox;
 
@@ -19,7 +18,6 @@ import java.awt.geom.Point2D;
 public abstract class DialogboxElement implements Clickable, ICommandable {
 
     private Point2D coordinate;
-    private String description;
     private String contents;
 
     protected DialogboxElement() {
@@ -42,7 +40,6 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
          */
     public DialogboxElement(Point2D coordinate, String description) throws UIException {
         this.setCoordinate(coordinate);
-        this.setDescription(description);
         this.setContents("");
     }
 
@@ -82,7 +79,7 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
      * get static description
      * @return description
      */
-    public abstract String getStaticDescription();
+    public abstract String getDescription();
     /**
      * set static description
      */
@@ -99,22 +96,6 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
 
     public boolean isValidDescription(){
         return !this.getDescription().isEmpty();
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * sets the description to the given description
-     *
-     * @param description the new description
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -152,16 +133,14 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
      * add character from description
      */
     public void addCharToDescription(char c){
-        setStaticDescription(getStaticDescription() + c);
-        setDescription(getStaticDescription());
+        setStaticDescription(getDescription() + c);
     }
     /**
      * delete character from description
      */
     public void deleteCharFromDescription(){
-        if(getStaticDescription().length() > 0){
-            setStaticDescription(getStaticDescription().substring(0,getStaticDescription().length()-1));
-            setDescription(getStaticDescription());
+        if(getDescription().length() > 0){
+            setStaticDescription(getDescription().substring(0, getDescription().length()-1));
         }
     }
 
