@@ -54,8 +54,8 @@ public class InvocationMessageDialogBox extends DialogBox {
                     new ArgumentTextBox(new Point2D.Double(10, 75), "argument"),
                     new AddArgumentButton(new AddArgumentCommand(null,null,null,null), new Point2D.Double(10, 100),""),
                     new DeleteArgumentButton(new DeleteArgumentCommand(null,null,null), new Point2D.Double(50, 100), ""),
-                    new MoveDownButton(new MoveDownCommand(null,null,null,null),new Point2D.Double(90, 100),""),
-                    new MoveUpButton(new MoveDownCommand(null,null,null,null),new Point2D.Double(130, 100),""),
+                    new MoveDownButton(new MoveDownCommand(null,null,null),new Point2D.Double(90, 100),""),
+                    new MoveUpButton(new MoveDownCommand(null,null,null),new Point2D.Double(130, 100),""),
                     new ListBox(new Point2D.Double(10, 140), "")));
 
         }catch (UIException e){

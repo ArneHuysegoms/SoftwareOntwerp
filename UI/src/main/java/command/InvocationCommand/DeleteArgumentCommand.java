@@ -9,22 +9,16 @@ import window.diagram.DiagramSubwindow;
 import window.elements.ListBox;
 import window.elements.textbox.ArgumentTextBox;
 
-public class DeleteArgumentCommand extends Command {
-    private ListBox listBox;
-    private InvocationMessageLabel label;
-    private DiagramSubwindow subwindow;
+public class DeleteArgumentCommand extends InvocationCommand {
 
     public DeleteArgumentCommand(ListBox lb, InvocationMessageLabel iml, DiagramSubwindow diagramSubwindow){
-        this.listBox = lb;
-        this.label = iml;
-        this.subwindow = diagramSubwindow;
+        super(lb,iml,diagramSubwindow);
     }
 
     @Override
     public Action performAction() {
-        System.out.println();
-        label.deleteArgument(listBox.getSelectedIndex());
-        listBox.removeArgument();
-        return new UpdateLabelAction(subwindow.getFacade().findParentElement(label), label);
+        getInvocationMessageLabel().deleteArgument(getListBox().getSelectedIndex());
+        getListBox().removeArgument();
+        return new UpdateLabelAction(getDiagramSubwindow().getFacade().findParentElement(getInvocationMessageLabel()), getInvocationMessageLabel());
     }
 }

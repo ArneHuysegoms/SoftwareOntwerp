@@ -48,6 +48,6 @@ public class MoveDownButton extends DialogBoxButton {
      */
     @Override
     public void update(DiagramSubwindow subwindow, InvocationMessageLabel label, ListBox lb, ArgumentTextBox atb) {
-        this.setCommand(new MoveDownCommand(lb,atb,label,subwindow));
+        this.setCommand(new MoveDownCommand(lb,label,subwindow));
     }
 }

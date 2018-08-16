@@ -8,27 +8,16 @@ import window.diagram.DiagramSubwindow;
 import window.elements.ListBox;
 import window.elements.textbox.ArgumentTextBox;
 
-public class MoveDownCommand extends Command {
-    private ListBox listBox;
-    private ArgumentTextBox textBox;
-    private InvocationMessageLabel label;
-    private DiagramSubwindow subwindow;
+public class MoveDownCommand extends InvocationCommand {
 
-    public MoveDownCommand(ListBox lb, ArgumentTextBox atb, InvocationMessageLabel iml, DiagramSubwindow diagramSubwindow){
-        this.listBox = lb;
-        this.textBox = atb;
-        this.label = iml;
-        this.subwindow = diagramSubwindow;
-    }
-
-    public ListBox getListBox() {
-        return listBox;
+    public MoveDownCommand(ListBox lb, InvocationMessageLabel iml, DiagramSubwindow diagramSubwindow){
+        super(lb,iml,diagramSubwindow);
     }
 
     @Override
     public Action performAction() {
-        listBox.moveDown();
-        label.moveDown();
-        return new UpdateLabelAction(subwindow.getFacade().findParentElement(label), label);
+        getListBox().moveDown();
+        getInvocationMessageLabel().moveDown();
+        return new UpdateLabelAction(getDiagramSubwindow().getFacade().findParentElement(getInvocationMessageLabel()), getInvocationMessageLabel());
     }
 }

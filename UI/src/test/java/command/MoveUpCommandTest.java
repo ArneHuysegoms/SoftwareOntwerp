@@ -31,7 +31,7 @@ public class MoveUpCommandTest {
             textBox = new ArgumentTextBox(new Point2D.Double(110, 110),"listBox");
             label = new InvocationMessageLabel("jos",new ArrayList<String>());
             subwindow = new DiagramSubwindow(new Point2D.Double(100, 100));
-            moveUpCommand = new MoveUpCommand(listBox,textBox,label,subwindow);
+            moveUpCommand = new MoveUpCommand(listBox,label,subwindow);
         }catch(DomainException e){
             System.out.println("domainexception AddArgumentCommandTest setup");
             e.printStackTrace();
