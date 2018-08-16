@@ -25,16 +25,26 @@ public class ToSequenceRadioButton extends DiagramRadioButton{
         super(command, coordinate, description);
     }
 
+    /**
+     * update command
+     * @param sub
+     */
     @Override
     public void update(DiagramSubwindow sub) {
         this.setCommand(new ChangeToSequenceCommand(sub));
 
     }
-
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return DESCRIPTION;
     }
+    /**
+     * set static description
+     */
     @Override
     public void setStaticDescription(String s){
         DESCRIPTION = s;

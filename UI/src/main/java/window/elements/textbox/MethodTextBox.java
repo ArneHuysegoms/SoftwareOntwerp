@@ -75,6 +75,10 @@ public class MethodTextBox extends TextBox {
 
     }
 
+    /**
+     * update contents
+     * @param iml
+     */
     @Override
     public void update(InvocationMessageLabel iml){
         if(iml != null){

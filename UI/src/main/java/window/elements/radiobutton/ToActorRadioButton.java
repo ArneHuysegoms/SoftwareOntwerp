@@ -26,11 +26,17 @@ public class ToActorRadioButton extends PartyRadioButton {
     public ToActorRadioButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate, DESCRIPTION);
     }
-
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return DESCRIPTION;
     }
+    /**
+     * set static description
+     */
     @Override
     public void setStaticDescription(String s){
         DESCRIPTION = s;

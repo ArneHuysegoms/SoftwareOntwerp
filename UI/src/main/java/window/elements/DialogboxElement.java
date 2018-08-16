@@ -142,6 +142,10 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
     @Override
     public abstract boolean isClicked(Point2D coordinate);
 
+    /**
+     * clone
+     * @return dialogBoxElement
+     */
     public abstract DialogboxElement clone();
 
     /**

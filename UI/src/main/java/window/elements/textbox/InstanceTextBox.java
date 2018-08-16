@@ -64,6 +64,11 @@ public class InstanceTextBox extends TextBox {
         return getContents().equals("") || Party.isValidInstanceString(this.getContents());
     }
 
+    /**
+     * update contents
+     * @param diagramSubwindow
+     * @param party
+     */
     @Override
     public void update(DiagramSubwindow diagramSubwindow, Party party){
         String[] labels = party.getLabel().getLabel().split(":");

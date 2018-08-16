@@ -26,15 +26,26 @@ public class ToObjectRadioButton extends PartyRadioButton {
         super(command, coordinate, description);
     }
 
+    /**
+     * update command
+     * @param subwindow
+     * @param party
+     */
     @Override
     public void update(DiagramSubwindow subwindow, Party party) {
         this.setCommand(new ChangeToObjectCommand(subwindow,party));
     }
-
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return DESCRIPTION;
     }
+    /**
+     * set static description
+     */
     @Override
     public void setStaticDescription(String s){
         DESCRIPTION = s;

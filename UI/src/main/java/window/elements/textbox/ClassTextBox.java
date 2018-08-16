@@ -65,6 +65,11 @@ public class ClassTextBox extends TextBox {
         return super.hasValidContents() && Party.isValidClassString(getContents());
     }
 
+    /**
+     * update contents
+     * @param diagramSubwindow
+     * @param party
+     */
     @Override
     public void update(DiagramSubwindow diagramSubwindow, Party party){
         String[] labels = party.getLabel().getLabel().split(":");

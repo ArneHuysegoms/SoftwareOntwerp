@@ -107,11 +107,17 @@ public class ListBox extends DialogboxElement implements Clickable {
                     .collect(Collectors.toList()));
         }
     }
-
+    /**
+     * get static description
+     * @return null
+     */
     @Override
     public String getStaticDescription(){
         return null;
     }
+    /**
+     * set static description
+     */
     @Override
     public void setStaticDescription(String s){
 
@@ -197,5 +203,30 @@ public class ListBox extends DialogboxElement implements Clickable {
     @Override
     public Action performAction(){
         return new UpdateInvocationMessageLabelAction(getSelectedIndex());
+    }
+
+    /**
+     * add character from description, override do nothing since dialogboxbuttosn don't have description
+     */
+    @Override
+    public void addCharToDescription(char c){
+
+    }
+    /**
+     * delete character from description, override do nothing since dialogboxbuttons don't have description
+     */
+    @Override
+    public void deleteCharFromDescription(){
+
+    }
+
+    /**
+     * checks if valid description
+     * our dialogboxbuttons don't have a description, so will always return true
+     * @return true
+     */
+    @Override
+    public boolean isValidDescription(){
+        return true;
     }
 }
