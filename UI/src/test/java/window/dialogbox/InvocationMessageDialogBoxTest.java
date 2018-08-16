@@ -46,11 +46,15 @@ public class InvocationMessageDialogBoxTest {
         try {
             interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
+            CloseWindowButton closeWindowButton2 =new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
+            diagramSubwindow.createFrame(closeWindowButton2);
+
             invocationMessageLabel = new InvocationMessageLabel("a", new ArrayList<>());
             invocationMessage = new InvocationMessage(null, invocationMessageLabel, new Actor(new PartyLabel("a:A")), new Actor(new PartyLabel("b:B")));
             invocationMessageDialogBox = new InvocationMessageDialogBox(new Point2D.Double(50, 50), invocationMessageLabel, diagramSubwindow);
             Button closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(invocationMessageDialogBox, interactionController));
             invocationMessageDialogBox.createFrame(closeWindowButton);
+            interactionController.addSubwindow(invocationMessageDialogBox);
 
             for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
                 if(ele instanceof MethodTextBox)
@@ -403,8 +407,7 @@ public class InvocationMessageDialogBoxTest {
 
     private void add_argument1(){
         for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
-            if(ele instanceof ArgumentTextBox) {
-                invocationMessageDialogBox.selected = ele;
+            if(invocationMessageDialogBox.getSelected() == ele) {
                 break;
             }
         }
