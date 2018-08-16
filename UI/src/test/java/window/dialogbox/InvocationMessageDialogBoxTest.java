@@ -39,7 +39,7 @@ public class InvocationMessageDialogBoxTest {
     private DiagramSubwindow diagramSubwindow;
     private InvocationMessageDialogBox invocationMessageDialogBox;
     private InteractionController interactionController;
-    
+
     @Before
     public void setUp(){
         try {
@@ -60,7 +60,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_default_constructor(){
         assertEquals(7, invocationMessageDialogBox.getElementList().size());
         assertEquals(invocationMessageLabel, invocationMessageDialogBox.getInvocationMessageLabel());
@@ -71,7 +71,7 @@ public class InvocationMessageDialogBoxTest {
         assertNotEquals("", ((MethodTextBox)invocationMessageDialogBox.selected).getContents());
     }
 
-
+    @Test
     public void test_handleTab(){
         assertTrue(invocationMessageDialogBox.selected instanceof MethodTextBox);
 
@@ -97,7 +97,7 @@ public class InvocationMessageDialogBoxTest {
         assertTrue(invocationMessageDialogBox.selected instanceof MethodTextBox);
     }
 
-
+    @Test
     public void test_handle_adding_and_deleting_chars_method(){
         assertTrue(invocationMessageDialogBox.selected instanceof MethodTextBox);
         String initialMethodTextBoxContent = ((MethodTextBox)invocationMessageDialogBox.selected).getContents();
@@ -116,7 +116,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(initialMethodTextBoxContent.substring(0,1), invocationMessageLabel.getLabel());
     }
 
-
+    @Test
     public void test_handle_adding_deleting_chars_argumentTextBox(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         assertTrue(invocationMessageDialogBox.selected instanceof ArgumentTextBox);
@@ -130,7 +130,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:", ((ArgumentTextBox)invocationMessageDialogBox.selected).getContents());
     }
 
-
+    @Test
     public void test_handle_addArgument(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         assertTrue(invocationMessageDialogBox.selected instanceof ArgumentTextBox);
@@ -152,7 +152,7 @@ public class InvocationMessageDialogBoxTest {
         assertTrue(((ListBox)invocationMessageDialogBox.selected).getArguments().contains("a:A"));
     }
 
-
+    @Test
     public void test_handleArgumentListBox(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -160,7 +160,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(0, ((ListBox)invocationMessageDialogBox.selected).getSelectedIndex());
     }
 
-
+    @Test
     public void test_delete_argument(){
         add_argument1();
         assertEquals(1, invocationMessageLabel.getArguments().size());
@@ -179,7 +179,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(0, invocationMessageLabel.getArguments().size());
     }
 
-
+    @Test
     public void test_moveDown(){
         add_argument2();
         assertEquals(2, invocationMessageLabel.getArguments().size());
@@ -209,7 +209,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
     }
 
-
+    @Test
     public void test_moveUp(){
         test_moveDown();
         while(!(invocationMessageDialogBox.getSelected() instanceof MoveUpButton)){
@@ -225,7 +225,7 @@ public class InvocationMessageDialogBoxTest {
 
     }
 
-
+    @Test
     public void test_select_by_arrowDownKey(){
         add_argument2();
 
@@ -240,14 +240,14 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(1, ((ListBox)invocationMessageDialogBox.getSelected()).getSelectedIndex());
     }
 
-
+    @Test
     public void test_select_by_arrowKeyUp(){
         test_select_by_arrowDownKey();
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ARROWKEYUP));
         assertEquals(1, ((ListBox)invocationMessageDialogBox.getSelected()).getSelectedIndex());
     }
 
-
+    @Test
     public void test_MousePressed(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -272,7 +272,7 @@ public class InvocationMessageDialogBoxTest {
         assertTrue(invocationMessageDialogBox.getSelected() instanceof DeleteArgumentButton);
     }
 
-
+    @Test
     public void test_handleAction_RemoveInReposAction(){
         Set<DiagramElement> diagramElementSet = new HashSet<>();
         diagramElementSet.add(invocationMessage);
@@ -280,7 +280,7 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleAction(action);
     }
 
-
+    @Test
     public void test_handleAction_UpdateLabelAction() throws DomainException {
         invocationMessage.getLabel().setLabel("method");
         invocationMessageLabel.addArgument("test");
@@ -415,7 +415,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_default_constructor(){
         for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
             if(ele instanceof MethodTextBox) {
@@ -457,7 +457,7 @@ public class InvocationMessageDialogBoxTest {
 
     }
 
-
+    @Test
     public void test_handleTab(){
 
         for(DialogboxElement ele : invocationMessageDialogBox.getElementList()) {
@@ -516,7 +516,7 @@ public class InvocationMessageDialogBoxTest {
 
     }
 
-
+    @Test
     public void test_handle_adding_and_deleting_chars_method(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         assertEquals("aa", invocationMessageLabel.getLabel());
@@ -541,7 +541,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_handle_adding_deleting_chars_argumentTextBox(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
@@ -559,7 +559,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_handle_addArgument(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
@@ -576,7 +576,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_handleArgumentListBox(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -587,7 +587,7 @@ public class InvocationMessageDialogBoxTest {
 
     }
 
-
+    @Test
     public void test_delete_argument(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -605,7 +605,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(0, invocationMessageLabel.getArguments().size());
     }
 
-
+    @Test
     public void test_moveDown(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -632,7 +632,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
     }
 
-
+    @Test
     public void test_moveUp(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,164)));
@@ -658,7 +658,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
     }
 
-
+    @Test
     public void test_select_by_arrowDownKey(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -675,7 +675,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_select_by_arrowKeyUp(){
         add_argument2();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,164)));
@@ -692,7 +692,7 @@ public class InvocationMessageDialogBoxTest {
         }
     }
 
-
+    @Test
     public void test_MousePressed(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -738,7 +738,7 @@ public class InvocationMessageDialogBoxTest {
 
         }}
 
-
+    @Test
     public void test_handleAction_RemoveInReposAction(){
         Set<DiagramElement> diagramElementSet = new HashSet<>();
         diagramElementSet.add(invocationMessage);
@@ -746,7 +746,7 @@ public class InvocationMessageDialogBoxTest {
         invocationMessageDialogBox.handleAction(action);
     }
 
-
+    @Test
     public void test_handleAction_UpdateLabelAction() throws DomainException {
         invocationMessage.getLabel().setLabel("method");
         invocationMessageLabel.addArgument("test");
