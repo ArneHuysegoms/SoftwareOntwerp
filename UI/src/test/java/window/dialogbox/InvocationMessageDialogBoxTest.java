@@ -130,7 +130,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:", ((ArgumentTextBox)invocationMessageDialogBox.selected).getContents());
     }
 
-    @Test
+
     public void test_handle_addArgument(){
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
         assertTrue(invocationMessageDialogBox.selected instanceof ArgumentTextBox);
@@ -152,7 +152,7 @@ public class InvocationMessageDialogBoxTest {
         assertTrue(((ListBox)invocationMessageDialogBox.selected).getArguments().contains("a:A"));
     }
 
-    @Test
+
     public void test_handleArgumentListBox(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
@@ -160,7 +160,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(0, ((ListBox)invocationMessageDialogBox.selected).getSelectedIndex());
     }
 
-    @Test
+
     public void test_delete_argument(){
         add_argument1();
         assertEquals(1, invocationMessageLabel.getArguments().size());
@@ -179,7 +179,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(0, invocationMessageLabel.getArguments().size());
     }
 
-    @Test
+
     public void test_moveDown(){
         add_argument2();
         assertEquals(2, invocationMessageLabel.getArguments().size());
@@ -209,7 +209,7 @@ public class InvocationMessageDialogBoxTest {
         assertEquals("a:A", invocationMessageLabel.getArguments().get(1).toString());
     }
 
-    @Test
+
     public void test_moveUp(){
         test_moveDown();
         while(!(invocationMessageDialogBox.getSelected() instanceof MoveUpButton)){
@@ -225,7 +225,7 @@ public class InvocationMessageDialogBoxTest {
 
     }
 
-    @Test
+
     public void test_select_by_arrowDownKey(){
         add_argument2();
 
@@ -240,14 +240,14 @@ public class InvocationMessageDialogBoxTest {
         assertEquals(1, ((ListBox)invocationMessageDialogBox.getSelected()).getSelectedIndex());
     }
 
-    @Test
+
     public void test_select_by_arrowKeyUp(){
         test_select_by_arrowDownKey();
         invocationMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ARROWKEYUP));
         assertEquals(1, ((ListBox)invocationMessageDialogBox.getSelected()).getSelectedIndex());
     }
 
-    @Test
+
     public void test_MousePressed(){
         add_argument1();
         invocationMessageDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(10,150)));
