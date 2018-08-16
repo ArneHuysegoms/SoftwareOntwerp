@@ -48,6 +48,6 @@ public class MoveUpButton extends DialogBoxButton {
      */
     @Override
     public void update(DiagramSubwindow subwindow, InvocationMessageLabel label, ListBox lb, ArgumentTextBox atb) {
-        this.setCommand(new MoveUpCommand(lb,atb,label,subwindow));
+        this.setCommand(new MoveUpCommand(lb,label,subwindow));
     }
 }

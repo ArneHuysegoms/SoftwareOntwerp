@@ -10,26 +10,21 @@ import window.elements.ListBox;
 import window.elements.textbox.ArgumentTextBox;
 import window.elements.textbox.TextBox;
 
-public class AddArgumentCommand extends Command {
-    private ListBox listBox;
+public class AddArgumentCommand extends InvocationCommand {
     private ArgumentTextBox textBox;
-    private InvocationMessageLabel label;
-    private DiagramSubwindow subwindow;
 
     public AddArgumentCommand(ListBox lb, ArgumentTextBox atb, InvocationMessageLabel iml, DiagramSubwindow diagramSubwindow){
-        this.listBox = lb;
+        super(lb,iml,diagramSubwindow);
         this.textBox = atb;
-        this.label = iml;
-        this.subwindow = diagramSubwindow;
     }
 
     @Override
     public Action performAction() {
         if (textBox.hasValidContents()) {
             String argumentString = textBox.getContents();
-            listBox.addArgument(argumentString);
-            label.addArgument(argumentString);
-            return new UpdateLabelAction(subwindow.getFacade().findParentElement(label), label);
+            getListBox().addArgument(argumentString);
+            getInvocationMessageLabel().addArgument(argumentString);
+            return new UpdateLabelAction(getDiagramSubwindow().getFacade().findParentElement(getInvocationMessageLabel()), getInvocationMessageLabel());
         }
         return new EmptyAction();
     }
