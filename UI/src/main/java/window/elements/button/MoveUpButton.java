@@ -21,6 +21,7 @@ public class MoveUpButton extends DialogBoxButton {
      * @param description the description for this DialogBoxButton
      * @throws UIException throws an uiexception if the command is invalid
      */
+
     public MoveUpButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate, description);
     }
@@ -37,6 +38,15 @@ public class MoveUpButton extends DialogBoxButton {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String getStaticDescription(){
+        return null;
+    }
+    @Override
+    public void setStaticDescription(String s){
+
     }
 
     /**

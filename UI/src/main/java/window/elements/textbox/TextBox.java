@@ -16,8 +16,6 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
     public static final int HEIGHT = 14;
     public static final int WIDTH = 70;
 
-    private String contents;
-
     /**
      * creates a new textbox with the given paramters
      *
@@ -28,23 +26,6 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
     public TextBox(Point2D coordinate, String description) throws UIException {
         super(coordinate, description);
         this.setContents("");
-    }
-
-    /**
-     * @return the contents of the textbox
-     */
-    public String getContents() {
-        return contents;
-    }
-
-
-    /**
-     * sets the contents to the given contents
-     *
-     * @param contents the new contents
-     */
-    public void setContents(String contents) {
-        this.contents = contents;
     }
 
     /**
@@ -62,33 +43,24 @@ public abstract class TextBox extends DialogboxElement implements Clickable {
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
 
+
+
     /**
-     * returns if the textbox has valid contents
-     *
-     * @return ture if the contents are valid
+     * add character from description
      */
-    public boolean hasValidContents() {
-        return !this.getContents().isEmpty();
+    @Override
+    public void addCharToDescription(char c){
+        setStaticDescription(getStaticDescription() + c);
+        setDescription(getStaticDescription());
     }
-
-
     /**
-     * adds the given char to the contents
-     *
-     * @param toAdd the char to add
+     * delete character from description
      */
-    public void addCharToContents(char toAdd) {
-        this.contents += toAdd;
-    }
-
-    /**
-     * deletes the last char from the contents
-     */
-    public void deleteLastCharFromContents() {
-        if (contents.length() > 1) {
-            this.setContents(this.getContents().substring(0, this.getContents().length() - 1));
-        } else {
-            this.setContents("");
+    @Override
+    public void deleteCharFromDescription(){
+        if(getStaticDescription().length() > 0){
+            setStaticDescription(getStaticDescription().substring(0,getStaticDescription().length()-1));
+            setDescription(getStaticDescription());
         }
     }
 }

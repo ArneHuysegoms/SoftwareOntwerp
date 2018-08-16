@@ -23,6 +23,14 @@ public class DeleteArgumentButton extends DialogBoxButton {
     public DeleteArgumentButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate,"");
     }
+    @Override
+    public String getStaticDescription(){
+        return null;
+    }
+    @Override
+    public void setStaticDescription(String s){
+
+    }
 
     /**
      * clones object

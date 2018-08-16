@@ -8,7 +8,6 @@ import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.button.DialogBoxButton;
 import window.elements.radiobutton.RadioButton;
-import window.elements.button.FakeButtons.FakeButton;
 import window.elements.textbox.TextBox;
 import window.frame.SubwindowFrame;
 import window.frame.TitleBar;
@@ -29,7 +28,7 @@ public abstract class DialogBoxSubwindowFigure extends SubwindowFigure {
      * @param selected the selected element
      * @param absolutePosition the position of the selected element
      */
-    protected void handleSelectedElement(Graphics graphics, DialogboxElement selected, Point2D absolutePosition) {
+    /*protected void handleSelectedElement(Graphics graphics, DialogboxElement selected, Point2D absolutePosition) {
         if(selected!=null) {
             if (selected instanceof TextBox) {
                 drawSelectedTextBoxFigure(graphics, (TextBox) selected, absolutePosition);
@@ -52,7 +51,7 @@ public abstract class DialogBoxSubwindowFigure extends SubwindowFigure {
                 new SelectionBoxFigure(start, end, Color.BLUE).draw(graphics, 0, 0, 2000, 2000);
             }
         }
-    }
+    }*/
 
     /**
      * method that draws a box around the selected element

@@ -67,7 +67,6 @@ public class PartyDialogBox extends DialogBox {
 
         this.setWidth(WIDTH);
         this.setHeight(HEIGHT);
-        //updateFields(party);
         updateList();
         this.selectedindex = 0;
         if (elementList.size() > 0) {
@@ -134,12 +133,9 @@ public class PartyDialogBox extends DialogBox {
     @Override
     protected Action handleBackSpace() {
         if (!designerMode) {
-            if (selected instanceof TextBox) {
-                TextBox t = (TextBox) selected;
-                t.deleteLastCharFromContents();
-                if (t.hasValidContents()) {
-                    return changePartyLabel(t.getContents());
-                }
+            selected.deleteLastCharFromContents();
+            if (selected.hasValidContents()) {
+                return changePartyLabel(selected.getContents());
             }
             return new EmptyAction();
         } else {
@@ -161,12 +157,9 @@ public class PartyDialogBox extends DialogBox {
     @Override
     public Action handleChar(KeyEvent keyEvent) {
         if (!designerMode) {
-            if (selected instanceof TextBox) {
-                TextBox t = (TextBox) selected;
-                t.addCharToContents(keyEvent.getKeyChar());
-                if (t.hasValidContents()) {
-                    return changePartyLabel(t.getContents());
-                }
+            selected.addCharToContents(keyEvent.getKeyChar());
+            if (selected.hasValidContents()) {
+                return changePartyLabel(selected.getContents());
             }
             return new EmptyAction();
         } else {

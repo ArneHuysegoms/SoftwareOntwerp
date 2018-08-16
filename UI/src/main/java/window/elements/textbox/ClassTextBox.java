@@ -27,6 +27,16 @@ public class ClassTextBox extends TextBox {
         super(coordinate, DESCRIPTION);
     }
 
+    @Override
+    public String getStaticDescription() {
+        return DESCRIPTION;
+    }
+
+    @Override
+    public void setStaticDescription(String s) {
+        DESCRIPTION = s;
+    }
+
     /**
      * clones object
      * @return new object
@@ -56,24 +66,6 @@ public class ClassTextBox extends TextBox {
             this.setContents(labels[1]);
         } else {
             this.setContents(labels[0]);
-        }
-    }
-    /**
-     * add character from description
-     */
-    @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
-    }
-    /**
-     * delete character from description
-     */
-    @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
         }
     }
 }

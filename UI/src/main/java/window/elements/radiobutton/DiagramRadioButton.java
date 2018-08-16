@@ -23,6 +23,4 @@ public abstract class DiagramRadioButton extends RadioButton{
     public DiagramRadioButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate, description);
     }
-
-
 }

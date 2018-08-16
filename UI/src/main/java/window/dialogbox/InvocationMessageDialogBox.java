@@ -15,15 +15,10 @@ import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.button.AddArgumentButton;
 import window.elements.button.DeleteArgumentButton;
-import window.elements.button.FakeButtons.AddArgumentFakeButton;
-import window.elements.button.FakeButtons.DeleteArgumentFakeButton;
-import window.elements.button.FakeButtons.MoveDownFakeButton;
-import window.elements.button.FakeButtons.MoveUpFakeButton;
 import window.elements.button.MoveDownButton;
 import window.elements.button.MoveUpButton;
 import window.elements.textbox.ArgumentTextBox;
 import window.elements.textbox.MethodTextBox;
-import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -284,15 +279,13 @@ public class InvocationMessageDialogBox extends DialogBox {
      */
     public Action handleBackSpace() {
         if(!designerMode){
-            if (selected instanceof TextBox) {
-                TextBox t = (TextBox) selected;
-                t.deleteLastCharFromContents();
-                if (t instanceof MethodTextBox) {
-                    try {
-                        return changeMethod();
-                    } catch (DomainException e) {
-                        e.printStackTrace();
-                    }
+
+            selected.deleteLastCharFromContents();
+            if (selected instanceof MethodTextBox) {
+                try {
+                    return changeMethod();
+                } catch (DomainException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -318,15 +311,12 @@ public class InvocationMessageDialogBox extends DialogBox {
     public Action handleChar(KeyEvent keyEvent){
         if(!designerMode){
 
-            if (selected instanceof TextBox) {
-                TextBox t = (TextBox) selected;
-                t.addCharToContents(keyEvent.getKeyChar());
-                if (t instanceof MethodTextBox) {
-                    try {
-                        return changeMethod();
-                    } catch (DomainException e) {
-                        e.printStackTrace();
-                    }
+            selected.addCharToContents(keyEvent.getKeyChar());
+            if (selected instanceof MethodTextBox) {
+                try {
+                    return changeMethod();
+                } catch (DomainException e) {
+                    e.printStackTrace();
                 }
             }
             return new EmptyAction();
@@ -346,13 +336,14 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     /**
      * change the method of the invocation message
+     * selected can only be MethodTextBox here
      *
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications are made
      */
     private Action changeMethod() throws DomainException {
-        if (((MethodTextBox)selected).hasValidContents()) {
-            invocationMessageLabel.setLabel(((MethodTextBox)selected).getContents());
+        if ((selected).hasValidContents()) {
+            invocationMessageLabel.setLabel((selected).getContents());
             return new UpdateLabelAction(subwindow.getFacade().findParentElement(invocationMessageLabel), invocationMessageLabel);
         }
         return new EmptyAction();

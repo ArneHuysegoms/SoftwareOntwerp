@@ -26,6 +26,16 @@ public class ArgumentTextBox extends TextBox {
         super(coordinate, DESCRIPTION);
     }
 
+    @Override
+    public String getStaticDescription() {
+        return DESCRIPTION;
+    }
+
+    @Override
+    public void setStaticDescription(String s) {
+        DESCRIPTION = s;
+    }
+
     /**
      * clones object
      * @return new object
@@ -51,23 +61,5 @@ public class ArgumentTextBox extends TextBox {
             return ! (s.contains(",") || s.contains("(") || s.contains(")"));
         }
         return false;
-    }
-    /**
-     * add character from description
-     */
-    @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
-    }
-    /**
-     * delete character from description
-     */
-    @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
-        }
     }
 }

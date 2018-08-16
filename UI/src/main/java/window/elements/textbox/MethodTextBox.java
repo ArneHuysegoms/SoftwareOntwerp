@@ -57,6 +57,15 @@ public class MethodTextBox extends TextBox {
         this.setContents(rm.getLabel().getLabel());
     }
 
+    @Override
+    public String getStaticDescription(){
+        return DESCRIPTION;
+    }
+    @Override
+    public void setStaticDescription(String s){
+        DESCRIPTION = s;
+
+    }
 
     @Override
     public void update(InvocationMessageLabel iml){
@@ -66,23 +75,4 @@ public class MethodTextBox extends TextBox {
 
 
     }
-    /**
-     * add character from description
-     */
-    @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
-    }
-    /**
-     * delete character from description
-     */
-    @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
-        }
-    }
-
 }

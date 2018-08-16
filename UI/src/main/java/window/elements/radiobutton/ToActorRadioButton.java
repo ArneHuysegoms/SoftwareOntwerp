@@ -27,25 +27,14 @@ public class ToActorRadioButton extends PartyRadioButton {
         super(command, coordinate, DESCRIPTION);
     }
 
-    /**
-     * add character to description
-     * @param c
-     */
     @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
+    public String getStaticDescription(){
+        return DESCRIPTION;
     }
-
-    /**
-     * delete character from description
-     */
     @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
-        }
+    public void setStaticDescription(String s){
+        DESCRIPTION = s;
+
     }
 
     /**

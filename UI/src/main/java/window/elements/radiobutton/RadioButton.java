@@ -60,6 +60,12 @@ public abstract class RadioButton extends DialogboxElement implements Clickable 
         return getCommand().performAction();
     }
 
+
+    @Override
+    public boolean hasValidContents() {
+        return false;
+    }
+
     /**
      * @param location the location of the click
      * @return true if this radiobutton is clicked
@@ -71,5 +77,21 @@ public abstract class RadioButton extends DialogboxElement implements Clickable 
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+    }
+
+    @Override
+    public void addCharToDescription(char c){
+        setStaticDescription(getStaticDescription() + c);
+        setDescription(getStaticDescription());
+    }
+    /**
+     * delete character from description
+     */
+    @Override
+    public void deleteCharFromDescription(){
+        if(getStaticDescription().length() > 0){
+            setStaticDescription(getStaticDescription().substring(0,getStaticDescription().length()-1));
+            setDescription(getStaticDescription());
+        }
     }
 }

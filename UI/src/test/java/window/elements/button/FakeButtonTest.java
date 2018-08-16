@@ -2,8 +2,6 @@ package window.elements.button;
 
 import exception.UIException;
 import org.junit.Test;
-import window.elements.button.FakeButtons.FakeButton;
-import window.elements.button.FakeButtons.TextualFakeButton;
 
 import java.awt.geom.Point2D;
 

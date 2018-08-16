@@ -141,8 +141,9 @@ public class ResultMessageDialogBox extends DialogBox {
     @Override
     public Action handleBackSpace(){
         if(!designerMode) {
-            if (((TextBox) selected).hasValidContents()) {
-                ((TextBox) selected).deleteLastCharFromContents();
+
+            selected.deleteLastCharFromContents();
+            if (selected.hasValidContents()) {
                 try {
                     return changeResultMessageLabel();
                 } catch (DomainException e) {
@@ -172,8 +173,9 @@ public class ResultMessageDialogBox extends DialogBox {
     @Override
     public Action handleChar(KeyEvent keyEvent) {
         if (!designerMode) {
-            ((TextBox) selected).addCharToContents(keyEvent.getKeyChar());
-            if (((TextBox) selected).hasValidContents()) {
+
+            selected.addCharToContents(keyEvent.getKeyChar());
+            if (selected.hasValidContents()) {
                 try {
                     return changeResultMessageLabel();
                 } catch (DomainException e) {

@@ -5,7 +5,6 @@ import window.dialogbox.InvocationMessageDialogBox;
 import window.elements.DialogboxElement;
 import window.elements.ListBox;
 import window.elements.button.*;
-import window.elements.button.FakeButtons.*;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
@@ -84,7 +83,6 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawButtons(Graphics graphics, int selectedIndex, int minX, int minY, int maxX, int maxY) {
-        FakeButton tempBut;
         DialogBoxButton tempBut2;
         Color temp = graphics.getColor();
         for(DialogboxElement ele : dialogBox.getElementList()){

@@ -313,7 +313,7 @@ public class DomainFacade {
                     return addedMessages;
                 }
                 else{
-                    throw new IllegalStateException("New messages weren't added");
+                    //throw new IllegalStateException("New messages weren't added");
                 }
             }
         }

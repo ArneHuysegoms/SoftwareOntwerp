@@ -27,28 +27,18 @@ public class ToCommunicationRadioButton extends DiagramRadioButton {
     @Override
     public void update(DiagramSubwindow sub) {
         this.setCommand(new ChangeToCommunicationCommand(sub));
-
     }
 
-    /**
-     * add character from description
-     */
     @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
+    public String getStaticDescription(){
+        return DESCRIPTION;
+    }
+    @Override
+    public void setStaticDescription(String s){
+        DESCRIPTION = s;
+
     }
 
-    /**
-     * delete character from description
-     */
-    @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
-        }
-    }
     /**
      * clones object
      * @return clone

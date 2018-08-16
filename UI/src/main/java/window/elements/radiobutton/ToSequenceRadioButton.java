@@ -27,29 +27,18 @@ public class ToSequenceRadioButton extends DiagramRadioButton{
 
     @Override
     public void update(DiagramSubwindow sub) {
-        //((DiagramCommand)getCommand()).setDiagramSubwindow(sub);
         this.setCommand(new ChangeToSequenceCommand(sub));
 
     }
 
-    /**
-     * add character from description
-     */
     @Override
-    public void addCharToDescription(char c){
-        DESCRIPTION += c;
-        setDescription(DESCRIPTION);
+    public String getStaticDescription(){
+        return DESCRIPTION;
     }
-
-    /**
-     * delete character from description
-     */
     @Override
-    public void deleteCharFromDescription(){
-        if(DESCRIPTION.length() > 0){
-            DESCRIPTION = DESCRIPTION.substring(0,DESCRIPTION.length()-1);
-            setDescription(DESCRIPTION);
-        }
+    public void setStaticDescription(String s){
+        DESCRIPTION = s;
+
     }
 
     /**

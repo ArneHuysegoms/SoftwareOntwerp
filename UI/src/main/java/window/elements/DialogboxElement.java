@@ -20,6 +20,7 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
 
     private Point2D coordinate;
     private String description;
+    private String contents;
 
     protected DialogboxElement() {
 
@@ -42,6 +43,40 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
     public DialogboxElement(Point2D coordinate, String description) throws UIException {
         this.setCoordinate(coordinate);
         this.setDescription(description);
+        this.setContents("");
+    }
+
+    /**
+     * @return the contents of the textbox
+     */
+    public String getContents() {
+        return contents;
+    }
+
+
+    /**
+     * sets the contents to the given contents
+     *
+     * @param contents the new contents
+     */
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+
+    public void addCharToContents(char toAdd) {
+        this.contents += toAdd;
+    }
+
+    /**
+     * deletes the last char from the contents
+     */
+    public void deleteLastCharFromContents() {
+        if (this.contents.length() > 1) {
+            this.setContents(this.getContents().substring(0, this.getContents().length() - 1));
+        } else {
+            this.setContents("");
+        }
     }
 
     public void addCharToDescription(char c){
@@ -52,6 +87,19 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
             setDescription(description.substring(0,description.length()-1));
         }
     }
+
+    public abstract String getStaticDescription();
+    public abstract void setStaticDescription(String s);
+
+    /**
+     * returns if the textbox has valid contents
+     *
+     * @return ture if the contents are valid
+     */
+    public boolean hasValidContents() {
+        return !this.getContents().isEmpty();
+    }
+
     public boolean isValidDescription(){
         return !this.getDescription().isEmpty();
     }

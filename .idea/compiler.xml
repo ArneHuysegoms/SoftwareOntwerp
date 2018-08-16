@@ -8,6 +8,7 @@
       <file url="file://$PROJECT_DIR$/UI/src/test/java/window/dialogbox/DialogBoxTestSuite.java" />
       <file url="file://$PROJECT_DIR$/UI/src/test/java/window/elements/button/FakeButtonTest.java" />
       <file url="file://$PROJECT_DIR$/UI/src/test/java/window/dialogbox/DiagramDialogBoxTest.java" />
+      <file url="file://$PROJECT_DIR$/UI/src/test/java/window/dialogbox/InvocationMessageDialogBoxTest.java" />
     </excludeFromCompile>
   </component>
 </project>

@@ -38,6 +38,14 @@ public class MoveDownButton extends DialogBoxButton {
         }
         return null;
     }
+    @Override
+    public String getStaticDescription(){
+        return null;
+    }
+    @Override
+    public void setStaticDescription(String s){
+
+    }
 
     /**
      * updates command

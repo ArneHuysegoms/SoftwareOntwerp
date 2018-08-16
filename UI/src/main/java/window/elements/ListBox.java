@@ -86,7 +86,6 @@ public class ListBox extends DialogboxElement implements Clickable {
             selectArgument(location);
             System.out.println(this);
         }
-        //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
     }
 
@@ -107,6 +106,16 @@ public class ListBox extends DialogboxElement implements Clickable {
                     .map(s -> s.toString())
                     .collect(Collectors.toList()));
         }
+    }
+
+    @Override
+    public String getStaticDescription(){
+        return null;
+    }
+    @Override
+    public void setStaticDescription(String s){
+
+
     }
 
     /**
@@ -155,11 +164,9 @@ public class ListBox extends DialogboxElement implements Clickable {
      * swaps the selected argument with the argument above it
      */
     public void moveUp() {
-        System.out.println("MOVEUPPPPPPPPPPPPPPPPPPPPPP" + this + " " + selectedIndex);
         if (selectedIndex > 0) {
             Collections.swap(arguments, selectedIndex, selectedIndex - 1);
             setSelectedIndex(selectedIndex - 1);
-            System.out.println("MOVEUPPPPPPPPPPPPPPPPPPPPPP" + this + " " + selectedIndex);
         }
     }
 
@@ -189,7 +196,6 @@ public class ListBox extends DialogboxElement implements Clickable {
 
     @Override
     public Action performAction(){
-        //invocationMessageLabel.setIndex(((ListBox)selected).getSelectedIndex());
         return new UpdateInvocationMessageLabelAction(getSelectedIndex());
     }
 }
