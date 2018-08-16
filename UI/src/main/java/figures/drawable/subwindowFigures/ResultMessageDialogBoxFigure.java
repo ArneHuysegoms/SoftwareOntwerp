@@ -3,8 +3,6 @@ package figures.drawable.subwindowFigures;
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.ResultMessageDialogBox;
 import window.elements.DialogboxElement;
-import window.elements.textbox.ClassTextBox;
-import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
@@ -50,7 +48,6 @@ public class ResultMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
         TextBox temp;
         for(DialogboxElement ele : dialogBox.getElementList()){
             temp = (TextBox) ele;
-            System.out.println("TESTTTTT"+temp.getDescription());
             new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
                     .draw(graphics, minX, minY, maxX, maxY);
         }

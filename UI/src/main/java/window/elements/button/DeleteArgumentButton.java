@@ -28,7 +28,7 @@ public class DeleteArgumentButton extends DialogBoxButton {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return null;
     }
     /**
@@ -47,7 +47,7 @@ public class DeleteArgumentButton extends DialogBoxButton {
     @Override
     public DialogboxElement clone() {
         try {
-            return new DeleteArgumentButton(getCommand(), getCoordinate(), getDescription());
+            return new DeleteArgumentButton(getCommand(), getCoordinate(), "Delete argument");
         } catch (UIException e) {
             e.printStackTrace();
         }

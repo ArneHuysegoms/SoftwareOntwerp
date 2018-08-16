@@ -32,7 +32,7 @@ public class MoveDownButton extends DialogBoxButton {
     @Override
     public DialogboxElement clone() {
         try {
-            return new MoveDownButton(getCommand(), getCoordinate(), getDescription());
+            return new MoveDownButton(getCommand(), getCoordinate(), "Move down");
         } catch (UIException e) {
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class MoveDownButton extends DialogBoxButton {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return null;
     }
     /**

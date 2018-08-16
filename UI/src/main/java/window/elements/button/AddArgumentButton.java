@@ -28,7 +28,7 @@ public class AddArgumentButton extends DialogBoxButton {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return null;
     }
     /**
@@ -47,7 +47,7 @@ public class AddArgumentButton extends DialogBoxButton {
     @Override
     public DialogboxElement clone() {
         try {
-            return new AddArgumentButton(getCommand(), getCoordinate(), getDescription());
+            return new AddArgumentButton(getCommand(), getCoordinate(), "Add argument");
         } catch (UIException e) {
             e.printStackTrace();
         }

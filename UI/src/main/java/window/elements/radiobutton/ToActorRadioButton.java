@@ -31,7 +31,7 @@ public class ToActorRadioButton extends PartyRadioButton {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return DESCRIPTION;
     }
     /**

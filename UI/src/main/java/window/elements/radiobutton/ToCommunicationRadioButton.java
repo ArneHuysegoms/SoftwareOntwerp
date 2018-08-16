@@ -37,7 +37,7 @@ public class ToCommunicationRadioButton extends DiagramRadioButton {
      * @return description
      */
     @Override
-    public String getStaticDescription(){
+    public String getDescription(){
         return DESCRIPTION;
     }
     /**

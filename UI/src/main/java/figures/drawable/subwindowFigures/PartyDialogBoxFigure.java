@@ -2,23 +2,19 @@ package figures.drawable.subwindowFigures;
 
 import command.changeType.PartyCommand.ChangeToActorCommand;
 import command.changeType.PartyCommand.ChangeToObjectCommand;
-import diagram.DiagramElement;
 import diagram.party.Actor;
 import diagram.party.Object;
 import figures.drawable.diagramFigures.RadioButtonFigure;
 import figures.drawable.diagramFigures.SelectedRadioButtonFigure;
-import figures.drawable.diagramFigures.SelectedTextBoxFigure;
 import figures.drawable.diagramFigures.TextBoxFigure;
 import window.dialogbox.PartyDialogBox;
 import window.elements.DialogboxElement;
 import window.elements.radiobutton.PartyRadioButton;
-import window.elements.radiobutton.RadioButton;
 import window.elements.textbox.ClassTextBox;
 import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
 

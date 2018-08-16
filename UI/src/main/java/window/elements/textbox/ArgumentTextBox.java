@@ -30,7 +30,7 @@ public class ArgumentTextBox extends TextBox {
      * @return description
      */
     @Override
-    public String getStaticDescription() {
+    public String getDescription() {
         return DESCRIPTION;
     }
     /**
