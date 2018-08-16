@@ -93,22 +93,6 @@ public class ResultMessageDialogBoxText {
                 assertEquals("a",((TextBox) ele).getContents());
         }
         assertEquals("a", resultMessage.getLabel().getLabel());
-
-        Action result = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertTrue(result instanceof UpdateLabelAction);
-        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
-            if(ele instanceof TextBox)
-                assertEquals("",((TextBox) ele).getContents());
-        }
-        assertEquals("", resultMessage.getLabel().getLabel());
-
-        Action result1 = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertTrue(result1 instanceof EmptyAction);
-        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
-            if(ele instanceof TextBox)
-                assertEquals("",((TextBox) ele).getContents());
-        }
-        assertEquals("", resultMessage.getLabel().getLabel());
     }
 
     @Test
@@ -129,6 +113,48 @@ public class ResultMessageDialogBoxText {
         RemoveInViewsAction action = new RemoveInViewsAction(el);
         resultMessageDialogBox.handleAction(action);
         assertFalse(interactionController.getSubwindows().contains(resultMessageDialogBox));
+    }
+
+    @Test
+    public void test_designMode() throws DomainException{
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertTrue(resultMessageDialogBox.getDesignerMode());
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ENTER));
+        assertFalse(resultMessageDialogBox.getDesignerMode());
+    }
+
+    @Test
+    public void test_description_addChar(){
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message labelt");
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+
+    }
+
+    @Test
+    public void test_description_delChar(){
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message labelt");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+        assertEquals(resultMessageDialogBox.getSelected().getStaticDescription(), "message label");
+    }
+
+    @Test
+    public void test_selectedindex_bigger_than_list(){
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
+
+        resultMessageDialogBox.selectedindex = 100;
+        resultMessageDialogBox.updateList();
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
     }
 
 }

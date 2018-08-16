@@ -1,6 +1,7 @@
 package window.dialogbox;
 
 import exception.UIException;
+import exceptions.DomainException;
 import org.junit.Before;
 import org.junit.Test;
 import uievents.KeyEvent;
@@ -80,5 +81,47 @@ public class DiagramDialogBoxTest {
         assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof CommunicationView);
         diagramDialogBox.handleMouseEvent(new MouseEvent(MouseEventType.PRESSED, new Point2D.Double(20, 60)));
         assertTrue(diagramSubwindow.getFacade().getActiveView() instanceof SequenceView);
+    }
+
+    @Test
+    public void test_designMode() throws DomainException {
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertTrue(diagramDialogBox.getDesignerMode());
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ENTER));
+        assertFalse(diagramDialogBox.getDesignerMode());
+    }
+
+    @Test
+    public void test_description_addChar(){
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
+
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communicationt");
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+
+    }
+
+    @Test
+    public void test_description_delChar(){
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
+
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communicationt");
+
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+        assertEquals(diagramDialogBox.getSelected().getStaticDescription(), "Communication");
+    }
+
+    @Test
+    public void test_selectedindex_bigger_than_list(){
+        assertEquals(0,diagramDialogBox.getSelectedindex());
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(1,diagramDialogBox.getSelectedindex());
+
+        diagramDialogBox.selectedindex = 100;
+        diagramDialogBox.updateList();
+        assertEquals(0,diagramDialogBox.getSelectedindex());
     }
 }

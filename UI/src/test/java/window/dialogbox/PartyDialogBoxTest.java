@@ -31,6 +31,7 @@ import java.util.Set;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PartyDialogBoxTest {
@@ -204,4 +205,47 @@ public class PartyDialogBoxTest {
         partyDialogBox.handleAction(action);
         assertTrue(! interactionController.getSubwindows().contains(partyDialogBox));
     }
+
+    @Test
+    public void test_designMode() throws DomainException{
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertTrue(partyDialogBox.getDesignerMode());
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ENTER));
+        assertFalse(partyDialogBox.getDesignerMode());
+    }
+
+    @Test
+    public void test_description_addChar(){
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
+
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actort");
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+
+    }
+
+    @Test
+    public void test_description_delChar(){
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
+
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actort");
+
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+        assertEquals(partyDialogBox.getSelected().getStaticDescription(), "Actor");
+    }
+
+    @Test
+    public void test_selectedindex_bigger_than_list(){
+        assertEquals(0,partyDialogBox.getSelectedindex());
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(1,partyDialogBox.getSelectedindex());
+
+        partyDialogBox.selectedindex = 100;
+        partyDialogBox.updateList();
+        assertEquals(0,partyDialogBox.getSelectedindex());
+    }
+
 }
