@@ -20,8 +20,7 @@ public class ChangeToObjectCommand extends PartyCommand {
      * @param party     the party to change
      */
     public ChangeToObjectCommand(DiagramSubwindow subwindow, Party party) {
-        this.setSubwindow(subwindow);
-        this.setParty(party);
+        super(subwindow,party);
     }
 
     /**

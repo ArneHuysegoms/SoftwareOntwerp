@@ -9,6 +9,11 @@ public abstract class PartyCommand extends Command {
     protected DiagramSubwindow subwindow;
     protected Party party;
 
+    public PartyCommand(DiagramSubwindow subwindow, Party party) {
+        setSubwindow(subwindow);
+        setParty(party);
+    }
+
     /**
      * @return the diagramsubwindow to change in
      */

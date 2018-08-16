@@ -20,8 +20,7 @@ public class ChangeToActorCommand extends PartyCommand {
      * @param party     the party to change
      */
     public ChangeToActorCommand(DiagramSubwindow subwindow, Party party) {
-        this.setSubwindow(subwindow);
-        this.setParty(party);
+        super(subwindow,party);
     }
 
     /**
