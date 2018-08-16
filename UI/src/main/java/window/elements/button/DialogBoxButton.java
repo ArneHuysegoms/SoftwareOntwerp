@@ -2,6 +2,7 @@ package window.elements.button;
 
 import action.Action;
 import command.Command;
+import command.InvocationCommand.InvocationCommand;
 import exception.UIException;
 import window.elements.DialogboxElement;
 
@@ -14,7 +15,7 @@ public abstract class DialogBoxButton extends DialogboxElement {
     private int width;
     private int height;
 
-    private Command command;
+    private InvocationCommand command;
 
     /**
      * constructs a new DialogBoxButton with the given parametesr
@@ -52,7 +53,7 @@ public abstract class DialogBoxButton extends DialogboxElement {
      * set command
      * @param c
      */
-    protected void setCommand(Command c) {
+    protected void setCommand(InvocationCommand c) {
         this.command = c;
     }
 
