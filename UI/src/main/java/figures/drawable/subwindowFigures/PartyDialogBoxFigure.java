@@ -95,7 +95,6 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
      */
     private void drawRadioButtons(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         PartyRadioButton temp;
-        //for(DialogboxElement ele : PartyDialogBox.PARTYBOXLIST){
         for(DialogboxElement ele : dialogBox.getElementList()){
             if(ele instanceof PartyRadioButton){
                 temp = (PartyRadioButton)ele;
@@ -122,19 +121,4 @@ public class PartyDialogBoxFigure extends DialogBoxSubwindowFigure {
     private void drawRadioButtons(Graphics graphics) {
         this.drawRadioButtons(graphics, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
-
-    /**
-     * draws the dialog box's selected radio button
-     *
-     * @param graphics object used to draw on the program's window
-     */
-    /*private void drawSelectedRadioButton(Graphics graphics) {
-        if (dialogBox.getParty() instanceof Actor) {
-            new SelectedRadioButtonFigure(dialogBox.getToActor(), dialogBox.getAbsolutePosition(dialogBox.getToActor().getCoordinate()),"")
-                    .draw(graphics);
-        } else if (dialogBox.getParty() instanceof Object) {
-            new SelectedRadioButtonFigure(dialogBox.getToObject(),  dialogBox.getAbsolutePosition(dialogBox.getToObject().getCoordinate()),"")
-                    .draw(graphics);
-        }
-    }*/
 }
