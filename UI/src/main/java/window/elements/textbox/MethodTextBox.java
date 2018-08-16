@@ -56,11 +56,19 @@ public class MethodTextBox extends TextBox {
     public void update(ResultMessage rm){
         this.setContents(rm.getLabel().getLabel());
     }
-
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return DESCRIPTION;
     }
+
+    /**
+     * set static description
+     * @param s
+     */
     @Override
     public void setStaticDescription(String s){
         DESCRIPTION = s;
@@ -72,7 +80,5 @@ public class MethodTextBox extends TextBox {
         if(iml != null){
             this.setContents(iml.getLabel());
         }
-
-
     }
 }

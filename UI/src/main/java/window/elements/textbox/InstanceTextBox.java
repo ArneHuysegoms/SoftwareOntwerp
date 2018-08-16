@@ -26,12 +26,18 @@ public class InstanceTextBox extends TextBox {
     public InstanceTextBox(Point2D coordinate, String description) throws UIException {
         super(coordinate, DESCRIPTION);
     }
-
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription() {
         return DESCRIPTION;
     }
-
+    /**
+     * set static description
+     * @param s
+     */
     @Override
     public void setStaticDescription(String s) {
         DESCRIPTION = s;

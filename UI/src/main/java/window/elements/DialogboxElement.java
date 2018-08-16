@@ -78,17 +78,14 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
             this.setContents("");
         }
     }
-
-    public void addCharToDescription(char c){
-        setDescription(description + c);
-    }
-    public void deleteCharFromDescription(){
-        if(description.length() > 0){
-            setDescription(description.substring(0,description.length()-1));
-        }
-    }
-
+    /**
+     * get static description
+     * @return description
+     */
     public abstract String getStaticDescription();
+    /**
+     * set static description
+     */
     public abstract void setStaticDescription(String s);
 
     /**
@@ -146,6 +143,23 @@ public abstract class DialogboxElement implements Clickable, ICommandable {
     public abstract boolean isClicked(Point2D coordinate);
 
     public abstract DialogboxElement clone();
+
+    /**
+     * add character from description
+     */
+    public void addCharToDescription(char c){
+        setStaticDescription(getStaticDescription() + c);
+        setDescription(getStaticDescription());
+    }
+    /**
+     * delete character from description
+     */
+    public void deleteCharFromDescription(){
+        if(getStaticDescription().length() > 0){
+            setStaticDescription(getStaticDescription().substring(0,getStaticDescription().length()-1));
+            setDescription(getStaticDescription());
+        }
+    }
 
     @Override
     public Action performAction(){

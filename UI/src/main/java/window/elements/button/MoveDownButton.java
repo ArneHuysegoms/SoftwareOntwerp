@@ -38,10 +38,18 @@ public class MoveDownButton extends DialogBoxButton {
         }
         return null;
     }
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return null;
     }
+    /**
+     * set static description
+     * @param s
+     */
     @Override
     public void setStaticDescription(String s){
 

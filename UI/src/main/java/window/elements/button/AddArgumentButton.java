@@ -22,10 +22,19 @@ public class AddArgumentButton extends DialogBoxButton {
     public AddArgumentButton(Command command, Point2D coordinate, String description) throws UIException {
         super(command, coordinate,"");
     }
+
+    /**
+     * get static description
+     * @return description
+     */
     @Override
     public String getStaticDescription(){
         return null;
     }
+    /**
+     * set static description
+     * @param s
+     */
     @Override
     public void setStaticDescription(String s){
 

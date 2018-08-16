@@ -86,4 +86,29 @@ public abstract class DialogBoxButton extends DialogboxElement {
         double endY = getCoordinate().getY() + height;
         return (startX <= coordinate.getX() && endX >= coordinate.getX()) && (startY <= coordinate.getY() && endY >= coordinate.getY());
     }
+
+    /**
+     * add character from description, override do nothing since dialogboxbuttosn don't have description
+     */
+    @Override
+    public void addCharToDescription(char c){
+
+    }
+    /**
+     * delete character from description, override do nothing since dialogboxbuttons don't have description
+     */
+    @Override
+    public void deleteCharFromDescription(){
+
+    }
+
+    /**
+     * checks if valid description
+     * our dialogboxbuttons don't have a description, so will always return true
+     * @return true
+     */
+    @Override
+    public boolean isValidDescription(){
+        return true;
+    }
 }
