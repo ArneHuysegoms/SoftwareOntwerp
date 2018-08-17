@@ -27,7 +27,7 @@ public class KeyEventFactory {
                 return new KeyEvent(KeyEventType.DEL);
             } else if (keyCode == 8) {
                 return new KeyEvent(KeyEventType.BACKSPACE);
-            } else if (keyCode == 32) {
+            }  else if (keyCode == 32) {
                 return new KeyEvent(KeyEventType.SPACE);
             } else if (keyCode == 37) {
                 return new KeyEvent(KeyEventType.ARROWKEYLEFT);
@@ -39,7 +39,7 @@ public class KeyEventFactory {
                 return new KeyEvent(KeyEventType.ARROWKEYDOWN);
             }  else if (keyCode == 17){
                 setCtrlPressed(true);
-            } else if (keyCode != 68 && keyCode != 78 && keyCode != 10) {
+            } else if (keyCode != 68 && keyCode != 69 && keyCode != 78 && keyCode != 10) {
                 setCtrlPressed(false);
             } else if (keyCode == 68) {
                 if (ctrlPressed == true) {
@@ -60,9 +60,11 @@ public class KeyEventFactory {
                 if(ctrlPressed == true){
                     setCtrlPressed(false);
                     return new KeyEvent(KeyEventType.CTRLENTER);
+                } else{
+                    return new KeyEvent(KeyEventType.ENTER);
                 }
             }
-        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b' && keyChar != '\t') {
+        } else if (id == java.awt.event.KeyEvent.KEY_TYPED && keyChar != '\b' && keyChar != '\t' && keyChar != '\n') {
             if ((keyChar >= 'A' && keyChar <= 'Z') || (keyChar >= 'a' && keyChar <= 'z') || keyChar == ':' || keyChar == ' ' || keyChar == ')' || keyChar == '(' || keyChar == ',') {
                 return new KeyEvent(KeyEventType.CHAR, keyChar);
             } else {

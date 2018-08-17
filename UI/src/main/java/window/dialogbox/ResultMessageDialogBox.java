@@ -1,19 +1,25 @@
 package window.dialogbox;
 
-import action.Action;
-import action.EmptyAction;
-import action.RemoveInViewsAction;
-import action.UpdateLabelAction;
+import action.*;
+import command.changeType.PartyCommand.ChangeToActorCommand;
+import command.changeType.PartyCommand.ChangeToObjectCommand;
 import diagram.message.ResultMessage;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
 import uievents.MouseEvent;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
+import window.elements.radiobutton.PartyRadioButton;
+import window.elements.textbox.ClassTextBox;
+import window.elements.textbox.InstanceTextBox;
 import window.elements.textbox.MethodTextBox;
 import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * dialogbox for changing resultmessages
@@ -23,11 +29,22 @@ public class ResultMessageDialogBox extends DialogBox {
     public static final int WIDTH = 300;
     public static final int HEIGHT = 60;
 
-    private TextBox labelTextBox;
     private ResultMessage resultMessage;
     private DiagramSubwindow diagramSubwindow;
 
-    private TextBox selected;
+    public static ArrayList<DialogboxElement> RESULTMESSAGEBOXLIST;
+
+    static {
+        try {
+            RESULTMESSAGEBOXLIST = new ArrayList<DialogboxElement>(Arrays.asList(
+                    new MethodTextBox(new Point2D.Double(10, 40), "Method")));
+
+
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * create a new resultmessage dialogbox
@@ -41,13 +58,51 @@ public class ResultMessageDialogBox extends DialogBox {
         super(pos);
         this.resultMessage = resultMessage;
         this.diagramSubwindow = diagramSubwindow;
-        this.labelTextBox = new MethodTextBox(new Point2D.Double(10, 40), "Method");
+        elementList = new ArrayList<>();
+
         this.setHeight(HEIGHT);
         this.setWidth(WIDTH);
-        selected = labelTextBox;
+
+        updateList();
+        this.selectedindex = 0;
+        if(elementList.size() > 0){
+            selected = this.elementList.get(getSelectedindex());
+        }
         updateFields(resultMessage);
     }
 
+    /**
+     *
+     * @return static list
+     */
+    @Override
+    public List<DialogboxElement> getStaticList(){
+        return RESULTMESSAGEBOXLIST;
+    }
+
+    /**
+     * syncs static list with private list
+     */
+    @Override
+    public void updateList() {
+        elementList = new ArrayList<>();
+        for (DialogboxElement d : RESULTMESSAGEBOXLIST) {
+            DialogboxElement clone = d.clone();
+            clone.update(resultMessage);
+            elementList.add(clone);
+        }
+        if(elementList.size() == 0){
+            selected = null;
+        }
+        else if(selectedindex > elementList.size()-1){
+            selectedindex = 0;
+            selected = this.elementList.get(selectedindex);
+        }else{
+
+            selected = this.elementList.get(selectedindex);
+        }
+        updateFields(resultMessage);
+    }
     /**
      * @return the default width for this dialogbox type
      */
@@ -62,19 +117,6 @@ public class ResultMessageDialogBox extends DialogBox {
         return HEIGHT;
     }
 
-    /**
-     * @return the currently selected textbox
-     */
-    public TextBox getSelected() {
-        return selected;
-    }
-
-    /**
-     * @return the label textbox
-     */
-    public TextBox getLabelTextBox() {
-        return labelTextBox;
-    }
 
     /**
      * @return the result message this dialogbox serves
@@ -91,47 +133,32 @@ public class ResultMessageDialogBox extends DialogBox {
     }
 
     /**
-     * handles mouse events
-     *
-     * @param mouseEvent the mouseEvent to handle
-     * @return an action detailing the outcome of the handling
-     */
-    @Override
-    public Action handleMouseEvent(MouseEvent mouseEvent) {
-        return new EmptyAction();
-    }
-
-    /**
-     * handles key events
-     *
-     * @param keyEvent the keyEvent to handle
-     * @return an action detailing the outcome of the handling
-     */
-    @Override
-    public Action handleKeyEvent(KeyEvent keyEvent) {
-        try {
-            switch (keyEvent.getKeyEventType()) {
-                case CHAR:
-                    return handleChar(keyEvent);
-                case BACKSPACE:
-                    return handleBackSpace();
-            }
-        } catch (DomainException e) {
-            e.printStackTrace();
-        }
-        return new EmptyAction();
-    }
-
-    /**
      * handle the backspace event
      *
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications ara made
      */
-    private Action handleBackSpace() throws DomainException {
-        if (selected.hasValidContents()) {
+    @Override
+    public Action handleBackSpace(){
+        if(!designerMode) {
+
             selected.deleteLastCharFromContents();
-            return changeResultMessageLabel();
+            if (selected.hasValidContents()) {
+                try {
+                    return changeResultMessageLabel();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        else{
+            DialogboxElement d = RESULTMESSAGEBOXLIST.get(selectedindex);
+            d.deleteCharFromDescription();
+            if (!d.isValidDescription()) {
+                setInvalidDescriptionMode(true);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
     }
@@ -143,13 +170,30 @@ public class ResultMessageDialogBox extends DialogBox {
      * @return an action detailing the outcome of the handling
      * @throws DomainException if illegal modifications are made
      */
-    private Action handleChar(KeyEvent keyEvent) throws DomainException {
-        selected.addCharToContents(keyEvent.getKeyChar());
-        if (selected.hasValidContents()) {
-            return changeResultMessageLabel();
+    @Override
+    public Action handleChar(KeyEvent keyEvent) {
+        if (!designerMode) {
+
+            selected.addCharToContents(keyEvent.getKeyChar());
+            if (selected.hasValidContents()) {
+                try {
+                    return changeResultMessageLabel();
+                } catch (DomainException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (designerMode && selected != null) {
+            DialogboxElement d = RESULTMESSAGEBOXLIST.get(selectedindex);
+            d.addCharToDescription(keyEvent.getKeyChar());
+            if (d.isValidDescription()) {
+                setInvalidDescriptionMode(false);
+            }
+            return new UpdateListAction();
         }
         return new EmptyAction();
     }
+
 
     /**
      * change the resultmessage label
@@ -158,7 +202,7 @@ public class ResultMessageDialogBox extends DialogBox {
      * @throws DomainException if illegal modifications are made
      */
     private Action changeResultMessageLabel() throws DomainException {
-        getResultMessage().getLabel().setLabel(selected.getContents());
+        getResultMessage().getLabel().setLabel(((TextBox)selected).getContents());
         return new UpdateLabelAction(getResultMessage(), getResultMessage().getLabel());
     }
 
@@ -180,6 +224,10 @@ public class ResultMessageDialogBox extends DialogBox {
             if (a.getElement().equals(resultMessage)) {
                 updateFields((ResultMessage) a.getElement());
             }
+            updateList();
+        }
+        if (action instanceof UpdateListAction){
+            updateList();
         }
     }
 
@@ -189,6 +237,8 @@ public class ResultMessageDialogBox extends DialogBox {
      * @param resultMessage the resultmessage to parse
      */
     private void updateFields(ResultMessage resultMessage) {
-        labelTextBox.setContents(resultMessage.getLabel().getLabel());
+        if(selected != null){
+            ((TextBox)selected).setContents(resultMessage.getLabel().getLabel());
+        }
     }
 }

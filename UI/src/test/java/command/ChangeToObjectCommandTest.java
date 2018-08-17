@@ -1,6 +1,6 @@
 package command;
 
-import command.changeType.ChangeToObjectCommand;
+import command.changeType.PartyCommand.ChangeToObjectCommand;
 import diagram.label.Label;
 import diagram.label.PartyLabel;
 import diagram.party.Actor;

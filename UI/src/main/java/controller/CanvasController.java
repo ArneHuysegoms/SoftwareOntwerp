@@ -1,5 +1,8 @@
 package controller;
 
+import action.Action;
+import action.UpdateLabelAction;
+import action.UpdateListAction;
 import exception.UIException;
 import exceptions.DomainException;
 import uievents.KeyEvent;
@@ -16,7 +19,7 @@ import java.util.List;
  *
  * Interprets UIEvents and passes these on to the appropriate interactionController.
  */
-public class CanvasController implements IHighLevelController{
+public class CanvasController {
 
     private InteractionController activeInteractionController;
     private List<InteractionController> interactionControllers;
@@ -106,18 +109,32 @@ public class CanvasController implements IHighLevelController{
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 if(getActiveInteractionController() != null){
-                    activeInteractionController.handleKeyEvent(keyEvent);
+                    Action action = activeInteractionController.handleKeyEvent(keyEvent);
+                    this.getActiveInteractionController().actionForEachSubwindow(action);
                 }
                 break;
             case CTRLN:
                 createNewInteractionController();
-                activeInteractionController.handleKeyEvent(keyEvent);
+                Action action = activeInteractionController.handleKeyEvent(keyEvent);
+                this.getActiveInteractionController().actionForEachSubwindow(action);
                 break;
             default:
                 if(this.getActiveInteractionController() != null){
-                    activeInteractionController.handleKeyEvent(keyEvent);
+                    Action act = activeInteractionController.handleKeyEvent(keyEvent);
+                    if(act instanceof UpdateListAction){
+                        handleForEachInteractionController(act);
+                    }
+                    this.getActiveInteractionController().actionForEachSubwindow(act);
+
                 }
                 break;
+        }
+    }
+
+    public void handleForEachInteractionController(Action action){
+        List<InteractionController> copy = new ArrayList<>(getInteractionControllers());
+        for(InteractionController ic : getInteractionControllers()){
+            ic.actionForEachSubwindow(action);
         }
     }
 
@@ -132,14 +149,19 @@ public class CanvasController implements IHighLevelController{
     public void handleMouseEvent(MouseEvent mouseEvent) {
 
         if(activeInteractionController != null && activeInteractionController.isDragging()){
-            activeInteractionController.handleMouseEvent(mouseEvent);
+            Action action = activeInteractionController.handleMouseEvent(mouseEvent);
+            activeInteractionController.actionForEachSubwindow(action);
         }
         else if (getAppropriateInteractionController(mouseEvent.getPoint()) != null) {
             InteractionController ic = getAppropriateInteractionController(mouseEvent.getPoint());
             if (!ic.equals(getActiveInteractionController())) {
                 changeActiveInteractionController(ic);
             }
-            activeInteractionController.handleMouseEvent(mouseEvent);
+            Action action = activeInteractionController.handleMouseEvent(mouseEvent);
+            if(action instanceof UpdateListAction){
+                handleForEachInteractionController(action);
+            }
+            activeInteractionController.actionForEachSubwindow(action);
         }
     }
 

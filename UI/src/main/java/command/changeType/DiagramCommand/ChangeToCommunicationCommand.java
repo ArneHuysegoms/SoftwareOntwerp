@@ -1,4 +1,4 @@
-package command.changeType;
+package command.changeType.DiagramCommand;
 
 import action.Action;
 import action.EmptyAction;
@@ -8,9 +8,8 @@ import window.diagram.DiagramSubwindow;
 /**
  * command for changing a diagram to a communication diagram
  */
-public class ChangeToCommunicationCommand extends Command {
+public class ChangeToCommunicationCommand extends DiagramCommand {
 
-    private DiagramSubwindow diagramSubwindow;
 
     /**
      * creates a new changeToCommunicationCommand for the given diagramSubWindow
@@ -18,7 +17,7 @@ public class ChangeToCommunicationCommand extends Command {
      * @param diagramSubwindow the diagramSubwindow to change
      */
     public ChangeToCommunicationCommand(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
+        super(diagramSubwindow);
     }
 
     /**

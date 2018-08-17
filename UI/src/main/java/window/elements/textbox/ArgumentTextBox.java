@@ -1,6 +1,10 @@
 package window.elements.textbox;
 
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import window.Subwindow;
+import window.elements.DialogboxElement;
 
 import java.awt.geom.Point2D;
 
@@ -8,6 +12,8 @@ import java.awt.geom.Point2D;
  * class for an argument textbox
  */
 public class ArgumentTextBox extends TextBox {
+
+    public static String DESCRIPTION = "Argument";
 
     /**
      * creates a new argument textbox with the given parameters
@@ -17,7 +23,38 @@ public class ArgumentTextBox extends TextBox {
      * @throws UIException if the coordinate is null
      */
     public ArgumentTextBox(Point2D coordinate, String description) throws UIException {
-        super(coordinate, description);
+        super(coordinate, DESCRIPTION);
+    }
+    /**
+     * get static description
+     * @return description
+     */
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
+    /**
+     * set static description
+     * @param s
+     */
+    @Override
+    public void setStaticDescription(String s) {
+        DESCRIPTION = s;
+    }
+
+    /**
+     * clones object
+     * @return new object
+     */
+    @Override
+    public DialogboxElement clone() {
+        try {
+            return new ArgumentTextBox(getCoordinate(), DESCRIPTION);
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**

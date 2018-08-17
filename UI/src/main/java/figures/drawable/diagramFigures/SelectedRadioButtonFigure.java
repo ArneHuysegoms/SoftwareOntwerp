@@ -1,6 +1,6 @@
 package figures.drawable.diagramFigures;
 
-import window.elements.RadioButton;
+import window.elements.radiobutton.RadioButton;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

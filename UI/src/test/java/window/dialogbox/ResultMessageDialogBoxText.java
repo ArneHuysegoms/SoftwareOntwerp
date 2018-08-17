@@ -19,7 +19,9 @@ import uievents.KeyEventType;
 import uievents.MouseEvent;
 import uievents.MouseEventType;
 import window.diagram.DiagramSubwindow;
+import window.elements.DialogboxElement;
 import window.elements.button.CloseWindowButton;
+import window.elements.textbox.TextBox;
 
 import java.awt.geom.Point2D;
 import java.util.HashSet;
@@ -57,8 +59,11 @@ public class ResultMessageDialogBoxText {
         assertEquals(new Point2D.Double(50,50), resultMessageDialogBox.getPosition());
         assertEquals(resultMessage, resultMessageDialogBox.getResultMessage());
         assertEquals(diagramSubwindow, resultMessageDialogBox.getDiagramSubwindow());
-        assertNotNull(resultMessageDialogBox.getLabelTextBox());
-        assertEquals(resultMessageDialogBox.getLabelTextBox(), resultMessageDialogBox.getSelected());
+        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
+            if(ele instanceof TextBox)
+                assertEquals("",((TextBox) ele).getContents());
+                assertEquals(ele, resultMessageDialogBox.getSelected());
+        }
         assertEquals(ResultMessageDialogBox.WIDTH, resultMessageDialogBox.getWidth());
         assertEquals(ResultMessageDialogBox.HEIGHT, resultMessageDialogBox.getHeight());
     }
@@ -72,7 +77,10 @@ public class ResultMessageDialogBoxText {
     public void test_handleChars(){
         Action resultAction = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         assertTrue(resultAction instanceof UpdateLabelAction);
-        assertEquals("a", resultMessageDialogBox.getLabelTextBox().getContents());
+        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
+            if(ele instanceof TextBox)
+                assertEquals("a",((TextBox) ele).getContents());
+        }
         assertEquals("a", resultMessage.getLabel().getLabel());
     }
 
@@ -80,18 +88,11 @@ public class ResultMessageDialogBoxText {
     public void test_deleteChars(){
         Action resultAction = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR, 'a'));
         assertTrue(resultAction instanceof UpdateLabelAction);
-        assertEquals("a", resultMessageDialogBox.getLabelTextBox().getContents());
+        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
+            if(ele instanceof TextBox)
+                assertEquals("a",((TextBox) ele).getContents());
+        }
         assertEquals("a", resultMessage.getLabel().getLabel());
-
-        Action result = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertTrue(result instanceof UpdateLabelAction);
-        assertEquals("", resultMessageDialogBox.getLabelTextBox().getContents());
-        assertEquals("", resultMessage.getLabel().getLabel());
-
-        Action result1 = resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-        assertTrue(result1 instanceof EmptyAction);
-        assertEquals("", resultMessageDialogBox.getLabelTextBox().getContents());
-        assertEquals("", resultMessage.getLabel().getLabel());
     }
 
     @Test
@@ -99,7 +100,10 @@ public class ResultMessageDialogBoxText {
         resultMessage.getLabel().setLabel("test");
         UpdateLabelAction updateLabelAction = new UpdateLabelAction(resultMessage, null);
         resultMessageDialogBox.handleAction(updateLabelAction);
-        assertEquals("test", resultMessageDialogBox.getLabelTextBox().getContents());
+        for(DialogboxElement ele : resultMessageDialogBox.getElementList()) {
+            if(ele instanceof TextBox)
+                assertEquals("test",((TextBox) ele).getContents());
+        }
     }
 
     @Test
@@ -110,4 +114,47 @@ public class ResultMessageDialogBoxText {
         resultMessageDialogBox.handleAction(action);
         assertFalse(interactionController.getSubwindows().contains(resultMessageDialogBox));
     }
+
+    @Test
+    public void test_designMode() throws DomainException{
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertTrue(resultMessageDialogBox.getDesignerMode());
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.ENTER));
+        assertFalse(resultMessageDialogBox.getDesignerMode());
+    }
+
+    @Test
+    public void test_description_addChar(){
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message labelt");
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+
+    }
+
+    @Test
+    public void test_description_delChar(){
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription().toString(), "message label");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message labelt");
+
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+        assertEquals(resultMessageDialogBox.getSelected().getDescription(), "message label");
+    }
+
+    @Test
+    public void test_selectedindex_bigger_than_list(){
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
+        resultMessageDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.TAB));
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
+
+        resultMessageDialogBox.selectedindex = 100;
+        resultMessageDialogBox.updateList();
+        assertEquals(0,resultMessageDialogBox.getSelectedindex());
+    }
+
 }

@@ -5,6 +5,7 @@ public enum KeyEventType {
     CHAR,
     DEL,
     BACKSPACE,
+    ENTER,
     CTRLN,
     CTRLD,
     CTRLE,

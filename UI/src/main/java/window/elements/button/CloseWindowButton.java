@@ -1,6 +1,7 @@
 package window.elements.button;
 
 import command.closeWindow.CloseSubwindowCommand;
+import window.elements.button.Button;
 
 /**
  * class for buttons that close windows

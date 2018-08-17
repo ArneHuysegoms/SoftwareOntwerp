@@ -21,6 +21,10 @@ public abstract class SubwindowFigure implements IDrawable {
         this.closeButton = subwindow.getButton();
     }
 
+    protected TitleBar getTitleBar() {
+        return titleBar;
+    }
+
     /**
      * a draw function that draws a subwindow on the Graphics parameter object
      *
@@ -104,7 +108,7 @@ public abstract class SubwindowFigure implements IDrawable {
         Color temp = graphics.getColor();
         graphics.setColor(new Color(71, 129, 158));
         graphics.fillRect((int) titleBar.getPosition().getX(), (int) titleBar.getPosition().getY(), titleBar.getWidth(), TitleBar.HEIGHT);
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(temp);
 
         new Rectangle(titleBar.getPosition(), titleBar.getWidth(), TitleBar.HEIGHT)
                 .draw(graphics);

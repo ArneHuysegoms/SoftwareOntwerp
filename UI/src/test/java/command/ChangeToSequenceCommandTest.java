@@ -1,6 +1,6 @@
 package command;
 
-import command.changeType.ChangeToSequenceCommand;
+import command.changeType.DiagramCommand.ChangeToSequenceCommand;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;

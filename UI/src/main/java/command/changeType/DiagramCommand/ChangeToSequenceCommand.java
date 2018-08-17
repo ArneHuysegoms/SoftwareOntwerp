@@ -1,4 +1,4 @@
-package command.changeType;
+package command.changeType.DiagramCommand;
 
 import action.Action;
 import action.EmptyAction;
@@ -8,9 +8,8 @@ import window.diagram.DiagramSubwindow;
 /**
  * command for change to a sequence diagram
  */
-public class ChangeToSequenceCommand extends Command {
+public class ChangeToSequenceCommand extends DiagramCommand{
 
-    private DiagramSubwindow diagramSubwindow;
 
     /**
      * creates a new changeToSequence command for the given diagramsubwindow
@@ -18,7 +17,7 @@ public class ChangeToSequenceCommand extends Command {
      * @param diagramSubwindow the diagramsubwindow to change
      */
     public ChangeToSequenceCommand(DiagramSubwindow diagramSubwindow) {
-        this.diagramSubwindow = diagramSubwindow;
+        super(diagramSubwindow);
     }
 
     /**

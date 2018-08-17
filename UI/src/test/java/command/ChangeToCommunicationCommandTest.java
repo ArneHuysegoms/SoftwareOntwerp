@@ -1,6 +1,6 @@
 package command;
 
-import command.changeType.ChangeToCommunicationCommand;
+import command.changeType.DiagramCommand.ChangeToCommunicationCommand;
 import org.junit.Before;
 import org.junit.Test;
 import window.diagram.DiagramSubwindow;

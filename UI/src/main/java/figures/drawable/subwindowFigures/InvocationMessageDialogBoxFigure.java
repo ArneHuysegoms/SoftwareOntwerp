@@ -2,6 +2,10 @@ package figures.drawable.subwindowFigures;
 
 import figures.drawable.diagramFigures.*;
 import window.dialogbox.InvocationMessageDialogBox;
+import window.elements.DialogboxElement;
+import window.elements.ListBox;
+import window.elements.button.*;
+import window.elements.textbox.TextBox;
 
 import java.awt.*;
 
@@ -27,9 +31,13 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
     public void draw(Graphics graphics, int minX, int minY, int maxX, int maxY) {
         drawWindowFrame(graphics);
         drawTextBoxes(graphics, minX, minY, maxX, maxY);
-        drawButtons(graphics, dialogBox.getArgumentListBox().getSelectedIndex(), minX, minY, maxX, maxY);
-        drawListBox(graphics, minX, minY, maxX, maxY);
-        super.handleSelectedElement(graphics,dialogBox.getSelected(),dialogBox.getAbsolutePosition(dialogBox.getSelected().getCoordinate()));
+        int selectedIndex = drawListBox(graphics, minX, minY, maxX, maxY);
+        drawButtons(graphics, selectedIndex, minX, minY, maxX, maxY);
+        super.handleSelectedElement(graphics,dialogBox);
+
+        if(dialogBox.getDesignerMode()) {
+            this.drawOrangeTitleBar(graphics);
+        }
     }
 
     /**
@@ -41,9 +49,18 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxX     maximum possible x coördinate value
      * @param maxY     maximum possible y coördinate value
      */
-    private void drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new ListBoxFigure(dialogBox.getArgumentListBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentListBox().getCoordinate()))
-                .draw(graphics, minX, minY, maxX, maxY);
+    private int drawListBox(Graphics graphics, int minX, int minY, int maxX, int maxY) {
+        ListBox temp;
+        int index = -1;
+        for(DialogboxElement ele : dialogBox.getElementList()) {
+            if(ele instanceof ListBox) {
+                temp = (ListBox) ele;
+                new ListBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()))
+                        .draw(graphics, minX, minY, maxX, maxY);
+                index = temp.getSelectedIndex();
+            }
+        }
+        return index;
     }
 
     /**
@@ -66,19 +83,55 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawButtons(Graphics graphics, int selectedIndex, int minX, int minY, int maxX, int maxY) {
-        new AddButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getAddArgument().getCoordinate()), dialogBox.getAddArgument().getWidth(), dialogBox.getAddArgument().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
+        DialogBoxButton tempBut2;
         Color temp = graphics.getColor();
-        if (selectedIndex < 0) {
-            graphics.setColor(Color.LIGHT_GRAY);
+        for(DialogboxElement ele : dialogBox.getElementList()){
+            /*if(ele instanceof AddArgumentFakeButton) {
+                tempBut = (FakeButton) ele;
+                new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof AddArgumentButton) {
+                tempBut2 = (AddArgumentButton) ele;
+                new AddButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+
+            if (selectedIndex < 0) {
+                graphics.setColor(Color.LIGHT_GRAY);
+            }
+            /*if(ele instanceof MoveUpFakeButton) {
+                tempBut = (FakeButton) ele;
+                new UpButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof MoveUpButton) {
+                tempBut2 = (MoveUpButton) ele;
+                new UpButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+            /*if(ele instanceof MoveDownFakeButton) {
+                tempBut = (FakeButton) ele;
+                new DownButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof MoveDownButton) {
+                tempBut2 = (MoveDownButton) ele;
+                new DownButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+            /*if(ele instanceof DeleteArgumentFakeButton) {
+                tempBut = (FakeButton) ele;
+                new RemoveButtonFigure(dialogBox.getAbsolutePosition(tempBut.getCoordinate()), tempBut.getWidth(), tempBut.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }*/
+            if(ele instanceof DeleteArgumentButton) {
+                tempBut2 = (DeleteArgumentButton) ele;
+                new RemoveButtonFigure(dialogBox.getAbsolutePosition(tempBut2.getCoordinate()), tempBut2.getWidth(), tempBut2.getHeight())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+            graphics.setColor(temp);
         }
-        new RemoveButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getDeleteArgument().getCoordinate()), dialogBox.getDeleteArgument().getWidth(), dialogBox.getDeleteArgument().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        new UpButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveUp().getCoordinate()), dialogBox.getMoveUp().getWidth(), dialogBox.getMoveUp().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        new DownButtonFigure(dialogBox.getAbsolutePosition(dialogBox.getMoveDown().getCoordinate()), dialogBox.getMoveDown().getWidth(), dialogBox.getMoveDown().getHeight())
-                .draw(graphics, minX, minY, maxX, maxY);
-        graphics.setColor(temp);
     }
 
     /**
@@ -101,10 +154,14 @@ public class InvocationMessageDialogBoxFigure extends DialogBoxSubwindowFigure {
      * @param maxY     maximum possible y coördinate value
      */
     private void drawTextBoxes(Graphics graphics, int minX, int minY, int maxX, int maxY) {
-        new TextBoxFigure(dialogBox.getMethodTextBox(), dialogBox.getAbsolutePosition(dialogBox.getMethodTextBox().getCoordinate()), "(method name)")
-                .draw(graphics, minX, minY, maxX, maxY);
-        new TextBoxFigure(dialogBox.getArgumentTextBox(), dialogBox.getAbsolutePosition(dialogBox.getArgumentTextBox().getCoordinate()), "(argument)")
-                .draw(graphics, minX, minY, maxX, maxY);
+        TextBox temp;
+        for(DialogboxElement ele : dialogBox.getElementList()){
+            if(ele instanceof TextBox) {
+                temp = (TextBox) ele;
+                new TextBoxFigure(temp, dialogBox.getAbsolutePosition(temp.getCoordinate()), temp.getDescription())
+                        .draw(graphics, minX, minY, maxX, maxY);
+            }
+        }
     }
 
     /**

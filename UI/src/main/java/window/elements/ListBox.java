@@ -1,12 +1,19 @@
 package window.elements;
 
+import action.Action;
+import action.UpdateInvocationMessageLabelAction;
+import diagram.label.InvocationMessageLabel;
+import diagram.party.Party;
 import exception.UIException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import window.Clickable;
+import window.Subwindow;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * class for a listbox with arguments
@@ -20,6 +27,7 @@ public class ListBox extends DialogboxElement implements Clickable {
     private List<String> arguments;
 
     private int selectedIndex;
+
 
     /**
      * makes a new listbox with the given parameters
@@ -74,7 +82,46 @@ public class ListBox extends DialogboxElement implements Clickable {
         double endX = getCoordinate().getX() + WIDTH;
         double startY = getCoordinate().getY();
         double endY = getCoordinate().getY() + HEIGHT;
+        if(startX <= location.getX() && endX >= location.getX() && (startY <= location.getY() && endY >= location.getY())){
+            selectArgument(location);
+            System.out.println(this);
+        }
         return (startX <= location.getX() && endX >= location.getX()) && (startY <= location.getY() && endY >= location.getY());
+    }
+
+    @Override
+    public DialogboxElement clone() {
+        try {
+            return new ListBox(getCoordinate(),"list box");
+        } catch (UIException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void update(InvocationMessageLabel iml){
+        if (iml != null) {
+            this.setArguments(iml.getArguments().stream()
+                    .map(s -> s.toString())
+                    .collect(Collectors.toList()));
+        }
+    }
+    /**
+     * get static description
+     * @return null
+     */
+    @Override
+    public String getDescription(){
+        return null;
+    }
+    /**
+     * set static description
+     */
+    @Override
+    public void setStaticDescription(String s){
+
+
     }
 
     /**
@@ -108,6 +155,7 @@ public class ListBox extends DialogboxElement implements Clickable {
      */
     public void addArgument(String argument) {
         arguments.add(argument);
+        setSelectedIndex(arguments.size()-1);
     }
 
     /**
@@ -150,5 +198,35 @@ public class ListBox extends DialogboxElement implements Clickable {
      */
     public List<String> getArguments() {
         return arguments;
+    }
+
+    @Override
+    public Action performAction(){
+        return new UpdateInvocationMessageLabelAction(getSelectedIndex());
+    }
+
+    /**
+     * add character from description, override do nothing since dialogboxbuttosn don't have description
+     */
+    @Override
+    public void addCharToDescription(char c){
+
+    }
+    /**
+     * delete character from description, override do nothing since dialogboxbuttons don't have description
+     */
+    @Override
+    public void deleteCharFromDescription(){
+
+    }
+
+    /**
+     * checks if valid description
+     * our dialogboxbuttons don't have a description, so will always return true
+     * @return true
+     */
+    @Override
+    public boolean isValidDescription(){
+        return true;
     }
 }

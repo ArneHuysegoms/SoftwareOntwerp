@@ -2,6 +2,8 @@ package controller;
 
 import action.Action;
 import action.DialogBoxOpenedAction;
+import action.EmptyAction;
+import action.UpdateListAction;
 import command.closeWindow.CloseSubwindowCommand;
 import exception.UIException;
 import exceptions.DomainException;
@@ -17,11 +19,10 @@ import window.elements.button.CloseWindowButton;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InteractionController implements IHighLevelController{
+public class InteractionController{
     private List<Subwindow> subwindows;
     private Subwindow activeSubwindow;
     private DiagramSubwindow activeDiagramSubwindow;
@@ -216,7 +217,7 @@ public class InteractionController implements IHighLevelController{
      *      get the action from the activeSubwindow and do it for every diagramSubwindow in the list
      * @param keyEvent the keyEvent to handle
      */
-    public void handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
+    public Action handleKeyEvent(KeyEvent keyEvent) throws DomainException, UIException {
         switch (keyEvent.getKeyEventType()) {
             case CTRLD:
                 if (getActiveDiagramSubwindow() != null) {
@@ -229,10 +230,12 @@ public class InteractionController implements IHighLevelController{
             default:
                 if (this.getActiveDiagramSubwindow() != null) {
                     Action action = activeSubwindow.handleKeyEvent(keyEvent);
-                    actionForEachSubwindow(action);
+                    return action;
                 }
                 break;
         }
+
+        return new EmptyAction();
     }
 
     /**
@@ -251,7 +254,7 @@ public class InteractionController implements IHighLevelController{
      *                              and do this action for each diagramSubwindow
      * @param mouseEvent the mouseEvent to handle
      */
-    public void handleMouseEvent(MouseEvent mouseEvent) {
+    public Action handleMouseEvent(MouseEvent mouseEvent) {
         if (!dragging) {
             dragging = checkFordragging(mouseEvent);
         }
@@ -278,12 +281,12 @@ public class InteractionController implements IHighLevelController{
                         Point2D relativePoint = getActiveSubwindow().getRelativePoint(mouseEvent.getPoint());
                         mouseEvent.setPoint(relativePoint);
                         Action action = subwindow.handleMouseEvent(mouseEvent);
-                        actionForEachSubwindow(action);
-
+                        return action;
                     }
             }
 
         }
+        return new EmptyAction();
     }
 
     /**
@@ -295,7 +298,12 @@ public class InteractionController implements IHighLevelController{
      */
     public void actionForEachSubwindow(Action action){
         List<Subwindow> copy = new ArrayList<>(getSubwindows());
-        if(! (action instanceof DialogBoxOpenedAction)){
+        if(action instanceof UpdateListAction){
+            for(Subwindow s : copy){
+                s.handleAction(action);
+            }
+        }
+        else if(! (action instanceof DialogBoxOpenedAction)){
             for(Subwindow s : copy){
                 if(s != getActiveSubwindow()){
                     s.handleAction(action);
