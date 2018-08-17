@@ -136,20 +136,6 @@ public class CanvasController {
         for(InteractionController ic : getInteractionControllers()){
             ic.actionForEachSubwindow(action);
         }
-        /*if(! (action instanceof DialogBoxOpenedAction)){
-            for(Subwindow s : copy){
-                if(s != getActiveSubwindow()){
-                    s.handleAction(action);
-                }
-            }
-        }
-        else{
-            DialogBox s = ((DialogBoxOpenedAction)action).getDialogBox();
-            Button button = new CloseWindowButton(new CloseSubwindowCommand(s,this));
-            s.getFrame().setButton(button);
-            addSubwindow(s);
-        }*/
-
     }
 
     /**

@@ -299,10 +299,14 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
         if (selectedElementIsMessageStart()) {
             DiagramView.MessageStart ms = (DiagramView.MessageStart) selected;
             List<Message> newMessages = this.getFacade().addNewMessage(mouseEvent.getPoint(), ms);
-            selected = newMessages.get(0).getLabel();
-            startEditingLabel();
-            editing = true;
-            return new AddNewMessagesInViewsAction(newMessages);
+            try {
+                selected = newMessages.get(0).getLabel();
+                startEditingLabel();
+                editing = true;
+                return new AddNewMessagesInViewsAction(newMessages);
+            }catch (NullPointerException e){
+
+            }
         }
         return new EmptyAction();
     }
