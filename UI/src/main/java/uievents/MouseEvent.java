@@ -8,8 +8,8 @@ public class MouseEvent {
 
     /**
      *
-     * @param mouseEventType
-     * @param point
+     * @param mouseEventType the type that describes the users actions
+     * @param point point that got clicked
      */
     public MouseEvent(MouseEventType mouseEventType, Point2D point){
         this.setMouseEventType(mouseEventType);
@@ -34,7 +34,7 @@ public class MouseEvent {
 
     /**
      *
-     * @param mouseEventType
+     * @param mouseEventType the type that describes the users actions
      */
     private void setMouseEventType(MouseEventType mouseEventType){
         this.mouseEventType = mouseEventType;
@@ -42,7 +42,7 @@ public class MouseEvent {
 
     /**
      *
-     * @param point
+     * @param point point that got clicked
      */
     public void setPoint(Point2D point){
         this.point = point;

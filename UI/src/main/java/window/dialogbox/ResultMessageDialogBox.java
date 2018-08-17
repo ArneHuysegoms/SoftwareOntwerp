@@ -136,7 +136,6 @@ public class ResultMessageDialogBox extends DialogBox {
      * handle the backspace event
      *
      * @return an action detailing the outcome of the handling
-     * @throws DomainException if illegal modifications ara made
      */
     @Override
     public Action handleBackSpace(){
@@ -168,7 +167,6 @@ public class ResultMessageDialogBox extends DialogBox {
      *
      * @param keyEvent the keyEvent containing the char
      * @return an action detailing the outcome of the handling
-     * @throws DomainException if illegal modifications are made
      */
     @Override
     public Action handleChar(KeyEvent keyEvent) {
