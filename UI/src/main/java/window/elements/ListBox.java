@@ -162,8 +162,10 @@ public class ListBox extends DialogboxElement implements Clickable {
      * removes the argument at the selected index
      */
     public void removeArgument() {
-        arguments.remove(selectedIndex);
-        setSelectedIndex( selectedIndex - 1);
+        if(selectedIndex > -1){
+            arguments.remove(selectedIndex);
+            setSelectedIndex( selectedIndex - 1);
+        }
     }
 
     /**

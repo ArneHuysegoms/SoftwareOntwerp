@@ -60,7 +60,7 @@ public class InvocationMessageDialogBox extends DialogBox {
 
     /**
      * set list box index
-     * @param listBoxIndex
+     * @param listBoxIndex index of the now selected element in the listbox
      */
     public void setListBoxIndex(int listBoxIndex) {
         this.listBoxIndex = listBoxIndex;
@@ -275,7 +275,6 @@ public class InvocationMessageDialogBox extends DialogBox {
      * handle the backspace event
      *
      * @return an action detailing the outcome of the handling
-     * @throws DomainException if illegal modifications are made
      */
     public Action handleBackSpace() {
         if(!designerMode){
@@ -306,7 +305,6 @@ public class InvocationMessageDialogBox extends DialogBox {
      *
      * @param keyEvent the keyEvent containing the char
      * @return an action detailing the outcome of the handling
-     * @throws DomainException if illegal modifications are made
      */
     public Action handleChar(KeyEvent keyEvent){
         if(!designerMode){

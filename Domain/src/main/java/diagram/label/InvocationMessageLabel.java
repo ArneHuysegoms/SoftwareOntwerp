@@ -78,8 +78,10 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
      * @param position the position to remove at
      */
     public void deleteArgument(int position) {
-        getArguments().remove(position);
-        setIndex(index - 1);
+        if(position > -1) {
+            getArguments().remove(position);
+            setIndex(index - 1);
+        }
     }
 
     /**
