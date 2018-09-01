@@ -283,7 +283,7 @@ public class PartyDialogBoxTest {
     public void test_addDescription_sync_otherInteraction(){
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
         assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
-        assertEquals(partyDialogBox2.getSelected().getDescription().toString(), "Actor");
+        assertEquals(partyDialogBox3.getSelected().getDescription().toString(), "Actor");
 
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
         assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");

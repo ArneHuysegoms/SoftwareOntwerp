@@ -22,14 +22,17 @@ import static org.junit.Assert.*;
 
 public class DiagramDialogBoxTest {
 
-    DiagramSubwindow diagramSubwindow;
-    DiagramDialogBox diagramDialogBox;
+    DiagramSubwindow diagramSubwindow,diagramSubwindow2;
+    DiagramDialogBox diagramDialogBox,diagramDialogBox2,diagramDialogBox3;
 
     @Before
     public void setUp() {
         diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
+        diagramSubwindow2 = new DiagramSubwindow(new Point2D.Double(500, 500));
         try {
             diagramDialogBox = new DiagramDialogBox(new Point2D.Double(50, 50), diagramSubwindow);
+            diagramDialogBox2 = new DiagramDialogBox(new Point2D.Double(50, 50), diagramSubwindow);
+            diagramDialogBox3 = new DiagramDialogBox(new Point2D.Double(50, 50), diagramSubwindow2);
         }
         catch (UIException exc){
             fail();
@@ -91,24 +94,12 @@ public class DiagramDialogBoxTest {
     }
 
     @Test
-    public void test_description_addChar(){
+    public void test_description_addAndDelChar(){
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
         assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
 
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
         assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
-        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
-
-    }
-
-    @Test
-    public void test_description_delChar(){
-        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
-        assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
-
-        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
-        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
-
         diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
         assertEquals(diagramDialogBox.getSelected().getDescription(), "Communication");
     }
@@ -122,5 +113,29 @@ public class DiagramDialogBoxTest {
         diagramDialogBox.selectedindex = 100;
         diagramDialogBox.updateList();
         assertEquals(0,diagramDialogBox.getSelectedindex());
+    }
+
+    @Test
+    public void test_addDescription_sync_sameInteraction(){
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
+        assertEquals(diagramDialogBox2.getSelected().getDescription().toString(), "Communication");
+
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
+        assertEquals(diagramDialogBox2.getSelected().getDescription(), "Communicationt");
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+    }
+
+    @Test
+    public void test_addDescription_sync_otherInteraction(){
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(diagramDialogBox.getSelected().getDescription().toString(), "Communication");
+        assertEquals(diagramDialogBox3.getSelected().getDescription().toString(), "Communication");
+
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(diagramDialogBox.getSelected().getDescription(), "Communicationt");
+        assertEquals(diagramDialogBox3.getSelected().getDescription(), "Communicationt");
+        diagramDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
     }
 }
