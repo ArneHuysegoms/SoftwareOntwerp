@@ -13,8 +13,8 @@ public class KeyEvent {
 
     /**
      *
-     * @param keyEventType
-     * @param keyChar
+     * @param keyEventType keyEvent Type
+     * @param keyChar key character
      */
     public KeyEvent(KeyEventType keyEventType, char keyChar){
         this.setKeyEventType(keyEventType);
@@ -55,9 +55,9 @@ public class KeyEvent {
 
     /**
      *
-     * @param keyEvent
+     * @param keyEvent keyEvent
      * @return boolean
-     *          | if (this.getKeyEventType().equals(keyEvent.getKeyEventType()) && this.getKeyChar() == keyEvent.getKeyChar())
+     *          | if (this.getKeyEventType().equals(keyEvent.getKeyEventType()) and this.getKeyChar() == keyEvent.getKeyChar())
      *          |   return true
      *          | else
      *          |   return false
