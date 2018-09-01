@@ -330,7 +330,7 @@ public class SequenceConverter extends DiagramConverter {
                             .draw(graphics, getX1(), getY1(), getX2(), getY2());
                     new DashedArrow(new Point2D.Double(rightX, calculateBarEndY(messageMap)), new Point2D.Double(leftX, calculateBarEndY(messageMap)))
                             .draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    new Box(new Point2D.Double(lifelineRightX-barWidth, calculateBarStartY(messageMap)), new Point2D.Double(lifelineRightX+barWidth/2, calculateBarEndY(messageMap))).draw(graphics, getX1(), getY1(), getX2(), getY2());
+                    new Box(new Point2D.Double(lifelineRightX-barWidth/2, calculateBarStartY(messageMap)), new Point2D.Double(lifelineRightX+barWidth/2, calculateBarEndY(messageMap))).draw(graphics, getX1(), getY1(), getX2(), getY2());
 
                 }
                 else{
