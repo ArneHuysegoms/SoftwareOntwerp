@@ -200,19 +200,19 @@ public class DiagramSubwindow extends Subwindow implements IActionHandler {
     public Action opendialogBox() throws UIException {
         DialogBox dialogBox = null;
         if (selected == null) {
-            dialogBox = new DiagramDialogBox(new Point2D.Double(100, 100), this);
+            dialogBox = new DiagramDialogBox(new Point2D.Double(getPosition().getX()+10, getPosition().getY()+10), this);
         } else if (selectedElementIsParty()) {
             Party p = (Party) selected;
-            dialogBox = new PartyDialogBox(new Point2D.Double(100, 100), p, this);
+            dialogBox = new PartyDialogBox(new Point2D.Double(getPosition().getX()+10, getPosition().getY()+10), p, this);
         } else if (selectedElementIsLabel()) {
             DiagramElement element = this.getFacade().findParentElement((Label) selected);
             if (element instanceof Party) {
                 Party p = (Party) element;
-                dialogBox = new PartyDialogBox(new Point2D.Double(100, 100), p, this);
+                dialogBox = new PartyDialogBox(new Point2D.Double(getPosition().getX()+10, getPosition().getY()+10), p, this);
             } else if (selected instanceof InvocationMessageLabel) {
-                dialogBox = new InvocationMessageDialogBox(new Point2D.Double(100, 100), (InvocationMessageLabel) selected, this);
+                dialogBox = new InvocationMessageDialogBox(new Point2D.Double(getPosition().getX()+10, getPosition().getY()+10), (InvocationMessageLabel) selected, this);
             } else if (selected instanceof ResultMessageLabel) {
-                dialogBox = new ResultMessageDialogBox(new Point2D.Double(100, 100), (ResultMessage) element, this);
+                dialogBox = new ResultMessageDialogBox(new Point2D.Double(getPosition().getX()+10, getPosition().getY()+10), (ResultMessage) element, this);
             }
         }
         if (dialogBox != null) {

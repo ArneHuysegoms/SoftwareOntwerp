@@ -368,7 +368,7 @@ public class InteractionController{
      */
     private void copyActiveDiagramSubwindow() {
         if (this.getActiveDiagramSubwindow() != null) {
-            DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(100, 100), activeDiagramSubwindow.getCopyOfFacade());
+            DiagramSubwindow diagramSubwindow = new DiagramSubwindow(new Point2D.Double(activeDiagramSubwindow.getPosition().getX()+10,activeDiagramSubwindow.getPosition().getY()+10), activeDiagramSubwindow.getCopyOfFacade());
             Button button = new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, this));
             diagramSubwindow.getFrame().setButton(button);
             addSubwindow(diagramSubwindow);
