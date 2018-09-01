@@ -36,14 +36,16 @@ import static org.junit.Assert.assertTrue;
 
 public class PartyDialogBoxTest {
 
-    Party party;
-    DiagramSubwindow diagramSubwindow;
-    PartyDialogBox partyDialogBox;
-    InteractionController interactionController;
+    Party party,party2;
+    DiagramSubwindow diagramSubwindow, diagramSubwindow2;
+    PartyDialogBox partyDialogBox,partyDialogBox2, partyDialogBox3;
+    InteractionController interactionController, interactionController2;
 
     @Before
     public void setUp(){
         try{
+            // partyDialogBox en partyDialogBox2 behoren tot zelfde interaction
+
             interactionController = new InteractionController();
             diagramSubwindow = new DiagramSubwindow(new Point2D.Double(500, 500));
             CloseWindowButton closeWindowButton2 =new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow, interactionController));
@@ -52,9 +54,26 @@ public class PartyDialogBoxTest {
             party = diagramSubwindow.getFacade().addNewParty(new Point2D.Double(75, 75));
 
             partyDialogBox = new PartyDialogBox(new Point2D.Double(50, 50), party, diagramSubwindow);
+            partyDialogBox2 = new PartyDialogBox(new Point2D.Double(50, 50), party, diagramSubwindow);
             CloseWindowButton closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, interactionController));
             partyDialogBox.createFrame(closeWindowButton);
+            partyDialogBox2.createFrame(closeWindowButton);
             interactionController.addSubwindow(partyDialogBox);
+            interactionController.addSubwindow(partyDialogBox2);
+
+            // partyDialogBox3 behoort tot andere interaction
+
+            interactionController2 = new InteractionController();
+            diagramSubwindow2 = new DiagramSubwindow(new Point2D.Double(500, 500));
+            CloseWindowButton closeWindowButton3 =new CloseWindowButton(new CloseSubwindowCommand(diagramSubwindow2, interactionController2));
+            diagramSubwindow2.createFrame(closeWindowButton3);
+
+            party2 = diagramSubwindow2.getFacade().addNewParty(new Point2D.Double(75, 75));
+
+            partyDialogBox3 = new PartyDialogBox(new Point2D.Double(50, 50), party2, diagramSubwindow2);
+            CloseWindowButton closeWindowButton4 = new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox3, interactionController2));
+            partyDialogBox3.createFrame(closeWindowButton4);
+            interactionController2.addSubwindow(partyDialogBox3);
         }
         catch (Exception e){
             fail();
@@ -246,6 +265,30 @@ public class PartyDialogBoxTest {
         partyDialogBox.selectedindex = 100;
         partyDialogBox.updateList();
         assertEquals(0,partyDialogBox.getSelectedindex());
+    }
+
+    @Test
+    public void test_addDescription_sync_sameInteraction(){
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
+        assertEquals(partyDialogBox2.getSelected().getDescription().toString(), "Actor");
+
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
+        assertEquals(partyDialogBox2.getSelected().getDescription(), "Actort");
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
+    }
+
+    @Test
+    public void test_addDescription_sync_otherInteraction(){
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CTRLE));
+        assertEquals(partyDialogBox.getSelected().getDescription().toString(), "Actor");
+        assertEquals(partyDialogBox2.getSelected().getDescription().toString(), "Actor");
+
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
+        assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
+        assertEquals(partyDialogBox3.getSelected().getDescription(), "Actort");
+        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
     }
 
 }

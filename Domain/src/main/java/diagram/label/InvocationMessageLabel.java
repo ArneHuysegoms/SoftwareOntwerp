@@ -152,11 +152,9 @@ public class InvocationMessageLabel extends MessageLabel implements Serializable
      * moves the argument at the current index 1 up the list of arguments
      */
     public void moveUp() {
-        System.out.println("2e MOVEUPPPPPPPPPPPPPPPPP" + this + " " + index);
         if (index > 0) {
             Collections.swap(arguments, index, index - 1);
             this.setIndex(index - 1);
-            System.out.println("2e MOVEUPPPPPPPPPPPPPPPPPPPPPP" + this + " " + index);
         }
     }
 

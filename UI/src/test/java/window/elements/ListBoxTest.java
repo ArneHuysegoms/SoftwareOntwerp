@@ -27,7 +27,6 @@ public class ListBoxTest {
         ListBox listBox = new ListBox(new Point2D.Double(50, 50), "ListBox");
         assertTrue(listBox.getArguments().size() == 0);
         assertTrue(listBox.getSelectedIndex() == -1);
-        assertEquals(listBox.getDescription(), "ListBox");
         assertEquals(listBox.getCoordinate(), new Point2D.Double(50, 50));
     }
 
