@@ -5,6 +5,7 @@ import diagram.DiagramElement;
 import diagram.label.Label;
 import diagram.message.InvocationMessage;
 import diagram.message.Message;
+import diagram.message.ResultMessage;
 import diagram.party.Actor;
 import diagram.party.Object;
 import diagram.party.Party;
@@ -174,13 +175,15 @@ public class SequenceConverter extends DiagramConverter {
                 }
 
                 if (responseCounter > 0 && invokeCounter == responseCounter) {
-                    bars.add(new ActivationBar(sent, message, false));
+                    bars.add(new ActivationBar(sent, message,getInitialMessage(), false));
                     sent = null;
                 }
 
                 message = message.getNextMessage();
             }
         }
+
+
 
         /**
          * method that draws activation bars
@@ -226,17 +229,17 @@ public class SequenceConverter extends DiagramConverter {
             private int barWidth = 20;
             private boolean hasParentBar = true;
             private List<ActivationBar> bars;
-            private Message sent, response;
+            private Message sent, response, initial;
 
             /**
              * @param sent     first message that is outgoing from this activation bar
              * @param received response to the sent message
              */
-            public ActivationBar(Message sent, Message received) {
+            public ActivationBar(Message sent, Message received, Message initial) {
                 bars = new ArrayList<ActivationBar>();
                 setSent(sent);
                 setReceived(received);
-
+                this.initial = initial;
                 calculateBars(getSent().getNextMessage());
             }
 
@@ -245,8 +248,9 @@ public class SequenceConverter extends DiagramConverter {
              * @param received     response to the sent message
              * @param hasParentBar flag that tells if this activationbar is stacked on an other one
              */
-            public ActivationBar(Message sent, Message received, boolean hasParentBar) {
-                this(sent, received);
+            public ActivationBar(Message sent, Message received, Message initial, boolean hasParentBar) {
+                this(sent, received,initial);
+                this.initial = initial;
                 setParent(hasParentBar);
             }
 
@@ -271,7 +275,7 @@ public class SequenceConverter extends DiagramConverter {
                         }
 
                         if (responseCounter > 0 && invokeCounter == responseCounter) {
-                            bars.add(new ActivationBar(sent, nextMessage));
+                            bars.add(new ActivationBar(sent, nextMessage, initial));
                             sent = null;
                         }
 
@@ -306,18 +310,51 @@ public class SequenceConverter extends DiagramConverter {
              * @param messageMap list of Message and y-coördinate entries
              */
             public void draw(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap) {
-                drawArrows(graphics, partyMap, messageMap);
+                drawArrowsandBox(graphics, partyMap, messageMap);
                 for (ActivationBar a : bars) {
                     a.draw(graphics, partyMap, messageMap);
                 }
+            }
 
+            private boolean checkIfBetween(){
+                ArrayList<Message> msgs = new ArrayList<>();
+                Message temp = initial;
+                while(temp!=null){
+                    if (temp.getSender().equals(getSent().getReceiver()) || temp.getReceiver().equals(getSent().getReceiver())){
+                        msgs.add(temp);
+                    }
+                    temp = temp.getNextMessage();
+                }
+
+                int index = -1;
+                int invocationCount=0, responseCount=0;
+                for(Message m:msgs){
+                    if(m.equals(getSent())){
+                        index = msgs.indexOf(m);
+                        break;
+                    }
+                    if(m instanceof InvocationMessage){
+                        invocationCount++;
+                    }
+                    else{
+                        responseCount++;
+                    }
+                }
+                if (index == -1){
+                    return false;
+                }
+
+                if(invocationCount>responseCount){
+                    return true;
+                }
+                return false;
             }
 
             public void drawInitial(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap){
                 new Box(calculateOwnBarStart(partyMap, messageMap), calculateOwnBarEnd(partyMap, messageMap)).draw(graphics, getX1(), getY1(), getX2(), getY2());
             }
 
-            public void drawArrows(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap){
+            public void drawArrowsandBox(Graphics graphics, Map<Party, Point2D> partyMap, Map<Message, Integer> messageMap){
                 double leftX, rightX;
                 boolean toRight = partyMap.get(getSent().getSender()).getX() < partyMap.get(getSent().getReceiver()).getX();
                 double lifelineLeftX,lifelineRightX;
@@ -326,24 +363,58 @@ public class SequenceConverter extends DiagramConverter {
                     lifelineRightX = calculateLifelineX(getSent().getReceiver(), partyMap);
                     leftX = lifelineLeftX + barWidth/2;
                     rightX = lifelineRightX - barWidth/2;
-                    new Arrow(new Point2D.Double(leftX, calculateBarStartY(messageMap)), new Point2D.Double(rightX, calculateBarStartY(messageMap)))
-                            .draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    new DashedArrow(new Point2D.Double(rightX, calculateBarEndY(messageMap)), new Point2D.Double(leftX, calculateBarEndY(messageMap)))
-                            .draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    new Box(new Point2D.Double(lifelineRightX-barWidth/2, calculateBarStartY(messageMap)), new Point2D.Double(lifelineRightX+barWidth/2, calculateBarEndY(messageMap))).draw(graphics, getX1(), getY1(), getX2(), getY2());
 
+                    if(checkIfBetween()) {
+                        new Arrow(new Point2D.Double(leftX, calculateBarStartY(messageMap)),
+                                new Point2D.Double(lifelineRightX - barWidth, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new DashedArrow(new Point2D.Double(lifelineRightX - barWidth, calculateBarEndY(messageMap)),
+                                new Point2D.Double(leftX, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new Box(new Point2D.Double(lifelineRightX - barWidth, calculateBarStartY(messageMap)),
+                                new Point2D.Double(lifelineRightX, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                    }
+                    else{
+                        new Arrow(new Point2D.Double(leftX, calculateBarStartY(messageMap)),
+                                new Point2D.Double(rightX, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new DashedArrow(new Point2D.Double(rightX, calculateBarEndY(messageMap)),
+                                new Point2D.Double(leftX, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new Box(new Point2D.Double(lifelineRightX - barWidth / 2, calculateBarStartY(messageMap)),
+                                new Point2D.Double(lifelineRightX + barWidth / 2, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                    }
                 }
                 else{
                     lifelineLeftX  = calculateLifelineX(getSent().getReceiver(), partyMap);
                     lifelineRightX = calculateLifelineX(getSent().getSender(), partyMap);
-                    leftX = lifelineLeftX + barWidth;
                     rightX = lifelineRightX - barWidth/2;
-                    new Arrow(new Point2D.Double(rightX, calculateBarStartY(messageMap)), new Point2D.Double(leftX, calculateBarStartY(messageMap)))
-                            .draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    new DashedArrow(new Point2D.Double(leftX, calculateBarEndY(messageMap)), new Point2D.Double(rightX, calculateBarEndY(messageMap)))
-                            .draw(graphics, getX1(), getY1(), getX2(), getY2());
-                    new Box(new Point2D.Double(lifelineLeftX, calculateBarEndY(messageMap)),new Point2D.Double(lifelineLeftX+barWidth, calculateBarStartY(messageMap))).draw(graphics, getX1(), getY1(), getX2(), getY2());
-
+                    if(checkIfBetween()) {
+                        System.out.println("BAR");
+                        new Arrow(new Point2D.Double(rightX, calculateBarStartY(messageMap)),
+                                new Point2D.Double(lifelineLeftX + barWidth, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new DashedArrow(new Point2D.Double(lifelineLeftX+barWidth, calculateBarEndY(messageMap)),
+                                new Point2D.Double(rightX, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new Box(new Point2D.Double(lifelineLeftX, calculateBarEndY(messageMap)),
+                                new Point2D.Double(lifelineLeftX + barWidth, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                    }
+                    else{
+                        System.out.println("FOO");
+                        new Arrow(new Point2D.Double(rightX, calculateBarStartY(messageMap)),
+                                new Point2D.Double(lifelineLeftX+barWidth/2, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new DashedArrow(new Point2D.Double(lifelineLeftX+barWidth/2, calculateBarEndY(messageMap)),
+                                new Point2D.Double(rightX, calculateBarEndY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                        new Box(new Point2D.Double(lifelineLeftX - barWidth/2, calculateBarEndY(messageMap)),
+                                new Point2D.Double(lifelineLeftX + barWidth/2, calculateBarStartY(messageMap)))
+                                .draw(graphics, getX1(), getY1(), getX2(), getY2());
+                    }
                 }
             }
 
