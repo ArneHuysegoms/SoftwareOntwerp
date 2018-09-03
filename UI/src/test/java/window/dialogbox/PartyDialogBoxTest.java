@@ -76,6 +76,8 @@ public class PartyDialogBoxTest {
             partyDialogBox3.createFrame(closeWindowButton4);
             interactionController2.addSubwindow(diagramSubwindow2);
             interactionController2.addSubwindow(partyDialogBox3);
+
+            partyDialogBox.getSelected().setStaticDescription("Actor");
         }
         catch (Exception e){
             fail();
@@ -278,7 +280,6 @@ public class PartyDialogBoxTest {
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
         assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
         assertEquals(partyDialogBox2.getSelected().getDescription(), "Actort");
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
     }
 
     @Test
@@ -290,7 +291,6 @@ public class PartyDialogBoxTest {
         partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.CHAR,'t'));
         assertEquals(partyDialogBox.getSelected().getDescription(), "Actort");
         assertEquals(partyDialogBox3.getSelected().getDescription(), "Actort");
-        partyDialogBox.handleKeyEvent(new KeyEvent(KeyEventType.BACKSPACE));
     }
 
 }
