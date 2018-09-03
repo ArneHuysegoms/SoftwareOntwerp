@@ -58,6 +58,7 @@ public class PartyDialogBoxTest {
             CloseWindowButton closeWindowButton = new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox, interactionController));
             partyDialogBox.createFrame(closeWindowButton);
             partyDialogBox2.createFrame(closeWindowButton);
+            interactionController.addSubwindow(diagramSubwindow);
             interactionController.addSubwindow(partyDialogBox);
             interactionController.addSubwindow(partyDialogBox2);
 
@@ -73,6 +74,7 @@ public class PartyDialogBoxTest {
             partyDialogBox3 = new PartyDialogBox(new Point2D.Double(50, 50), party2, diagramSubwindow2);
             CloseWindowButton closeWindowButton4 = new CloseWindowButton(new CloseSubwindowCommand(partyDialogBox3, interactionController2));
             partyDialogBox3.createFrame(closeWindowButton4);
+            interactionController2.addSubwindow(diagramSubwindow2);
             interactionController2.addSubwindow(partyDialogBox3);
         }
         catch (Exception e){
